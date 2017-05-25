@@ -14,65 +14,12 @@
 	<!-- Latest compiled and minified JavaScript -->
 	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
 
-	<script type="application/javascript">
-		function getRandomInt(min, max) {
-			min = Math.ceil(min);
-			max = Math.floor(max);
-			return Math.floor(Math.random() * (max - min)) + min;
-		}
+	<script src='simulation.js'></script>
 
-
-		function draw(event) {
-			var canvas = document.getElementById('canvas');
-			if (canvas.getContext) {
-				var ctx = canvas.getContext('2d');
-				ctx.clearRect(0, 0, canvas.width, canvas.height);
-
-				// ctx.fillStyle = ctx.strokeStyle = 'rgba('+getRandomInt(0, 256) + ', ' + getRandomInt(0, 256) + ', ' + getRandomInt(0, 256)+', ' + (Math.random()/2+0.5) + ')';
-				// ctx.fillRect(10, 10, 50, 50);
-
-				ctx.beginPath();
-				ctx.moveTo(0,0);
-				ctx.lineTo(event.x, event.y);
-				ctx.stroke();
-				// ctx.fillStyle = 'rgba('+getRandomInt(0, 256) + ', ' + getRandomInt(0, 256) + ', ' + getRandomInt(0, 256)+', ' + (Math.random()/2+0.5) + ')';
-				// ctx.fillRect(30, 30, 50, 50);
-			}
-		}
-
-		function clearCanvas(canvas)
+	<script>
+		function numberOnly(event)
 		{
-			var ctx = canvas.getContext('2d');
-			ctx.clearRect(0, 0, canvas.width, canvas.height);
-		}
-
-		function gaussian() {
-			return ((Math.random() + Math.random() + Math.random() + Math.random() + Math.random() + Math.random()) - 3) / 3;
-		}
-
-		function drawParticles(){
-			var canvas = document.getElementById('canvas');
-			var nParticles;
-			if(document.getElementById('nParticles').value == '')
-				nParticles = 500;
-			else 
-				nParticles = Number(document.getElementById('nParticles').value);
-
-			console.log(nParticles);
-			if (canvas.getContext) 
-			{
-				clearCanvas(canvas);
-				var ctx = canvas.getContext('2d');
-				ctx.fillStyle = 'rgba(0, 0, 255, 0.5)';
-				for(var i = 0; i < nParticles; i ++)
-				{
-					var x = (gaussian()/2+0.5) * canvas.width;
-					var y = (gaussian()/2+0.5) * canvas.height;
-					ctx.beginPath();
-					ctx.arc(x, y, 3, 0, Math.PI*2, 0);
-					ctx.fill();
-				}
-			}
+			return event.charCode >= 48 && event.charCode <= 57;
 		}
 	</script>
 
@@ -80,16 +27,42 @@
 		canvas { border: 1px solid black; }
 	</style>
 </head>
-<body onload="drawParticles();" class='container'>
-	<div class='row'>
-		<canvas id="canvas" width="400" height="300"></canvas>
-	</div>
-	<div class='row'>
-		<div class="input-group col-sm-4">
-			<input type="text" id='nParticles' class="form-control" placeholder="Number of particles" aria-describedby="basic-addon2" onkeypress='return event.charCode >= 48 && event.charCode <= 57'>
-			<span class="input-group-btn">
-				<button class="btn btn-default" type="button" onclick='drawParticles();'>Go!</button>
-			</span>
+<body onload="drawParticles();">
+	<div class="container">
+		<div class="row"><h3>Monte Carlo</h3></div>
+
+		<div class='row'>
+			<canvas id="canvas" width="700" height="400"></canvas>
+			<div style="padding-left: 10px; float:left;">
+  <fieldset>
+    <legend>Configuration</legend>
+    <label for="nParticles"># of particles</label>: <input id="nParticles" class="form-control form-control-sm" value="500" size="6 "><br>
+    <label for="nLandmarks"># of landmarks</label>: <input id="nLandmarks" class="form-control form-control-sm" value="4" size="5"><br>
+    <label for="goByOneStep">Go on each step</label>: <input id="goByOneStep" class="form-control form-control-sm" value="1" size="3"><br>
+    <table>
+      <tbody><tr>
+        <td></td>
+      </tr>
+      <tr>
+        <td><label for="robotForwardNoise">Particle forward noise</label>:</td>
+        <td><input id="robotForwardNoise" class="form-control form-control-sm" value="0.5" size="4"></td>
+      </tr>
+      <tr>
+        <td><label for="robotTurnNoise">Particle turn noise</label>:</td>
+        <td><input id="robotTurnNoise" class="form-control form-control-sm" value="pi/20" size="4"><br></td>
+      </tr>
+      <tr>
+        <td><label for="robotSenseNoise">Particle sense noise</label>:</td>
+        <td><input id="robotSenseNoise" class="form-control form-control-sm" value="5" size="4"><br></td>
+      </tr>
+    </tbody></table>
+    <label for="fogOfWar">"Fog of war" (sensitivity radius)</label>: <input id="fogOfWar" class="form-control form-control-sm" value="350" size="4"><br>
+    <button onclick="reset()" class="btn btn-danger">Reset</button>
+    <button onclick="start()" class="btn btn-success">Start</button>
+    <button onclick="pause()" class="btn btn-warning">Pause</button>
+    <button onclick="step()" class="btn btn-info">Step Forward</button>
+  </fieldset>
+</div>
 		</div>
 	</div>
 </body>
