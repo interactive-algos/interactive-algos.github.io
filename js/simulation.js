@@ -6,7 +6,8 @@ function getRandomInt(min, max)
 }
 
 
-function draw(event) {
+function draw(event) 
+{
 	var canvas = document.getElementById('canvas');
 	if (canvas.getContext) {
 		var ctx = canvas.getContext('2d');
@@ -30,11 +31,13 @@ function clearCanvas(canvas)
 	ctx.clearRect(0, 0, canvas.width, canvas.height);
 }
 
-function gaussian() {
+function gaussian() 
+{
 	return ((Math.random() + Math.random() + Math.random() + Math.random() + Math.random() + Math.random()) - 3) / 3;
 }
 
-function drawParticles(){
+function drawParticles()
+{
 	var canvas = document.getElementById('canvas');
 	var nParticles;
 	if(document.getElementById('nParticles').value == '')
@@ -58,3 +61,19 @@ function drawParticles(){
 		}
 	}
 }
+
+function isNumber(event)
+{
+	return event.charCode >= 48 && event.charCode <= 57;
+}
+
+function isDecimal(event)
+{
+	return isNumber(event) || event.charCode == 46;
+}
+
+function init()
+{
+	drawParticles();
+}
+
