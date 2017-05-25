@@ -16,53 +16,47 @@
 
 	<script src='js/simulation.js'></script>
 
-	<script>
-		function numberOnly(event)
-		{
-			return event.charCode >= 48 && event.charCode <= 57;
-		}
-	</script>
-
 	<style type="text/css">
 		canvas { border: 1px solid black; }
 	</style>
 </head>
-<body onload="drawParticles();">
+<body onload="init();">
 	<div class="container">
 		<div class="row"><h3>Monte Carlo</h3></div>
 
 		<div class='row'>
 			<canvas id="canvas" width="700" height="400"></canvas>
 			<div style="padding-left: 10px; float:left;">
-  <fieldset>
-    <legend>Configuration</legend>
-    <label for="nParticles"># of particles</label>: <input id="nParticles" class="form-control form-control-sm" value="500" size="6 "><br>
-    <label for="nLandmarks"># of landmarks</label>: <input id="nLandmarks" class="form-control form-control-sm" value="4" size="5"><br>
-    <label for="goByOneStep">Go on each step</label>: <input id="goByOneStep" class="form-control form-control-sm" value="1" size="3"><br>
-    <table>
-      <tbody><tr>
-        <td></td>
-      </tr>
-      <tr>
-        <td><label for="robotForwardNoise">Particle forward noise</label>:</td>
-        <td><input id="robotForwardNoise" class="form-control form-control-sm" value="0.5" size="4"></td>
-      </tr>
-      <tr>
-        <td><label for="robotTurnNoise">Particle turn noise</label>:</td>
-        <td><input id="robotTurnNoise" class="form-control form-control-sm" value="pi/20" size="4"><br></td>
-      </tr>
-      <tr>
-        <td><label for="robotSenseNoise">Particle sense noise</label>:</td>
-        <td><input id="robotSenseNoise" class="form-control form-control-sm" value="5" size="4"><br></td>
-      </tr>
-    </tbody></table>
-    <label for="fogOfWar">"Fog of war" (sensitivity radius)</label>: <input id="fogOfWar" class="form-control form-control-sm" value="350" size="4"><br>
-    <button onclick="reset()" class="btn btn-danger">Reset</button>
-    <button onclick="start()" class="btn btn-success">Start</button>
-    <button onclick="pause()" class="btn btn-warning">Pause</button>
-    <button onclick="step()" class="btn btn-info">Step Forward</button>
-  </fieldset>
-</div>
+				<fieldset>
+					<legend>Configuration</legend>
+					<label for="nParticles"># of particles</label>: <input type='text' id="nParticles" onkeypress='return isNumber(event);' class="form-control form-control-sm" value="500" size="3 ">
+					<label for="nLandmarks"># of landmarks</label>: <input type='text' id="nLandmarks" onkeypress='return isNumber(event);' class="form-control form-control-sm" value="4" size="3">
+					<label for="goByOneStep">Go on each step</label>: <input type='text' id="goByOneStep" onkeypress='return isNumber(event);' class="form-control form-control-sm" value="1" size="3">
+					<table>
+						<tbody><tr>
+							<td></td>
+						</tr>
+						<tr>
+							<td><label for="robotForwardNoise">Move noise</label>:</td>
+							<td><input type='text' id="robotForwardNoise" onkeypress='return isDecimal(event);' class="form-control form-control-sm" value="0.5" size="3"></td>
+						</tr>
+						<tr>
+							<td><label for="robotTurnNoise">Turn noise (Degrees)</label>:</td>
+							<td><input type='text' id="robotTurnNoise" onkeypress='return isDecimal(event);' class="form-control form-control-sm" value="9" size="3"></td>
+							<td><label>&#176;</label></td>
+						</tr>
+						<tr>
+							<td><label for="robotSenseNoise">Sense noise</label>:</td>
+							<td><input type='text' id="robotSenseNoise" onkeypress='return isDecimal(event);' class="form-control form-control-sm" value="5" size="3"></td>
+						</tr>
+					</tbody></table>
+					<label for="fogOfWar">"Fog of war" (sensitivity radius)</label>: <input id="fogOfWar" onkeypress='return isNumber(event);' class="form-control form-control-sm" value="350" size="4"><br>
+					<button onclick="reset()" class="btn btn-danger">Reset</button>
+					<button onclick="start()" class="btn btn-success">Start</button>
+					<button onclick="pause()" class="btn btn-warning">Pause</button>
+					<button onclick="step()" class="btn btn-info">Step Forward</button>
+				</fieldset>
+			</div>
 		</div>
 	</div>
 </body>
