@@ -15,7 +15,7 @@ let sin = Math.sin;
 
 Robot.prototype.draw = function(ctx)
 {
-	ctx.strokestyle = 'black';
+	ctx.strokeStyle = 'black';
 	ctx.beginPath();
 
 	//The robot's main circle
@@ -29,12 +29,11 @@ Robot.prototype.draw = function(ctx)
 
 	ctx.stroke();
 
+	ctx.strokeStyle = 'blue';
 	ctx.beginPath();
 	//draw Robot's sensing circle
 	ctx.arc(this.x, this.y, this.senseCircle, 0, Math.PI*2, false);
 	ctx.stroke();
-
-	ctx.beginPath();
 
 	this.senseCircle = (this.senseCircle + 2) % Robot.sensorRadius;
 }
