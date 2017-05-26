@@ -1,4 +1,5 @@
 var canvas; //The HTML Element of the canvas
+var robot;
 
 function isNumber(event)
 {
@@ -13,7 +14,10 @@ function isDecimal(event)
 function init()
 {
 	canvas = document.getElementById('canvas');
-	drawParticles(canvas);
+	// drawParticles(canvas);
+	var ctx = canvas.getContext('2d');
+	robot = new Robot(getRandomInt(0, canvas.width), getRandomInt(0, canvas.height));
+	robot.draw(ctx);
 }
 
 function drawParticles(canvas)
