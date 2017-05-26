@@ -2,7 +2,7 @@ function Robot(x, y, dir = 0)
 {
 	this.x = x;		//x coordinate
 	this.y = y;		//y coordinate
-	this.dir = 0;	//orientation in radians
+	this.dir = dir;	//orientation in radians
 
 	this.senseCircle = 10 + 5;
 }
