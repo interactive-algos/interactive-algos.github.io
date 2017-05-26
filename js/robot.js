@@ -10,7 +10,7 @@ function Robot(x, y, dir = 0)
 
 Robot.size = 10;
 Robot.sensorRadius = 100;
-Robot.scanInterval = 2000;
+Robot.scanInterval = 2500;
 
 let cos = Math.cos;
 let sin = Math.sin;
@@ -39,7 +39,7 @@ Robot.prototype.draw = function(ctx)
 		this.lastScan = Date.now();
 	}
 
-	ctx.strokeStyle = 'blue';
+	ctx.strokeStyle = 'rgba(0, 0, 255, '+ (1-this.senseCircle/Robot.sensorRadius) +')';
 	ctx.beginPath();
 	//draw Robot's sensing circle
 	ctx.arc(this.x, this.y, this.senseCircle, 0, Math.PI*2, false);
