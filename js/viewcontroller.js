@@ -31,7 +31,7 @@ function init()
 	// drawParticles(canvas);
 	var ctx = canvas.getContext('2d');
 	Robot.sensorRadius = getSensorRadius();
-	robot = new Robot(getRandomInt(0, canvas.width), getRandomInt(0, canvas.height));
+	robot = new Robot(getRandomInt(0, canvas.width), getRandomInt(0, canvas.height), Math.random() * Math.PI * 2);
 	robot.draw(ctx);
 	requestAnimationFrame = window.requestAnimationFrame || window.mozRequestAnimationFrame || window.webkitRequestAnimationFrame || window.msRequestAnimationFrame;
 	requestAnimationFrame(update);
