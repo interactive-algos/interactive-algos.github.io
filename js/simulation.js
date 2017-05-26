@@ -17,7 +17,7 @@ function draw(event)
 		// ctx.fillRect(10, 10, 50, 50);
 
 		ctx.beginPath();
-		ctx.moveTo(0,0);
+		ctx.moveTo(0, 0);
 		ctx.lineTo(event.x, event.y);
 		ctx.stroke();
 		// ctx.fillStyle = 'rgba('+getRandomInt(0, 256) + ', ' + getRandomInt(0, 256) + ', ' + getRandomInt(0, 256)+', ' + (Math.random()/2+0.5) + ')';
@@ -36,9 +36,8 @@ function gaussian()
 	return ((Math.random() + Math.random() + Math.random() + Math.random() + Math.random() + Math.random()) - 3) / 3;
 }
 
-function drawParticles()
+function drawParticles(canvas)
 {
-	var canvas = document.getElementById('canvas');
 	var nParticles;
 	if(document.getElementById('nParticles').value == '')
 		nParticles = 500;
