@@ -102,6 +102,7 @@ Robot.prototype.updateParticles = function()
 	//This is how we simulate odometry....
 	var dx = this.x - this.lastX;
 	var dy = this.y - this.lastY;
+	var dd = Math.sqrt(dx*dx + dy*dy);
 	var da = this.dir - this.lastDir;
 
 	//get noise parameters
@@ -110,9 +111,11 @@ Robot.prototype.updateParticles = function()
 	
 	for (var i = this.particles.length - 1; i >= 0; i--) 
 	{
-		this.particles[i].x += dx + gaussian() * dx * strideNoise;
-		this.particles[i].y += dy + gaussian() * dy * strideNoise;
-		this.particles[i].dir += da + gaussian() * da * turnNoise;
+		var dist = dd + dd * gaussian() * strideNoise;
+		var newDir = this.particles[i].dir + da + gaussian() * da * turnNoise
+		this.particles[i].x += dist * cos(newDir);
+		this.particles[i].y += dist * sin(newDir)
+		this.particles[i].dir = newDir;
 	}
 }
 

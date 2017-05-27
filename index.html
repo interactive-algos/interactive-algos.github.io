@@ -23,7 +23,7 @@
 		canvas { border: 1px solid black; }
 	</style>
 </head>
-<body onload="init();">
+<body>
 	<div class="container">
 		<div class="row"><h3>Monte Carlo</h3></div>
 
@@ -59,7 +59,7 @@
 					</tbody></table>
 					<label for="fogOfWar">Sensor Radius</label>: <input id="fogOfWar" onkeypress='return isNumber(event);' class="form-control form-control-sm" value="150" size="4">
 					<button onclick="reset()" class="btn btn-danger">Reset</button>
-					<button onclick="start()" class="btn btn-success">Start</button>
+					<button onclick="init()" class="btn btn-success">Start</button>
 					<button onclick="pause()" class="btn btn-warning">Pause</button>
 					<button onclick="step()" class="btn btn-info">Step Forward</button>
 				</fieldset>
