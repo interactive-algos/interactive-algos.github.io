@@ -41,6 +41,9 @@ Robot.prototype.update = function()
 	this.x += cos(this.dir) * Robot.stride;
 	this.y += sin(this.dir) * Robot.stride;
 
+	this.updateParticles();
+
+
 	//Collision with a wall
 	if(this.x < Robot.size || this.x+Robot.size >= canvas.width || this.y < Robot.size || this.y+Robot.size >= canvas.height)
 	{
@@ -66,11 +69,6 @@ Robot.prototype.update = function()
 			if(dx < 0)
 				offset = Math.PI;
 		}
-
-		this.updateParticles();
-		this.lastX = this.x;
-		this.lastY = this.y;
-		this.lastDir = this.dir;
 		
 		this.dir = Math.atan(dy/dx) + offset;
 
@@ -82,10 +80,6 @@ Robot.prototype.update = function()
 	//Update robot's direction if necessary
 	if(this.lastMove + this.moveCD <= Date.now())
 	{
-		this.updateParticles();
-		this.lastX = this.x;
-		this.lastY = this.y;
-		this.lastDir = this.dir;
 
 		this.dir += gaussian() * Math.PI;
 		this.lastMove = Date.now();
@@ -124,6 +118,10 @@ Robot.prototype.updateParticles = function()
 		this.particles[i].y += dist * sin(newDir)
 		this.particles[i].dir = newDir;
 	}
+
+	this.lastX = this.x;
+	this.lastY = this.y;
+	this.lastDir = this.dir;
 }
 
 Robot.prototype.draw = function(ctx)
@@ -134,19 +132,22 @@ Robot.prototype.draw = function(ctx)
 
 	ctx.beginPath();
 
+	var x = Math.floor(this.x);
+	var y = Math.floor(this.y);
+
 	//The robot's main circle
-	ctx.arc(this.x, this.y, Robot.size, 0, Math.PI * 2, true);
+	ctx.arc(x, y, Robot.size, 0, Math.PI * 2, true);
 
 	//draw a line to show Robot's orientation
-	ctx.moveTo(this.x, this.y);
-	ctx.lineTo(this.x + cos(this.dir) * Robot.size, this.y + sin(this.dir) * Robot.size)
+	ctx.moveTo(x, y);
+	ctx.lineTo(Math.floor(this.x + cos(this.dir) * Robot.size), Math.floor(this.y + sin(this.dir) * Robot.size));
 
 	ctx.stroke();
 
 	ctx.strokeStyle = 'rgba(0, 0, 255, '+ (1-this.senseCircle/Robot.sensorRadius) +')';
 	ctx.beginPath();
 	//draw Robot's sensing circle
-	ctx.arc(this.x, this.y, this.senseCircle, 0, Math.PI*2, false);
+	ctx.arc(x, y, this.senseCircle, 0, Math.PI*2, false);
 	ctx.stroke();
 
 	for (var i = this.particles.length - 1; i >= 0; i--) 
