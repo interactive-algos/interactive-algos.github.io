@@ -49,7 +49,7 @@ function getStrideNoise()
 
 function getTurnNoise()
 {
-	return Number(document.getElementById('robotForwardNoise').value) / 100.0;
+	return Number(document.getElementById('robotTurnNoise').value) / 100.0;
 }
 
 function clearCanvas(canvas)

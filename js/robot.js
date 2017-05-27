@@ -35,6 +35,43 @@ let cos = Math.cos;
 let sin = Math.sin;
 let abs = Math.abs;
 
+Robot.prototype.checkCollision = function()
+{
+	var dx = cos(this.dir);
+	var dy = sin(this.dir);
+	var offset = 0;
+
+	var collide = false;
+	if(this.x < Robot.size)
+	{
+		dx = abs(dx);
+		collide = true;
+	}else if(this.x+Robot.size >= canvas.width)
+	{
+		dx = -abs(dx);
+		offset = Math.PI;
+		collide = true;
+	}else if(this.y < Robot.size)
+	{
+		dy = abs(dy);
+		if(dx < 0)
+			offset = Math.PI;
+		collide = true;
+	}else if(this.y+Robot.size >= canvas.height)
+	{
+		dy = -abs(dy);
+		if(dx < 0)
+			offset = Math.PI;
+		collide = true;
+	}
+	if(collide)
+	{
+		this.dir = Math.atan(dy/dx) + offset;
+		this.lastMove = Date.now();
+		this.moveCD = Robot.randMoveCD();
+	}
+}
+
 Robot.prototype.update = function()
 {
 	//Move the robot
@@ -43,39 +80,8 @@ Robot.prototype.update = function()
 
 	this.updateParticles();
 
-
 	//Collision with a wall
-	if(this.x < Robot.size || this.x+Robot.size >= canvas.width || this.y < Robot.size || this.y+Robot.size >= canvas.height)
-	{
-		var dx = cos(this.dir);
-		var dy = sin(this.dir);
-		var offset = 0;
-
-		if(this.x < Robot.size)
-		{
-			dx = abs(dx);
-		}else if(this.x+Robot.size >= canvas.width)
-		{
-			dx = -abs(dx);
-			offset = Math.PI;
-		}else if(this.y < Robot.size)
-		{
-			dy = abs(dy);
-			if(dx < 0)
-				offset = Math.PI;
-		}else if(this.y+Robot.size >= canvas.height)
-		{
-			dy = -abs(dy);
-			if(dx < 0)
-				offset = Math.PI;
-		}
-		
-		this.dir = Math.atan(dy/dx) + offset;
-
-		this.lastMove = Date.now();
-		this.moveCD = Robot.randMoveCD();
-	}
-
+	this.checkCollision();
 
 	//Update robot's direction if necessary
 	if(this.lastMove + this.moveCD <= Date.now())
