@@ -37,27 +37,27 @@
 					<legend>Configuration</legend>
 					<label for="nParticles"># of particles</label>: <input type='text' id="nParticles" onkeypress='return isNumber(event);' class="form-control form-control-sm" value="500" size="3 ">
 					<label for="nLandmarks"># of landmarks</label>: <input type='text' id="nLandmarks" onkeypress='return isNumber(event);' class="form-control form-control-sm" value="4" size="3">
-					<label for="goByOneStep">Go on each step</label>: <input type='text' id="goByOneStep" onkeypress='return isNumber(event);' class="form-control form-control-sm" value="1" size="3">
+					<label for="goByOneStep">Go on each step</label>: <input type='text' id="goByOneStep" onblur='return parameterChanged(event);' onkeypress='return isNumber(event);' class="form-control form-control-sm" value="1" size="3">
 					<table>
 						<tbody><tr>
 							<td></td>
 						</tr>
 						<tr>
 							<td><label for="robotForwardNoise">Move noise</label>:</td>
-							<td><input type='text' id="robotForwardNoise" onkeypress='return isDecimal(event);' class="form-control form-control-sm" value="10" size="3"></td>
+							<td><input type='text' id="robotForwardNoise" onblur='return parameterChanged(event);' onkeypress='return isDecimal(event);' class="form-control form-control-sm" value="10" size="3"></td>
 							<td><label>%</label></td>
 						</tr>
 						<tr>
 							<td><label for="robotTurnNoise">Turn noise (Degrees)</label>:</td>
-							<td><input type='text' id="robotTurnNoise" onkeypress='return isDecimal(event);' class="form-control form-control-sm" value="5" size="3"></td>
+							<td><input type='text' id="robotTurnNoise" onblur='return parameterChanged(event);' onkeypress='return isDecimal(event);' class="form-control form-control-sm" value="5" size="3"></td>
 							<td><label>%</label></td>
 						</tr>
 						<tr>
 							<td><label for="robotSenseNoise">Sense noise</label>:</td>
-							<td><input type='text' id="robotSenseNoise" onkeypress='return isDecimal(event);' class="form-control form-control-sm" value="5" size="3"></td>
+							<td><input type='text' id="robotSenseNoise" onblur='return parameterChanged(event);' onkeypress='return isDecimal(event);' class="form-control form-control-sm" value="5" size="3"></td>
 						</tr>
 					</tbody></table>
-					<label for="fogOfWar">Sensor Radius</label>: <input id="fogOfWar" onkeypress='return isNumber(event);' class="form-control form-control-sm" value="150" size="4">
+					<label for="fogOfWar">Sensor Radius</label>: <input id="fogOfWar" onblur='return parameterChanged(event);' onkeypress='return isNumber(event);' class="form-control form-control-sm" value="150" size="4">
 					<button onclick="reset()" class="btn btn-danger">Reset</button>
 					<button onclick="init()" class="btn btn-success">Start</button>
 					<button onclick="pause()" class="btn btn-warning">Pause</button>

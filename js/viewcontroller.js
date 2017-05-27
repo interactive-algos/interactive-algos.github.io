@@ -48,6 +48,9 @@ function parameterChanged(event)
 	}else if(target.id = 'robotTurnNoise')
 	{
 		robot.setTurnNoise(value);
+	}else if(target.id = 'goByOneStep')
+	{
+		Robot.stride = value;
 	}
 }
 
