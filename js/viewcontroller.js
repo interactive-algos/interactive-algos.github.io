@@ -45,10 +45,10 @@ function parameterChanged(event)
 	if(target.id == 'robotForwardNoise')
 	{
 		robot.setStrideNoise(value);
-	}else if(target.id = 'robotTurnNoise')
+	}else if(target.id == 'robotTurnNoise')
 	{
 		robot.setTurnNoise(value);
-	}else if(target.id = 'goByOneStep')
+	}else if(target.id == 'goByOneStep')
 	{
 		Robot.stride = value;
 	}
