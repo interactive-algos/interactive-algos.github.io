@@ -1,3 +1,10 @@
+function RobotState(x, y, dir)
+{
+	this.x = x;
+	this.y = y;
+	this.dir = dir;
+}
+
 function Robot(x, y, dir = 0)
 {
 	this.x = x;		//x coordinate
@@ -17,6 +24,8 @@ function Robot(x, y, dir = 0)
 	this.turnNoise = getTurnNoise();
 	this.particles = new Array(getParticleCount());
 
+	this.motionModel = new OdometryModel(this.turnNoise, this.strideNoise, this.turnNoise, 0);
+
 	//generate initial particles
 	for (var i = this.particles.length - 1; i >= 0; i--) 
 	{
@@ -33,10 +42,6 @@ Robot.randMoveCD = function()
 {
 	return 1500 + (gaussian() * 150);
 }
-
-let cos = Math.cos;
-let sin = Math.sin;
-let abs = Math.abs;
 
 Robot.prototype.setStrideNoise = function(noise)
 {
@@ -73,7 +78,7 @@ Robot.prototype.checkCollision = function()
 	}
 	if(collide)
 	{
-		this.dir = Math.atan2(dy, dx);
+		this.dir = atan2(dy, dx);
 		this.lastMove = Date.now();
 		this.moveCD = Robot.randMoveCD();
 	}
@@ -123,14 +128,15 @@ Robot.prototype.updateParticles = function()
 	var strideNoise = this.strideNoise;
 	var turnNoise = this.turnNoise;
 	
+	var u = new Odometry(new RobotState(this.lastX, this.lastY, this.lastDir), 
+		new RobotState(this.x, this.y, this.dir));
+
 	for (var i = this.particles.length - 1; i >= 0; i--) 
-	{
-		//generate motion with gaussian noise
-		var dist = dd + dd * gaussian() * strideNoise;
-		var newDir = this.particles[i].dir + da + gaussian() * da * turnNoise
-		this.particles[i].x += dist * cos(newDir);
-		this.particles[i].y += dist * sin(newDir)
-		this.particles[i].dir = newDir;
+	{		
+		var p = this.particles[i];
+		var state = new RobotState(p.x, p.y, p.dir);
+		var newState = this.motionModel.sample(u, state);
+		this.particles[i] = new Particle(newState.x, newState.y, newState.dir, 1);
 	}
 
 	this.lastX = this.x;
@@ -146,15 +152,15 @@ Robot.prototype.draw = function(ctx)
 
 	ctx.beginPath();
 
-	var x = Math.floor(this.x);
-	var y = Math.floor(this.y);
+	var x = floor(this.x);
+	var y = floor(this.y);
 
 	//The robot's main circle
 	ctx.arc(x, y, Robot.size, 0, Math.PI * 2, true);
 
 	//draw a line to show Robot's orientation
 	ctx.moveTo(x, y);
-	ctx.lineTo(Math.floor(this.x + cos(this.dir) * Robot.size), Math.floor(this.y + sin(this.dir) * Robot.size));
+	ctx.lineTo(floor(this.x + cos(this.dir) * Robot.size), floor(this.y + sin(this.dir) * Robot.size));
 
 	ctx.stroke();
 
@@ -166,7 +172,6 @@ Robot.prototype.draw = function(ctx)
 
 	for (var i = this.particles.length - 1; i >= 0; i--) 
 	{
-		var p = this.particles[i];
-		p.draw(ctx);
+		this.particles[i].draw(ctx);
 	}
 }
