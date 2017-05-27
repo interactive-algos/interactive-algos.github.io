@@ -42,6 +42,16 @@ function getParticleCount()
 	return Number(document.getElementById('nParticles').value);
 }
 
+function getStrideNoise()
+{
+	return Number(document.getElementById('robotForwardNoise').value) / 100.0;
+}
+
+function getTurnNoise()
+{
+	return Number(document.getElementById('robotForwardNoise').value) / 100.0;
+}
+
 function clearCanvas(canvas)
 {
 	var ctx = canvas.getContext('2d');

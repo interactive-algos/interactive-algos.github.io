@@ -15,6 +15,7 @@
 	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
 
 	<script src='js/simulation.js'></script>
+	<script src='js/particle.js'></script>
 	<script src='js/robot.js'></script>
 	<script src='js/viewcontroller.js'></script>
 
@@ -43,12 +44,13 @@
 						</tr>
 						<tr>
 							<td><label for="robotForwardNoise">Move noise</label>:</td>
-							<td><input type='text' id="robotForwardNoise" onkeypress='return isDecimal(event);' class="form-control form-control-sm" value="0.5" size="3"></td>
+							<td><input type='text' id="robotForwardNoise" onkeypress='return isDecimal(event);' class="form-control form-control-sm" value="10" size="3"></td>
+							<td><label>%</label></td>
 						</tr>
 						<tr>
 							<td><label for="robotTurnNoise">Turn noise (Degrees)</label>:</td>
-							<td><input type='text' id="robotTurnNoise" onkeypress='return isDecimal(event);' class="form-control form-control-sm" value="9" size="3"></td>
-							<td><label>&#176;</label></td>
+							<td><input type='text' id="robotTurnNoise" onkeypress='return isDecimal(event);' class="form-control form-control-sm" value="5" size="3"></td>
+							<td><label>%</label></td>
 						</tr>
 						<tr>
 							<td><label for="robotSenseNoise">Sense noise</label>:</td>

@@ -5,11 +5,20 @@ function Robot(x, y, dir = 0)
 	this.dir = dir;	//orientation in radians
 
 	this.lastScan = Date.now();	//time of last sense in millis
+
 	this.senseCircle = 10 + 5;
 	this.lastMove = Date.now();	//last time change direction, in millis
+	this.lastX = this.x;
+	this.lastY = this.y;
+	this.lastDir = this.dir;
 	this.moveCD = Robot.randMoveCD();
 
 	this.particles = new Array(getParticleCount());
+
+	for (var i = this.particles.length - 1; i >= 0; i--) 
+	{
+		this.particles[i] = new Particle(this.x, this.y, this.dir, 1);
+	}
 }
 
 Robot.size = 10;
@@ -66,6 +75,11 @@ Robot.prototype.update = function()
 	//Update robot's direction if necessary
 	if(this.lastMove + this.moveCD <= Date.now())
 	{
+		this.updateParticles();
+		this.lastX = this.x;
+		this.lastY = this.y;
+		this.lastDir = this.dir;
+
 		this.dir += gaussian() * Math.PI;
 		this.lastMove = Date.now();
 		this.moveCD = Robot.randMoveCD();
@@ -83,6 +97,25 @@ Robot.prototype.update = function()
 	this.senseCircle += 1;
 }
 
+Robot.prototype.updateParticles = function()
+{
+	//This is how we simulate odometry....
+	var dx = this.x - this.lastX;
+	var dy = this.y - this.lastY;
+	var da = this.dir - this.lastDir;
+
+	//get noise parameters
+	var strideNoise = getStrideNoise();
+	var turnNoise = getTurnNoise();
+	
+	for (var i = this.particles.length - 1; i >= 0; i--) 
+	{
+		this.particles[i].x += dx + gaussian() * dx * strideNoise;
+		this.particles[i].y += dy + gaussian() * dy * strideNoise;
+		this.particles[i].dir += da + gaussian() * da * turnNoise;
+	}
+}
+
 Robot.prototype.draw = function(ctx)
 {
 	ctx.strokeStyle = 'black';
@@ -93,12 +126,10 @@ Robot.prototype.draw = function(ctx)
 
 	//The robot's main circle
 	ctx.arc(this.x, this.y, Robot.size, 0, Math.PI * 2, true);
-	ctx.moveTo(this.x, this.y);
 
 	//draw a line to show Robot's orientation
 	ctx.moveTo(this.x, this.y);
 	ctx.lineTo(this.x + cos(this.dir) * Robot.size, this.y + sin(this.dir) * Robot.size)
-	ctx.moveTo(this.x, this.y);
 
 	ctx.stroke();
 
@@ -107,4 +138,10 @@ Robot.prototype.draw = function(ctx)
 	//draw Robot's sensing circle
 	ctx.arc(this.x, this.y, this.senseCircle, 0, Math.PI*2, false);
 	ctx.stroke();
+
+	for (var i = this.particles.length - 1; i >= 0; i--) 
+	{
+		var p = this.particles[i];
+		p.draw(ctx);
+	}
 }
