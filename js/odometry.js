@@ -37,6 +37,10 @@ OdometryModel.prototype.sample = function(u, state)
 	//second rotation
 	var rot2 = u.dir - u.lastDir - rot1;
 
+	//Bound radians to interval [-pi, pi]
+	rot1 = boundRadian(rot1);
+	rot2 = boundRadian(rot2);
+
 	//actual sampling
 	rot1 += gaussian() * (this.a1*rot1);
 	trans += gaussian() * (this.a2*trans);
