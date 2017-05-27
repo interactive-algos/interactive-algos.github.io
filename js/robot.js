@@ -52,7 +52,6 @@ Robot.prototype.checkCollision = function()
 {
 	var dx = cos(this.dir);
 	var dy = sin(this.dir);
-	var offset = 0;
 
 	var collide = false;
 	if(this.x < Robot.size)
@@ -62,24 +61,19 @@ Robot.prototype.checkCollision = function()
 	}else if(this.x+Robot.size >= canvas.width)
 	{
 		dx = -abs(dx);
-		offset = Math.PI;
 		collide = true;
 	}else if(this.y < Robot.size)
 	{
 		dy = abs(dy);
-		if(dx < 0)
-			offset = Math.PI;
 		collide = true;
 	}else if(this.y+Robot.size >= canvas.height)
 	{
 		dy = -abs(dy);
-		if(dx < 0)
-			offset = Math.PI;
 		collide = true;
 	}
 	if(collide)
 	{
-		this.dir = Math.atan(dy/dx) + offset;
+		this.dir = Math.atan2(dy, dx);
 		this.lastMove = Date.now();
 		this.moveCD = Robot.randMoveCD();
 	}
