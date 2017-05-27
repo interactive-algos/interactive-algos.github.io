@@ -44,10 +44,10 @@ function parameterChanged(event)
 	let value = Number(event.target.value);
 	if(target.id == 'robotForwardNoise')
 	{
-		robot.setStrideNoise(value);
+		robot.setStrideNoise(value/100.0);
 	}else if(target.id == 'robotTurnNoise')
 	{
-		robot.setTurnNoise(value);
+		robot.setTurnNoise(value/100.0);
 	}else if(target.id == 'goByOneStep')
 	{
 		Robot.stride = value;

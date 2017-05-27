@@ -20,11 +20,11 @@ function Robot(x, y, dir = 0)
 	this.lastDir = this.dir;
 	this.moveCD = Robot.randMoveCD();
 
-	this.strideNoise = getStrideNoise();
-	this.turnNoise = getTurnNoise();
+	var strideNoise = getStrideNoise();
+	var turnNoise = getTurnNoise();
 	this.particles = new Array(getParticleCount());
 
-	this.motionModel = new OdometryModel(this.turnNoise, this.strideNoise, this.turnNoise, 0);
+	this.motionModel = new OdometryModel(turnNoise, strideNoise, turnNoise, 0);
 
 	//generate initial particles
 	for (var i = this.particles.length - 1; i >= 0; i--) 
@@ -45,12 +45,13 @@ Robot.randMoveCD = function()
 
 Robot.prototype.setStrideNoise = function(noise)
 {
-	this.strideNoise = noise;
+	this.motionModel.a2 = noise;
 }
 
 Robot.prototype.setTurnNoise = function(noise)
 {
-	this.turnNoise = noise;
+	this.motionModel.a1 = noise;
+	this.motionModel.a3 = noise;
 }
 
 Robot.prototype.checkCollision = function()
