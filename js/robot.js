@@ -66,7 +66,14 @@ Robot.prototype.update = function()
 			if(dx < 0)
 				offset = Math.PI;
 		}
+
+		this.updateParticles();
+		this.lastX = this.x;
+		this.lastY = this.y;
+		this.lastDir = this.dir;
+		
 		this.dir = Math.atan(dy/dx) + offset;
+
 		this.lastMove = Date.now();
 		this.moveCD = Robot.randMoveCD();
 	}
