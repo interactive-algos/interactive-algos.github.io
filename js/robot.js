@@ -13,8 +13,11 @@ function Robot(x, y, dir = 0)
 	this.lastDir = this.dir;
 	this.moveCD = Robot.randMoveCD();
 
+	this.strideNoise = getStrideNoise();
+	this.turnNoise = getTurnNoise();
 	this.particles = new Array(getParticleCount());
 
+	//generate initial particles
 	for (var i = this.particles.length - 1; i >= 0; i--) 
 	{
 		this.particles[i] = new Particle(this.x, this.y, this.dir, 1);
@@ -34,6 +37,16 @@ Robot.randMoveCD = function()
 let cos = Math.cos;
 let sin = Math.sin;
 let abs = Math.abs;
+
+Robot.prototype.setStrideNoise = function(noise)
+{
+	this.strideNoise = noise;
+}
+
+Robot.prototype.setTurnNoise = function(noise)
+{
+	this.turnNoise = noise;
+}
 
 Robot.prototype.checkCollision = function()
 {
@@ -113,11 +126,12 @@ Robot.prototype.updateParticles = function()
 	var da = this.dir - this.lastDir;
 
 	//get noise parameters
-	var strideNoise = getStrideNoise();
-	var turnNoise = getTurnNoise();
+	var strideNoise = this.strideNoise;
+	var turnNoise = this.turnNoise;
 	
 	for (var i = this.particles.length - 1; i >= 0; i--) 
 	{
+		//generate motion with gaussian noise
 		var dist = dd + dd * gaussian() * strideNoise;
 		var newDir = this.particles[i].dir + da + gaussian() * da * turnNoise
 		this.particles[i].x += dist * cos(newDir);

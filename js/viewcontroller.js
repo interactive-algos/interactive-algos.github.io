@@ -37,6 +37,20 @@ function init()
 	requestAnimationFrame(frame);
 }
 
+function parameterChanged(event)
+{
+	console.log(event);
+	var target = event.target;
+	let value = Number(event.target.value);
+	if(target.id == 'robotForwardNoise')
+	{
+		robot.setStrideNoise(value);
+	}else if(target.id = 'robotTurnNoise')
+	{
+		robot.setTurnNoise(value);
+	}
+}
+
 function getParticleCount()
 {
 	return Number(document.getElementById('nParticles').value);
