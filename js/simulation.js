@@ -1,10 +1,9 @@
-let cos = Math.cos;
-let sin = Math.sin;
-let abs = Math.abs;
-let atan = Math.atan;
-let atan2 = Math.atan2;
-let floor = Math.floor;
-let sqrt = Math.sqrt;
+const cos = Math.cos;
+const sin = Math.sin;
+const abs = Math.abs;
+const atan2 = Math.atan2;
+const floor = Math.floor;
+const sqrt = Math.sqrt;
 
 function getRandomInt(min, max) 
 {

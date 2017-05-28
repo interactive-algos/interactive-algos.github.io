@@ -20,7 +20,7 @@ function OdometryModel(a1, a2, a3, a4)
 	//Noise on rotational 2
 	this.a3 = a3;
 	//Final rotation
-	this.a4 = a4;
+	// this.a4 = a4;
 }
 
 //Sample from the distribution p(x_t+1, u, x), 

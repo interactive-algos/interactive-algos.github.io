@@ -8,7 +8,7 @@ function Particle(x, y, dir, weight)
 	this.dir = dir;
 
 	//weight of this particle
-	this.w = weight;	
+	this.w = weight;
 }
 
 Particle.prototype.draw = function(ctx)
@@ -22,6 +22,6 @@ Particle.prototype.draw = function(ctx)
 	ctx.moveTo(x, y);
 	ctx.lineTo(floor(this.x + cos(this.dir) * Particle.size), floor(this.y + sin(this.dir) * Particle.size));
 	ctx.stroke();
-}
+};
 
 Particle.size = 3;

@@ -18,7 +18,7 @@ function getSensorRadius()
 	return Number(document.getElementById('fogOfWar').value);
 }
 
-function frame(timestamp)
+function frame()
 {
 	var ctx = canvas.getContext('2d');
 	// ctx.fillStyle = 'rgba(255, 255, 255, 0.3)';
@@ -52,9 +52,9 @@ function init()
 	drawMap(map);
 	var ctx = canvas.getContext('2d');
 	Robot.sensorRadius = getSensorRadius();
-	robot = new Robot(getRandomInt(0, canvas.width), getRandomInt(0, canvas.height), Math.random() * Math.PI * 2);
+	robot = new Robot(getRandomInt(0, canvas.width), getRandomInt(0, canvas.height), Math.random() * Math.PI * 2, new OdometryModel(getTurnNoise(), getStrideNoise(), getTurnNoise(), 0));
 	robot.draw(ctx);
-	requestAnimationFrame = window.requestAnimationFrame || window.mozRequestAnimationFrame || window.webkitRequestAnimationFrame || window.msRequestAnimationFrame;
+    requestAnimationFrame = window.msRequestAnimationFrame || window.webkitRequestAnimationFrame || window.mozRequestAnimationFrame || window.requestAnimationFrame;
 	requestAnimationFrame(frame);
 }
 
@@ -88,10 +88,4 @@ function getStrideNoise()
 function getTurnNoise()
 {
 	return Number(document.getElementById('robotTurnNoise').value) / 100.0;
-}
-
-function clearCanvas(canvas)
-{
-	var ctx = canvas.getContext('2d');
-	ctx.clearRect(0, 0, canvas.width, canvas.height);
 }

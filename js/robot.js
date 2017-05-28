@@ -5,7 +5,7 @@ function RobotState(x, y, dir)
 	this.dir = dir;
 }
 
-function Robot(x, y, dir)
+function Robot(x, y, dir, motionModel)
 {
     if (typeof(dir)==='undefined') dir = 10;
 	this.x = x;		//x coordinate
@@ -21,17 +21,7 @@ function Robot(x, y, dir)
 	this.lastDir = this.dir;
 	this.moveCD = Robot.randMoveCD();
 
-	var strideNoise = getStrideNoise();
-	var turnNoise = getTurnNoise();
-	this.particles = new Array(getParticleCount());
-
-	this.motionModel = new OdometryModel(turnNoise, strideNoise, turnNoise, 0);
-
-	//generate initial particles
-	for (var i = this.particles.length - 1; i >= 0; i--) 
-	{
-		this.particles[i] = new Particle(this.x, this.y, this.dir, 1);
-	}
+	this.filter = new ParticleFilter(getParticleCount(), motionModel, new RobotState(x, y, dir));
 }
 
 Robot.size = 10;
@@ -120,15 +110,9 @@ Robot.prototype.update = function()
 
 Robot.prototype.updateParticles = function()
 {
-	var u = new Odometry(new RobotState(this.lastX, this.lastY, this.lastDir), new RobotState(this.x, this.y, this.dir));
+	var z = new Odometry(new RobotState(this.lastX, this.lastY, this.lastDir), new RobotState(this.x, this.y, this.dir));
 
-	for (var i = this.particles.length - 1; i >= 0; i--) 
-	{		
-		var p = this.particles[i];
-		var state = new RobotState(p.x, p.y, p.dir);
-		var newState = this.motionModel.sample(u, state);
-		this.particles[i] = new Particle(newState.x, newState.y, newState.dir, 1);
-	}
+	this.filter.update(z);
 
 	this.lastX = this.x;
 	this.lastY = this.y;
@@ -161,8 +145,5 @@ Robot.prototype.draw = function(ctx)
 	ctx.arc(x, y, this.senseCircle, 0, Math.PI*2, false);
 	ctx.stroke();
 
-	for (var i = this.particles.length - 1; i >= 0; i--) 
-	{
-		this.particles[i].draw(ctx);
-	}
+	this.filter.draw(ctx);
 };
