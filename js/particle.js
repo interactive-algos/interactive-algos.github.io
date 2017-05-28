@@ -16,7 +16,7 @@ Particle.prototype.draw = function(ctx)
 	var x = floor(this.x);
 	var y = floor(this.y);
 
-	ctx.strokeStyle = 'rgba(0, 0, 255, 0.05)';
+	ctx.strokeStyle = 'rgba(0, 0, 255, 0.1)';
 	ctx.beginPath();
 	ctx.arc(x, y, Particle.size, 0, Math.PI * 2, true);
 	ctx.moveTo(x, y);

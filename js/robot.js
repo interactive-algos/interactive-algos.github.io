@@ -5,8 +5,9 @@ function RobotState(x, y, dir)
 	this.dir = dir;
 }
 
-function Robot(x, y, dir = 0)
+function Robot(x, y, dir)
 {
+    if (typeof(dir)==='undefined') dir = 10;
 	this.x = x;		//x coordinate
 	this.y = y;		//y coordinate
 	this.dir = dir;	//orientation in radians
@@ -36,23 +37,23 @@ function Robot(x, y, dir = 0)
 Robot.size = 10;
 Robot.sensorRadius = 150;
 Robot.scanInterval = 2500;
-Robot.stride = 1
+Robot.stride = 1;
 
 Robot.randMoveCD = function()
 {
 	return 1500 + (gaussian() * 150);
-}
+};
 
 Robot.prototype.setStrideNoise = function(noise)
 {
 	this.motionModel.a2 = noise;
-}
+};
 
 Robot.prototype.setTurnNoise = function(noise)
 {
 	this.motionModel.a1 = noise;
 	this.motionModel.a3 = noise;
-}
+};
 
 Robot.prototype.checkCollision = function()
 {
@@ -83,7 +84,7 @@ Robot.prototype.checkCollision = function()
 		this.lastMove = Date.now();
 		this.moveCD = Robot.randMoveCD();
 	}
-}
+};
 
 Robot.prototype.update = function()
 {
@@ -115,7 +116,7 @@ Robot.prototype.update = function()
 		}
 	}
 	this.senseCircle += 1;
-}
+};
 
 Robot.prototype.updateParticles = function()
 {
@@ -143,7 +144,7 @@ Robot.prototype.updateParticles = function()
 	this.lastX = this.x;
 	this.lastY = this.y;
 	this.lastDir = this.dir;
-}
+};
 
 Robot.prototype.draw = function(ctx)
 {
@@ -175,4 +176,4 @@ Robot.prototype.draw = function(ctx)
 	{
 		this.particles[i].draw(ctx);
 	}
-}
+};

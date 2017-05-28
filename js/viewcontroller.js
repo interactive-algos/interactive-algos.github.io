@@ -1,6 +1,8 @@
 var canvas; //The HTML Element of the canvas
+var bgCanvas; //The HTML element of the background canvas
 var robot;
 var requestAnimationFrame;
+var map;
 function isNumber(event)
 {
 	return event.charCode >= 48 && event.charCode <= 57;
@@ -8,7 +10,7 @@ function isNumber(event)
 
 function isDecimal(event)
 {
-	return isNumber(event) || event.charCode == 46;
+	return isNumber(event) || event.charCode === 46;
 }
 
 function getSensorRadius()
@@ -19,16 +21,35 @@ function getSensorRadius()
 function frame(timestamp)
 {
 	var ctx = canvas.getContext('2d');
-	ctx.fillStyle = 'rgba(255, 255, 255, 0.3)';
-	ctx.fillRect(0, 0, canvas.width, canvas.height);
-	robot.update()
+	// ctx.fillStyle = 'rgba(255, 255, 255, 0.3)';
+	// ctx.fillRect(0, 0, canvas.width, canvas.height);
+	ctx.clearRect(0, 0, canvas.width, canvas.height);
+	robot.update();
 	robot.draw(ctx);
+	// drawMap(map);
 	requestAnimationFrame(frame);
+}
+
+function drawMap(m)
+{
+	var ctx = bgCanvas.getContext('2d');
+	ctx.strokeStyle = 'black';
+	for (var i = m.length - 1; i >= 0; i--)
+	{
+		var l = m[i];
+		ctx.beginPath();
+		ctx.moveTo(l.s.x, l.s.y);
+		ctx.lineTo(l.t.x, l.t.y);
+		ctx.stroke();
+	}
 }
 
 function init()
 {
 	canvas = document.getElementById('canvas');
+	bgCanvas = document.getElementById('background');
+	map = getMapForCanvas(canvas);
+	drawMap(map);
 	var ctx = canvas.getContext('2d');
 	Robot.sensorRadius = getSensorRadius();
 	robot = new Robot(getRandomInt(0, canvas.width), getRandomInt(0, canvas.height), Math.random() * Math.PI * 2);
@@ -41,14 +62,14 @@ function parameterChanged(event)
 {
 	console.log(event);
 	var target = event.target;
-	let value = Number(event.target.value);
-	if(target.id == 'robotForwardNoise')
+	var value = Number(event.target.value);
+	if(target.id === 'robotForwardNoise')
 	{
 		robot.setStrideNoise(value/100.0);
-	}else if(target.id == 'robotTurnNoise')
+	}else if(target.id === 'robotTurnNoise')
 	{
 		robot.setTurnNoise(value/100.0);
-	}else if(target.id == 'goByOneStep')
+	}else if(target.id === 'goByOneStep')
 	{
 		Robot.stride = value;
 	}
