@@ -24,4 +24,12 @@ Particle.prototype.draw = function(ctx)
 	ctx.stroke();
 };
 
+//Set particle's state to state x
+Particle.prototype.setState = function(robotState)
+{
+	this.x = robotState.x;
+	this.y = robotState.y;
+	this.dir = robotState.dir;
+};
+
 Particle.size = 3;

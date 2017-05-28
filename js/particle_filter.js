@@ -33,6 +33,6 @@ ParticleFilter.prototype.update = function(z)
         var p = this.particles[i];
         var state = new RobotState(p.x, p.y, p.dir);
         var newState = this.motionModel.sample(z, state);
-        this.particles[i] = new Particle(newState.x, newState.y, newState.dir, 1);
+        this.particles[i].setState(newState);
     }
 };
