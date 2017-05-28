@@ -120,18 +120,7 @@ Robot.prototype.update = function()
 
 Robot.prototype.updateParticles = function()
 {
-	//This is how we simulate odometry....
-	var dx = this.x - this.lastX;
-	var dy = this.y - this.lastY;
-	var dd = Math.sqrt(dx*dx + dy*dy);
-	var da = this.dir - this.lastDir;
-
-	//get noise parameters
-	var strideNoise = this.strideNoise;
-	var turnNoise = this.turnNoise;
-	
-	var u = new Odometry(new RobotState(this.lastX, this.lastY, this.lastDir), 
-		new RobotState(this.x, this.y, this.dir));
+	var u = new Odometry(new RobotState(this.lastX, this.lastY, this.lastDir), new RobotState(this.x, this.y, this.dir));
 
 	for (var i = this.particles.length - 1; i >= 0; i--) 
 	{		

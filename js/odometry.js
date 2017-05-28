@@ -53,4 +53,4 @@ OdometryModel.prototype.sample = function(u, state)
 	var dir = state.dir + rot1 + rot2;
 
 	return new RobotState(x, y, dir);
-}
+};
