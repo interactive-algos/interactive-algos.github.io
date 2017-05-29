@@ -20,7 +20,7 @@ Particle.prototype.draw = function(ctx)
 	ctx.beginPath();
 	ctx.arc(x, y, Particle.size/scale, 0, Math.PI * 2, true);
 	ctx.moveTo(x, y);
-    ctx.lineTo(convertX(this.x + cos(this.dir) * Particle.size), convertY(this.y + sin(this.dir) * Robot.size));
+    ctx.lineTo(convertX(this.x + cos(this.dir) * Particle.size), convertY(this.y + sin(this.dir) * Particle.size));
 	ctx.stroke();
 };
 
