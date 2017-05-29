@@ -87,3 +87,23 @@ function doIntersect(p1, q1, p2, q2)
 
     return false; // Doesn't fall in any of the above cases
 }
+
+//Return the intersection of two LINE! (NOT LINE SEGMENTS!)
+function intersectionPoint(p1, q1, p2, q2)
+{
+	var m1 = (q1.y-p1.y)/(q1.x-p1.x);
+	var b1 = p1.y - p1.x*m1;
+
+    var m2 = (q2.y-p2.y)/(q2.x-p2.x);
+    var b2 = p2.y - p2.x*m2;
+
+    if(p1.x === q1.x)
+		return new Point(p1.x, m2*p1.x + b2);
+
+    if(p2.x === q2.x)
+		return new Point(p2.x, m1*p2.x + b1);
+
+    var x = (b2 - b1) / (m1 - m2);
+    var y = m1*x + b1;
+    return new Point(x, y);
+}

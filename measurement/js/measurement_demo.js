@@ -18,7 +18,7 @@ var scanned = false;
 //Results of laser scan
 var z = new Array(nLasers);
 
-function click(e)
+function click()
 {
     var coor = getClickLoc(event);
     robotX = coor.x;
@@ -37,13 +37,15 @@ function scan()
         var dir = i * rad;
         var s1 = new Point(robotX, robotY);
         var t1 = new Point(robotX + cos(dir)*senseRadius, robotY + sin(dir)*senseRadius);
-        z[i] = false;
+        z[i] = senseRadius + 100;
         for(var j = 0; j < map.length; j ++)
         {
             if(doIntersect(s1, t1, map[j].s, map[j].t))
             {
-                z[i] = true;
-                break;
+                // z[i] = senseRadius;
+                var p = intersectionPoint(s1, t1, map[j].s, map[j].t);
+                var dist = p.distanceTo(new Point(robotX, robotY));
+                z[i] = min(z[i], dist);
             }
         }
     }
@@ -73,8 +75,18 @@ function draw(ctx)
     var rad = Math.PI*2/nLasers;
     for(var i = 0; i < nLasers; i ++)
     {
-        ctx.strokeStyle = z[i] ? 'red' : 'green';
         var dir = i * rad;
+        if(z[i] > senseRadius)
+        {
+            ctx.strokeStyle = 'green';
+        }else
+        {
+            ctx.strokeStyle = 'red';
+            ctx.fillStyle = 'red';
+            ctx.beginPath();
+            ctx.arc(robotX + cos(dir)*z[i], robotY + sin(dir)*z[i], 5, 0, Math.PI*2);
+            ctx.fill();
+        }
         ctx.beginPath();
         ctx.moveTo(robotX, robotY);
         ctx.lineTo(robotX + cos(dir)*senseCircle, robotY + sin(dir)*senseCircle);

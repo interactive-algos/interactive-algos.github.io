@@ -23,7 +23,7 @@ Point.prototype.toString = function()
 	return "(" + this.x + ", " + this.y + ")";
 };
 
-Point.prototype.distance = function(v)
+Point.prototype.distanceTo = function(v)
 {
 	var x = this.x - v.x;
 	var y = this.y - v.y;
