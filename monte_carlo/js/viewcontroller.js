@@ -62,7 +62,15 @@ function init()
 	var ctx = canvas.getContext('2d');
 	Robot.sensorRadius = getSensorRadius();
 	Robot.stride = getValue('goByOneStep');
-	robot = new Robot(random()*width, random()*height, random() * Math.PI * 2, new OdometryModel(getTurnNoise(), getStrideNoise(), getTurnNoise(), getTurnNoise()));
+	var motionModel = new OdometryModel(getTurnNoise(), getStrideNoise(), getTurnNoise(), getTurnNoise());
+
+	var x = random()*width;
+	var y = random()*height;
+	var dir = random()*Math.PI*2;
+
+    var filter = new ParticleFilter(getParticleCount(), motionModel, new RobotState(x, y, dir));
+
+	robot = new Robot(x, y, dir, filter);
 	robot.draw(ctx);
     requestAnimationFrame = window.msRequestAnimationFrame || window.webkitRequestAnimationFrame || window.mozRequestAnimationFrame || window.requestAnimationFrame;
     lastFrame = Date.now();

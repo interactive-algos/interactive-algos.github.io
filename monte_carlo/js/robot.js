@@ -1,5 +1,5 @@
 
-function Robot(x, y, dir, motionModel)
+function Robot(x, y, dir, filter)
 {
     if (typeof(dir)==='undefined') dir = 10;
 	this.x = x;		//x coordinate
@@ -15,7 +15,7 @@ function Robot(x, y, dir, motionModel)
 	this.lastDir = this.dir;
 	this.moveCD = Robot.randMoveCD();
 
-	this.filter = new ParticleFilter(getParticleCount(), motionModel, new RobotState(x, y, dir));
+	this.filter = filter;
 }
 
 Robot.size = 0.2;
