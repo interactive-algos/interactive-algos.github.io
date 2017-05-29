@@ -128,15 +128,3 @@ function getTurnNoise()
 {
 	return getValue('robotTurnNoise') / 100.0;
 }
-
-//convert x coordinate in world to x coordinate on screen
-function convertX(x)
-{
-    return floor(x/scale);
-}
-
-//convert y coordinate in world to y coordinate on screen
-function convertY(y)
-{
-    return floor(canvas.height - y/scale);
-}
