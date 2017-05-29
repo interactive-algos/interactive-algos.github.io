@@ -8,8 +8,6 @@ var frameCount = 0;
 var lastFrame;
 var fps = 0;
 
-//memter/pixel scale
-var scale = 0.02;
 
 //dimensions of the world, in meters
 //Robots are using world coordinates internally
@@ -18,19 +16,9 @@ var scale = 0.02;
 var width;
 var height;
 
-function isNumber(event)
-{
-	return event.charCode >= 48 && event.charCode <= 57;
-}
-
-function isDecimal(event)
-{
-	return isNumber(event) || event.charCode === 46;
-}
-
 function getSensorRadius()
 {
-	return Number(document.getElementById('fogOfWar').value);
+	return getValue('fogOfWar');
 }
 
 function frame(timestamp)
@@ -59,20 +47,6 @@ function frame(timestamp)
 	requestAnimationFrame(frame);
 }
 
-function drawMap(m)
-{
-	var ctx = bgCanvas.getContext('2d');
-	ctx.strokeStyle = 'black';
-	for (var i = m.length - 1; i >= 0; i--)
-	{
-		var l = m[i];
-		ctx.beginPath();
-		ctx.moveTo(l.s.x, l.s.y);
-		ctx.lineTo(l.t.x, l.t.y);
-		ctx.stroke();
-	}
-}
-
 function init()
 {
 	canvas = document.getElementById('canvas');
@@ -81,7 +55,7 @@ function init()
 
 	bgCanvas = document.getElementById('background');
 	map = getMapForCanvas(canvas);
-	drawMap(map);
+	drawMap(map, bgCanvas.getContext('2d'));
 	var ctx = canvas.getContext('2d');
 	Robot.sensorRadius = getSensorRadius();
 	Robot.stride = getValue('goByOneStep');
@@ -107,11 +81,6 @@ function parameterChanged(event)
 	{
 		Robot.stride = value;
 	}
-}
-
-function getValue(id)
-{
-    return Number(document.getElementById(id).value);
 }
 
 function getParticleCount()

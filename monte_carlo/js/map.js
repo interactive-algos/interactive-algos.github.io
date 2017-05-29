@@ -45,3 +45,17 @@ function Line(sx, sy, tx, ty)
 	//Ending point
 	this.t = new Point(tx, ty);
 }
+
+
+function drawMap(m, ctx)
+{
+    ctx.strokeStyle = 'black';
+    for (var i = m.length - 1; i >= 0; i--)
+    {
+        var l = m[i];
+        ctx.beginPath();
+        ctx.moveTo(l.s.x, l.s.y);
+        ctx.lineTo(l.t.x, l.t.y);
+        ctx.stroke();
+    }
+}
