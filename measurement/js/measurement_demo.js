@@ -23,8 +23,10 @@ function click()
     var coor = getClickLoc(event);
     robotX = coor.x;
     robotY = coor.y;
-    senseCircle = 0;
+    // senseCircle = 0;
     scanned = false;
+    update();
+    draw(canvas.getContext('2d'));
 }
 
 function scan()
@@ -67,15 +69,13 @@ function update()
         scan();
         scanned = true;
     }
-    senseCircle++;
-    senseCircle %= senseRadius;
+    // senseCircle++;
+    // senseCircle %= senseRadius;
 }
 
 function draw(ctx)
 {
-    //ctx.clearRect(0, 0, canvas.width, canvas.height);
-    ctx.fillStyle = 'rgba(255, 255, 255, 0.3)';
-    ctx.fillRect(0, 0, canvas.width, canvas.height);
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
 
     ctx.strokeStyle = 'black';
     ctx.drawRobot(robotX, robotY, 0, 20);
@@ -132,5 +132,6 @@ function init()
     //Listen to mouse click events
     background.addEventListener('click', click);
     senseRadius = getValue('fogOfWar')/0.02;
-    requestAnimationFrame(frame);
+    senseCircle = senseRadius;
+    // requestAnimationFrame(frame);
 }
