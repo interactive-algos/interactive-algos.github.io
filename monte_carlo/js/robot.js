@@ -1,7 +1,7 @@
 
 function Robot(x, y, dir, filter)
 {
-    if (typeof(dir)==='undefined') dir = 10;
+    if (typeof(dir)==='undefined') dir = 0;
 	this.x = x;		//x coordinate
 	this.y = y;		//y coordinate
 	this.dir = dir;	//orientation in radians
@@ -115,7 +115,10 @@ Robot.prototype.updateSenseCircle = function()
 
 Robot.prototype.updateParticles = function()
 {
-	var u = new Odometry(new RobotState(this.lastX, this.lastY, this.lastDir), new RobotState(this.x, this.y, this.dir));
+    if(typeof this.filter === 'undefined')
+        return;
+
+    var u = new Odometry(new RobotState(this.lastX, this.lastY, this.lastDir), new RobotState(this.x, this.y, this.dir));
 
 	//only odometry, no measurement
 	this.filter.update(u);
