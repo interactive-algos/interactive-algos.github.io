@@ -36,13 +36,13 @@ Robot.randMoveCD = function()
 
 Robot.prototype.setStrideNoise = function(noise)
 {
-	this.motionModel.a2 = noise;
+	this.filter.motionModel.a2 = noise;
 };
 
 Robot.prototype.setTurnNoise = function(noise)
 {
-	this.motionModel.a1 = noise;
-	this.motionModel.a3 = noise;
+	this.filter.motionModel.a1 = noise;
+	this.filter.motionModel.a3 = noise;
 };
 
 Robot.prototype.checkCollision = function()

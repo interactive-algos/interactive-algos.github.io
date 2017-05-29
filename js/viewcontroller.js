@@ -70,7 +70,7 @@ function init()
 	drawMap(map);
 	var ctx = canvas.getContext('2d');
 	Robot.sensorRadius = getSensorRadius();
-	robot = new Robot(randint(0, canvas.width), randint(0, canvas.height), Math.random() * Math.PI * 2, new OdometryModel(getTurnNoise(), getStrideNoise(), getTurnNoise(), 0));
+	robot = new Robot(randint(0, canvas.width), randint(0, canvas.height), Math.random() * Math.PI * 2, new OdometryModel(getTurnNoise(), getStrideNoise(), getTurnNoise(), getTurnNoise()));
 	robot.draw(ctx);
     requestAnimationFrame = window.msRequestAnimationFrame || window.webkitRequestAnimationFrame || window.mozRequestAnimationFrame || window.requestAnimationFrame;
     lastFrame = Date.now();
