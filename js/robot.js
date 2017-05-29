@@ -76,25 +76,31 @@ Robot.prototype.checkCollision = function()
 	}
 };
 
+Robot.prototype.updateMotion = function()
+{
+    //Move the robot
+    this.x += cos(this.dir) * Robot.stride;
+    this.y += sin(this.dir) * Robot.stride;
+
+    //Update robot's direction if necessary
+    if(this.lastMove + this.moveCD <= Date.now())
+    {
+        this.dir += gaussian() * Math.PI;
+        this.lastMove = Date.now();
+        this.moveCD = Robot.randMoveCD();
+    }
+};
+
+
 Robot.prototype.update = function()
 {
-	//Move the robot
-	this.x += cos(this.dir) * Robot.stride;
-	this.y += sin(this.dir) * Robot.stride;
+
+	this.updateMotion();
 
 	this.updateParticles();
 
 	//Collision with a wall
 	this.checkCollision();
-
-	//Update robot's direction if necessary
-	if(this.lastMove + this.moveCD <= Date.now())
-	{
-
-		this.dir += gaussian() * Math.PI;
-		this.lastMove = Date.now();
-		this.moveCD = Robot.randMoveCD();
-	}
 
 	//Update the sense circle
 	if(this.senseCircle > Robot.sensorRadius)
