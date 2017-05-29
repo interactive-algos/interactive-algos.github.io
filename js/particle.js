@@ -13,14 +13,14 @@ function Particle(x, y, dir, weight)
 
 Particle.prototype.draw = function(ctx)
 {
-	var x = floor(this.x);
-	var y = floor(this.y);
+    var x = convertX(this.x);
+    var y = convertY(this.y);
 
 	ctx.strokeStyle = 'rgba(0, 0, 255, 0.1)';
 	ctx.beginPath();
-	ctx.arc(x, y, Particle.size, 0, Math.PI * 2, true);
+	ctx.arc(x, y, Particle.size/scale, 0, Math.PI * 2, true);
 	ctx.moveTo(x, y);
-	ctx.lineTo(floor(this.x + cos(this.dir) * Particle.size), floor(this.y + sin(this.dir) * Particle.size));
+    ctx.lineTo(convertX(this.x + cos(this.dir) * Particle.size), convertY(this.y + sin(this.dir) * Robot.size));
 	ctx.stroke();
 };
 
@@ -32,4 +32,4 @@ Particle.prototype.setState = function(robotState)
 	this.dir = robotState.dir;
 };
 
-Particle.size = 3;
+Particle.size = 0.06;

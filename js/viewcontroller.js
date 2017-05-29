@@ -2,10 +2,18 @@ var canvas; //The HTML Element of the canvas
 var bgCanvas; //The HTML element of the background canvas
 var robot;
 var requestAnimationFrame;
+//actual map data
 var map;
 var frameCount = 0;
 var lastFrame;
 var fps = 0;
+
+//memter/pixel scale
+var scale = 0.02;
+
+//dimensions of the world, in meters
+var width;
+var height;
 
 function isNumber(event)
 {
@@ -65,12 +73,16 @@ function drawMap(m)
 function init()
 {
 	canvas = document.getElementById('canvas');
+	width = canvas.width * scale;
+	height = canvas.height * scale;
+
 	bgCanvas = document.getElementById('background');
 	map = getMapForCanvas(canvas);
 	drawMap(map);
 	var ctx = canvas.getContext('2d');
 	Robot.sensorRadius = getSensorRadius();
-	robot = new Robot(randint(0, canvas.width), randint(0, canvas.height), Math.random() * Math.PI * 2, new OdometryModel(getTurnNoise(), getStrideNoise(), getTurnNoise(), getTurnNoise()));
+	Robot.stride = getValue('goByOneStep');
+	robot = new Robot(random()*width, random()*height, random() * Math.PI * 2, new OdometryModel(getTurnNoise(), getStrideNoise(), getTurnNoise(), getTurnNoise()));
 	robot.draw(ctx);
     requestAnimationFrame = window.msRequestAnimationFrame || window.webkitRequestAnimationFrame || window.mozRequestAnimationFrame || window.requestAnimationFrame;
     lastFrame = Date.now();
@@ -94,17 +106,34 @@ function parameterChanged(event)
 	}
 }
 
+function getValue(id)
+{
+    return Number(document.getElementById(id).value);
+}
+
 function getParticleCount()
 {
-	return Number(document.getElementById('nParticles').value);
+	return getValue('nParticles');
 }
 
 function getStrideNoise()
 {
-	return Number(document.getElementById('robotForwardNoise').value) / 100.0;
+	return getValue('robotForwardNoise') / 100.0;
 }
 
 function getTurnNoise()
 {
-	return Number(document.getElementById('robotTurnNoise').value) / 100.0;
+	return getValue('robotTurnNoise') / 100.0;
+}
+
+//convert x coordinate in world to x coordinate on screen
+function convertX(x)
+{
+    return floor(x/scale);
+}
+
+//convert y coordinate in world to y coordinate on screen
+function convertY(y)
+{
+    return floor(canvas.height - y/scale);
 }

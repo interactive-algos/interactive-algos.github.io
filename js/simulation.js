@@ -4,6 +4,7 @@ const abs = Math.abs;
 const atan2 = Math.atan2;
 const floor = Math.floor;
 const sqrt = Math.sqrt;
+const random = Math.random;
 
 function randint(min, max)
 {

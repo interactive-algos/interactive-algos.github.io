@@ -14,7 +14,7 @@ function Robot(x, y, dir, motionModel)
 
 	this.lastScan = Date.now();	//time of last sense in millis
 
-	this.senseCircle = 10 + 5;
+	this.senseCircle = Robot.size;
 	this.lastMove = Date.now();	//last time change direction, in millis
 	this.lastX = this.x;
 	this.lastY = this.y;
@@ -24,10 +24,10 @@ function Robot(x, y, dir, motionModel)
 	this.filter = new ParticleFilter(getParticleCount(), motionModel, new RobotState(x, y, dir));
 }
 
-Robot.size = 10;
-Robot.sensorRadius = 150;
+Robot.size = 0.2;
+Robot.sensorRadius = 1.5;
 Robot.scanInterval = 2500;
-Robot.stride = 1;
+Robot.stride = 0.01;
 
 Robot.randMoveCD = function()
 {
@@ -55,7 +55,7 @@ Robot.prototype.checkCollision = function()
 	{
 		dx = abs(dx);
 		collide = true;
-	}else if(this.x+Robot.size >= canvas.width)
+	}else if(this.x+Robot.size >= width)
 	{
 		dx = -abs(dx);
 		collide = true;
@@ -63,7 +63,7 @@ Robot.prototype.checkCollision = function()
 	{
 		dy = abs(dy);
 		collide = true;
-	}else if(this.y+Robot.size >= canvas.height)
+	}else if(this.y+Robot.size >= height)
 	{
 		dy = -abs(dy);
 		collide = true;
@@ -107,11 +107,11 @@ Robot.prototype.update = function()
 	{
 		if(Date.now() - this.lastScan >= Robot.scanInterval)
 		{
-			this.senseCircle %= Robot.sensorRadius;
+			this.senseCircle = Robot.size;
 			this.lastScan = Date.now();
 		}
 	}
-	this.senseCircle += 1;
+	this.senseCircle += 0.1;
 };
 
 Robot.prototype.updateParticles = function()
@@ -133,22 +133,22 @@ Robot.prototype.draw = function(ctx)
 
 	ctx.beginPath();
 
-	var x = floor(this.x);
-	var y = floor(this.y);
+	var x = convertX(this.x);
+	var y = convertY(this.y);
 
 	//The robot's main circle
-	ctx.arc(x, y, Robot.size, 0, Math.PI * 2, true);
+	ctx.arc(x, y, Robot.size/scale, 0, Math.PI * 2, true);
 
 	//draw a line to show Robot's orientation
 	ctx.moveTo(x, y);
-	ctx.lineTo(floor(this.x + cos(this.dir) * Robot.size), floor(this.y + sin(this.dir) * Robot.size));
+	ctx.lineTo(convertX(this.x + cos(this.dir) * Robot.size), convertY(this.y + sin(this.dir) * Robot.size));
 
 	ctx.stroke();
 
 	ctx.strokeStyle = 'rgba(0, 0, 255, '+ (1-this.senseCircle/Robot.sensorRadius) +')';
 	ctx.beginPath();
 	//draw Robot's sensing circle
-	ctx.arc(x, y, this.senseCircle, 0, Math.PI*2, false);
+	ctx.arc(x, y, this.senseCircle/scale, 0, Math.PI*2, false);
 	ctx.stroke();
 
 	this.filter.draw(ctx);
