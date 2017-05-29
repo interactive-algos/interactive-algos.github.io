@@ -26,13 +26,14 @@ ParticleFilter.prototype.draw = function(ctx)
 };
 
 //Update with odometry u
-ParticleFilter.prototype.update = function(z)
+ParticleFilter.prototype.update = function(u)
 {
     for (var i = this.particles.length - 1; i >= 0; i--)
     {
         var p = this.particles[i];
         var state = new RobotState(p.x, p.y, p.dir);
-        var newState = this.motionModel.sample(z, state);
+        //Draw sample from p(x_t, u, x_t-1)
+        var newState = this.motionModel.sample(u, state);
         this.particles[i].setState(newState);
     }
 };

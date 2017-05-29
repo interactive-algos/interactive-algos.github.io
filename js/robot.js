@@ -103,22 +103,28 @@ Robot.prototype.update = function()
 	this.checkCollision();
 
 	//Update the sense circle
-	if(this.senseCircle > Robot.sensorRadius)
-	{
-		if(Date.now() - this.lastScan >= Robot.scanInterval)
-		{
-			this.senseCircle = Robot.size;
-			this.lastScan = Date.now();
-		}
-	}
-	this.senseCircle += 0.1;
+	this.updateSenseCircle();
+};
+
+Robot.prototype.updateSenseCircle = function()
+{
+    if(this.senseCircle > Robot.sensorRadius)
+    {
+        if(Date.now() - this.lastScan >= Robot.scanInterval)
+        {
+            this.senseCircle = Robot.size;
+            this.lastScan = Date.now();
+        }
+    }
+    this.senseCircle += 0.1;
 };
 
 Robot.prototype.updateParticles = function()
 {
-	var z = new Odometry(new RobotState(this.lastX, this.lastY, this.lastDir), new RobotState(this.x, this.y, this.dir));
+	var u = new Odometry(new RobotState(this.lastX, this.lastY, this.lastDir), new RobotState(this.x, this.y, this.dir));
 
-	this.filter.update(z);
+	//only odometry, no measurement
+	this.filter.update(u);
 
 	this.lastX = this.x;
 	this.lastY = this.y;
@@ -147,6 +153,7 @@ Robot.prototype.draw = function(ctx)
 
 	ctx.strokeStyle = 'rgba(0, 0, 255, '+ (1-this.senseCircle/Robot.sensorRadius) +')';
 	ctx.beginPath();
+
 	//draw Robot's sensing circle
 	ctx.arc(x, y, this.senseCircle/scale, 0, Math.PI*2, false);
 	ctx.stroke();

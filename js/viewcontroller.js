@@ -12,6 +12,9 @@ var fps = 0;
 var scale = 0.02;
 
 //dimensions of the world, in meters
+//Robots are using world coordinates internally
+//positive y is up, positive x is right
+//bottom left is the origin
 var width;
 var height;
 
