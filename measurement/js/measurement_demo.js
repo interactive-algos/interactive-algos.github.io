@@ -30,13 +30,20 @@ function click()
 function scan()
 {
     //Radian between each laser
-    var rad = Math.PI*2/nLasers;
-
     for(var i = 0; i < nLasers; i ++)
     {
-        var dir = i * rad;
+        var dir = Math.PI*2 * i / nLasers;
+
         var s1 = new Point(robotX, robotY);
         var t1 = new Point(robotX + cos(dir)*senseRadius, robotY + sin(dir)*senseRadius);
+
+        //If dir is 90 degrees
+        if(i * 4 === nLasers || i * 4 === nLasers * 3)
+            t1.x = robotX;
+        else if(i * 2 === nLasers)
+            t1.y = robotY;
+
+
         z[i] = senseRadius + 100;
         for(var j = 0; j < map.length; j ++)
         {
