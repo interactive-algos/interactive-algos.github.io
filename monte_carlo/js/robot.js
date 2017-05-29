@@ -72,6 +72,9 @@ Robot.prototype.checkCollision = function()
 
 Robot.prototype.updateMotion = function()
 {
+    //Collision with a wall
+    this.checkCollision();
+
     //Move the robot
     this.x += cos(this.dir) * Robot.stride;
     this.y += sin(this.dir) * Robot.stride;
@@ -93,10 +96,6 @@ Robot.prototype.update = function()
 
 	this.updateParticles();
 
-	//Collision with a wall
-	this.checkCollision();
-
-	//Update the sense circle
 	this.updateSenseCircle();
 };
 
@@ -134,25 +133,16 @@ Robot.prototype.draw = function(ctx)
 	if(Date.now() - this.lastMove < 200)
 		ctx.strokeStyle = 'red';
 
-	ctx.beginPath();
-
 	var x = convertX(this.x);
 	var y = convertY(this.y);
 
-	//The robot's main circle
-	ctx.arc(x, y, Robot.size/scale, 0, Math.PI * 2, true);
-
-	//draw a line to show Robot's orientation
-	ctx.moveTo(x, y);
-	ctx.lineTo(convertX(this.x + cos(this.dir) * Robot.size), convertY(this.y + sin(this.dir) * Robot.size));
-
-	ctx.stroke();
+    ctx.drawRobot(x, y, -this.dir, Robot.size/scale);
 
 	ctx.strokeStyle = 'rgba(0, 0, 255, '+ (1-this.senseCircle/Robot.sensorRadius) +')';
 	ctx.beginPath();
 
 	//draw Robot's sensing circle
-	ctx.arc(x, y, this.senseCircle/scale, 0, Math.PI*2, false);
+	ctx.strokeCircle(x, y, this.senseCircle/scale);
 	ctx.stroke();
 
 	this.filter.draw(ctx);
