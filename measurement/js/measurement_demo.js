@@ -13,6 +13,7 @@ var senseCircle = 0;
 var senseRadius = 150;
 
 var nLasers = 36;
+var scanned = false;
 
 //Results of laser scan
 var z = new Array(nLasers);
@@ -23,30 +24,37 @@ function click(e)
     robotX = coor.x;
     robotY = coor.y;
     senseCircle = 0;
+    scanned = false;
+}
+
+function scan()
+{
+    //Radian between each laser
+    var rad = Math.PI*2/nLasers;
+
+    for(var i = 0; i < nLasers; i ++)
+    {
+        var dir = i * rad;
+        var s1 = new Point(robotX, robotY);
+        var t1 = new Point(robotX + cos(dir)*senseRadius, robotY + sin(dir)*senseRadius);
+        z[i] = false;
+        for(var j = 0; j < map.length; j ++)
+        {
+            if(doIntersect(s1, t1, map[j].s, map[j].t))
+            {
+                z[i] = true;
+                break;
+            }
+        }
+    }
 }
 
 function update()
 {
-    if(senseCircle === 0)
+    if(!scanned)
     {
-        //Radian between each laser
-        var rad = Math.PI*2/nLasers;
-
-        for(var i = 0; i < nLasers; i ++)
-        {
-            var dir = i * rad;
-            var s1 = new Point(robotX, robotY);
-            var t1 = new Point(robotX + cos(dir)*senseRadius, robotY + sin(dir)*senseRadius);
-            z[i] = false;
-            for(var j = 0; j < map.length; j ++)
-            {
-                if(doIntersect(s1, t1, map[j].s, map[j].t))
-                {
-                    z[i] = true;
-                    break;
-                }
-            }
-        }
+        scan();
+        scanned = true;
     }
     senseCircle++;
     senseCircle %= senseRadius;
