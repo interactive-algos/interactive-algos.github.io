@@ -38,6 +38,8 @@ function scan()
         var t1 = new Point(robotX + cos(dir)*senseRadius, robotY + sin(dir)*senseRadius);
 
         //If dir is 90 degrees
+        //if i = 1/nLasers or i = (3/4) * nLasers
+        //cos(dir) should be 0 in these cases,
         if(i * 4 === nLasers || i * 4 === nLasers * 3)
             t1.x = robotX;
         else if(i * 2 === nLasers)
