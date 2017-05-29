@@ -82,7 +82,7 @@ function draw(ctx)
 
     //Radian between each laser
     var rad = Math.PI*2/nLasers;
-    for(var i = 0; i < nLasers; i ++)
+    for(var i = 0; i < nLasers/2; i ++)
     {
         var dir = i * rad;
         var laserLen = senseCircle;
