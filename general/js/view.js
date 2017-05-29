@@ -37,3 +37,21 @@ CanvasRenderingContext2D.prototype.strokeCircle = function(x, y, size)
     this.arc(x, y, size, 0, Math.PI*2, true);
     this.stroke();
 };
+
+function getClickLoc(event)
+{
+    var element = event.target;
+
+    var offsetX = 0, offsetY = 0;
+
+    if (element.offsetParent) {
+        do {
+            offsetX += element.offsetLeft;
+            offsetY += element.offsetTop;
+        } while ((element = element.offsetParent));
+    }
+
+    x = event.pageX - offsetX;
+    y = event.pageY - offsetY;
+    return {x:x, y:y};
+}

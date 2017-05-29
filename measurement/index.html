@@ -4,21 +4,24 @@
     <meta charset="UTF-8">
     <title>Robot Measurement Demo</title>
 
-    <script src='../monte_carlo/js/map.js'></script>
-    <script src='../monte_carlo/js/map_data.js'></script>
-
+    <script src='../general/js/utils.js'></script>
+    <script src='../general/js/view.js'></script>
+    <script src='js/measurement_demo.js'></script>
+    <script src='../general/js/map.js'></script>
+    <script src='../general/js/map_data.js'></script>
     <style type="text/css">
         canvas { border: 1px solid black; }
     </style>
 </head>
-<body>
+<body onload="init();">
 <div class="container">
     <div class="row"><h3>Robot Measurement</h3></div>
 
     <div class='row'>
 			<span style="position: relative;">
-				<canvas id="canvas" style='position: absolute;top: 0;left: 0; z-index: 2;' width="700" height="400"></canvas>
-				<canvas id="background" style='position: absolute;top: 0;left: 0; z-index: 1;' width="700" height="400"></canvas>
+				<canvas id="canvas" style='position: absolute;top: 0;left: 0; z-index: 1;' width="700" height="400"></canvas>
+                <canvas id="background" style='position: absolute;top: 0;left: 0; z-index: 2;' width="700" height="400"></canvas>
+
 			</span>
         <div style="float:right;">
             <fieldset>
