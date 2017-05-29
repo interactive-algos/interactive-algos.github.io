@@ -33,5 +33,7 @@ CanvasRenderingContext2D.prototype.drawRobot = function (x, y, dir, size)
 
 CanvasRenderingContext2D.prototype.strokeCircle = function(x, y, size)
 {
-    return this.arc(x, y, size, 0, Math.PI*2, true);
+    this.beginPath();
+    this.arc(x, y, size, 0, Math.PI*2, true);
+    this.stroke();
 };

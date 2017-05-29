@@ -91,7 +91,6 @@ Robot.prototype.updateMotion = function()
 
 Robot.prototype.update = function()
 {
-
 	this.updateMotion();
 
 	this.updateParticles();
@@ -139,11 +138,9 @@ Robot.prototype.draw = function(ctx)
     ctx.drawRobot(x, y, -this.dir, Robot.size/scale);
 
 	ctx.strokeStyle = 'rgba(0, 0, 255, '+ (1-this.senseCircle/Robot.sensorRadius) +')';
-	ctx.beginPath();
 
 	//draw Robot's sensing circle
 	ctx.strokeCircle(x, y, this.senseCircle/scale);
-	ctx.stroke();
 
 	this.filter.draw(ctx);
 };
