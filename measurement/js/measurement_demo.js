@@ -87,7 +87,15 @@ function draw(ctx)
     var rad = Math.PI*2/nLasers;
     for(var index = 0; index < nLasers/2; index ++)
     {
-        var i = (index + dirOffset + nLasers - nLasers/4) % nLasers;
+        //dirOffset is the direction the user's mouse
+        //is point at, -nLasers/4 to offset it by 90 degrees,
+        //so that laser scan is centered at where the user
+        //points to
+        var i = (index + dirOffset - nLasers/4);
+
+        //get i stay in bound
+        i = (i + nLasers) % nLasers;
+
         var dir = i * rad;
         var laserLen = senseCircle;
         if(z[i] > senseRadius)
