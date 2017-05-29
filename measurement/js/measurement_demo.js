@@ -18,6 +18,8 @@ var scanned = false;
 var robotDir = 0;
 var dirOffset = 0;
 
+var sensorNoise = 0.1;
+
 //Results of laser scan
 var z = new Array(nLasers);
 
@@ -103,11 +105,13 @@ function draw(ctx)
             ctx.strokeStyle = 'grey';
         }else
         {
-            laserLen = min(laserLen, z[i]);
+            //distance reported by the laser sensor
+            var dist = z[i] + gaussian()*z[i]*sensorNoise;
+            laserLen = min(laserLen, dist);
             ctx.strokeStyle = 'red';
             ctx.fillStyle = 'red';
             ctx.beginPath();
-            ctx.arc(robotX + cos(dir)*z[i], robotY + sin(dir)*z[i], 5, 0, Math.PI*2);
+            ctx.arc(robotX + cos(dir)*dist, robotY + sin(dir)*dist, 5, 0, Math.PI*2);
             ctx.fill();
         }
         ctx.beginPath();
@@ -127,7 +131,12 @@ function frame()
 
 function parameterChanged(event)
 {
-    senseRadius = Number(event.target.value)/0.02;
+    var target = event.target || event.srcElement;
+
+    if(target.id === 'sensorRadius')
+        senseRadius = Number(event.target.value)/0.02;
+    else if(target.id === 'sensorNoise')
+        sensorNoise = Number(event.target.value)/100.0;
 }
 
 function mouseMotion(event)
@@ -154,7 +163,7 @@ function init()
     //Listen to mouse click events
     background.addEventListener('click', click);
     background.onmousemove = mouseMotion;
-    senseRadius = getValue('fogOfWar')/0.02;
+    senseRadius = getValue('sensorRadius')/0.02;
     senseCircle = senseRadius;
     requestAnimationFrame(frame);
 }

@@ -26,7 +26,21 @@
         <div style="float:right;">
             <fieldset>
                 <legend>Configuration</legend>
-                <label for="fogOfWar">Sensor Radius</label>: <input id="fogOfWar" onblur='return parameterChanged(event);' onkeypress='return isNumber(event);' class="form-control form-control-sm" value="3" size="4">
+                <table>
+                    <tbody>
+                        <tr>
+                            <td>
+                                <label for="sensorRadius">Sensor Radius</label>: <input id="sensorRadius" onblur='return parameterChanged(event);' onkeypress='return isNumber(event);' class="form-control form-control-sm" value="3" size="4">
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <label for="sensorNoise">Sensor Noise</label>: <input id="sensorNoise" onblur='return parameterChanged(event);' onkeypress='return isDecimal(event);' class="form-control form-control-sm" value="3" size="4">%
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+
             </fieldset>
         </div>
     </div>
