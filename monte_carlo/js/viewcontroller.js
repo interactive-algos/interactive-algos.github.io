@@ -8,6 +8,9 @@ var frameCount = 0;
 var lastFrame;
 var fps = 0;
 
+//meter/pixel scale
+var scale = 0.02;
+
 
 //dimensions of the world, in meters
 //Robots are using world coordinates internally
@@ -96,4 +99,17 @@ function getStrideNoise()
 function getTurnNoise()
 {
 	return getValue('robotTurnNoise') / 100.0;
+}
+
+
+//convert x coordinate in world to x coordinate on screen
+function convertX(x)
+{
+    return floor(x/scale);
+}
+
+//convert y coordinate in world to y coordinate on screen
+function convertY(y)
+{
+    return floor(canvas.height - y/scale);
 }

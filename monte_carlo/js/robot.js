@@ -1,9 +1,3 @@
-function RobotState(x, y, dir)
-{
-	this.x = x;
-	this.y = y;
-	this.dir = dir;
-}
 
 function Robot(x, y, dir, motionModel)
 {
