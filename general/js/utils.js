@@ -7,6 +7,7 @@ const sqrt = Math.sqrt;
 const random = Math.random;
 const max = Math.max;
 const min = Math.min;
+const round = Math.round;
 
 function randint(min, max)
 {

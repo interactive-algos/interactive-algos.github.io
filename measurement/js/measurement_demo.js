@@ -15,6 +15,9 @@ var senseRadius = 150;
 var nLasers = 36;
 var scanned = false;
 
+var robotDir = 0;
+var dirOffset = 0;
+
 //Results of laser scan
 var z = new Array(nLasers);
 
@@ -78,12 +81,13 @@ function draw(ctx)
     ctx.clearRect(0, 0, canvas.width, canvas.height);
 
     ctx.strokeStyle = 'black';
-    ctx.drawRobot(robotX, robotY, 0, 20);
+    ctx.drawRobot(robotX, robotY, robotDir, 20);
 
     //Radian between each laser
     var rad = Math.PI*2/nLasers;
-    for(var i = 0; i < nLasers/2; i ++)
+    for(var index = 0; index < nLasers/2; index ++)
     {
+        var i = (index + dirOffset + nLasers - nLasers/4) % nLasers;
         var dir = i * rad;
         var laserLen = senseCircle;
         if(z[i] > senseRadius)
@@ -118,6 +122,16 @@ function parameterChanged(event)
     senseRadius = Number(event.target.value)/0.02;
 }
 
+function mouseMotion(event)
+{
+    var coor = getClickLoc(event);
+    var x = coor.x;
+    var y = coor.y;
+
+    robotDir = atan2(y-robotY, x-robotX);
+    dirOffset = round(robotDir/Math.PI/2 * nLasers);
+}
+
 function init()
 {
     canvas = document.getElementById('canvas');
@@ -131,7 +145,8 @@ function init()
 
     //Listen to mouse click events
     background.addEventListener('click', click);
+    background.onmousemove = mouseMotion;
     senseRadius = getValue('fogOfWar')/0.02;
     senseCircle = senseRadius;
-    // requestAnimationFrame(frame);
+    requestAnimationFrame(frame);
 }
