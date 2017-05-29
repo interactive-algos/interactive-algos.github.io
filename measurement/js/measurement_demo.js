@@ -134,9 +134,9 @@ function parameterChanged(event)
     var target = event.target || event.srcElement;
 
     if(target.id === 'sensorRadius')
-        senseRadius = Number(event.target.value)/0.02;
+        senseRadius = Number(target.value)/0.02;
     else if(target.id === 'sensorNoise')
-        sensorNoise = Number(event.target.value)/100.0;
+        sensorNoise = Number(target.value)/100.0;
 }
 
 function mouseMotion(event)
