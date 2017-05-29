@@ -137,6 +137,8 @@ function parameterChanged(event)
         senseRadius = Number(target.value)/0.02;
     else if(target.id === 'sensorNoise')
         sensorNoise = Number(target.value)/100.0;
+    else if(target.id === 'nLasers')
+        nLasers = Number(target.value)*2;
 }
 
 function mouseMotion(event)
