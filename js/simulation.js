@@ -15,12 +15,7 @@ function randint(min, max)
 //return a gaussian distributed random number
 function gaussian()
 {
-	var sum = 0;
-	for(var i = 0; i < 12; i ++)
-	{
-		sum += Math.random();
-	}
-	return sum - 6;
+    return ((Math.random() + Math.random() + Math.random() + Math.random() + Math.random() + Math.random()) - 3) / 3;
 }
 
 //Bound radian a to interval [-pi, pi]
