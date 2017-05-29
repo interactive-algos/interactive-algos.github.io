@@ -5,7 +5,7 @@ const atan2 = Math.atan2;
 const floor = Math.floor;
 const sqrt = Math.sqrt;
 
-function getRandomInt(min, max) 
+function randint(min, max)
 {
 	min = Math.ceil(min);
 	max = floor(max);

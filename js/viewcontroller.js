@@ -3,6 +3,10 @@ var bgCanvas; //The HTML element of the background canvas
 var robot;
 var requestAnimationFrame;
 var map;
+var frameCount = 0;
+var lastFrame;
+var fps = 0;
+
 function isNumber(event)
 {
 	return event.charCode >= 48 && event.charCode <= 57;
@@ -18,15 +22,29 @@ function getSensorRadius()
 	return Number(document.getElementById('fogOfWar').value);
 }
 
-function frame()
+function frame(timestamp)
 {
-	var ctx = canvas.getContext('2d');
-	// ctx.fillStyle = 'rgba(255, 255, 255, 0.3)';
-	// ctx.fillRect(0, 0, canvas.width, canvas.height);
-	ctx.clearRect(0, 0, canvas.width, canvas.height);
-	robot.update();
-	robot.draw(ctx);
-	// drawMap(map);
+	frameCount++;
+	if(frameCount % 2 === 0)
+	{
+		fps = Math.round(1000.0/(timestamp-lastFrame));
+		lastFrame = timestamp;
+
+
+        var ctx = canvas.getContext('2d');
+        /*
+		 ctx.fillStyle = 'rgba(255, 255, 255, 0.3)';
+		 ctx.fillRect(0, 0, canvas.width, canvas.height);
+		 */
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        ctx.fillStyle = 'black';
+        ctx.font = '10px Menlo';
+        ctx.fillText(fps + " FPS", 10, 20);
+        robot.update();
+        robot.draw(ctx);
+
+        // drawMap(map);
+    }
 	requestAnimationFrame(frame);
 }
 
@@ -52,10 +70,11 @@ function init()
 	drawMap(map);
 	var ctx = canvas.getContext('2d');
 	Robot.sensorRadius = getSensorRadius();
-	robot = new Robot(getRandomInt(0, canvas.width), getRandomInt(0, canvas.height), Math.random() * Math.PI * 2, new OdometryModel(getTurnNoise(), getStrideNoise(), getTurnNoise(), 0));
+	robot = new Robot(randint(0, canvas.width), randint(0, canvas.height), Math.random() * Math.PI * 2, new OdometryModel(getTurnNoise(), getStrideNoise(), getTurnNoise(), 0));
 	robot.draw(ctx);
     requestAnimationFrame = window.msRequestAnimationFrame || window.webkitRequestAnimationFrame || window.mozRequestAnimationFrame || window.requestAnimationFrame;
-	requestAnimationFrame(frame);
+    lastFrame = Date.now();
+    requestAnimationFrame(frame);
 }
 
 function parameterChanged(event)
