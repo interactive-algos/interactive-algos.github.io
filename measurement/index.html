@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Robot Measurement Demo</title>
+
+    <style type="text/css">
+        canvas { border: 1px solid black; }
+    </style>
+</head>
+<body>
+<div class="container">
+    <div class="row"><h3>Robot Measurement</h3></div>
+
+    <div class='row'>
+			<span style="position: relative;">
+				<canvas id="canvas" style='position: absolute;top: 0;left: 0; z-index: 2;' width="700" height="400"></canvas>
+				<canvas id="background" style='position: absolute;top: 0;left: 0; z-index: 1;' width="700" height="400"></canvas>
+			</span>
+        <div style="float:right;">
+            <fieldset>
+                <legend>Configuration</legend>
+                <label for="fogOfWar">Sensor Radius</label>: <input id="fogOfWar" onblur='return parameterChanged(event);' onkeypress='return isNumber(event);' class="form-control form-control-sm" value="3" size="4">
+            </fieldset>
+        </div>
+    </div>
+</div>
+</body>
+</html>
