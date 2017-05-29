@@ -76,11 +76,13 @@ function draw(ctx)
     for(var i = 0; i < nLasers; i ++)
     {
         var dir = i * rad;
+        var laserLen = senseCircle;
         if(z[i] > senseRadius)
         {
-            ctx.strokeStyle = 'green';
+            ctx.strokeStyle = 'grey';
         }else
         {
+            laserLen = min(laserLen, z[i]);
             ctx.strokeStyle = 'red';
             ctx.fillStyle = 'red';
             ctx.beginPath();
@@ -89,7 +91,7 @@ function draw(ctx)
         }
         ctx.beginPath();
         ctx.moveTo(robotX, robotY);
-        ctx.lineTo(robotX + cos(dir)*senseCircle, robotY + sin(dir)*senseCircle);
+        ctx.lineTo(robotX + cos(dir)*laserLen, robotY + sin(dir)*laserLen);
         ctx.stroke();
     }
 }
