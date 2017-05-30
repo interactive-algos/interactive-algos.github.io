@@ -1,6 +1,3 @@
-/**
- * Created by kelvinzhang on 5/30/17.
- */
 
 function Robot(x, y, dir, filter)
 {
@@ -25,6 +22,7 @@ Robot.size = 0.2;
 Robot.sensorRadius = 1.5;
 Robot.scanInterval = 2500;
 Robot.stride = 0.01;
+Robot.sensorNoise = 0.01;
 
 Robot.randMoveCD = function()
 {
@@ -86,11 +84,11 @@ Robot.prototype.updateMotion = function()
     if(this.lastMove + this.moveCD <= Date.now())
     {
         this.dir += gaussian() * Math.PI;
+        this.dir %= TWO_PI;
         this.lastMove = Date.now();
         this.moveCD = Robot.randMoveCD();
     }
 };
-
 
 Robot.prototype.update = function()
 {
@@ -121,8 +119,24 @@ Robot.prototype.updateParticles = function()
 
     var u = new Odometry(new RobotState(this.lastX, this.lastY, this.lastDir), new RobotState(this.x, this.y, this.dir));
 
-    //only odometry, no measurement
-    this.filter.update(u);
+    if(typeof this.filter.sensorModel !== 'undefined')
+    {
+        var z = new Array(36);
+        scan(this.x, this.y, Robot.sensorRadius, this.filter.sensorModel.map, z);
+        this.filter.update(u, z);
+    }else
+    {
+        this.filter.motionUpdate(u);
+    }
+
+
+    // for(var i = 0; i < z.length; i ++)
+    // {
+    // 	z[i] += gaussian() * z[i] * Robot.sensorNoise;
+    // }
+
+    //Odometry and Measurement
+
 
     this.lastX = this.x;
     this.lastY = this.y;

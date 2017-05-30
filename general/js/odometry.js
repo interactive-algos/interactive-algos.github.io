@@ -1,10 +1,3 @@
-function RobotState(x, y, dir)
-{
-    this.x = x;
-    this.y = y;
-    this.dir = dir;
-}
-
 
 //Odometry reading, represents x_t-1 and x_t. Both are estimates
 function Odometry(lastState, state)

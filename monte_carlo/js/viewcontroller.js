@@ -133,3 +133,32 @@ function convertY(y)
 {
     return floor(canvas.height - y/scale);
 }
+
+
+Robot.prototype.draw = function(ctx)
+{
+    ctx.strokeStyle = 'black';
+    if(Date.now() - this.lastMove < 200)
+        ctx.strokeStyle = 'red';
+
+    var x = convertX(this.x);
+    var y = convertY(this.y);
+
+    ctx.drawRobot(x, y, -this.dir, Robot.size/scale);
+
+    ctx.strokeStyle = 'rgba(0, 0, 255, '+ (1-this.senseCircle/Robot.sensorRadius) +')';
+
+    //draw Robot's sensing circle
+    ctx.strokeCircle(x, y, this.senseCircle/scale);
+
+    this.filter.draw(ctx);
+};
+
+Particle.prototype.draw = function(ctx)
+{
+    var x = convertX(this.x);
+    var y = convertY(this.y);
+
+    ctx.strokeStyle = 'rgba(0, 0, 255, 0.1)';
+    ctx.drawRobot(x, y, -this.dir, Particle.size/scale);
+};

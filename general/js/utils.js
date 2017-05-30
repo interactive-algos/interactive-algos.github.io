@@ -215,3 +215,10 @@ function prob_gaussian_log(a, b)
 }
 
 const prob_normal = prob_gaussian;
+
+function RobotState(x, y, dir)
+{
+    this.x = x;
+    this.y = y;
+    this.dir = dir;
+}

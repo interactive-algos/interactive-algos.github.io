@@ -13,11 +13,11 @@ function Particle(x, y, dir, weight)
 
 Particle.prototype.draw = function(ctx)
 {
-    var x = convertX(this.x);
-    var y = convertY(this.y);
+    var x = round(this.x);
+    var y = round(this.y);
 
 	ctx.strokeStyle = 'rgba(0, 0, 255, 0.1)';
-    ctx.drawRobot(x, y, -this.dir, Particle.size/scale);
+    ctx.drawRobot(x, y, -this.dir, Particle.size);
 };
 
 //Set particle's state to state x
