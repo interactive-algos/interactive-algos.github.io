@@ -31,10 +31,15 @@ CanvasRenderingContext2D.prototype.drawRobot = function (x, y, dir, size)
     this.stroke();
 };
 
+CanvasRenderingContext2D.prototype.circle = function(x, y, size)
+{
+    return this.arc(x, y, size, 0, Math.PI*2);
+};
+
 CanvasRenderingContext2D.prototype.strokeCircle = function(x, y, size)
 {
     this.beginPath();
-    this.arc(x, y, size, 0, Math.PI*2, true);
+    this.circle(x, y, size);
     this.stroke();
 };
 
