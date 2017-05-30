@@ -36,6 +36,7 @@ function click()
 
 function update()
 {
+    //Only scan if location changed
     if(!scanned)
     {
         scan(robotX, robotY, senseRadius, map, z);
@@ -52,7 +53,6 @@ function draw(ctx)
     ctx.strokeStyle = 'black';
     ctx.drawRobot(robotX, robotY, robotDir, 20);
 
-    //Radian between each laser
     var rad = Math.PI*2/nLasers;
     for(var index = 0; index <= nLasers/2; index ++)
     {
@@ -67,6 +67,8 @@ function draw(ctx)
 
         var dir = i * rad;
         var laserLen = senseCircle;
+
+        //Grey color for a miss
         if(z[i] > senseRadius)
         {
             ctx.strokeStyle = 'grey';
@@ -75,6 +77,8 @@ function draw(ctx)
             //distance reported by the laser sensor
             var dist = z[i] + gaussian()*z[i]*sensorNoise;
             laserLen = min(laserLen, dist);
+
+            //red for a hit
             ctx.strokeStyle = 'red';
             ctx.fillStyle = 'red';
             ctx.beginPath();
