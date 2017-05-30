@@ -7,10 +7,8 @@ var map;
 var frameCount = 0;
 var lastFrame;
 var fps = 0;
-
 //meter/pixel scale
 var scale = 0.02;
-
 
 //dimensions of the world, in meters
 //Robots are using world coordinates internally
@@ -31,7 +29,6 @@ function frame(timestamp)
 	{
 		fps = Math.round(1000.0/(timestamp-lastFrame));
 		lastFrame = timestamp;
-
 
         var ctx = canvas.getContext('2d');
         /*
@@ -57,16 +54,26 @@ function init()
 	bgCanvas = document.getElementById('background');
 	map = getMapForCanvas(canvas);
     bgCanvas.getContext('2d').drawMap(map);
+
+    for(var i = map.length-1; i >= 0; i --)
+	{
+		map[i].s.x *= scale;
+		map[i].t.x *= scale;
+		map[i].s.y = (canvas.height-map[i].s.y)*scale;
+        map[i].t.y = (canvas.height-map[i].t.y)*scale;
+    }
+
 	var ctx = canvas.getContext('2d');
 	Robot.sensorRadius = getSensorRadius();
 	Robot.stride = getValue('goByOneStep');
 	var motionModel = new OdometryModel(getTurnNoise(), getStrideNoise(), getTurnNoise(), getTurnNoise());
+	var sensorModel = new BeamModel(getSensorNoise(), getSensorRadius(), map, width, height);
 
 	var x = random()*width;
 	var y = random()*height;
-	var dir = random()*Math.PI*2;
+	var dir = random()*TWO_PI;
 
-    var filter = new ParticleFilter(getParticleCount(), motionModel, new RobotState(x, y, dir));
+    var filter = new ParticleFilter(getParticleCount(), motionModel, sensorModel);
 
 	robot = new Robot(x, y, dir, filter);
 	robot.draw(ctx);
@@ -89,6 +96,9 @@ function parameterChanged(event)
 	}else if(target.id === 'goByOneStep')
 	{
 		Robot.stride = value;
+	}else if(target.id === 'robotSenseNoise')
+	{
+		Robot.sensorNoise = value/100.0;
 	}
 }
 
@@ -107,6 +117,10 @@ function getTurnNoise()
 	return getValue('robotTurnNoise') / 100.0;
 }
 
+function getSensorNoise()
+{
+    return getValue('robotSenseNoise') / 100.0;
+}
 
 //convert x coordinate in world to x coordinate on screen
 function convertX(x)

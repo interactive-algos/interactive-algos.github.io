@@ -8,6 +8,7 @@ const random = Math.random;
 const max = Math.max;
 const min = Math.min;
 const round = Math.round;
+const TWO_PI = Math.PI*2;
 
 function randint(min, max)
 {
@@ -25,11 +26,11 @@ function gaussian()
 //Bound radian a to interval [-pi, pi]
 function boundRadian(a)
 {
-	a %= Math.PI*2;
+	a %= TWO_PI;
 	if(a > Math.PI)
-		a -= 2*Math.PI;
+		a -= TWO_PI;
 	else if(a < -Math.PI)
-		a += 2*Math.PI;
+		a += TWO_PI;
 	return a;
 }
 
@@ -165,7 +166,7 @@ function scan(x, y, r, map, z)
 
     for(var i = 0; i < nLasers; i ++)
     {
-        var dir = Math.PI*2 * i / nLasers;
+        var dir = TWO_PI * i / nLasers;
 
         //End points of the laser line
         var s1 = new Point(x, y);
@@ -193,6 +194,9 @@ function scan(x, y, r, map, z)
     }
 }
 
+
+const ROOT_TWO_PI = sqrt(TWO_PI);
+
 //Probability of getting a from a 0 centered
 //gaussian distribution with stdandard deviation b
 //Same as table 5.2 on page 123 of Probabilistic Robotics
@@ -200,7 +204,14 @@ function scan(x, y, r, map, z)
 function prob_gaussian(a, b)
 {
     var variance = b*b;
-    return Math.exp(-0.5 * (a*a)/(variance)) / sqrt(Math.PI*2*variance);
+    return Math.exp(-0.5 * (a*a)/(variance)) / (ROOT_TWO_PI*abs(b));
+}
+
+//return log of prob_gaussian(a, b)
+function prob_gaussian_log(a, b)
+{
+    var variance = b*b;
+    return (-0.5 * (a*a)/(variance)) - Math.log(ROOT_TWO_PI*abs(b));
 }
 
 const prob_normal = prob_gaussian;

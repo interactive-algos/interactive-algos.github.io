@@ -58,7 +58,7 @@ function draw(ctx)
 
     //index of corresponding entry in z
     var i = (dirOffset - nLasers/4);
-    i = (i+nLasers) % nLasers;
+    i = (i+nLasers+nLasers);
 
     for(var index = 0; index <= nLasers/2; index ++, i++)
     {

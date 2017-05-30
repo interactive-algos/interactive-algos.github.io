@@ -25,7 +25,7 @@ Particle.prototype.setState = function(robotState)
 {
 	this.x = robotState.x;
 	this.y = robotState.y;
-	this.dir = robotState.dir;
+	this.dir = robotState.dir % (TWO_PI);
 };
 
 Particle.size = 0.08;

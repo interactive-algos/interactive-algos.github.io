@@ -22,7 +22,31 @@ BeamModel.prototype.probability = function(z, state)
     // if(state.x < 0 || state.y < 0 || state.x >= this.width || state.y >= this.height)
     //     return 0;
 
-	return Math.exp(this.prob_log(z, state));
+    const m = this.map;
+
+    var z_true = new Array(z.length);
+
+    var q = 1;
+
+    //Obtain the true distances
+    scan(state.x, state.y, this.sensorRadius, m, z_true);
+
+    const nLasers = z.length;
+
+    const dirOffset = Math.round(state.dir/(TWO_PI) * nLasers);
+
+    //z will be an array of noised distances, obtained by robot's sensor
+    var i = (dirOffset - nLasers/4);
+    i += nLasers + nLasers;
+
+    for(var index = 0; index <= nLasers/2; index ++, i++)
+    {
+        // if(z[i] > this.sensorRadius || z_true[i] > this.sensorRadius)
+        //     continue;
+        i %= nLasers;
+        q *= (prob_gaussian(z[i] - z_true[i], this.a1*z_true[i]));
+    }
+    return q;
 };
 
 
@@ -46,12 +70,14 @@ BeamModel.prototype.prob_log = function(z, state)
 
     //z will be an array of noised distances, obtained by robot's sensor
     var i = (dirOffset - nLasers/4);
-    i += nLasers;
+    i += nLasers + nLasers;
 
     for(var index = 0; index <= nLasers/2; index ++, i++)
     {
+        if(z[i] > this.senseRadius || z_true[i] > this.sensorRadius)
+            continue;
         i %= nLasers;
-        q += Math.log(prob_gaussian(z[i] - z_true[i], this.a1*z_true[i]));
+        q += (prob_gaussian_log(z[i] - z_true[i], this.a1*z_true[i]));
     }
     return q;
 };
