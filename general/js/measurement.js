@@ -1,26 +1,32 @@
 
-function BeamModel(a1, a2, a3, a4)
+function BeamModel(a1, sensorRadius, map)
 {
-	//Noise on rotational 1
+	//Gaussian noise on hit
 	this.a1 = a1;
-	//Noise on translational displacement
-	this.a2 = a2;
-	//Noise on rotational 2
-	this.a3 = a3;
-	//Final rotation
-	this.a4 = a4;
+
+	this.map = map;
+
+	//Sensor radius
+	this.sensorRadius = sensorRadius;
 }
 
 /*
 	Probability of getting measurement z
 	if the robot pose is 'state'. (Given map m)
  */
-BeamModel.prototype.probability = function(z, state, m)
+BeamModel.prototype.probability = function(z, state)
 {
+	const m = this.map;
+
+	var z_true = new Array(z.length);
+
+	//Obtain the true distances
+	scan(state.x, state.y, this.sensorRadius, map, z_true);
+
 	//Particle/Robot's state
 	console.log("Robot is at (" + state.x, + ", " + state.y + ") direction: " + state.dir);
 
-	//z will be an array of distanced, representing
+	//z will be an array of noised distances, obtained by robot's sensor
 	for(var i = 0; i < z.length; i ++)
 	{
 		console.log("Ray at angle " + i/z.length * Math.PI*2 + "detected distance: " + z[i]);
