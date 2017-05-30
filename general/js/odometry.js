@@ -65,7 +65,6 @@ OdometryModel.prototype.sample = function(u, state)
 	var x = state.x + trans*cos(state.dir+rot1);
 	var y = state.y + trans*sin(state.dir+rot1);
 
-	//disregarding final rotation for now...
 	var dir = state.dir + rot1 + rot2;
 
 	return new RobotState(x, y, dir);
