@@ -53,17 +53,22 @@ function draw(ctx)
     ctx.strokeStyle = 'black';
     ctx.drawRobot(robotX, robotY, robotDir, 20);
 
+    //Angle between each laser, in radians
     var rad = Math.PI*2/nLasers;
-    for(var index = 0; index <= nLasers/2; index ++)
+
+    //index of corresponding entry in z
+    var i = (dirOffset - nLasers/4);
+    i = (i+nLasers) % nLasers;
+
+    for(var index = 0; index <= nLasers/2; index ++, i++)
     {
         //dirOffset is the direction the user's mouse
         //is point at, -nLasers/4 to offset it by 90 degrees,
         //so that laser scan is centered at where the user
         //points to
-        var i = (index + dirOffset - nLasers/4);
 
         //get i stay in bound
-        i = (i + nLasers) % nLasers;
+        i %= nLasers;
 
         var dir = i * rad;
         var laserLen = senseCircle;

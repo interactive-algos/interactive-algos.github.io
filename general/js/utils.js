@@ -163,11 +163,11 @@ function scan(x, y, r, map, z)
 {
     var nLasers = z.length;
 
-    //Radian between each laser
     for(var i = 0; i < nLasers; i ++)
     {
         var dir = Math.PI*2 * i / nLasers;
 
+        //End points of the laser line
         var s1 = new Point(x, y);
         var t1 = new Point(x + cos(dir)*r, y + sin(dir)*r);
 
@@ -185,7 +185,6 @@ function scan(x, y, r, map, z)
         {
             if(doIntersect(s1, t1, map[j].s, map[j].t))
             {
-                // z[i] = senseRadius;
                 var p = intersectionPoint(s1, t1, map[j].s, map[j].t);
                 var dist = p.distanceTo(new Point(x, y));
                 z[i] = min(z[i], dist);

@@ -44,8 +44,6 @@ function frame(timestamp)
         ctx.fillText(fps + " FPS", 10, 20);
         robot.update();
         robot.draw(ctx);
-
-        // drawMap(map);
     }
 	requestAnimationFrame(frame);
 }
