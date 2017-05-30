@@ -42,7 +42,6 @@
             <fieldset>
                 <legend>Configuration</legend>
                 <label for="nParticles"># of particles</label>: <input type='text' id="nParticles" onkeypress='return isNumber(event);' class="form-control form-control-sm" value="500" size="3 ">
-                <label for="nLandmarks"># of landmarks</label>: <input type='text' id="nLandmarks" onkeypress='return isNumber(event);' class="form-control form-control-sm" value="4" size="3">
                 <label for="goByOneStep">Go on each step</label>: <input type='text' id="goByOneStep" onblur='return parameterChanged(event);' onkeypress='return isDecimal(event);' class="form-control form-control-sm" value="0.04" size="3">
                 <table>
                     <tbody><tr>
@@ -57,10 +56,6 @@
                         <td><label for="robotTurnNoise">Turn noise (Degrees)</label>:</td>
                         <td><input type='text' id="robotTurnNoise" onblur='return parameterChanged(event);' onkeypress='return isDecimal(event);' class="form-control form-control-sm" value="5" size="3"></td>
                         <td><label>%</label></td>
-                    </tr>
-                    <tr>
-                        <td><label for="robotSenseNoise">Sense noise</label>:</td>
-                        <td><input type='text' id="robotSenseNoise" onblur='return parameterChanged(event);' onkeypress='return isDecimal(event);' class="form-control form-control-sm" value="5" size="3"></td>
                     </tr>
                     </tbody></table>
                 <label for="fogOfWar">Sensor Radius</label>: <input id="fogOfWar" onblur='return parameterChanged(event);' onkeypress='return isNumber(event);' class="form-control form-control-sm" value="3" size="4">
