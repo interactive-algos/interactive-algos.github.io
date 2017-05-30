@@ -59,3 +59,40 @@ function drawMap(m, ctx)
         ctx.stroke();
     }
 }
+
+
+//Scan map at location (x, y), with radius r.
+function scan(x, y, r, map, z)
+{
+	var nLasers = z.length;
+
+    //Radian between each laser
+    for(var i = 0; i < nLasers; i ++)
+    {
+        var dir = Math.PI*2 * i / nLasers;
+
+        var s1 = new Point(x, y);
+        var t1 = new Point(x + cos(dir)*r, y + sin(dir)*r);
+
+        //If dir is 90 degrees
+        //if i = 1/nLasers or i = (3/4) * nLasers
+        //cos(dir) should be 0 in these cases,
+        if(i * 4 === nLasers || i * 4 === nLasers * 3)
+            t1.x = x;
+        else if(i * 2 === nLasers)
+            t1.y = y;
+
+
+        z[i] = r + 100;
+        for(var j = 0; j < map.length; j ++)
+        {
+            if(doIntersect(s1, t1, map[j].s, map[j].t))
+            {
+                // z[i] = senseRadius;
+                var p = intersectionPoint(s1, t1, map[j].s, map[j].t);
+                var dist = p.distanceTo(new Point(x, y));
+                z[i] = min(z[i], dist);
+            }
+        }
+    }
+}

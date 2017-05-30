@@ -34,44 +34,11 @@ function click()
     draw(canvas.getContext('2d'));
 }
 
-function scan()
-{
-    //Radian between each laser
-    for(var i = 0; i < nLasers; i ++)
-    {
-        var dir = Math.PI*2 * i / nLasers;
-
-        var s1 = new Point(robotX, robotY);
-        var t1 = new Point(robotX + cos(dir)*senseRadius, robotY + sin(dir)*senseRadius);
-
-        //If dir is 90 degrees
-        //if i = 1/nLasers or i = (3/4) * nLasers
-        //cos(dir) should be 0 in these cases,
-        if(i * 4 === nLasers || i * 4 === nLasers * 3)
-            t1.x = robotX;
-        else if(i * 2 === nLasers)
-            t1.y = robotY;
-
-
-        z[i] = senseRadius + 100;
-        for(var j = 0; j < map.length; j ++)
-        {
-            if(doIntersect(s1, t1, map[j].s, map[j].t))
-            {
-                // z[i] = senseRadius;
-                var p = intersectionPoint(s1, t1, map[j].s, map[j].t);
-                var dist = p.distanceTo(new Point(robotX, robotY));
-                z[i] = min(z[i], dist);
-            }
-        }
-    }
-}
-
 function update()
 {
     if(!scanned)
     {
-        scan();
+        scan(robotX, robotY, senseRadius, map, z);
         scanned = true;
     }
     // senseCircle++;
