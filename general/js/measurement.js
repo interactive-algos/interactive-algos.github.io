@@ -16,19 +16,25 @@ function BeamModel(a1, sensorRadius, map)
  */
 BeamModel.prototype.probability = function(z, state)
 {
-	const m = this.map;
+	return Math.exp(this.prob_log(z, state));
+};
 
-	var z_true = new Array(z.length);
 
-	q = 1;
-	
-	//Obtain the true distances
-	scan(state.x, state.y, this.sensorRadius, m, z_true);
+BeamModel.prototype.prob_log = function(z, state)
+{
+    const m = this.map;
 
-	//z will be an array of noised distances, obtained by robot's sensor
-	for(var i = 0; i < z.length; i ++)
-	{
-		q = q * prob_gaussian(z[i] - z_true[i], this.a1);
-	}
-	return q;
+    var z_true = new Array(z.length);
+
+    var q = 0;
+
+    //Obtain the true distances
+    scan(state.x, state.y, this.sensorRadius, m, z_true);
+
+    //z will be an array of noised distances, obtained by robot's sensor
+    for(var i = 0; i < z.length; i ++)
+    {
+        q += Math.log((prob_gaussian(z[i] - z_true[i], this.a1)));
+    }
+    return q;
 };
