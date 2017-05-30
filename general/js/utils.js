@@ -193,3 +193,15 @@ function scan(x, y, r, map, z)
         }
     }
 }
+
+//Probability of getting a from a 0 centered
+//gaussian distribution with stdandard deviation b
+//Same as table 5.2 on page 123 of Probabilistic Robotics
+//2006
+function prob_gaussian(a, b)
+{
+    var variance = b*b;
+    return Math.exp(-0.5 * (a*a)/(variance)) / sqrt(Math.PI*2*variance);
+}
+
+const prob_normal = prob_gaussian;
