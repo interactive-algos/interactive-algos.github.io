@@ -43,6 +43,19 @@ CanvasRenderingContext2D.prototype.strokeCircle = function(x, y, size)
     this.stroke();
 };
 
+CanvasRenderingContext2D.prototype.drawMap = function(m)
+{
+    this.strokeStyle = 'black';
+    for (var i = m.length - 1; i >= 0; i--)
+    {
+        var l = m[i];
+        this.beginPath();
+        this.moveTo(l.s.x, l.s.y);
+        this.lineTo(l.t.x, l.t.y);
+        this.stroke();
+    }
+};
+
 function getClickLoc(event)
 {
     var element = event.target;

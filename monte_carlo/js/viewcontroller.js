@@ -58,7 +58,7 @@ function init()
 
 	bgCanvas = document.getElementById('background');
 	map = getMapForCanvas(canvas);
-	drawMap(map, bgCanvas.getContext('2d'));
+    bgCanvas.getContext('2d').drawMap(map);
 	var ctx = canvas.getContext('2d');
 	Robot.sensorRadius = getSensorRadius();
 	Robot.stride = getValue('goByOneStep');

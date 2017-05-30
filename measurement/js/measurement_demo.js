@@ -125,7 +125,7 @@ function init()
 
     //Draw the map
     var map = getMapForCanvas(canvas);
-    drawMap(map, bgCanvas.getContext('2d'));
+    bgCanvas.getContext('2d').drawMap(map);
     robotX = floor(random()*canvas.width);
     robotY = floor(random()*canvas.height);
 
