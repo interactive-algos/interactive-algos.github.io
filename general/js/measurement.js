@@ -28,7 +28,7 @@ BeamModel.prototype.probability = function(z, state)
 	//z will be an array of noised distances, obtained by robot's sensor
 	for(var i = 0; i < z.length; i ++)
 	{
-		q = q * (z[i] * prob_gaussian(z[i] - z_true[i], this.a1));
+		q = q * prob_gaussian(z[i] - z_true[i], this.a1);
 	}
 	return q;
 };
