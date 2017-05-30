@@ -54,7 +54,7 @@ function draw(ctx)
 
     //Radian between each laser
     var rad = Math.PI*2/nLasers;
-    for(var index = 0; index < nLasers/2; index ++)
+    for(var index = 0; index <= nLasers/2; index ++)
     {
         //dirOffset is the direction the user's mouse
         //is point at, -nLasers/4 to offset it by 90 degrees,
