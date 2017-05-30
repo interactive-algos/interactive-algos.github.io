@@ -78,7 +78,7 @@ function draw(ctx)
             ctx.strokeStyle = 'red';
             ctx.fillStyle = 'red';
             ctx.beginPath();
-            ctx.circle(robotX + cos(dir)*dist, robotY + sin(dir)*dist);
+            ctx.circle(robotX + cos(dir)*dist, robotY + sin(dir)*dist, 5);
             ctx.fill();
         }
         ctx.beginPath();
