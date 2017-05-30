@@ -111,7 +111,7 @@ function draw(ctx)
             ctx.strokeStyle = 'red';
             ctx.fillStyle = 'red';
             ctx.beginPath();
-            ctx.arc(robotX + cos(dir)*dist, robotY + sin(dir)*dist, 5, 0, Math.PI*2);
+            ctx.circle(robotX + cos(dir)*dist, robotY + sin(dir)*dist);
             ctx.fill();
         }
         ctx.beginPath();
