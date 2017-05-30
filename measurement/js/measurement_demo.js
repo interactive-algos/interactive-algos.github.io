@@ -139,8 +139,8 @@ function init()
     robotY = floor(random()*canvas.height);
 
     //Listen to mouse click events
-    background.addEventListener('click', click);
-    background.onmousemove = mouseMotion;
+    bgCanvas.addEventListener('click', click);
+    bgCanvas.onmousemove = mouseMotion;
     senseRadius = getValue('sensorRadius')/0.02;
     senseCircle = senseRadius;
     requestAnimationFrame(frame);
