@@ -32,7 +32,7 @@ BeamModel.prototype.probability = function(z, state)
 	for(var i = 0; i < z.length; i ++)
 	{
 		var g = gaussian();
-		q = q * (z[i] * prob_gaussian(z[i], g) + randInt(0, this.sensorRadius)/this.sensorRadius);
+		q = q * (z[i] * prob_gaussian(z[i], g) + Math.random());
 		console.log("Ray at angle " + i/z.length * Math.PI*2 + "detected distance: " + z[i]);
 	}
 
