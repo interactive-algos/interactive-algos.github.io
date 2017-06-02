@@ -118,6 +118,7 @@ function mouseDown(event)
 
     robotX = x;
     robotY = y;
+    clearCanvas(canvas);
     drawRobot(canvas.getContext('2d'));
     bgCanvas.onmousemove = mouseMotion;
 }
