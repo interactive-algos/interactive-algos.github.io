@@ -123,7 +123,7 @@ function mouseDown(event)
     bgCanvas.onmousemove = mouseMotion;
 }
 
-function mouseUp(event)
+function mouseUp()
 {
     bgCanvas.onmousemove = undefined;
     update();
