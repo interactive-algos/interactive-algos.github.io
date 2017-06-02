@@ -9,11 +9,9 @@ var bgCanvas;
 var robotX;
 var robotY;
 
-var senseCircle = 0;
 var senseRadius = 150;
 
 var nLasers = 36;
-var scanned = false;
 
 var robotDir = 0;
 var dirOffset = 0;
@@ -23,36 +21,14 @@ var sensorNoise = 0.1;
 //Results of laser scan
 var z = new Array(nLasers);
 
-function click()
-{
-    var coor = getClickLoc(event);
-    robotX = coor.x;
-    robotY = coor.y;
-    // senseCircle = 0;
-    scanned = false;
-    update();
-    draw(canvas.getContext('2d'));
-}
-
 function update()
 {
     //Only scan if location changed
-    if(!scanned)
-    {
-        scan(robotX, robotY, senseRadius, map, z);
-        scanned = true;
-    }
-    // senseCircle++;
-    // senseCircle %= senseRadius;
+    scan(robotX, robotY, senseRadius, map, z);
 }
 
-function draw(ctx)
+function drawLaserLines(ctx)
 {
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
-
-    ctx.strokeStyle = 'black';
-    ctx.drawRobot(robotX, robotY, robotDir, 20);
-
     //Angle between each laser, in radians
     var rad = Math.PI*2/nLasers;
 
@@ -97,12 +73,10 @@ function draw(ctx)
     }
 }
 
-function frame()
+function drawRobot(ctx)
 {
-    var ctx = canvas.getContext('2d');
-    update();
-    draw(ctx);
-    requestAnimationFrame(frame);
+    ctx.strokeStyle = 'black';
+    ctx.drawRobot(robotX, robotY, robotDir, 20);
 }
 
 function parameterChanged(event)
@@ -116,13 +90,11 @@ function parameterChanged(event)
     else if(target.id === 'sensorNoise')
     {
         sensorNoise = Number(target.value) / 100.0;
-        scanned = false;
     }
     else if(target.id === 'nLasers')
     {
         nLasers = Number(target.value) * 2;
         z = new Array(nLasers);
-        scanned = false;
     }
 }
 
@@ -134,6 +106,27 @@ function mouseMotion(event)
 
     robotDir = atan2(y-robotY, x-robotX);
     dirOffset = round(robotDir/Math.PI/2 * nLasers);
+    clearCanvas(canvas);
+    canvas.getContext('2d').drawRobot(robotX, robotY, robotDir, 20);
+}
+
+function mouseDown(event)
+{
+    var coor = getClickLoc(event);
+    var x = coor.x;
+    var y = coor.y;
+
+    robotX = x;
+    robotY = y;
+    drawRobot(canvas.getContext('2d'));
+    bgCanvas.onmousemove = mouseMotion;
+}
+
+function mouseUp(event)
+{
+    bgCanvas.onmousemove = undefined;
+    update();
+    drawLaserLines(canvas.getContext('2d'));
 }
 
 function init()
@@ -147,13 +140,10 @@ function init()
     robotX = floor(random()*canvas.width);
     robotY = floor(random()*canvas.height);
 
-    var sensorModel = new BeamModel(0.02, senseRadius, map, canvas.width, canvas.height);
     Particle.size = 5;
 
     //Listen to mouse click events
-    bgCanvas.addEventListener('click', click);
-    bgCanvas.onmousemove = mouseMotion;
+    bgCanvas.onmousedown = mouseDown;
+    bgCanvas.onmouseup = mouseUp;
     senseRadius = getValue('sensorRadius')/0.02;
-    senseCircle = senseRadius;
-    requestAnimationFrame(frame);
 }

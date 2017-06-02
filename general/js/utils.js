@@ -222,3 +222,9 @@ function RobotState(x, y, dir)
     this.y = y;
     this.dir = dir;
 }
+
+function clearCanvas(canvas)
+{
+    var ctx = canvas.getContext('2d');
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+}
