@@ -121,11 +121,13 @@ function mouseDown(event)
     clearCanvas(canvas);
     drawRobot(canvas.getContext('2d'));
     bgCanvas.onmousemove = mouseMotion;
+    bgCanvas.onmouseout = mouseUp;
 }
 
 function mouseUp()
 {
     bgCanvas.onmousemove = undefined;
+    bgCanvas.onmouseout = undefined;
     update();
     drawLaserLines(canvas.getContext('2d'));
 }
