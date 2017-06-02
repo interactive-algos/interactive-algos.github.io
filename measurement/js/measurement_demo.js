@@ -23,8 +23,6 @@ var sensorNoise = 0.1;
 //Results of laser scan
 var z = new Array(nLasers);
 
-var filter;
-
 function click()
 {
     var coor = getClickLoc(event);
@@ -44,8 +42,6 @@ function update()
         scan(robotX, robotY, senseRadius, map, z);
         scanned = true;
     }
-    filter.sensorUpdate(z);
-    filter.resample();
     // senseCircle++;
     // senseCircle %= senseRadius;
 }
@@ -106,7 +102,6 @@ function frame()
     var ctx = canvas.getContext('2d');
     update();
     draw(ctx);
-    filter.draw(ctx);
     requestAnimationFrame(frame);
 }
 
@@ -153,7 +148,6 @@ function init()
     robotY = floor(random()*canvas.height);
 
     var sensorModel = new BeamModel(0.02, senseRadius, map, canvas.width, canvas.height);
-    filter = new ParticleFilter(500, undefined, sensorModel);
     Particle.size = 5;
 
     //Listen to mouse click events
