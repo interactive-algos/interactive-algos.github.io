@@ -75,7 +75,7 @@ function draw(ctx)
         i %= nLasers;
 
         var dir = i * rad;
-        var laserLen = senseCircle;
+        var laserLen = senseRadius;
 
         //Grey color for a miss
         if(z[i] > senseRadius)
@@ -121,6 +121,7 @@ function parameterChanged(event)
     else if(target.id === 'sensorNoise')
     {
         sensorNoise = Number(target.value) / 100.0;
+        scanned = false;
     }
     else if(target.id === 'nLasers')
     {
