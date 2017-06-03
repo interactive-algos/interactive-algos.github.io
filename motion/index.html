@@ -69,12 +69,12 @@
                             <label for="path">Movement Path:</label>
                         </td>
                         <td>
-                            <select id="path" class="selectpicker">
+                            <select id="path" class="selectpicker" onchange="selectPath(event);">
                                 <optgroup label="Built-In">
                                     <option>Vanilla</option>
                                 </optgroup>
                                 <optgroup label="Custom">
-                                    <option data-content="<span class='glyphicon glyphicon-plus'></span>"></option>
+                                    <option data-icon="glyphicon glyphicon-plus">Add a path</option>
                                 </optgroup>
                             </select>
                         </td>
