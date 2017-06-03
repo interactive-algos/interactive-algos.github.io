@@ -77,6 +77,13 @@ function selectPath(event)
     if(selectedOption.id === 'addPath')
     {
         startRecordingPath();
+    }else
+    {
+        var selectedPath = selectedOption.value;
+		clearCanvas(canvas);
+		var ctx = canvas.getContext('2d');
+		ctx.strokeStyle = 'black';
+		ctx.strokePath(knownPath[selectedPath]);
     }
 }
 
@@ -152,6 +159,7 @@ function startRecordingPath()
     clearCanvas(canvas);
     var ctx = canvas.getContext('2d');
     ctx.font = '15px Menlo';
+    ctx.strokeStyle = 'black';
     ctx.textAlign = 'center';
     ctx.strokeText('Start drawing a path here', canvas.width/2, canvas.height/2);
     bgCanvas.onmousedown = mouseDown;
@@ -170,7 +178,7 @@ function init()
     map = getMapForCanvas(canvas);
     bgCanvas.getContext('2d').drawMap(map);
 
-    knownPath['vanilla'] = vanillaPath;
+    knownPath['Vanilla'] = vanillaPath;
 
     Robot.sensorRadius = getSensorRadius();
     Robot.stride = getValue('goByOneStep');

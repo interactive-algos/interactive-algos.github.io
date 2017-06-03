@@ -45,7 +45,6 @@ CanvasRenderingContext2D.prototype.strokeCircle = function(x, y, size)
 
 CanvasRenderingContext2D.prototype.drawMap = function(m)
 {
-    this.strokeStyle = 'black';
     for (var i = m.length - 1; i >= 0; i--)
     {
         var l = m[i];
@@ -59,6 +58,17 @@ CanvasRenderingContext2D.prototype.strokeLine = function(x1, y1, x2, y2)
     this.moveTo(x1, y1);
     this.lineTo(x2, y2);
     this.stroke();
+};
+
+CanvasRenderingContext2D.prototype.strokePath = function(path)
+{
+	this.beginPath();
+	this.moveTo(path[0].x, path[0].y);
+	for(var i = 1; i < path.length; i ++)
+	{
+		this.lineTo(path[i].x, path[i].y);
+	}
+	this.stroke();
 };
 
 function getClickLoc(event)
