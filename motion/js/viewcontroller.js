@@ -42,6 +42,11 @@ function getSensorRadius()
     return getValue('fogOfWar');
 }
 
+function refreshSelect()
+{
+    $('.selectpicker').selectpicker('refresh');
+}
+
 function frame(timestamp)
 {
     frameCount++;
@@ -99,6 +104,8 @@ function mouseUp(event)
     bgCanvas.onmousemove = undefined;
     bgCanvas.onmouseup = undefined;
     bgCanvas.onmouseout = undefined;
+    bgCanvas.onmousedown = undefined;
+
     clearCanvas(canvas);
 
     var pathName;
@@ -113,6 +120,8 @@ function mouseUp(event)
 
         if(pathName === null)
         {
+            pathSelect.selectedIndex = 0;
+            refreshSelect();
             return;
         }
 
@@ -129,10 +138,12 @@ function mouseUp(event)
         msg = 'Name must be alphanumeric!';
     }
     knownPath[pathName] = path;
+    printPath(path);
     var option = document.createElement("option");
     option.text = pathName;
     customPathGroup.append(pathName, option);
-    $('.selectpicker').selectpicker('refresh');
+    pathSelect.selectedIndex = pathSelect.length-1;
+    refreshSelect();
 }
 
 function startRecordingPath()
@@ -158,6 +169,8 @@ function init()
     height = canvas.height * scale;
     map = getMapForCanvas(canvas);
     bgCanvas.getContext('2d').drawMap(map);
+
+    knownPath['vanilla'] = vanillaPath;
 
     Robot.sensorRadius = getSensorRadius();
     Robot.stride = getValue('goByOneStep');
@@ -197,6 +210,19 @@ function parameterChanged(event)
     {
         Robot.stride = value;
     }
+}
+
+function printPath(path)
+{
+    var str = '{\n';
+    str += "[x: " + path[0].x + ", y:" + path[0].y + "}";
+    for(var i = 1; i < path.length; i ++)
+    {
+        str += ",\n{x: " + path[i].x + ", y:" + path[i].y + "}";
+    }
+
+    str += '\n]';
+    console.log(str);
 }
 
 function getParticleCount()
