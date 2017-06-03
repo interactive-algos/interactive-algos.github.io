@@ -50,7 +50,6 @@ function frame(timestamp)
         fps = Math.round(1000.0/(timestamp-lastFrame));
         lastFrame = timestamp;
 
-
         var ctx = canvas.getContext('2d');
         /*
          ctx.fillStyle = 'rgba(255, 255, 255, 0.3)';
@@ -102,7 +101,7 @@ function mouseUp(event)
     bgCanvas.onmouseout = undefined;
     clearCanvas(canvas);
 
-    var pathName = "";
+    var pathName;
     var coor = getClickLoc(event);
     path.push(coor);
 
@@ -178,6 +177,7 @@ function start()
     robot = new Robot(x, y, dir, filter);
     robot.draw(ctx);
     requestAnimationFrame = window.msRequestAnimationFrame || window.webkitRequestAnimationFrame || window.mozRequestAnimationFrame || window.requestAnimationFrame;
+    animating = true;
     lastFrame = Date.now();
     requestAnimationFrame(frame);
 }
