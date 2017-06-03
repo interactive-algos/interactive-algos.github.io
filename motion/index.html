@@ -108,10 +108,22 @@
                     </tbody>
                 </table>
 
-                <button onclick="reset()" class="btn btn-danger">Reset</button>
-                <button onclick="start()" class="btn btn-success">Start</button>
-                <button onclick="pause()" class="btn btn-warning">Pause</button>
-                <button onclick="step()" class="btn btn-info">Step Forward</button>
+                <button onclick="reset()" class="btn btn-danger">
+                    <span class="glyphicon glyphicon-stop"
+                          aria-hidden="true"></span>
+                </button>
+                <button onclick="pause()" class="btn btn-info">
+                    <span class="glyphicon glyphicon-step-backward"
+                          aria-hidden="true"></span>
+                </button>
+                <button onclick="start()" class="btn btn-success">
+                    <span class="glyphicon glyphicon-play"
+                          aria-hidden="true"></span>
+                </button>
+                <button onclick="step()" class="btn btn-info">
+                    <span class="glyphicon glyphicon-step-forward"
+                          aria-hidden="true"></span>
+                </button>
             </fieldset>
         </div>
     </div>
