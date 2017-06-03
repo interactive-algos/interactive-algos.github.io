@@ -140,15 +140,15 @@ Point.prototype.distanceTo = function(v)
 {
     var x = this.x - v.x;
     var y = this.y - v.y;
-    return Math.sqrt(x * x + y * y);
+    return sqrt(x * x + y * y);
 };
 
-Point.distance = function(pt1, pt2)
+function distance(x1, y1, x2, y2)
 {
-    var x = pt1.x - pt2.x;
-    var y = pt1.y - pt2.y;
-    return Math.sqrt(x*x + y*y);
-};
+	var x = x2 - x1;
+	var y = y2 - y1;
+	return sqrt(x * x + y * y);
+}
 
 //Starting point and ending point
 function Line(sx, sy, tx, ty)

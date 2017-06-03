@@ -60,17 +60,6 @@ CanvasRenderingContext2D.prototype.strokeLine = function(x1, y1, x2, y2)
     this.stroke();
 };
 
-CanvasRenderingContext2D.prototype.strokePath = function(path)
-{
-	this.beginPath();
-	this.moveTo(path[0].x, path[0].y);
-	for(var i = 1; i < path.length; i ++)
-	{
-		this.lineTo(path[i].x, path[i].y);
-	}
-	this.stroke();
-};
-
 function getClickLoc(event)
 {
     var element = event.target;

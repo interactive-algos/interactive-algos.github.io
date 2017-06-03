@@ -1,21 +1,28 @@
 
-function Robot(x, y, dir, filter)
+function Robot(filter, path)
 {
-    if (typeof(dir)==='undefined') dir = 0;
-    this.x = x;		//x coordinate
-    this.y = y;		//y coordinate
-    this.dir = dir;	//orientation in radians
+    if (typeof(dir) === 'undefined') dir = 0;
+    this.x = path[0].x;		//x coordinate
+    this.y = path[0].y;		//y coordinate
+    this.dir = atan2(path[1].y-path[0].y, path[1].x-path[0].x);	//orientation in radians
 
     this.lastScan = Date.now();	//time of last sense in millis
 
     this.senseCircle = Robot.size;
-    this.lastMove = Date.now();	//last time change direction, in millis
+
+    //For odometry records
     this.lastX = this.x;
     this.lastY = this.y;
     this.lastDir = this.dir;
-    this.moveCD = Robot.randMoveCD();
 
     this.filter = filter;
+
+    //Array of points for the robot to follow
+    this.path = path;
+
+    //Index to the path array, the point the robot is currently approaching
+	//The robot starts at 0th point so this is set to 1
+	this.targetIndex = 1;
 }
 
 Robot.size = 0.2;
@@ -23,11 +30,7 @@ Robot.sensorRadius = 1.5;
 Robot.scanInterval = 2500;
 Robot.stride = 0.01;
 Robot.sensorNoise = 0.01;
-
-Robot.randMoveCD = function()
-{
-    return 1500 + (gaussian() * 150);
-};
+const EPS = 1E-5;
 
 Robot.prototype.setStrideNoise = function(noise)
 {
@@ -40,54 +43,69 @@ Robot.prototype.setTurnNoise = function(noise)
     this.filter.motionModel.a3 = noise;
 };
 
-Robot.prototype.checkCollision = function()
-{
-    var dx = cos(this.dir);
-    var dy = sin(this.dir);
-
-    var collide = false;
-    if(this.x < Robot.size)
-    {
-        dx = abs(dx);
-        collide = true;
-    }else if(this.x+Robot.size >= width)
-    {
-        dx = -abs(dx);
-        collide = true;
-    }else if(this.y < Robot.size)
-    {
-        dy = abs(dy);
-        collide = true;
-    }else if(this.y+Robot.size >= height)
-    {
-        dy = -abs(dy);
-        collide = true;
-    }
-    if(collide)
-    {
-        this.dir = atan2(dy, dx);
-        this.lastMove = Date.now();
-        this.moveCD = Robot.randMoveCD();
-    }
-};
+// Robot.prototype.checkCollision = function()
+// {
+//     var dx = cos(this.dir);
+//     var dy = sin(this.dir);
+//
+//     var collide = false;
+//     if(this.x < Robot.size)
+//     {
+//         dx = abs(dx);
+//         collide = true;
+//     }else if(this.x+Robot.size >= width)
+//     {
+//         dx = -abs(dx);
+//         collide = true;
+//     }else if(this.y < Robot.size)
+//     {
+//         dy = abs(dy);
+//         collide = true;
+//     }else if(this.y+Robot.size >= height)
+//     {
+//         dy = -abs(dy);
+//         collide = true;
+//     }
+//     if(collide)
+//     {
+//         this.dir = atan2(dy, dx);
+//     }
+// };
 
 Robot.prototype.updateMotion = function()
 {
-    //Collision with a wall
-    this.checkCollision();
+	console.assert(typeof this.path !== 'undefined');
+
+	var stride = Robot.stride;
+	var x = this.x;
+	var y = this.y;
+
+	while(stride > 0)
+	{
+		var targetPoint = this.path[this.targetIndex];
+
+		var dist = distance(x, y, targetPoint.x, targetPoint.y);
+		while(dist <= EPS)
+		{
+			this.targetIndex++;
+			this.targetIndex %= this.path.length;
+			targetPoint = this.path[this.targetIndex];
+			dist = distance(x, y, targetPoint.x, targetPoint.y);
+		}
+
+		var cosx = (targetPoint.x-x)/dist;
+		var sinx = (targetPoint.y-y)/dist;
+		dist = min(dist, stride);
+
+		x += cosx * dist;
+		y += sinx * dist;
+		stride -= dist;
+	}
 
     //Move the robot
-    this.x += cos(this.dir) * Robot.stride;
-    this.y += sin(this.dir) * Robot.stride;
-
-    //Update robot's direction if necessary
-    if(this.lastMove + this.moveCD <= Date.now())
-    {
-        this.dir += gaussian() * Math.PI;
-        this.dir %= TWO_PI;
-        this.lastMove = Date.now();
-        this.moveCD = Robot.randMoveCD();
-    }
+    this.x = x;
+	this.y = y;
+	this.dir = atan2(targetPoint.y-y, targetPoint.x-x);
 };
 
 Robot.prototype.update = function()
@@ -146,11 +164,9 @@ Robot.prototype.updateParticles = function()
 Robot.prototype.draw = function(ctx)
 {
     ctx.strokeStyle = 'black';
-    if(Date.now() - this.lastMove < 200)
-        ctx.strokeStyle = 'red';
 
-    var x = toScreenX(this.x);
-    var y = toScreenY(this.y);
+    var x = this.x;
+    var y = this.y;
 
     ctx.drawRobot(x, y, -this.dir, Robot.size/scale);
 

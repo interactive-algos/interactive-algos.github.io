@@ -82,7 +82,7 @@ function selectPath(event)
         var selectedPath = selectedOption.value;
 		clearCanvas(canvas);
 		var ctx = canvas.getContext('2d');
-		ctx.strokeStyle = 'black';
+		ctx.strokeStyle = 'green';
 		ctx.strokePath(knownPath[selectedPath]);
     }
 }
@@ -92,13 +92,15 @@ function mouseMotion(event)
     var coor = getClickLoc(event);
     var ctx = canvas.getContext('2d');
     var lastPoint = path[path.length-1];
-    ctx.strokeLine(lastPoint.x, lastPoint.y, coor.x, coor.y);
+    ctx.strokeLine(toScreenX(lastPoint.x), toScreenY(lastPoint.y), coor.x, coor.y);
+    toWorldCoor(coor);
     path.push(coor);
 }
 
 function mouseDown(event)
 {
     var coor = getClickLoc(event);
+	toWorldCoor(coor);
     path.push(coor);
     bgCanvas.onmousemove = mouseMotion;
     bgCanvas.onmouseup = mouseUp;
@@ -117,6 +119,7 @@ function mouseUp(event)
 
     var pathName;
     var coor = getClickLoc(event);
+	toWorldCoor(coor);
     path.push(coor);
 
     var msg = "Enter a unique name for this path, alphanumeric please:";
@@ -178,7 +181,19 @@ function init()
     map = getMapForCanvas(canvas);
     bgCanvas.getContext('2d').drawMap(map);
 
+    for(var i = 0; i < vanillaPath.length; i ++)
+	{
+		vanillaPath[i].x = toWorldX(vanillaPath[i].x);
+		vanillaPath[i].y = toWorldY(vanillaPath[i].y);
+	}
+
     knownPath['Vanilla'] = vanillaPath;
+
+	var selectedPath = pathSelect.value;
+	clearCanvas(canvas);
+	var ctx = canvas.getContext('2d');
+	ctx.strokeStyle = 'green';
+	ctx.strokePath(knownPath[selectedPath]);
 
     Robot.sensorRadius = getSensorRadius();
     Robot.stride = getValue('goByOneStep');
@@ -187,15 +202,16 @@ function init()
 function start()
 {
     var ctx = canvas.getContext('2d');
+	var path = knownPath[pathSelect.value];
 
-    var x = random()*width;
-    var y = random()*height;
-    var dir = random()*Math.PI*2;
+	var x = path[0].x;		//x coordinate
+	var y = path[0].y;		//y coordinate
+	var dir = atan2(path[1].y-path[0].y, path[1].x-path[0].x);	//orientation in radians
 
-    var motionModel = new OdometryModel(getTurnNoise(), getStrideNoise(), getTurnNoise(), getTurnNoise());
+	var motionModel = new OdometryModel(getTurnNoise(), getStrideNoise(), getTurnNoise(), getTurnNoise());
     var filter = new ParticleFilter(getParticleCount(), motionModel, undefined, new RobotState(x, y, dir));
 
-    robot = new Robot(x, y, dir, filter);
+    robot = new Robot(filter, path);
     robot.draw(ctx);
     requestAnimationFrame = window.msRequestAnimationFrame || window.webkitRequestAnimationFrame || window.mozRequestAnimationFrame || window.requestAnimationFrame;
     animating = true;
@@ -258,7 +274,7 @@ function toScreenX(x)
 //convert x coordinate on screen to x coordinate in world
 function toWorldX(x)
 {
-    return round(x*scale);
+    return x*scale;
 }
 
 //convert y coordinate in world to y coordinate on screen
@@ -270,14 +286,18 @@ function toScreenY(y)
 //convert y coordinate on screen to y coordinate in world
 function toWorldY(y)
 {
-    return round((canvas.height - y)*scale);
+    return (canvas.height - y)*scale;
+}
+
+function toWorldCoor(coor)
+{
+	coor.x = toWorldX(coor.x);
+	coor.y = toWorldY(coor.y);
 }
 
 Robot.prototype.draw = function(ctx)
 {
     ctx.strokeStyle = 'black';
-    if(Date.now() - this.lastMove < 200)
-        ctx.strokeStyle = 'red';
 
     var x = toScreenX(this.x);
     var y = toScreenY(this.y);
@@ -299,4 +319,16 @@ Particle.prototype.draw = function(ctx)
 
     ctx.strokeStyle = 'rgba(0, 0, 255, 0.1)';
     ctx.drawRobot(x, y, -this.dir, Particle.size/scale);
+};
+
+
+CanvasRenderingContext2D.prototype.strokePath = function(path)
+{
+	this.beginPath();
+	this.moveTo(toScreenX(path[0].x), toScreenY(path[0].y));
+	for(var i = 1; i < path.length; i ++)
+	{
+		this.lineTo(toScreenX(path[i].x), toScreenY(path[i].y));
+	}
+	this.stroke();
 };
