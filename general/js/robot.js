@@ -149,8 +149,8 @@ Robot.prototype.draw = function(ctx)
     if(Date.now() - this.lastMove < 200)
         ctx.strokeStyle = 'red';
 
-    var x = convertX(this.x);
-    var y = convertY(this.y);
+    var x = toScreenX(this.x);
+    var y = toScreenY(this.y);
 
     ctx.drawRobot(x, y, -this.dir, Robot.size/scale);
 

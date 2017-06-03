@@ -60,19 +60,20 @@ function init()
     bgCanvas = document.getElementById('background');
     map = getMapForCanvas(canvas);
     bgCanvas.getContext('2d').drawMap(map);
-    var ctx = canvas.getContext('2d');
+
     Robot.sensorRadius = getSensorRadius();
     Robot.stride = getValue('goByOneStep');
 }
 
 function start()
 {
-    var motionModel = new OdometryModel(getTurnNoise(), getStrideNoise(), getTurnNoise(), getTurnNoise());
+    var ctx = canvas.getContext('2d');
 
     var x = random()*width;
     var y = random()*height;
     var dir = random()*Math.PI*2;
 
+    var motionModel = new OdometryModel(getTurnNoise(), getStrideNoise(), getTurnNoise(), getTurnNoise());
     var filter = new ParticleFilter(getParticleCount(), motionModel, undefined, new RobotState(x, y, dir));
 
     robot = new Robot(x, y, dir, filter);
@@ -116,17 +117,28 @@ function getTurnNoise()
 
 
 //convert x coordinate in world to x coordinate on screen
-function convertX(x)
+function toScreenX(x)
 {
-    return floor(x/scale);
+    return round(x/scale);
+}
+
+//convert x coordinate on screen to x coordinate in world
+function toWorldX(x)
+{
+    return round(x*scale);
 }
 
 //convert y coordinate in world to y coordinate on screen
-function convertY(y)
+function toScreenY(y)
 {
-    return floor(canvas.height - y/scale);
+    return round(canvas.height - y/scale);
 }
 
+//convert y coordinate on screen to y coordinate in world
+function toWorldY(y)
+{
+    return round((canvas.height - y)*scale);
+}
 
 Robot.prototype.draw = function(ctx)
 {
@@ -134,8 +146,8 @@ Robot.prototype.draw = function(ctx)
     if(Date.now() - this.lastMove < 200)
         ctx.strokeStyle = 'red';
 
-    var x = convertX(this.x);
-    var y = convertY(this.y);
+    var x = toScreenX(this.x);
+    var y = toScreenY(this.y);
 
     ctx.drawRobot(x, y, -this.dir, Robot.size/scale);
 
@@ -149,8 +161,8 @@ Robot.prototype.draw = function(ctx)
 
 Particle.prototype.draw = function(ctx)
 {
-    var x = convertX(this.x);
-    var y = convertY(this.y);
+    var x = toScreenX(this.x);
+    var y = toScreenY(this.y);
 
     ctx.strokeStyle = 'rgba(0, 0, 255, 0.1)';
     ctx.drawRobot(x, y, -this.dir, Particle.size/scale);
