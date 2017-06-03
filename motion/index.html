@@ -7,6 +7,15 @@
             integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
 
     <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.12.2/css/bootstrap-select.min.css">
+
+    <!-- Latest compiled and minified JavaScript -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.12.2/js/bootstrap-select.min.js"></script>
+
+    <!-- (Optional) Latest compiled and minified JavaScript translation files -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.12.2/js/i18n/defaults-*.min.js"></script>
+
+    <!-- Latest compiled and minified CSS -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
           integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
 
@@ -55,7 +64,21 @@
                     <tr>
                         <td></td>
                     </tr>
-
+                    <tr>
+                        <td>
+                            <label for="path">Movement Path:</label>
+                        </td>
+                        <td>
+                            <select id="path" class="selectpicker">
+                                <optgroup label="Built-In">
+                                    <option>Vanilla</option>
+                                </optgroup>
+                                <optgroup label="Custom">
+                                    <option data-content="<span class='glyphicon glyphicon-plus'></span>"></option>
+                                </optgroup>
+                            </select>
+                        </td>
+                    </tr>
                     <tr>
                         <td>
                             <label for="nParticles"># of particles</label>:
