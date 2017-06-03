@@ -63,6 +63,10 @@ function init()
     var ctx = canvas.getContext('2d');
     Robot.sensorRadius = getSensorRadius();
     Robot.stride = getValue('goByOneStep');
+}
+
+function start()
+{
     var motionModel = new OdometryModel(getTurnNoise(), getStrideNoise(), getTurnNoise(), getTurnNoise());
 
     var x = random()*width;
