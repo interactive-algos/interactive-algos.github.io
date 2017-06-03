@@ -5,7 +5,13 @@
 
 	<script src="https://code.jquery.com/jquery-3.2.1.min.js"   integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4="   crossorigin="anonymous"></script>
 
-	<!-- Latest compiled and minified CSS -->
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.12.2/css/bootstrap-select.min.css">
+
+    <!-- Latest compiled and minified JavaScript -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.12.2/js/bootstrap-select.min.js"></script>
+
+    <!-- Latest compiled and minified CSS -->
 	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
 
 	<!-- Optional theme -->
@@ -40,36 +46,97 @@
 				<canvas id="background" style='position: absolute;top: 0;left: 0; z-index: 2;' width="700" height="400"></canvas>
 			</span>
 			<div style="float:right;">
-				<fieldset>
-					<legend>Configuration</legend>
-					<label for="nParticles"># of particles</label>: <input type='text' id="nParticles" onkeypress='return isNumber(event);' class="form-control form-control-sm" value="500" size="3 ">
-					<label for="nLandmarks"># of landmarks</label>: <input type='text' id="nLandmarks" onkeypress='return isNumber(event);' class="form-control form-control-sm" value="4" size="3">
-					<label for="goByOneStep">Go on each step</label>: <input type='text' id="goByOneStep" onblur='return parameterChanged(event);' onkeypress='return isDecimal(event);' class="form-control form-control-sm" value="0.04" size="3">
-					<table>
-						<tbody><tr>
-							<td></td>
-						</tr>
-						<tr>
-							<td><label for="robotForwardNoise">Move noise</label>:</td>
-							<td><input type='text' id="robotForwardNoise" onblur='return parameterChanged(event);' onkeypress='return isDecimal(event);' class="form-control form-control-sm" value="10" size="3"></td>
-							<td><label>%</label></td>
-						</tr>
-						<tr>
-							<td><label for="robotTurnNoise">Turn noise (Degrees)</label>:</td>
-							<td><input type='text' id="robotTurnNoise" onblur='return parameterChanged(event);' onkeypress='return isDecimal(event);' class="form-control form-control-sm" value="5" size="3"></td>
-							<td><label>%</label></td>
-						</tr>
-						<tr>
-							<td><label for="robotSenseNoise">Sense noise</label>:</td>
-							<td><input type='text' id="robotSenseNoise" onblur='return parameterChanged(event);' onkeypress='return isDecimal(event);' class="form-control form-control-sm" value="5" size="3"></td>
-						</tr>
-					</tbody></table>
-					<label for="fogOfWar">Sensor Radius</label>: <input id="fogOfWar" onblur='return parameterChanged(event);' onkeypress='return isNumber(event);' class="form-control form-control-sm" value="3" size="4">
-					<button onclick="reset()" class="btn btn-danger">Reset</button>
-					<button onclick="init()" class="btn btn-success">Start</button>
-					<button onclick="pause()" class="btn btn-warning">Pause</button>
-					<button onclick="step()" class="btn btn-info">Step Forward</button>
-				</fieldset>
+                <fieldset>
+                    <legend>Configuration</legend>
+                    <table>
+                        <tbody>
+                        <tr>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <label for="path">Movement Path:</label>
+                            </td>
+                            <td>
+                                <select id="path" class="selectpicker" onchange="selectPath(event);">
+                                    <optgroup label="Built-In">
+                                        <option>Vanilla</option>
+                                    </optgroup>
+                                    <optgroup label="Custom" id="customPathGroup">
+                                        <option data-icon="glyphicon glyphicon-plus" id="addPath">Add a path</option>
+                                    </optgroup>
+                                </select>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <label for="nParticles"># of particles</label>:
+                            </td>
+                            <td>
+                                <input type='text' id="nParticles"
+                                       onkeypress='return isNumber(event);'
+                                       class="form-control" value="500"
+                                       size="3 ">
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <label for="goByOneStep">Step length</label>:
+                            </td>
+                            <td>
+                                <input type='text' id="goByOneStep"
+                                       onblur='return parameterChanged(event);'
+                                       onkeypress='return isDecimal(event);'
+                                       class="form-control" value="0.04"
+                                       size="3">
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td><label for="robotForwardNoise">Move noise</label>:</td>
+                            <td><input type='text' id="robotForwardNoise" onblur='return parameterChanged(event);'
+                                       onkeypress='return isDecimal(event);' class="form-control form-control-sm" value="10"
+                                       size="3"></td>
+                            <td><label>%</label></td>
+                        </tr>
+                        <tr>
+                            <td><label for="robotTurnNoise">Turn noise (Degrees)</label>:</td>
+                            <td><input type='text' id="robotTurnNoise" onblur='return parameterChanged(event);'
+                                       onkeypress='return isDecimal(event);' class="form-control form-control-sm" value="5"
+                                       size="3"></td>
+                            <td><label>%</label></td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <label for="fogOfWar">Sensor Radius</label>:
+                            </td>
+                            <td>
+                                <input id="fogOfWar"
+                                       onblur='return parameterChanged(event);'
+                                       onkeypress='return isNumber(event);'
+                                       class="form-control" value="3" size="4">
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+
+                    <button onclick="reset()" class="btn btn-danger">
+                    <span class="glyphicon glyphicon-stop"
+                          aria-hidden="true"></span>
+                    </button>
+                    <button onclick="pause()" class="btn btn-info">
+                    <span class="glyphicon glyphicon-step-backward"
+                          aria-hidden="true"></span>
+                    </button>
+                    <button onclick="start()" class="btn btn-success">
+                    <span class="glyphicon glyphicon-play"
+                          aria-hidden="true"></span>
+                    </button>
+                    <button onclick="step()" class="btn btn-info">
+                    <span class="glyphicon glyphicon-step-forward"
+                          aria-hidden="true"></span>
+                    </button>
+                </fieldset>
 			</div>
 		</div>
 	</div>
