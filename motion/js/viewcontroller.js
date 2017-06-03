@@ -14,6 +14,7 @@ var fps = 0;
 //meter/pixel scale
 var scale = 0.02;
 
+var animating = true;
 
 //dimensions of the world, in meters
 //Robots are using world coordinates internally
@@ -21,6 +22,20 @@ var scale = 0.02;
 //bottom left is the origin
 var width;
 var height;
+
+//Path that is currently recording
+var path = [];
+
+//All known path
+var knownPath = {};
+
+//HTML element of the select path
+var pathSelect;
+
+//HTML element of the custom select group
+var customPathGroup;
+
+var alphanumericRE = new RegExp('^[a-zA-Z0-9]+$');
 
 function getSensorRadius()
 {
@@ -48,16 +63,100 @@ function frame(timestamp)
         robot.update();
         robot.draw(ctx);
     }
-    requestAnimationFrame(frame);
+    if(animating)
+        requestAnimationFrame(frame);
+}
+
+function selectPath(event)
+{
+    var selectedOption = event.target.selectedOptions[0];
+    if(selectedOption.id === 'addPath')
+    {
+        startRecordingPath();
+    }
+}
+
+function mouseMotion(event)
+{
+    var coor = getClickLoc(event);
+    var ctx = canvas.getContext('2d');
+    var lastPoint = path[path.length-1];
+    ctx.strokeLine(lastPoint.x, lastPoint.y, coor.x, coor.y);
+    path.push(coor);
+}
+
+function mouseDown(event)
+{
+    var coor = getClickLoc(event);
+    path.push(coor);
+    bgCanvas.onmousemove = mouseMotion;
+    bgCanvas.onmouseup = mouseUp;
+    bgCanvas.onmouseout = mouseUp;
+    clearCanvas(canvas);
+}
+
+function mouseUp(event)
+{
+    bgCanvas.onmousemove = undefined;
+    bgCanvas.onmouseup = undefined;
+    bgCanvas.onmouseout = undefined;
+    clearCanvas(canvas);
+
+    var pathName = "";
+    var coor = getClickLoc(event);
+    path.push(coor);
+
+    var msg = "Enter a unique name for this path, alphanumeric please:";
+
+    while(true)
+    {
+        pathName = prompt(msg, "Harry Potter");
+
+        if(pathName === null)
+        {
+            return;
+        }
+
+        //No duplicate name!
+        if(pathName in knownPath)
+        {
+            msg = 'Name must be unique!';
+            continue;
+        }
+
+        //Must be alphanumeric
+        if(pathName.match(alphanumericRE))
+            break;
+        msg = 'Name must be alphanumeric!';
+    }
+    knownPath[pathName] = path;
+    var option = document.createElement("option");
+    option.text = pathName;
+    customPathGroup.append(pathName, option);
+    $('.selectpicker').selectpicker('refresh');
+}
+
+function startRecordingPath()
+{
+    animating = false;
+    clearCanvas(canvas);
+    var ctx = canvas.getContext('2d');
+    ctx.font = '15px Menlo';
+    ctx.textAlign = 'center';
+    ctx.strokeText('Start drawing a path here', canvas.width/2, canvas.height/2);
+    bgCanvas.onmousedown = mouseDown;
+    path = [];
 }
 
 function init()
 {
     canvas = document.getElementById('canvas');
+    pathSelect = document.getElementById('path');
+    bgCanvas = document.getElementById('background');
+    customPathGroup = document.getElementById('customPathGroup');
+
     width = canvas.width * scale;
     height = canvas.height * scale;
-
-    bgCanvas = document.getElementById('background');
     map = getMapForCanvas(canvas);
     bgCanvas.getContext('2d').drawMap(map);
 

@@ -49,11 +49,16 @@ CanvasRenderingContext2D.prototype.drawMap = function(m)
     for (var i = m.length - 1; i >= 0; i--)
     {
         var l = m[i];
-        this.beginPath();
-        this.moveTo(l.s.x, l.s.y);
-        this.lineTo(l.t.x, l.t.y);
-        this.stroke();
+        this.strokeLine(l.s.x, l.s.y, l.t.x, l.t.y);
     }
+};
+
+CanvasRenderingContext2D.prototype.strokeLine = function(x1, y1, x2, y2)
+{
+    this.beginPath();
+    this.moveTo(x1, y1);
+    this.lineTo(x2, y2);
+    this.stroke();
 };
 
 function getClickLoc(event)

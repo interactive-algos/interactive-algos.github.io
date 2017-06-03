@@ -66,10 +66,7 @@ function drawLaserLines(ctx)
             ctx.circle(robotX + cos(dir)*dist, robotY + sin(dir)*dist, 5);
             ctx.fill();
         }
-        ctx.beginPath();
-        ctx.moveTo(robotX, robotY);
-        ctx.lineTo(robotX + cos(dir)*laserLen, robotY + sin(dir)*laserLen);
-        ctx.stroke();
+        ctx.strokeLine(robotX, robotY, robotX + cos(dir)*laserLen, robotY + sin(dir)*laserLen)
     }
 }
 
