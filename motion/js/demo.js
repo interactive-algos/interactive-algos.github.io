@@ -63,6 +63,7 @@ function frame(timestamp)
         ctx.clearRect(0, 0, canvas.width, canvas.height);
         ctx.fillStyle = 'black';
         ctx.font = '10px Menlo';
+        ctx.textAlign = 'start';
         ctx.fillText(fps + " FPS", 10, 20);
         robot.update();
         robot.draw(ctx);
@@ -92,6 +93,7 @@ function mouseMotion(event)
     var coor = getClickLoc(event);
     var ctx = canvas.getContext('2d');
     var lastPoint = path[path.length-1];
+    ctx.strokeStyle = 'red';
     ctx.strokeLine(toScreenX(lastPoint.x), toScreenY(lastPoint.y), coor.x, coor.y);
     toWorldCoor(coor);
     path.push(coor);
@@ -197,6 +199,12 @@ function init()
 
     Robot.sensorRadius = getSensorRadius();
     Robot.stride = getValue('goByOneStep');
+}
+
+function stop()
+{
+	animating = false;
+	clearCanvas(canvas);
 }
 
 function parameterChanged(event)
