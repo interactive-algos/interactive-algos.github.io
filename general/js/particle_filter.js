@@ -50,9 +50,12 @@ ParticleFilter.prototype.motionUpdate = function(u)
     }
 };
 
+
 ParticleFilter.prototype.resample = function()
 {
     var z_t = new Array(this.particles.length);
+
+    //Keep only 80% of all particles
     const m = z_t.length * 0.8;
 
     const r = z_t.length - m;
