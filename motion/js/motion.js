@@ -6,6 +6,9 @@
 
 function start()
 {
+	if(animating)
+		return;
+
 	var ctx = canvas.getContext('2d');
 	var path = knownPath[pathSelect.value];
 
