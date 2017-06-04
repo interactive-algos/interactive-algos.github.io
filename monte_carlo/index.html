@@ -34,8 +34,9 @@
     <script src='../general/js/particle_filter.js'></script>
     <script src='../general/js/robot.js'></script>
     <script src='../general/js/view.js'></script>
-    <script src='js/viewcontroller.js'></script>
+    <script src='js/monte_carlo.js'></script>
     <script src='../general/js/map_data.js'></script>
+    <script src="../motion/js/demo.js"></script>
 
     <title>Monte Carlo Demo</title>
 
@@ -111,7 +112,7 @@
                         <td><label>%</label></td>
                     </tr>
                     <tr>
-                        <td><label for="robotTurnNoise">Turn noise (Degrees)</label>:</td>
+                        <td><label for="robotTurnNoise">Turn noise</label>:</td>
                         <td><input type='text' id="robotTurnNoise" onblur='return parameterChanged(event);'
                                    onkeypress='return isDecimal(event);' class="form-control form-control-sm" value="5"
                                    size="3"></td>
@@ -129,7 +130,7 @@
                         </td>
                     </tr>
                     <tr>
-                        <td><label for="robotSenseNoise">Sense noise</label>:</td>
+                        <td><label for="robotSenseNoise">Sensor noise</label>:</td>
                         <td><input type='text' id="robotSenseNoise" onblur='return parameterChanged(event);'
                                    onkeypress='return isDecimal(event);' class="form-control form-control-sm" value="5"
                                    size="3"></td>
