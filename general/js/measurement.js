@@ -26,16 +26,18 @@ BeamModel.prototype.probability = function(z, state)
 
     var z_true = new Array(z.length);
 
+    //Initialization of the probability
     var q = 1;
 
     //Obtain the true distances
     scan(state.x, state.y, this.sensorRadius, m, z_true);
 
+    //Number of lasers that robot use to sense
     const nLasers = z.length;
 
+    //Adjust the direction of all lasers base on the (estimated?) rotation of the robot
     const dirOffset = Math.round(state.dir/(TWO_PI) * nLasers);
 
-    //z will be an array of noised distances, obtained by robot's sensor
     var i = (dirOffset - nLasers/4);
     i += nLasers + nLasers;
 
