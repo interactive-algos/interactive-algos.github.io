@@ -58,16 +58,18 @@ ParticleFilter.prototype.resample = function()
     //Resample 80% of all particles, the rest 20% will be randomly generated
     const m = z_t.length * 0.8;
 
-    const r = z_t.length - m;
-
     const step = 1.0/m;
 
     var cur = random() * step;
+
+    //Running sum
+    var cumulativeProbability = this.particles[0].w;
     for(var i = 0, j = 0; i < m; i ++)
     {
-        while(j < this.particles.length-1 && this.particles[j].w < cur)
+        while(j < this.particles.length-1 && cumulativeProbability < cur)
         {
-            j++;
+			j++;
+			cumulativeProbability += this.particles[j].w;
         }
         z_t[i] = this.particles[j];
         cur += step;
@@ -115,11 +117,6 @@ ParticleFilter.prototype.sensorUpdate = function(z)
         {
             this.particles[i].w /= sum;
         }
-    }
-    //Calculate CDF
-    for(var i = 1; i < this.particles.length; i ++)
-    {
-        this.particles[i].w += this.particles[i-1].w;
     }
     this.resample();
 };
