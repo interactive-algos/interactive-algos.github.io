@@ -1,4 +1,8 @@
 
+/*Costructor of robot; 
+*filter for calculating bel base on measurement and control data
+*path as the path that robot is going to take
+*/
 function Robot(filter, path)
 {
     if (typeof(dir) === 'undefined') dir = 0;
