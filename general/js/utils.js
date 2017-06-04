@@ -228,3 +228,31 @@ function clearCanvas(canvas)
     var ctx = canvas.getContext('2d');
     ctx.clearRect(0, 0, canvas.width, canvas.height);
 }
+
+function smoothenPath(path, windowSize)
+{
+    var copy = path.slice();
+    if(typeof windowSize === 'undefined')
+        windowSize = 10;
+
+    for(var i = windowSize; i < path.length-windowSize; i ++)
+    {
+        var dx = 0;
+		var dy = 0;
+
+        for(var j = i-windowSize; j < i; j ++)
+        {
+            dx += copy[j+1].x-copy[j].x;
+			dy += copy[j+1].y-copy[j].y;
+		}
+
+		for(var j = i+1; j < i+windowSize; j ++)
+		{
+			dx += copy[j].x-copy[j-1].x;
+			dy += copy[j].y-copy[j-1].y;
+		}
+
+		path[i].x = copy[i-1].x + dx/windowSize/2;
+		path[i].y = copy[i-1].y + dy/windowSize/2;
+	}
+}

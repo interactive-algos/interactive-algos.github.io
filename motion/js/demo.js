@@ -149,6 +149,7 @@ function mouseUp(event)
             break;
         msg = 'Name must be alphanumeric!';
     }
+	smoothenPath(path);
     knownPath[pathName] = path;
     printPath(path);
     var option = document.createElement("option");
@@ -182,6 +183,8 @@ function init()
     height = canvas.height * scale;
     map = getMapForCanvas(canvas);
     bgCanvas.getContext('2d').drawMap(map);
+
+	smoothenPath(vanillaPath);
 
     for(var i = 0; i < vanillaPath.length; i ++)
 	{
