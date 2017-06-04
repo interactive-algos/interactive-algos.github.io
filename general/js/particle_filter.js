@@ -19,6 +19,7 @@ function ParticleFilter(particleCount, motionModel, sensorModel, robotState)
         }
     }else
     {
+    	//generate random particles within the map
         var weight = 1.0/particleCount;
         for (var i = particleCount - 1; i >= 0; i--)
         {
@@ -27,6 +28,7 @@ function ParticleFilter(particleCount, motionModel, sensorModel, robotState)
     }
 }
 
+//Draw particle in context
 ParticleFilter.prototype.draw = function(ctx)
 {
     for (var i = this.particles.length - 1; i >= 0; i--)
