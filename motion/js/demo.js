@@ -204,7 +204,12 @@ function init()
 function stop()
 {
 	animating = false;
-	clearCanvas(canvas);
+}
+
+function stepForward()
+{
+	animating = false;
+	frame(Date.now());
 }
 
 function parameterChanged(event)
