@@ -203,13 +203,17 @@ function init()
 
 function stop()
 {
-	animating = false;
+	animating = !animating;
+	if(animating)
+	{
+		requestAnimationFrame(frame);
+	}
 }
 
 function stepForward()
 {
 	animating = false;
-	frame(Date.now());
+	requestAnimationFrame(frame);
 }
 
 function parameterChanged(event)
