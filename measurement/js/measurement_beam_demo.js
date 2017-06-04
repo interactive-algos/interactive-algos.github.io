@@ -52,7 +52,7 @@ function drawLaserLines(ctx)
         var laserLen = senseRadius;
 
         //Grey color for a miss
-        if(z[i] > senseRadius)
+        if(z[i] >= senseRadius)
         {
             ctx.strokeStyle = 'grey';
         }else
