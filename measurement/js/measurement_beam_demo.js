@@ -116,9 +116,15 @@ function mouseDown(event)
 	var y = coor.y;
 
 	//Do nothing if it is not a left button event
-	if(event.button !== 0)
+	if(event.altKey)
     {
-
+    	clearCanvas(canvas);
+		var ctx = canvas.getContext('2d');
+		drawRobot(ctx);
+		ctx.strokeStyle = 'rgba(0, 0, 255, 0.5)';
+		ctx.drawRobot(x, y, robotDir, 5);
+		var probability = sensorModel.probability(z, new RobotState(x, y, robotDir));
+		document.getElementById('probability').innerHTML = "Probability: " + probability;
 		return;
 	}
 
