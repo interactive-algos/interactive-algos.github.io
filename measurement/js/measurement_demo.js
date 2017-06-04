@@ -95,7 +95,7 @@ function parameterChanged(event)
     }
 }
 
-function mouseMotion(event)
+function trackRobotDir(event)
 {
     var coor = getClickLoc(event);
     var x = coor.x;
@@ -121,14 +121,16 @@ function mouseDown(event)
     robotY = y;
     clearCanvas(canvas);
     drawRobot(canvas.getContext('2d'));
-    bgCanvas.onmousemove = mouseMotion;
+    bgCanvas.onmousemove = trackRobotDir;
     bgCanvas.onmouseout = mouseUp;
+	bgCanvas.onmouseup = mouseUp;
 }
 
 function mouseUp()
 {
     bgCanvas.onmousemove = undefined;
     bgCanvas.onmouseout = undefined;
+    bgCanvas.onmouseup = undefined;
     update();
     drawLaserLines(canvas.getContext('2d'));
 }
@@ -148,6 +150,5 @@ function init()
 
     //Listen to mouse click events
     bgCanvas.onmousedown = mouseDown;
-    bgCanvas.onmouseup = mouseUp;
     senseRadius = getValue('sensorRadius')/0.02;
 }
