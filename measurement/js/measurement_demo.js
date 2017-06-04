@@ -109,6 +109,10 @@ function mouseMotion(event)
 
 function mouseDown(event)
 {
+	//Do nothing if it is not a left button event
+    if(event.button !== 0)
+    	return;
+
     var coor = getClickLoc(event);
     var x = coor.x;
     var y = coor.y;
