@@ -9,6 +9,7 @@ function start()
 	if(animating)
 		return;
 
+	animating = true;
 	var ctx = canvas.getContext('2d');
 	var path = knownPath[pathSelect.value];
 

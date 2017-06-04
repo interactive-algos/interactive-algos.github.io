@@ -14,7 +14,7 @@ var fps = 0;
 //meter/pixel scale
 var scale = 0.02;
 
-var animating = true;
+var animating = false;
 
 //dimensions of the world, in meters
 //Robots are using world coordinates internally
