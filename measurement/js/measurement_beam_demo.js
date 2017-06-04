@@ -21,6 +21,8 @@ var sensorNoise = 0.1;
 //Results of laser scan
 var z = new Array(nLasers);
 
+var sensorModel;
+
 function update()
 {
     //Only scan if location changed
@@ -109,13 +111,16 @@ function trackRobotDir(event)
 
 function mouseDown(event)
 {
-	//Do nothing if it is not a left button event
-    if(event.button !== 0)
-    	return;
+	var coor = getClickLoc(event);
+	var x = coor.x;
+	var y = coor.y;
 
-    var coor = getClickLoc(event);
-    var x = coor.x;
-    var y = coor.y;
+	//Do nothing if it is not a left button event
+	if(event.button !== 0)
+    {
+
+		return;
+	}
 
     robotX = x;
     robotY = y;
@@ -145,10 +150,29 @@ function init()
     bgCanvas.getContext('2d').drawMap(map);
     robotX = floor(random()*canvas.width);
     robotY = floor(random()*canvas.height);
+    robotDir = random()*TWO_PI;
+    dirOffset = round(robotDir/Math.PI/2 * nLasers);
+
+    update();
+    drawRobot(canvas.getContext('2d'));
+    drawLaserLines(canvas.getContext('2d'));
+
+	sensorModel = new BeamModel(getSensorNoise(), getSensorRadius(), map,
+		canvas.width, canvas.height);
 
     Particle.size = 5;
 
     //Listen to mouse click events
     bgCanvas.onmousedown = mouseDown;
     senseRadius = getValue('sensorRadius')/0.02;
+}
+
+function getSensorNoise()
+{
+	return getValue('sensorNoise')/100.0;
+}
+
+function getSensorRadius()
+{
+	return getValue('sensorRadius')/0.02;
 }
