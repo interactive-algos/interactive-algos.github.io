@@ -1,3 +1,6 @@
+/**
+ * Created by kelvinzhang on 5/30/17.
+ */
 var canvas; //The HTML Element of the canvas
 var bgCanvas; //The HTML element of the background canvas
 var robot;
@@ -7,8 +10,11 @@ var map;
 var frameCount = 0;
 var lastFrame;
 var fps = 0;
+
 //meter/pixel scale
 var scale = 0.02;
+
+var animating = true;
 
 //dimensions of the world, in meters
 //Robots are using world coordinates internally
@@ -17,9 +23,28 @@ var scale = 0.02;
 var width;
 var height;
 
+//Path that is currently recording
+var path = [];
+
+//All known path
+var knownPath = {};
+
+//HTML element of the select path
+var pathSelect;
+
+//HTML element of the custom select group
+var customPathGroup;
+
+var alphanumericRE = new RegExp('^[a-zA-Z0-9]+$');
+
 function getSensorRadius()
 {
 	return getValue('fogOfWar');
+}
+
+function refreshSelect()
+{
+	$('.selectpicker').selectpicker('refresh');
 }
 
 function frame(timestamp)
@@ -30,56 +55,169 @@ function frame(timestamp)
 		fps = Math.round(1000.0/(timestamp-lastFrame));
 		lastFrame = timestamp;
 
-        var ctx = canvas.getContext('2d');
-        /*
+		var ctx = canvas.getContext('2d');
+		/*
 		 ctx.fillStyle = 'rgba(255, 255, 255, 0.3)';
 		 ctx.fillRect(0, 0, canvas.width, canvas.height);
 		 */
-        ctx.clearRect(0, 0, canvas.width, canvas.height);
-        ctx.fillStyle = 'black';
-        ctx.font = '10px Menlo';
-        ctx.fillText(fps + " FPS", 10, 20);
-        robot.update();
-        robot.draw(ctx);
-    }
-	requestAnimationFrame(frame);
+		ctx.clearRect(0, 0, canvas.width, canvas.height);
+		ctx.fillStyle = 'black';
+		ctx.font = '10px Menlo';
+		ctx.fillText(fps + " FPS", 10, 20);
+		robot.update();
+		robot.draw(ctx);
+	}
+	if(animating)
+		requestAnimationFrame(frame);
+}
+
+function selectPath(event)
+{
+	var selectedOption = event.target.selectedOptions[0];
+	if(selectedOption.id === 'addPath')
+	{
+		startRecordingPath();
+	}else
+	{
+		var selectedPath = selectedOption.value;
+		clearCanvas(canvas);
+		var ctx = canvas.getContext('2d');
+		ctx.strokeStyle = 'green';
+		ctx.strokePath(knownPath[selectedPath]);
+	}
+}
+
+function mouseMotion(event)
+{
+	var coor = getClickLoc(event);
+	var ctx = canvas.getContext('2d');
+	var lastPoint = path[path.length-1];
+	ctx.strokeLine(toScreenX(lastPoint.x), toScreenY(lastPoint.y), coor.x, coor.y);
+	toWorldCoor(coor);
+	path.push(coor);
+}
+
+function mouseDown(event)
+{
+	var coor = getClickLoc(event);
+	toWorldCoor(coor);
+	path.push(coor);
+	bgCanvas.onmousemove = mouseMotion;
+	bgCanvas.onmouseup = mouseUp;
+	bgCanvas.onmouseout = mouseUp;
+	clearCanvas(canvas);
+}
+
+function mouseUp(event)
+{
+	bgCanvas.onmousemove = undefined;
+	bgCanvas.onmouseup = undefined;
+	bgCanvas.onmouseout = undefined;
+	bgCanvas.onmousedown = undefined;
+
+	clearCanvas(canvas);
+
+	var pathName;
+	var coor = getClickLoc(event);
+	toWorldCoor(coor);
+	path.push(coor);
+
+	var msg = "Enter a unique name for this path, alphanumeric please:";
+
+	while(true)
+	{
+		pathName = prompt(msg, "Harry Potter");
+
+		if(pathName === null)
+		{
+			pathSelect.selectedIndex = 0;
+			refreshSelect();
+			return;
+		}
+
+		//No duplicate name!
+		if(pathName in knownPath)
+		{
+			msg = 'Name must be unique!';
+			continue;
+		}
+
+		//Must be alphanumeric
+		if(pathName.match(alphanumericRE))
+			break;
+		msg = 'Name must be alphanumeric!';
+	}
+	knownPath[pathName] = path;
+	printPath(path);
+	var option = document.createElement("option");
+	option.text = pathName;
+	customPathGroup.append(pathName, option);
+	pathSelect.selectedIndex = pathSelect.length-1;
+	refreshSelect();
+}
+
+function startRecordingPath()
+{
+	animating = false;
+	clearCanvas(canvas);
+	var ctx = canvas.getContext('2d');
+	ctx.font = '15px Menlo';
+	ctx.strokeStyle = 'black';
+	ctx.textAlign = 'center';
+	ctx.strokeText('Start drawing a path here', canvas.width/2, canvas.height/2);
+	bgCanvas.onmousedown = mouseDown;
+	path = [];
 }
 
 function init()
 {
 	canvas = document.getElementById('canvas');
+	pathSelect = document.getElementById('path');
+	bgCanvas = document.getElementById('background');
+	customPathGroup = document.getElementById('customPathGroup');
+
 	width = canvas.width * scale;
 	height = canvas.height * scale;
-
-	bgCanvas = document.getElementById('background');
 	map = getMapForCanvas(canvas);
-    bgCanvas.getContext('2d').drawMap(map);
+	bgCanvas.getContext('2d').drawMap(map);
 
-    for(var i = map.length-1; i >= 0; i --)
+	for(var i = 0; i < vanillaPath.length; i ++)
 	{
-		map[i].s.x *= scale;
-		map[i].t.x *= scale;
-		map[i].s.y = (canvas.height-map[i].s.y)*scale;
-        map[i].t.y = (canvas.height-map[i].t.y)*scale;
-    }
+		vanillaPath[i].x = toWorldX(vanillaPath[i].x);
+		vanillaPath[i].y = toWorldY(vanillaPath[i].y);
+	}
 
+	knownPath['Vanilla'] = vanillaPath;
+
+	var selectedPath = pathSelect.value;
+	clearCanvas(canvas);
 	var ctx = canvas.getContext('2d');
+	ctx.strokeStyle = 'green';
+	ctx.strokePath(knownPath[selectedPath]);
+
 	Robot.sensorRadius = getSensorRadius();
 	Robot.stride = getValue('goByOneStep');
+}
+
+function start()
+{
+	var ctx = canvas.getContext('2d');
+	var path = knownPath[pathSelect.value];
+
+	var x = path[0].x;		//x coordinate
+	var y = path[0].y;		//y coordinate
+	var dir = atan2(path[1].y-path[0].y, path[1].x-path[0].x);	//orientation in radians
+
 	var motionModel = new OdometryModel(getTurnNoise(), getStrideNoise(), getTurnNoise(), getTurnNoise());
 	var sensorModel = new BeamModel(getSensorNoise(), getSensorRadius(), map, width, height);
+	var filter = new ParticleFilter(getParticleCount(), motionModel, sensorModel, new RobotState(x, y, dir));
 
-	var x = random()*width;
-	var y = random()*height;
-	var dir = random()*TWO_PI;
-
-    var filter = new ParticleFilter(getParticleCount(), motionModel, sensorModel);
-
-	robot = new Robot(x, y, dir, filter);
+	robot = new Robot(filter, path);
 	robot.draw(ctx);
-    requestAnimationFrame = window.msRequestAnimationFrame || window.webkitRequestAnimationFrame || window.mozRequestAnimationFrame || window.requestAnimationFrame;
-    lastFrame = Date.now();
-    requestAnimationFrame(frame);
+	requestAnimationFrame = window.msRequestAnimationFrame || window.webkitRequestAnimationFrame || window.mozRequestAnimationFrame || window.requestAnimationFrame;
+	animating = true;
+	lastFrame = Date.now();
+	requestAnimationFrame(frame);
 }
 
 function parameterChanged(event)
@@ -96,15 +234,30 @@ function parameterChanged(event)
 	}else if(target.id === 'goByOneStep')
 	{
 		Robot.stride = value;
-	}else if(target.id === 'robotSenseNoise')
-	{
-		Robot.sensorNoise = value/100.0;
 	}
+}
+
+function printPath(path)
+{
+	var str = '{\n';
+	str += "[x: " + path[0].x + ", y:" + path[0].y + "}";
+	for(var i = 1; i < path.length; i ++)
+	{
+		str += ",\n{x: " + path[i].x + ", y:" + path[i].y + "}";
+	}
+
+	str += '\n]';
+	console.log(str);
 }
 
 function getParticleCount()
 {
 	return getValue('nParticles');
+}
+
+function getSensorNoise()
+{
+	return getValue('robotSenseNoise') / 100.0;
 }
 
 function getStrideNoise()
@@ -117,48 +270,71 @@ function getTurnNoise()
 	return getValue('robotTurnNoise') / 100.0;
 }
 
-function getSensorNoise()
-{
-    return getValue('robotSenseNoise') / 100.0;
-}
 
 //convert x coordinate in world to x coordinate on screen
-function convertX(x)
+function toScreenX(x)
 {
-    return floor(x/scale);
+	return round(x/scale);
+}
+
+//convert x coordinate on screen to x coordinate in world
+function toWorldX(x)
+{
+	return x*scale;
 }
 
 //convert y coordinate in world to y coordinate on screen
-function convertY(y)
+function toScreenY(y)
 {
-    return floor(canvas.height - y/scale);
+	return round(canvas.height - y/scale);
 }
 
+//convert y coordinate on screen to y coordinate in world
+function toWorldY(y)
+{
+	return (canvas.height - y)*scale;
+}
+
+function toWorldCoor(coor)
+{
+	coor.x = toWorldX(coor.x);
+	coor.y = toWorldY(coor.y);
+}
 
 Robot.prototype.draw = function(ctx)
 {
-    ctx.strokeStyle = 'black';
-    if(Date.now() - this.lastMove < 200)
-        ctx.strokeStyle = 'red';
+	ctx.strokeStyle = 'black';
 
-    var x = convertX(this.x);
-    var y = convertY(this.y);
+	var x = toScreenX(this.x);
+	var y = toScreenY(this.y);
 
-    ctx.drawRobot(x, y, -this.dir, Robot.size/scale);
+	ctx.drawRobot(x, y, -this.dir, Robot.size/scale);
 
-    ctx.strokeStyle = 'rgba(0, 0, 255, '+ (1-this.senseCircle/Robot.sensorRadius) +')';
+	ctx.strokeStyle = 'rgba(0, 0, 255, '+ (1-this.senseCircle/Robot.sensorRadius) +')';
 
-    //draw Robot's sensing circle
-    ctx.strokeCircle(x, y, this.senseCircle/scale);
+	//draw Robot's sensing circle
+	ctx.strokeCircle(x, y, this.senseCircle/scale);
 
-    this.filter.draw(ctx);
+	this.filter.draw(ctx);
 };
 
 Particle.prototype.draw = function(ctx)
 {
-    var x = convertX(this.x);
-    var y = convertY(this.y);
+	var x = toScreenX(this.x);
+	var y = toScreenY(this.y);
 
-    ctx.strokeStyle = 'rgba(0, 0, 255, 0.1)';
-    ctx.drawRobot(x, y, -this.dir, Particle.size/scale);
+	ctx.strokeStyle = 'rgba(0, 0, 255, 0.1)';
+	ctx.drawRobot(x, y, -this.dir, Particle.size/scale);
+};
+
+
+CanvasRenderingContext2D.prototype.strokePath = function(path)
+{
+	this.beginPath();
+	this.moveTo(toScreenX(path[0].x), toScreenY(path[0].y));
+	for(var i = 1; i < path.length; i ++)
+	{
+		this.lineTo(toScreenX(path[i].x), toScreenY(path[i].y));
+	}
+	this.stroke();
 };
