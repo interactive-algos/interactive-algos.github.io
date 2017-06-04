@@ -121,6 +121,7 @@ function mouseDown(event)
     	clearCanvas(canvas);
 		var ctx = canvas.getContext('2d');
 		drawRobot(ctx);
+		drawLaserLines(ctx);
 		ctx.strokeStyle = 'rgba(0, 0, 255, 0.5)';
 		ctx.drawRobot(x, y, robotDir, 5);
 		var probability = sensorModel.probability(z, new RobotState(x, y, robotDir));
