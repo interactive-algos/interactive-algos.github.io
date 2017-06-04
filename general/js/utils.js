@@ -181,7 +181,7 @@ function scan(x, y, r, map, z)
             t1.y = y;
 
 
-        z[i] = r + 100;
+        z[i] = r;
         for(var j = 0; j < map.length; j ++)
         {
             if(doIntersect(s1, t1, map[j].s, map[j].t))
