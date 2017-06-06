@@ -17,7 +17,7 @@ function start()
 
 	var motionModel = new OdometryModel(getTurnNoise(), getStrideNoise(), getTurnNoise(), getTurnNoise());
 	var sensorModel = new BeamModel(getSensorNoise(), getSensorRadius(), map, width, height);
-	var filter = new ParticleFilter(getParticleCount(), motionModel, sensorModel, new RobotState(x, y, dir));
+	var filter = new ParticleFilter(getParticleCount(), motionModel, sensorModel);
 
 	robot = new Robot(filter, path);
 	robot.draw(ctx);
