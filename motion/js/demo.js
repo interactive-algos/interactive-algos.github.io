@@ -232,6 +232,7 @@ function stop()
 function stepForward()
 {
 	animating = false;
+	frameCount = -1;
 	requestAnimationFrame(frame);
 }
 

@@ -43,8 +43,8 @@ BeamModel.prototype.probability = function(z, state)
 
     for(var index = 0; index <= nLasers/2; index ++, i++)
     {
-        // if(z[i] > this.sensorRadius || z_true[i] > this.sensorRadius)
-        //     continue;
+        if(z[i] >= this.sensorRadius || z_true[i] >= this.sensorRadius)
+            continue;
         i %= nLasers;
         q *= prob_gaussian(z[i] - z_true[i], this.a1*z_true[i]);
     }
@@ -76,8 +76,8 @@ BeamModel.prototype.prob_log = function(z, state)
 
     for(var index = 0; index <= nLasers/2; index ++, i++)
     {
-        // if(z[i] > this.senseRadius || z_true[i] > this.sensorRadius)
-        //     continue;
+        if(z[i] > this.senseRadius || z_true[i] > this.sensorRadius)
+            continue;
         i %= nLasers;
         q += prob_gaussian_log(z[i] - z_true[i], this.a1*z_true[i]);
     }

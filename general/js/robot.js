@@ -33,7 +33,6 @@ Robot.size = 0.2;
 Robot.sensorRadius = 1.5;
 Robot.scanInterval = 2500;
 Robot.stride = 0.01;
-Robot.sensorNoise = 0.01;
 const EPS = 1E-5;
 
 Robot.prototype.setStrideNoise = function(noise)
@@ -145,6 +144,8 @@ Robot.prototype.updateParticles = function()
     {
         var z = new Array(36);
         scan(this.x, this.y, Robot.sensorRadius, this.filter.sensorModel.map, z);
+        for(var i = 0; i < z.length; i ++)
+        	z[i] += gaussian()*z[i]*this.filter.sensorModel.a1;
         this.filter.update(u, z);
     }else
     {
