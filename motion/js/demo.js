@@ -97,10 +97,12 @@ function mouseMotion(event)
     var m = getMapForCanvas(canvas);
     var untkingPath = new Line(toScreenX(lastPoint.x), toScreenY(lastPoint.y), coor.x, coor.y);
 
-    for (var i = 0; i < m.length; i++) {
+    for (var i = 0; i < m.length; i++)
+    {
         var map_line = m[i];
 
-        if (doIntersect(map_line.s, map_line.t, untkingPath.s, untkingPath.t)) {
+        if (doIntersect(map_line.s, map_line.t, untkingPath.s, untkingPath.t))
+        {
             return;
         }
     }

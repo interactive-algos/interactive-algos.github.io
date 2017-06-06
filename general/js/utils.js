@@ -63,7 +63,18 @@ function orientation(p, q, r)
 // and 'p2q2' intersect.
 function doIntersect(p1, q1, p2, q2)
 {
-    // Find the four orientations needed for general and
+	//Broad phase check
+	if(p1.x > max(p2.x, q2.x) && q1.x > max(p2.x, q2.x))
+		return false;
+	if(p1.x < min(p2.x, q2.x) && q1.x < min(p2.x, q2.x))
+		return false;
+
+	if(p1.y > max(p2.y, q2.y) && q1.y > max(p2.y, q2.y))
+		return false;
+	if(p1.y < min(p2.y, q2.y) && q1.y < min(p2.y, q2.y))
+		return false;
+
+	// Find the four orientations needed for general and
     // special cases
     const o1 = orientation(p1, q1, p2);
     const o2 = orientation(p1, q1, q2);
