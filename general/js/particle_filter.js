@@ -56,7 +56,7 @@ ParticleFilter.prototype.resample = function()
     var z_t = new Array(this.particles.length);
 
     //Resample 80% of all particles, the rest 20% will be randomly generated
-    const m = z_t.length * 0.8;
+    const m = z_t.length * 0.9;
 
     const step = 1.0/m;
 
@@ -85,12 +85,10 @@ ParticleFilter.prototype.resample = function()
 ParticleFilter.prototype.sensorUpdate = function(z)
 {
     //Calculate the logs of weights
-    // var max = Number.NEGATIVE_INFINITY;
     for(var i = this.particles.length-1; i >= 0; i--)
     {
         var p = this.particles[i];
         p.w = this.sensorModel.probability(z, new RobotState(p.x, p.y, p.dir));
-        // max = Math.max(max, p.w);
     }
 
     this.normalizeWeights();
@@ -127,8 +125,8 @@ ParticleFilter.prototype.normalizeWeights = function ()
 	{
 	    //If every particle has a probability of 0,
         // just make a uniform distribution
-		const nParticles = this.particles.length;
-		this.particles.forEach(function(p){p.w = 1.0/nParticles});
+		const uniform_probability = 1.0 / this.particles.length;
+		this.particles.forEach(function(p){p.w = uniform_probability;});
 	}else
 	{
 	    //Otherwise normalize the weights
