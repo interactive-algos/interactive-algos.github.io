@@ -28,4 +28,9 @@ Particle.prototype.setState = function(robotState)
 	this.dir = robotState.dir % (TWO_PI);
 };
 
+Particle.prototype.clone = function()
+{
+	return new Particle(this.x, this.y, this.dir, this.w);
+};
+
 Particle.size = 0.08;

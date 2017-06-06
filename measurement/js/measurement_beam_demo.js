@@ -89,6 +89,7 @@ function parameterChanged(event)
     else if(target.id === 'sensorNoise')
     {
         sensorNoise = Number(target.value) / 100.0;
+        sensorModel.a1 = sensorNoise;
     }
     else if(target.id === 'nLasers')
     {

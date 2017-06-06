@@ -71,7 +71,7 @@ ParticleFilter.prototype.resample = function()
 			j++;
 			cumulativeProbability += this.particles[j].w;
         }
-        z_t[i] = this.particles[j];
+        z_t[i] = this.particles[j].clone();
         cur += step;
     }
 
