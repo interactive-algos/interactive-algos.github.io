@@ -93,31 +93,8 @@ ParticleFilter.prototype.sensorUpdate = function(z)
         // max = Math.max(max, p.w);
     }
 
-    var sum = 0;
-    //Convert logs back to weights
-    for(var i = this.particles.length-1; i >= 0; i--)
-    {
-        var p = this.particles[i];
-        //Normalize the logs
-        // p.w -= max;
+    this.normalizeWeights();
 
-        //Exponentiation to recover relative proportion
-        // p.w = Math.exp(p.w);
-        sum += p.w;
-    }
-
-    if(sum === 0)
-    {
-        const nParticles = this.particles.length;
-        this.particles.forEach(function(p){p.w = 1.0/nParticles});
-    }else
-    {
-        //Normalize weights
-        for (var i = this.particles.length - 1; i >= 0; i--)
-        {
-            this.particles[i].w /= sum;
-        }
-    }
     this.resample();
 };
 
@@ -129,4 +106,32 @@ ParticleFilter.prototype.update = function(u, z)
 
     if(typeof this.sensorModel !== 'undefined')
         this.sensorUpdate(z);
+};
+
+ParticleFilter.prototype.normalizeWeights = function ()
+{
+	var sum = 0;
+	//Convert logs back to weights
+	for(var i = this.particles.length-1; i >= 0; i--)
+	{
+		var p = this.particles[i];
+		//Normalize the logs
+		// p.w -= max;
+
+		//Exponentiation to recover relative proportion
+		// p.w = Math.exp(p.w);
+		sum += p.w;
+	}
+
+	if(sum === 0)
+	{
+	    //If every particle has a probability of 0,
+        // just make a uniform distribution
+		const nParticles = this.particles.length;
+		this.particles.forEach(function(p){p.w = 1.0/nParticles});
+	}else
+	{
+	    //Otherwise normalize the weights
+		this.particles.forEach(function(p){p.w /= sum});
+	}
 };
