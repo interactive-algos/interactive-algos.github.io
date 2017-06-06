@@ -93,6 +93,18 @@ function mouseMotion(event)
     var coor = getClickLoc(event);
     var ctx = canvas.getContext('2d');
     var lastPoint = path[path.length-1];
+
+    var m = getMapForCanvas(canvas);
+    var untkingPath = new Line(toScreenX(lastPoint.x), toScreenY(lastPoint.y), coor.x, coor.y);
+
+    for (var i = 0; i < m.length; i++) {
+        var map_line = m[i];
+
+        if (doIntersect(map_line.s, map_line.t, untkingPath.s, untkingPath.t)) {
+            return;
+        }
+    }
+
     ctx.strokeStyle = 'red';
     ctx.strokeLine(toScreenX(lastPoint.x), toScreenY(lastPoint.y), coor.x, coor.y);
     toWorldCoor(coor);
@@ -103,6 +115,7 @@ function mouseDown(event)
 {
     var coor = getClickLoc(event);
 	toWorldCoor(coor);
+
     path.push(coor);
     bgCanvas.onmousemove = mouseMotion;
     bgCanvas.onmouseup = mouseUp;
@@ -161,6 +174,7 @@ function mouseUp(event)
 
 function startRecordingPath()
 {
+    console.log("start recording...");
     animating = false;
     clearCanvas(canvas);
     var ctx = canvas.getContext('2d');
@@ -291,8 +305,30 @@ function toWorldY(y)
 
 function toWorldCoor(coor)
 {
-	coor.x = toWorldX(coor.x);
-	coor.y = toWorldY(coor.y);
+    coor.x = toWorldX(coor.x);
+    coor.y = toWorldY(coor.y);
+}
+
+function toScreenCoor(coor)
+{
+    coor.x = toScreenX(coor.x);
+    coor.y = toScreenY(coor.y);
+}
+
+function getWorldCoor(coor)
+{
+    var coor1 = new Point(0,0);
+    coor1.x = toWorldX(coor.x);
+    coor1.y = toWorldY(coor.y);
+    return coor1;
+}
+
+function getScreenCoor(coor)
+{
+    var coor1 = new Point(0,0);
+    coor1.x = toScreenX(coor.x);
+    coor1.y = toScreenY(coor.y);
+    return coor1;
 }
 
 Robot.prototype.draw = function(ctx)
