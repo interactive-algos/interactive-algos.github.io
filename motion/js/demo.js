@@ -315,20 +315,17 @@ function toScreenCoor(coor)
     coor.y = toScreenY(coor.y);
 }
 
+
+
+//Functional API, return a new point.
 function getWorldCoor(coor)
 {
-    var coor1 = new Point(0,0);
-    coor1.x = toWorldX(coor.x);
-    coor1.y = toWorldY(coor.y);
-    return coor1;
+    return new Point(toWorldX(coor.x), toWorldY(coor.y));
 }
 
 function getScreenCoor(coor)
 {
-    var coor1 = new Point(0,0);
-    coor1.x = toScreenX(coor.x);
-    coor1.y = toScreenY(coor.y);
-    return coor1;
+    return new Point(toScreenX(coor.x), toScreenY(coor.y));
 }
 
 Robot.prototype.draw = function(ctx)
