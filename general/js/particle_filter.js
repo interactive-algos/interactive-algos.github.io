@@ -35,7 +35,7 @@ function ParticleFilter(particleCount, motionModel, sensorModel, robotState){
 }
 
 /**
- * Draws the particle on the context
+ * Draws the particles on the context
  * @function
  * @param {Context} ctx - The context that the particles will be drawn on
  */
@@ -44,6 +44,18 @@ ParticleFilter.prototype.draw = function(ctx){
         this.particles[i].draw(ctx);
     }
 };
+
+/**
+ * Regenerate all particles of the Particle filter
+ * @function
+ */
+ParticleFilter.prototype.regenrateAll = function() {
+    // generate random particles within the map
+    var weight = 1.0/this.count;
+    for (var i = this.count - 1; i >= 0; i--){
+        this.particles[i] = new Particle(this.sensorModel.width*random(), this.sensorModel.height*random(), TWO_PI*random(), 1.0/particleCount);
+    }
+}
 
 /**
  * Update the state of particles based on the odometry reading
@@ -148,9 +160,8 @@ ParticleFilter.prototype.normalizeWeights = function ()
 	if(sum === 0)
 	{
 	    // If every particle has a probability of 0,
-        // just make a uniform distribution
-		const uniform_probability = 1.0 / this.particles.length;
-		this.particles.forEach(function(p){p.w = uniform_probability;});
+        // just regenrate all particles
+        this.regenrateAll();
 	}else
 	{
 	    // Otherwise normalize the weights
