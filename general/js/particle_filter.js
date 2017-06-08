@@ -49,6 +49,20 @@ ParticleFilter.prototype.draw = function(ctx){
  * Update the state of particles based on the odometry reading
  * @function
  * @param {Odometry} u - The odometry reading from the motion sensor
+ * @param {float[]} z - An array of distance reading from the beam sensor
+ */
+ParticleFilter.prototype.update = function(u, z){
+    if(typeof this.motionModel !== 'undefined')
+        this.motionUpdate(u);
+
+    if(typeof this.sensorModel !== 'undefined')
+        this.sensorUpdate(z);
+};
+
+/**
+ * Update the state of particles based on the odometry reading
+ * @function
+ * @param {Odometry} u - The odometry reading from the motion sensor
  */
 ParticleFilter.prototype.motionUpdate = function(u){
     //Update the state of all particles base on the estimated motion
@@ -61,13 +75,33 @@ ParticleFilter.prototype.motionUpdate = function(u){
     }
 };
 
+/**
+ * Update the probabilities of particles based on the sensor readings
+ * @function
+ * @param {float[]} z - The sensor reading from the motion sensor
+ */
+ParticleFilter.prototype.sensorUpdate = function(z){
+    //Calculate the logs of weights
+    for(var i = this.particles.length-1; i >= 0; i--){
+        var p = this.particles[i];
+        p.w = this.sensorModel.probability(z, new RobotState(p.x, p.y, p.dir));
+    }
 
+    this.normalizeWeights();
+
+    this.resample();
+};
+
+/**
+ * Resampling of particles
+ * @function
+ */
 ParticleFilter.prototype.resample = function()
 {
     var z_t = new Array(this.particles.length);
 
     //Resample 80% of all particles, the rest 20% will be randomly generated
-    const m = z_t.length * 0.8
+    const m = z_t.length * 0.8;
 
     const step = 1.0/m;
 
@@ -91,30 +125,6 @@ ParticleFilter.prototype.resample = function()
         z_t[i] = new Particle(random()*this.sensorModel.width, random()*this.sensorModel.height, random()*TWO_PI, 0);
     }
     this.particles = z_t;
-};
-
-ParticleFilter.prototype.sensorUpdate = function(z)
-{
-    //Calculate the logs of weights
-    for(var i = this.particles.length-1; i >= 0; i--)
-    {
-        var p = this.particles[i];
-        p.w = this.sensorModel.probability(z, new RobotState(p.x, p.y, p.dir));
-    }
-
-    this.normalizeWeights();
-
-    this.resample();
-};
-
-//Update with odometry u, measurement z
-ParticleFilter.prototype.update = function(u, z)
-{
-    if(typeof this.motionModel !== 'undefined')
-        this.motionUpdate(u);
-
-    if(typeof this.sensorModel !== 'undefined')
-        this.sensorUpdate(z);
 };
 
 ParticleFilter.prototype.normalizeWeights = function ()

@@ -170,42 +170,6 @@ function Line(sx, sy, tx, ty)
     this.t = new Point(tx, ty);
 }
 
-//Scan map at location (x, y), with radius r.
-function scan(x, y, r, map, z)
-{
-    var nLasers = z.length;
-
-    for(var i = 0; i < nLasers; i ++)
-    {
-        var dir = TWO_PI * i / nLasers;
-
-        //End points of the laser line
-        var s1 = new Point(x, y);
-        var t1 = new Point(x + cos(dir)*r, y + sin(dir)*r);
-
-        //If dir is 90 degrees
-        //if i = 1/nLasers or i = (3/4) * nLasers
-        //cos(dir) should be 0 in these cases,
-        if(i * 4 === nLasers || i * 4 === nLasers * 3)
-            t1.x = x;
-        else if(i * 2 === nLasers)
-            t1.y = y;
-
-
-        z[i] = r;
-        for(var j = 0; j < map.length; j ++)
-        {
-            if(doIntersect(s1, t1, map[j].s, map[j].t))
-            {
-                var p = intersectionPoint(s1, t1, map[j].s, map[j].t);
-                var dist = p.distanceTo(new Point(x, y));
-                z[i] = min(z[i], dist);
-            }
-        }
-    }
-}
-
-
 const ROOT_TWO_PI = sqrt(TWO_PI);
 
 //Probability of getting a from a 0 centered
