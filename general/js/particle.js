@@ -5,12 +5,13 @@
  * @param {int} x - the initial x coordinate of the particle robot
  * @param {int} y - the initial y coordinate of the particle robot
  * @param {float} dir - the initial direction of the particle robot
- * @param {float} weight - the initial weight (probability) of the particle 
+ * @param {float} weight - the initial weight (probability) of the particle
  */
-function Particle(x, y, dir, weight){
+function Particle(x, y, dir, weight)
+{
 	//coordinates
 	this.x = x;
-	this.y = y;			
+	this.y = y;
 
 	//direction of robot
 	this.dir = dir;
@@ -25,12 +26,13 @@ function Particle(x, y, dir, weight){
  * @function
  * @param {Context} ctx - The context that the particle will be drawn on
  */
-Particle.prototype.draw = function(ctx){
-    var x = round(this.x);
-    var y = round(this.y);
+Particle.prototype.draw = function (ctx)
+{
+	var x = round(this.x);
+	var y = round(this.y);
 
 	ctx.strokeStyle = 'rgba(0, 0, 255, 0.1)';
-    ctx.drawRobot(x, y, -this.dir, Particle.size);
+	ctx.drawRobot(x, y, -this.dir, Particle.size);
 };
 
 /**
@@ -38,16 +40,17 @@ Particle.prototype.draw = function(ctx){
  * @function
  * @param {RobotState} robotState - The robot state that will be assigned to the particle
  */
-Particle.prototype.setState = function(robotState){
+Particle.prototype.setState = function (robotState)
+{
 	this.x = robotState.x;
 	this.y = robotState.y;
 	this.dir = robotState.dir % (TWO_PI);
 };
 
 
-// Particle.prototype.clone = function()
-// {
-// 	return new Particle(this.x, this.y, this.dir, this.w);
-// };
+Particle.prototype.clone = function()
+{
+	return new Particle(this.x, this.y, this.dir, this.w);
+};
 
 Particle.size = 0.08;

@@ -131,45 +131,35 @@ ParticleFilter.prototype.sensorUpdate = function(z){
  * @function
  * @param {float} percent - The ratio of which will be resampled
  */
-ParticleFilter.prototype.resample = function(percent){
-    // Initiate array for updated particles
-    var z_t = new Array(this.count);
+ParticleFilter.prototype.resample = function(percent)
+{
+	var z_t = new Array(this.particles.length);
 
-    // Resample most of all particles, the rest will be randomly generated
-    const resNum = z_t.length * percent;
+	//Resample 80% of all particles, the rest 20% will be randomly generated
+	const m = z_t.length * percent;
 
-    const step = 1.0/resNum;
+	const step = 1.0/m;
 
-    var cur = random() * step;
+	var cur = random() * step;
 
-    // Running sum
-    var cumulativeProbability = this.particles[0].w;
-
-    // For the first part, resample
-    for(var i = 0, j = 0; i < resNum; i++){
-
-        while(j < this.particles.length-1 && cumulativeProbability < cur){
+	//Running sum
+	var cumulativeProbability = this.particles[0].w;
+	for(var i = 0, j = 0; i < m; i ++)
+	{
+		while(j < this.particles.length-1 && cumulativeProbability < cur)
+		{
 			j++;
 			cumulativeProbability += this.particles[j].w;
-        }
-        // Elluminate low weight particles
-        if (this.particles[j].w < 0.1) {
-            z_t[i] = this.newParticle();
-        } else {
-            z_t[i] = this.particles[j];
-        }
-        // cur += step;
-    }
+		}
+		z_t[i] = this.particles[j].clone();
+		cur += step;
+	}
 
-    // regenerate the rest
-    for (var i = resNum; i < this.count; i++){
-        z_t[i] = this.newParticle();
-    }
-
-    //Assign it to particles
-    this.particles = z_t;
-
-    // this.refillAll();
+	for(var i = m; i < z_t.length; i ++)
+	{
+		z_t[i] = new Particle(random()*this.sensorModel.width, random()*this.sensorModel.height, random()*TWO_PI, 0);
+	}
+	this.particles = z_t;
 };
 
 /**
