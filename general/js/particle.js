@@ -7,8 +7,7 @@
  * @param {float} dir - the initial direction of the particle robot
  * @param {float} weight - the initial weight (probability) of the particle 
  */
-function Particle(x, y, dir, weight)
-{
+function Particle(x, y, dir, weight){
 	//coordinates
 	this.x = x;
 	this.y = y;			
@@ -26,8 +25,7 @@ function Particle(x, y, dir, weight)
  * @function
  * @param {Context} ctx - The context that the particle will be drawn on
  */
-Particle.prototype.draw = function(ctx)
-{
+Particle.prototype.draw = function(ctx){
     var x = round(this.x);
     var y = round(this.y);
 
@@ -40,8 +38,7 @@ Particle.prototype.draw = function(ctx)
  * @function
  * @param {RobotState} robotState - The robot state that will be assigned to the particle
  */
-Particle.prototype.setState = function(robotState)
-{
+Particle.prototype.setState = function(robotState){
 	this.x = robotState.x;
 	this.y = robotState.y;
 	this.dir = robotState.dir % (TWO_PI);

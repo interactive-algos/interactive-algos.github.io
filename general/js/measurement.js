@@ -1,21 +1,28 @@
-
-function BeamModel(a1, sensorRadius, map, width, height)
-{
-	//Gaussian noise on hit
+/**
+ * A simulation of Beam Model --
+ * A representation of Measurement Model
+ * @constructor
+ * @param {float} a1 - The noise on beam when hit
+ * @param {float} sensorRadius - The sensor Radius of the robot
+ * @param {Line[]} map - An array of lines that represent the world
+ * @param {int} width - The width of the map
+ * @param {int} height - The height of the map
+ */
+function BeamModel(a1, sensorRadius, map, width, height){
 	this.a1 = a1;
-
 	this.map = map;
-
 	this.width = width;
 	this.height = height;
-
-	//Sensor radius
 	this.sensorRadius = sensorRadius;
 }
 
-/*
-	Probability of getting measurement z on state
-	if the robot pose is 'state'. (Given map m)
+/**
+ * The probability for the robot to get a sensor reading "z"
+ * when it has a state "state"
+ * @function
+ * @param {float[]} z - The given reading of measurement sensor
+ * @param {RobotState} state - The actual robot state
+ * @returns {float} q - The probability of getting z
  */
 BeamModel.prototype.probability = function(z, state)
 {
@@ -56,7 +63,14 @@ BeamModel.prototype.probability = function(z, state)
     return q;
 };
 
-
+/**
+ * The log of probability for the robot to get a sensor reading "z"
+ * when it has a state "state"
+ * @function
+ * @param {float[]} z - The given reading of measurement sensor
+ * @param {RobotState} state - The actual robot state
+ * @returns {float} q - The log of probability of getting z
+ */
 BeamModel.prototype.prob_log = function(z, state)
 {
     // if(state.x < 0 || state.y < 0 || state.x >= this.width || state.y >= this.height)
@@ -89,8 +103,18 @@ BeamModel.prototype.prob_log = function(z, state)
     return q;
 };
 
-//Scan map at location (x, y), with radius r.
-function scan(x, y, init_dir, r, map, z)
+/**
+ * Scans the map in (x,y); with direction of dir0;
+ * with sensor radius of r; And assign the result into z.
+ * @function
+ * @param {int} x - X Coordinate
+ * @param {int} y - Y Coordinate
+ * @param {float} dir0 - The facing direction
+ * @param {float} r - The sensor radius
+ * @param {Line[]} map - An array of Lines that represents the world
+ * @param {float[]} z - The array to store the sensor reading
+ */
+function scan(x, y, dir0, r, map, z)
 {
     var nLasers = z.length;
 

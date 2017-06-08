@@ -72,6 +72,7 @@ ParticleFilter.prototype.refillAll = function() {
 /**
  * Return a new random particle
  * @function
+ * @return {Particle} newParticle - A random generated particle
  */
 ParticleFilter.prototype.newParticle = function() {
     return new Particle(this.sensorModel.width*random(), 
@@ -133,8 +134,7 @@ ParticleFilter.prototype.sensorUpdate = function(z){
  * @function
  * @param {float} percent - The ratio of which will be resampled
  */
-ParticleFilter.prototype.resample = function(percent)
-{
+ParticleFilter.prototype.resample = function(percent){
     // Initiate array for updated particles
     var z_t = new Array(this.count);
 
@@ -166,7 +166,7 @@ ParticleFilter.prototype.resample = function(percent)
     }
 
     // regenerate the rest
-    for (var i = resNum; i < this.count; i++) {
+    for (var i = resNum; i < this.count; i++){
         z_t[i] = this.newParticle();
     }
 
@@ -180,8 +180,7 @@ ParticleFilter.prototype.resample = function(percent)
  * Normalize the weight of the particles to range (1,0)
  * @function
  */
-ParticleFilter.prototype.normalizeWeights = function ()
-{
+ParticleFilter.prototype.normalizeWeights = function (){
 	var max = 0;
 	// Convert logs back to weights
 	for(var i = this.particles.length-1; i >= 0; i--)
