@@ -26,7 +26,7 @@ var sensorModel;
 function update()
 {
     //Only scan if location changed
-    scan(robotX, robotY, senseRadius, map, z);
+    scan(robotX, robotY, robotDir, senseRadius, map, z);
 }
 
 function drawLaserLines(ctx)

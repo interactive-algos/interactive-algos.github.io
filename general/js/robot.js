@@ -143,7 +143,7 @@ Robot.prototype.updateParticles = function()
     if(typeof this.filter.sensorModel !== 'undefined')
     {
         var z = new Array(36);
-        scan(this.x, this.y, Robot.sensorRadius, this.filter.sensorModel.map, z);
+        scan(this.x, this.y, this.dir, Robot.sensorRadius, this.filter.sensorModel.map, z);
         for(var i = 0; i < z.length; i ++)
         	z[i] += gaussian()*z[i]*this.filter.sensorModel.a1;
         this.filter.update(u, z);

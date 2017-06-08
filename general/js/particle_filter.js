@@ -75,7 +75,7 @@ ParticleFilter.prototype.refillAll = function() {
  */
 ParticleFilter.prototype.newParticle = function() {
     return new Particle(this.sensorModel.width*random(), 
-            this.sensorModel.height*random(), TWO_PI*random(), 1.0/this.count);
+            this.sensorModel.height*random(), TWO_PI*random(), 1.0);
 }
 
 /**
@@ -124,6 +124,7 @@ ParticleFilter.prototype.sensorUpdate = function(z){
     // this.normalizeWeights();
 
     // Resample the particles
+    this.normalizeWeights();
     this.resample(0.9);
 };
 
@@ -150,18 +151,18 @@ ParticleFilter.prototype.resample = function(percent)
     // For the first part, resample
     for(var i = 0, j = 0; i < resNum; i++){
 
-        while(j < this.particles.length-1 && cumulativeProbability < cur){
-			j++;
-			cumulativeProbability += this.particles[j].w;
-        }
-
+   //      while(j < this.particles.length-1 && cumulativeProbability < cur){
+			// j++;
+			// cumulativeProbability += this.particles[j].w;
+   //      }
+        j++;
         // Elluminate low weight particles
-        if (this.particles[j] < 0.1) {
+        if (this.particles[j].w < 0.1) {
             z_t[i] = this.newParticle();
         } else {
             z_t[i] = this.particles[j];
         }
-        cur += step;
+        // cur += step;
     }
 
     // regenerate the rest
@@ -175,9 +176,13 @@ ParticleFilter.prototype.resample = function(percent)
     // this.refillAll();
 };
 
+/**
+ * Normalize the weight of the particles to range (1,0)
+ * @function
+ */
 ParticleFilter.prototype.normalizeWeights = function ()
 {
-	var sum = 0;
+	var max = 0;
 	// Convert logs back to weights
 	for(var i = this.particles.length-1; i >= 0; i--)
 	{
@@ -187,10 +192,12 @@ ParticleFilter.prototype.normalizeWeights = function ()
 
 		// Exponentiation to recover relative proportion
 		// p.w = Math.exp(p.w);
-		sum += p.w;
+		// sum += p.w;
+
+        if (max<p.w) max = p.w;
 	}
 
-	if(sum === 0)
+	if(max === 0)
 	{
 	    // If every particle has a probability of 0,
         // just regenrate all particles
@@ -198,6 +205,6 @@ ParticleFilter.prototype.normalizeWeights = function ()
 	}else
 	{
 	    // Otherwise normalize the weights
-		this.particles.forEach(function(p){p.w /= sum});
+		this.particles.forEach(function(p){p.w /= max});
 	}
 };

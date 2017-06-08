@@ -14,7 +14,7 @@ function BeamModel(a1, sensorRadius, map, width, height)
 }
 
 /*
-	Probability of getting measurement z
+	Probability of getting measurement z on state
 	if the robot pose is 'state'. (Given map m)
  */
 BeamModel.prototype.probability = function(z, state)
@@ -24,13 +24,14 @@ BeamModel.prototype.probability = function(z, state)
 
     const m = this.map;
 
+    //Actual sensor data
     var z_true = new Array(z.length);
 
     //Initialization of the probability
     var q = 1;
 
     //Obtain the true distances
-    scan(state.x, state.y, this.sensorRadius, m, z_true);
+    scan(state.x, state.y, state.dir, this.sensorRadius, m, z_true);
 
     //Number of lasers that robot use to sense
     const nLasers = z.length;
@@ -46,7 +47,11 @@ BeamModel.prototype.probability = function(z, state)
         if(z[i] >= this.sensorRadius || z_true[i] >= this.sensorRadius)
             continue;
         i %= nLasers;
-        q *= prob_gaussian(z[i] - z_true[i], this.a1*z_true[i]);
+        // q *= prob_gaussian(z[i] - z_true[i], this.a1*z_true[i]);
+    }
+
+    for (var j = 0; j < z.length; j++) {
+        q *= 1 - Math.abs((z[j]-z_true[j])/(z[j]+z_true[j])/2);
     }
     return q;
 };
@@ -64,7 +69,7 @@ BeamModel.prototype.prob_log = function(z, state)
     var q = 0;
 
     //Obtain the true distances
-    scan(state.x, state.y, this.sensorRadius, m, z_true);
+    scan(state.x, state.y, state.dir, this.sensorRadius, m, z_true);
 
     const nLasers = z.length;
 
@@ -85,7 +90,7 @@ BeamModel.prototype.prob_log = function(z, state)
 };
 
 //Scan map at location (x, y), with radius r.
-function scan(x, y, r, map, z)
+function scan(x, y, init_dir, r, map, z)
 {
     var nLasers = z.length;
 
