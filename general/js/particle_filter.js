@@ -148,11 +148,10 @@ ParticleFilter.prototype.resample = function(percent){
     // For the first part, resample
     for(var i = 0, j = 0; i < resNum; i++){
 
-   //      while(j < this.particles.length-1 && cumulativeProbability < cur){
-			// j++;
-			// cumulativeProbability += this.particles[j].w;
-   //      }
-        j++;
+        while(j < this.particles.length-1 && cumulativeProbability < cur){
+			j++;
+			cumulativeProbability += this.particles[j].w;
+        }
         // Elluminate low weight particles
         if (this.particles[j].w < 0.1) {
             z_t[i] = this.newParticle();
