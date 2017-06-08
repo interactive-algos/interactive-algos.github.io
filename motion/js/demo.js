@@ -1,6 +1,3 @@
-/**
- * Created by kelvinzhang on 5/30/17.
- */
 var canvas; //The HTML Element of the canvas
 var bgCanvas; //The HTML element of the background canvas
 var robot;

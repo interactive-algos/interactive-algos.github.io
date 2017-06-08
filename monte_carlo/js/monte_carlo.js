@@ -1,6 +1,3 @@
-// /**
-//  * Created by kelvinzhang on 5/30/17.
-//  */
 
 function start()
 {

@@ -54,12 +54,12 @@ BeamModel.prototype.probability = function(z, state)
         if(z[i] >= this.sensorRadius || z_true[i] >= this.sensorRadius)
             continue;
         i %= nLasers;
-        // q *= prob_gaussian(z[i] - z_true[i], this.a1*z_true[i]);
+        q *= prob_gaussian(z[i] - z_true[i], this.a1*z_true[i]);
     }
 
-    for (var j = 0; j < z.length; j++) {
-        q *= 1 - Math.abs((z[j]-z_true[j])/(z[j]+z_true[j])/2);
-    }
+    // for (var j = 0; j < z.length; j++) {
+    //     q *= 1 - Math.abs((z[j]-z_true[j])/(z[j]+z_true[j])/2);
+    // }
     return q;
 };
 

@@ -1,6 +1,3 @@
-/**
- * Created by kelvinzhang on 5/28/17.
- */
 
 /**
  * A simulation of Particle Filter --

@@ -1,9 +1,3 @@
-/**
- * Created by kelvinzhang on 6/3/17.
- */
-
-
-
 function start()
 {
 	if(animating)

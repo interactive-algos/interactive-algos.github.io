@@ -1,7 +1,3 @@
-/**
- * Created by kelvinzhang on 6/3/17.
- */
-
 
 var vanillaPath = [
 	{x: 25, y: 302},
