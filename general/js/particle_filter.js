@@ -29,7 +29,7 @@ function ParticleFilter(particleCount, motionModel, sensorModel, robotState){
     	// generate random particles within the map
         var weight = 1.0/particleCount;
         for (var i = particleCount - 1; i >= 0; i--){
-            this.particles[i] = new Particle(this.sensorModel.width*random(), this.sensorModel.height*random(), TWO_PI*random(), 1.0/particleCount);
+            this.particles[i] = this.newParticle();
         }
     }
 }
@@ -53,8 +53,29 @@ ParticleFilter.prototype.regenrateAll = function() {
     // generate random particles within the map
     var weight = 1.0/this.count;
     for (var i = this.count - 1; i >= 0; i--){
-        this.particles[i] = new Particle(this.sensorModel.width*random(), this.sensorModel.height*random(), TWO_PI*random(), 1.0/particleCount);
+        this.particles[i] = this.newParticle();
     }
+}
+
+/**
+ * Refill all particles of the Particle filter
+ * @function
+ */
+ParticleFilter.prototype.refillAll = function() {
+    // generate random particles within the map
+    var weight = 1.0/this.count;
+    while (this.particles.length < this.count){
+        this.particles.push(this.newParticle());
+    }
+}
+
+/**
+ * Return a new random particle
+ * @function
+ */
+ParticleFilter.prototype.newParticle = function() {
+    return new Particle(this.sensorModel.width*random(), 
+            this.sensorModel.height*random(), TWO_PI*random(), 1.0/this.count);
 }
 
 /**
@@ -100,46 +121,52 @@ ParticleFilter.prototype.sensorUpdate = function(z){
     }
 
     // To ensure the probability is in the range of (0,1)
-    this.normalizeWeights();
+    // this.normalizeWeights();
 
     // Resample the particles
     this.resample();
 };
 
 /**
- * This function is used to resample the particles each time the sensor updates
+ * Resample all the particles
  * @function
  */
 ParticleFilter.prototype.resample = function()
 {
     // Initiate array for updated particles
-    var z_t = new Array(this.particles.length);
+    var z_t = new Array(this.count);
 
     // Resample 80% of all particles, the rest 20% will be randomly generated
-    const m = z_t.length * 0.8;
+    const resNum = z_t.length * 0.8;
 
-    const step = 1.0/m;
+    const step = 1.0/resNum;
 
     var cur = random() * step;
 
     // Running sum
     var cumulativeProbability = this.particles[0].w;
-    for(var i = 0, j = 0; i < m; i ++)
-    {
-        while(j < this.particles.length-1 && cumulativeProbability < cur)
-        {
+    for(var i = 0, j = 0; i < resNum; i++){
+
+        while(j < this.particles.length-1 && cumulativeProbability < cur){
 			j++;
 			cumulativeProbability += this.particles[j].w;
         }
-        z_t[i] = this.particles[j].clone();
+
+        if (this.particles[j] < 0.1) {
+            z_t[i] = this.newParticle();
+        } else {
+            z_t[i] = this.particles[j];
+        }
         cur += step;
     }
 
-    for(var i = m; i < z_t.length; i ++)
-    {
-        z_t[i] = new Particle(random()*this.sensorModel.width, random()*this.sensorModel.height, random()*TWO_PI, 0);
+    for (var i = resNum; i < this.count; i++) {
+        z_t[i] = this.newParticle();
     }
+
     this.particles = z_t;
+
+    // this.refillAll();
 };
 
 ParticleFilter.prototype.normalizeWeights = function ()
