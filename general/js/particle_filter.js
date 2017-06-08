@@ -2,37 +2,45 @@
  * Created by kelvinzhang on 5/28/17.
  */
 
-function ParticleFilter(particleCount, motionModel, sensorModel, robotState)
-{
+/**
+ * A simulation of Particle Filter --
+ * A representation of nonparametric implementation of the Bayes filter
+ * @constructor
+ * @param {int} particleCount - The total number of particles that can present in a time.
+ * @param {MotionModel} motionModel - The motion model that is used to calculate its motion over time.
+ * @param {SensorModel} sensorModel - The sensor model that is used to measure environment over time.
+ * @param {State} robotState - The state of the robot while creating the particle filter
+ */
+function ParticleFilter(particleCount, motionModel, sensorModel, robotState){
+    this.count = particleCount;
+    //Init the array that stores particles
     this.particles = new Array(particleCount);
 
     this.motionModel = motionModel;
     this.sensorModel = sensorModel;
 
-
-    if(typeof robotState !== 'undefined')
-    {
-        //generate initial particles
-        for (var i = particleCount - 1; i >= 0; i--)
-        {
+    if(typeof robotState !== 'undefined'){
+        //If current robot state is already defined
+        //generate initial particles around the robot
+        for (var i = particleCount - 1; i >= 0; i--){
             this.particles[i] = new Particle(robotState.x, robotState.y, robotState.dir, 1);
         }
-    }else
-    {
+    }else{
     	//generate random particles within the map
         var weight = 1.0/particleCount;
-        for (var i = particleCount - 1; i >= 0; i--)
-        {
+        for (var i = particleCount - 1; i >= 0; i--){
             this.particles[i] = new Particle(this.sensorModel.width*random(), this.sensorModel.height*random(), TWO_PI*random(), 1.0/particleCount);
         }
     }
 }
 
-//Draw particle in context
-ParticleFilter.prototype.draw = function(ctx)
-{
-    for (var i = this.particles.length - 1; i >= 0; i--)
-    {
+/**
+ * Draws the particle on the context
+ * @function
+ * @param {Context} ctx - The context that the particles will be drawn on
+ */
+ParticleFilter.prototype.draw = function(ctx){
+    for (var i = this.particles.length - 1; i >= 0; i--){
         this.particles[i].draw(ctx);
     }
 };
@@ -56,7 +64,7 @@ ParticleFilter.prototype.resample = function()
     var z_t = new Array(this.particles.length);
 
     //Resample 80% of all particles, the rest 20% will be randomly generated
-    const m = z_t.length * 0.9;
+    const m = z_t.length * 0.8
 
     const step = 1.0/m;
 
