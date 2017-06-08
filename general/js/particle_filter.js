@@ -13,20 +13,20 @@
  */
 function ParticleFilter(particleCount, motionModel, sensorModel, robotState){
     this.count = particleCount;
-    //Init the array that stores particles
+    // Init the array that stores particles
     this.particles = new Array(particleCount);
 
     this.motionModel = motionModel;
     this.sensorModel = sensorModel;
 
     if(typeof robotState !== 'undefined'){
-        //If current robot state is already defined
-        //generate initial particles around the robot
+        // If current robot state is already defined
+        // generate initial particles around the robot
         for (var i = particleCount - 1; i >= 0; i--){
             this.particles[i] = new Particle(robotState.x, robotState.y, robotState.dir, 1);
         }
     }else{
-    	//generate random particles within the map
+    	// generate random particles within the map
         var weight = 1.0/particleCount;
         for (var i = particleCount - 1; i >= 0; i--){
             this.particles[i] = new Particle(this.sensorModel.width*random(), this.sensorModel.height*random(), TWO_PI*random(), 1.0/particleCount);
@@ -49,7 +49,7 @@ ParticleFilter.prototype.draw = function(ctx){
  * Update the state of particles based on the odometry reading
  * @function
  * @param {Odometry} u - The odometry reading from the motion sensor
- * @param {float[]} z - An array of distance reading from the beam sensor
+ * @param {float[]} z - An array of distance reading from the sensor
  */
 ParticleFilter.prototype.update = function(u, z){
     if(typeof this.motionModel !== 'undefined')
@@ -65,11 +65,11 @@ ParticleFilter.prototype.update = function(u, z){
  * @param {Odometry} u - The odometry reading from the motion sensor
  */
 ParticleFilter.prototype.motionUpdate = function(u){
-    //Update the state of all particles base on the estimated motion
+    // Update the state of all particles base on the estimated motion
     for (var i = this.particles.length - 1; i >= 0; i--){
         var p = this.particles[i];
         var state = new RobotState(p.x, p.y, p.dir);
-        //Draw sample from p(x_t, u, x_t-1)
+        // Draw sample from p(x_t, u, x_t-1)
         var newState = this.motionModel.sample(u, state);
         p.setState(newState);
     }
@@ -78,36 +78,39 @@ ParticleFilter.prototype.motionUpdate = function(u){
 /**
  * Update the probabilities of particles based on the sensor readings
  * @function
- * @param {float[]} z - The sensor reading from the motion sensor
+ * @param {float[]} z - An array of distance reading from the sensor
  */
 ParticleFilter.prototype.sensorUpdate = function(z){
-    //Calculate the logs of weights
+    // Calculate the logs of weights
     for(var i = this.particles.length-1; i >= 0; i--){
         var p = this.particles[i];
         p.w = this.sensorModel.probability(z, new RobotState(p.x, p.y, p.dir));
     }
 
+    // To ensure the probability is in the range of (0,1)
     this.normalizeWeights();
 
+    // Resample the particles
     this.resample();
 };
 
 /**
- * Resampling of particles
+ * This function is used to resample the particles each time the sensor updates
  * @function
  */
 ParticleFilter.prototype.resample = function()
 {
+    // Initiate array for updated particles
     var z_t = new Array(this.particles.length);
 
-    //Resample 80% of all particles, the rest 20% will be randomly generated
+    // Resample 80% of all particles, the rest 20% will be randomly generated
     const m = z_t.length * 0.8;
 
     const step = 1.0/m;
 
     var cur = random() * step;
 
-    //Running sum
+    // Running sum
     var cumulativeProbability = this.particles[0].w;
     for(var i = 0, j = 0; i < m; i ++)
     {
@@ -130,27 +133,27 @@ ParticleFilter.prototype.resample = function()
 ParticleFilter.prototype.normalizeWeights = function ()
 {
 	var sum = 0;
-	//Convert logs back to weights
+	// Convert logs back to weights
 	for(var i = this.particles.length-1; i >= 0; i--)
 	{
 		var p = this.particles[i];
-		//Normalize the logs
+		// Normalize the logs
 		// p.w -= max;
 
-		//Exponentiation to recover relative proportion
+		// Exponentiation to recover relative proportion
 		// p.w = Math.exp(p.w);
 		sum += p.w;
 	}
 
 	if(sum === 0)
 	{
-	    //If every particle has a probability of 0,
+	    // If every particle has a probability of 0,
         // just make a uniform distribution
 		const uniform_probability = 1.0 / this.particles.length;
 		this.particles.forEach(function(p){p.w = uniform_probability;});
 	}else
 	{
-	    //Otherwise normalize the weights
+	    // Otherwise normalize the weights
 		this.particles.forEach(function(p){p.w /= sum});
 	}
 };
