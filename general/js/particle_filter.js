@@ -7,9 +7,9 @@
  * A representation of nonparametric implementation of the Bayes filter
  * @constructor
  * @param {int} particleCount - The total number of particles that can present in a time.
- * @param {MotionModel} motionModel - The motion model that is used to calculate its motion over time.
- * @param {SensorModel} sensorModel - The sensor model that is used to measure environment over time.
- * @param {State} robotState - The state of the robot while creating the particle filter
+ * @param {OdometryModel} motionModel - The motion model that is used to calculate its motion over time.
+ * @param {BeamModel} sensorModel - The sensor model that is used to measure environment over time.
+ * @param {RobotState} robotState - The state of the robot while creating the particle filter
  */
 function ParticleFilter(particleCount, motionModel, sensorModel, robotState){
     this.count = particleCount;
@@ -45,11 +45,14 @@ ParticleFilter.prototype.draw = function(ctx){
     }
 };
 
-//Update with odometry u
-ParticleFilter.prototype.motionUpdate = function(u)
-{
-    for (var i = this.particles.length - 1; i >= 0; i--)
-    {
+/**
+ * Update the state of particles based on the odometry reading
+ * @function
+ * @param {Odometry} u - The odometry reading from the motion sensor
+ */
+ParticleFilter.prototype.motionUpdate = function(u){
+    //Update the state of all particles base on the estimated motion
+    for (var i = this.particles.length - 1; i >= 0; i--){
         var p = this.particles[i];
         var state = new RobotState(p.x, p.y, p.dir);
         //Draw sample from p(x_t, u, x_t-1)
