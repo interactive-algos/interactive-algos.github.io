@@ -58,7 +58,7 @@ function drawLaserLines(ctx)
         }else
         {
             //distance reported by the laser sensor
-            var dist = z[i] + gaussian()*z[i]*sensorNoise;
+            var dist = z[i] + gaussian()*sensorNoise;
             laserLen = min(laserLen, dist);
 
             //red for a hit
@@ -88,7 +88,7 @@ function parameterChanged(event)
     }
     else if(target.id === 'sensorNoise')
     {
-        sensorNoise = Number(target.value) / 100.0;
+        sensorNoise = Number(target.value);
         sensorModel.a1 = sensorNoise;
     }
     else if(target.id === 'nLasers')

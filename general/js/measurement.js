@@ -35,7 +35,7 @@ BeamModel.prototype.probability = function(z, state)
     var z_true = new Array(z.length);
 
     //Initialization of the probability
-    var q = 1;
+    var q = 0;
 
     //Obtain the true distances
     scan(state.x, state.y, state.dir, this.sensorRadius, m, z_true);
@@ -54,13 +54,11 @@ BeamModel.prototype.probability = function(z, state)
         if(z[i] >= this.sensorRadius || z_true[i] >= this.sensorRadius)
             continue;
         i %= nLasers;
-        q *= prob_gaussian(z[i] - z_true[i], this.a1*z_true[i]);
+		q += Math.log(prob_gaussian(z[i] - z_true[i], this.a1));
     }
+	q /= (nLasers/2+1);
 
-    // for (var j = 0; j < z.length; j++) {
-    //     q *= 1 - Math.abs((z[j]-z_true[j])/(z[j]+z_true[j])/2);
-    // }
-    return q;
+    return Math.exp(q);
 };
 
 /**
@@ -69,7 +67,7 @@ BeamModel.prototype.probability = function(z, state)
  * @function
  * @param {float[]} z - The given reading of measurement sensor
  * @param {RobotState} state - The actual robot state
- * @returns {float} q - The log of probability of getting z
+ * @returns {number} q - The log of probability of getting z
  */
 BeamModel.prototype.prob_log = function(z, state)
 {
@@ -100,7 +98,7 @@ BeamModel.prototype.prob_log = function(z, state)
         i %= nLasers;
         q += prob_gaussian_log(z[i] - z_true[i], this.a1);
     }
-    return q;
+    return q/(nLasers/2+1);
 };
 
 /**
