@@ -98,7 +98,7 @@ BeamModel.prototype.prob_log = function(z, state)
         if(z[i] > this.senseRadius || z_true[i] > this.sensorRadius)
             continue;
         i %= nLasers;
-        q += prob_gaussian_log(z[i] - z_true[i], this.a1*z_true[i]);
+        q += prob_gaussian_log(z[i] - z_true[i], this.a1);
     }
     return q;
 };
