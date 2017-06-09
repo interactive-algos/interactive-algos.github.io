@@ -32,17 +32,42 @@
                     <tbody>
                         <tr>
                             <td>
-                                <label for="nLasers">Number of Lasers</label>: <input id="nLasers" onblur='return parameterChanged(event);' onkeypress='return isNumber(event);' class="form-control form-control-sm" value="18" size="4">
+                                <label for="nLasers">Number of Lasers</label>:
+                            </td>
+                            <td>
+                                <input id="nLasers" onblur='return parameterChanged(event);' onkeypress='return isNumber(event);' class="form-control form-control-sm" value="18" size="4">
                             </td>
                         </tr>
                         <tr>
                             <td>
-                                <label for="sensorRadius">Sensor Radius</label>: <input id="sensorRadius" onblur='return parameterChanged(event);' onkeypress='return isNumber(event);' class="form-control form-control-sm" value="3" size="4">m
+                                <label for="sensorRadius">Sensor Radius</label>:
+                            </td>
+                            <td>
+                                <input id="sensorRadius" onblur='return parameterChanged(event);' onkeypress='return isNumber(event);' class="form-control form-control-sm" value="3" size="4">m
                             </td>
                         </tr>
                         <tr>
                             <td>
-                                <label for="sensorNoise">Sensor Noise</label>: <input id="sensorNoise" onblur='return parameterChanged(event);' onkeypress='return isDecimal(event);' class="form-control form-control-sm" value="3" size="4">
+                                <label for="sensorNoise">Sensor Noise</label>:
+                            </td>
+                            <td>
+                                <input id="sensorNoise" onblur='return parameterChanged(event);' onkeypress='return isDecimal(event);' class="form-control form-control-sm" value="3" size="4">
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <label for="colorRes">Coloring Resolution</label>:
+                            </td>
+                            <td>
+                                <input id="colorRes" class="form-control form-control-sm" value="10" size="4">
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <label for="shouldColor">Color the Map</label>
+                            </td>
+                            <td>
+                                <input id="shouldColor" type="checkbox">
                             </td>
                         </tr>
                     </tbody>
