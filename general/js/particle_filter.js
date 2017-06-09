@@ -42,6 +42,7 @@ function ParticleFilter(particleCount, motionModel, sensorModel, robotState)
  */
 ParticleFilter.prototype.draw = function (ctx)
 {
+	this.normalizeWeights();
 	for (var i = this.particles.length - 1; i >= 0; i--)
 	{
 		this.particles[i].draw(ctx);
@@ -160,7 +161,7 @@ ParticleFilter.prototype.resample = function (percent)
 
 	//Running sum
 	var cumulativeProbability = this.particles[0].w;
-	for (var i = 0, j = 0; i < m; i++)
+	for (var i = 0, j = 0; i < z_t.length; i++)
 	{
 		while (j < this.particles.length - 1 && cumulativeProbability < cur)
 		{
@@ -171,9 +172,14 @@ ParticleFilter.prototype.resample = function (percent)
 		cur += step;
 	}
 
+	// For testing, clone only
+	// for (var i = 0; i < z_t.length; i++) {
+	// 	z_t[i] = this.particles[i].clone();
+	// }
+
 	for (var i = m; i < z_t.length; i++)
 	{
-		z_t[i] = new Particle(random() * this.sensorModel.width, random() * this.sensorModel.height, random() * TWO_PI, 0);
+		z_t[randint(0, z_t.length)] = new Particle(random() * this.sensorModel.width, random() * this.sensorModel.height, random() * TWO_PI, 1);
 	}
 	this.particles = z_t;
 };
