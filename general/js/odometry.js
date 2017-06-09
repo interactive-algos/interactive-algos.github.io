@@ -1,5 +1,10 @@
-
-//Odometry reading, represents x_t-1 and x_t. Both are estimates
+/**
+ * A simulation of Odometry Reading --
+ * 
+ * @constructor
+ * @param {RobotState} lastState - The last estimated state of the robot
+ * @param {RobotState} state - The current estimated state of the robot
+ */
 function Odometry(lastState, state)
 {
 	this.lastX = lastState.x;
@@ -11,6 +16,15 @@ function Odometry(lastState, state)
 	this.dir = state.dir;
 }
 
+/**
+ * A simulation of Odometry Model --
+ * A representation of Motion Model
+ * @constructor
+ * @param {float} a1 - Noise on rotation 1
+ * @param {float} a2 - Noise on translation displacement
+ * @param {float} a3 - Nooise on rotation 2
+ * @param {float} a4 - Final Rotation
+ */
 function OdometryModel(a1, a2, a3, a4)
 {
 	//Noise on rotational 1
