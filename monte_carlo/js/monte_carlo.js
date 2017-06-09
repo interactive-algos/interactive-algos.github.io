@@ -40,7 +40,7 @@ function parameterChanged(event)
 		Robot.stride = value;
 	}else if(target.id === 'robotSenseNoise')
 	{
-		Robot.filter.sensorModel.a1 = value/100.0;
+		Robot.filter.sensorModel.a1 = value;
 	}
 }
 
