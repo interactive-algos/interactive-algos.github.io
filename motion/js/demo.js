@@ -233,21 +233,25 @@ function stepForward()
 	requestAnimationFrame(frame);
 }
 
+
 function parameterChanged(event)
 {
-    console.log(event);
-    var target = event.target;
-    var value = Number(event.target.value);
-    if(target.id === 'robotForwardNoise')
-    {
-        robot.setStrideNoise(value/100.0);
-    }else if(target.id === 'robotTurnNoise')
-    {
-        robot.setTurnNoise(value/100.0);
-    }else if(target.id === 'goByOneStep')
-    {
-        Robot.stride = value;
-    }
+	console.log(event);
+	var target = event.target;
+	var value = Number(event.target.value);
+	if(target.id === 'robotForwardNoise')
+	{
+		robot.setStrideNoise(value/100.0);
+	}else if(target.id === 'robotTurnNoise')
+	{
+		robot.setTurnNoise(value);
+	}else if(target.id === 'goByOneStep')
+	{
+		Robot.stride = value;
+	}else if(target.id === 'robotSenseNoise')
+	{
+		robot.filter.sensorModel.a1 = value*scale;
+	}
 }
 
 function printPath(path)

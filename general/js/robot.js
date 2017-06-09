@@ -145,7 +145,11 @@ Robot.prototype.updateParticles = function()
         var z = new Array(36);
         scan(this.x, this.y, this.dir, Robot.sensorRadius, this.filter.sensorModel.map, z);
         for(var i = 0; i < z.length; i ++)
-        	z[i] += gaussian()*z[i]*this.filter.sensorModel.a1;
+		{
+			z[i] += gaussian() * z[i] * this.filter.sensorModel.a1;
+			if(z[i] < 0) z[i] = 0;
+			else if(z[i] > Robot.sensorRadius)z[i] = Robot.sensorRadius;
+		}
         this.filter.update(u, z);
     }else
     {
