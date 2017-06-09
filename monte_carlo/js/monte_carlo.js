@@ -34,7 +34,7 @@ function parameterChanged(event)
 		robot.setStrideNoise(value/100.0);
 	}else if(target.id === 'robotTurnNoise')
 	{
-		robot.setTurnNoise(value/100.0);
+		robot.setTurnNoise(value);
 	}else if(target.id === 'goByOneStep')
 	{
 		Robot.stride = value;
@@ -46,5 +46,5 @@ function parameterChanged(event)
 
 function getSensorNoise()
 {
-	return getValue('robotSenseNoise') / 100.0;
+	return getValue('robotSenseNoise');
 }
