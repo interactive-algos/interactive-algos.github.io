@@ -152,7 +152,7 @@ ParticleFilter.prototype.resample = function (percent)
 {
 	var z_t = new Array(this.particles.length);
 
-	//Resample 80% of all particles, the rest 20% will be randomly generated
+	//Resample percent% of all particles, the rest 20% will be randomly generated
 	const m = z_t.length * percent;
 
 	const step = 1.0 / m;

@@ -172,12 +172,13 @@ function init()
 
     //Listen to mouse click events
     bgCanvas.onmousedown = mouseDown;
-    senseRadius = getValue('sensorRadius')/0.02;
+    senseRadius = getSensorRadius();
+    sensorNoise = getSensorNoise();
 }
 
 function getSensorNoise()
 {
-	return getValue('sensorNoise')/100.0;
+	return getValue('sensorNoise');
 }
 
 function getSensorRadius()
