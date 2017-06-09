@@ -1,6 +1,5 @@
 /**
- * A simulation of Odometry Reading --
- * 
+ * A simulation of Odometry Reading
  * @constructor
  * @param {RobotState} lastState - The last estimated state of the robot
  * @param {RobotState} state - The current estimated state of the robot
@@ -37,8 +36,12 @@ function OdometryModel(a1, a2, a3, a4)
 	this.a4 = a4;
 }
 
-//Sample from the distribution p(x_t+1, u, x), 
-//where u is the control/odometry, x is the state
+/**
+ * Sample from the distribution p(x_t+1, u, x)
+ * @function
+ * @param {Odometry} u - The Odometry reading
+ * @param {RobotState} state - The Current Robot State
+ */
 OdometryModel.prototype.sample = function(u, state)
 {
 	var dx = u.x-u.lastX;
