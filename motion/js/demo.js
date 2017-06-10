@@ -11,6 +11,8 @@ var fps = 0;
 //meter/pixel scale
 var scale = 0.02;
 
+var requestAnimationFrame = window.msRequestAnimationFrame || window.webkitRequestAnimationFrame || window.mozRequestAnimationFrame || window.requestAnimationFrame;
+
 var animating = false;
 var shouldColorMap = false;
 
@@ -63,9 +65,29 @@ function frame(timestamp)
 
         robot.update();
         robot.draw(ctx);
+
+        if(shouldColorMap)
+		{
+			colorMap(ctx, getValue('colorRes')*scale);
+		}
     }
     if(animating)
         requestAnimationFrame(frame);
+}
+
+function colorMap(ctx, resolution)
+{
+	var probabilityGrid = robot.filter.sensorModel.calcProbGrid(resolution, robot.dir, robot.getSensorReading());
+
+	for(var i = 0; i < probabilityGrid.length; i ++)
+	{
+		for(var j = 0; j < probabilityGrid[i].length; j ++)
+		{
+			var p = probabilityGrid[i][j];
+			ctx.fillStyle = 'rgba(' + round(p*255) + ', 0, ' + (255-round(p*255)) + ', 0.5)';
+			ctx.fillRect(toScreenX(j*resolution), toScreenY(i*resolution), resolution/scale, resolution/scale);
+		}
+	}
 }
 
 function selectPath(event)
@@ -232,6 +254,11 @@ function stepForward()
 	requestAnimationFrame(frame);
 }
 
+function toggleColoring(event)
+{
+	var target = event.target || event.srcElement;
+	shouldColorMap = target.checked;
+}
 
 function parameterChanged(event)
 {

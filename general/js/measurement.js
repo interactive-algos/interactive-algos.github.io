@@ -101,7 +101,7 @@ BeamModel.prototype.prob_log = function(z, state)
     return q/(nLasers/2+1);
 };
 
-BeamModel.prototype.calcProbGrid = function(resolution, robotDir)
+BeamModel.prototype.calcProbGrid = function(resolution, robotDir, z)
 {
 	var probs = new Array(Math.ceil(this.height/resolution));
 	var sum = 0;
@@ -111,8 +111,7 @@ BeamModel.prototype.calcProbGrid = function(resolution, robotDir)
 		probs[i] = new Array(Math.ceil(this.width/resolution));
 		for(var j = 0; j < probs[i].length; j ++)
 		{
-			var p = sensorModel.probability(z, new RobotState(j*resolution + resolution/2, i*resolution + resolution/2, robotDir));
-			console.assert(p >= 0 && p < 1);
+			var p = this.probability(z, new RobotState(j*resolution + resolution/2, i*resolution + resolution/2, robotDir));
 			sum += p;
 			max = Math.max(p, max);
 			probs[i][j] = p;

@@ -3,9 +3,11 @@
 *filter for calculating bel base on measurement and control data
 *path as the path that robot is going to take
 */
-function Robot(filter, path)
+function Robot(filter, path, nLasers)
 {
     if (typeof(dir) === 'undefined') dir = 0;
+    if (typeof(nLasers) === 'undefined') nLasers = 36;
+
     this.x = path[0].x;		//x coordinate
     this.y = path[0].y;		//y coordinate
     this.dir = atan2(path[1].y-path[0].y, path[1].x-path[0].x);	//orientation in radians
@@ -27,6 +29,8 @@ function Robot(filter, path)
     //Index to the path array, the point the robot is currently approaching
 	//The robot starts at 0th point so this is set to 1
 	this.targetIndex = 1;
+
+	this.z = new Array(nLasers);
 }
 
 Robot.size = 0.2;
@@ -142,7 +146,7 @@ Robot.prototype.updateParticles = function()
 
     if(typeof this.filter.sensorModel !== 'undefined')
     {
-        var z = new Array(36);
+        var z = this.z;
         scan(this.x, this.y, this.dir, Robot.sensorRadius, this.filter.sensorModel.map, z);
         for(var i = 0; i < z.length; i ++)
 		{
@@ -185,4 +189,9 @@ Robot.prototype.draw = function(ctx)
     ctx.strokeCircle(x, y, this.senseCircle/scale);
 
     this.filter.draw(ctx);
+};
+
+Robot.prototype.getSensorReading = function()
+{
+	return this.z;
 };

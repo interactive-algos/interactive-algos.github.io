@@ -16,7 +16,6 @@ function start()
 
 	robot = new Robot(filter, path);
 	robot.draw(ctx);
-	requestAnimationFrame = window.msRequestAnimationFrame || window.webkitRequestAnimationFrame || window.mozRequestAnimationFrame || window.requestAnimationFrame;
 	animating = true;
 	lastFrame = Date.now();
 	requestAnimationFrame(frame);

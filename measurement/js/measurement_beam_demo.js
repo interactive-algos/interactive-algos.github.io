@@ -205,7 +205,7 @@ function colorMap()
 {
 	var ctx = bgCanvas.getContext('2d');
 	var resolution = getValue('colorRes');
-	var probabilityGrid = sensorModel.calcProbGrid(resolution, robotDir);
+	var probabilityGrid = sensorModel.calcProbGrid(resolution, robotDir, z);
 
 	for(var i = 0; i < probabilityGrid.length; i ++)
 	{
