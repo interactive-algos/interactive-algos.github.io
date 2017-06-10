@@ -205,13 +205,13 @@ function colorMap()
 {
 	var ctx = bgCanvas.getContext('2d');
 	var resolution = getValue('colorRes');
-	var probs = sensorModel.calcProbGrid(resolution, robotDir);
+	var probabilityGrid = sensorModel.calcProbGrid(resolution, robotDir);
 
-	for(var i = 0; i < probs.length; i ++)
+	for(var i = 0; i < probabilityGrid.length; i ++)
 	{
-		for(var j = 0; j < probs[i].length; j ++)
+		for(var j = 0; j < probabilityGrid[i].length; j ++)
 		{
-			var p = probs[i][j];
+			var p = probabilityGrid[i][j];
 			ctx.fillStyle = 'rgba(' + round(p*255) + ', 0, ' + (255-round(p*255)) + ', 0.5)';
 			ctx.fillRect(j*resolution, i*resolution, resolution, resolution);
 		}

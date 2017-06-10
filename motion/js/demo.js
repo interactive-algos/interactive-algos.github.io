@@ -1,7 +1,7 @@
 var canvas; //The HTML Element of the canvas
 var bgCanvas; //The HTML element of the background canvas
 var robot;
-var requestAnimationFrame;
+
 //actual map data
 var map;
 var frameCount = 0;
@@ -12,6 +12,7 @@ var fps = 0;
 var scale = 0.02;
 
 var animating = false;
+var shouldColorMap = false;
 
 //dimensions of the world, in meters
 //Robots are using world coordinates internally
@@ -58,10 +59,8 @@ function frame(timestamp)
          ctx.fillRect(0, 0, canvas.width, canvas.height);
          */
         ctx.clearRect(0, 0, canvas.width, canvas.height);
-        ctx.fillStyle = 'black';
-        ctx.font = '10px Menlo';
-        ctx.textAlign = 'start';
-        ctx.fillText(fps + " FPS", 10, 20);
+		ctx.strokeTextWithColorFont(fps + " FPS", 'black', '10px Menlo');
+
         robot.update();
         robot.draw(ctx);
     }
@@ -280,7 +279,6 @@ function getTurnNoise()
 {
     return getValue('robotTurnNoise') / 100.0;
 }
-
 
 //convert x coordinate in world to x coordinate on screen
 function toScreenX(x)

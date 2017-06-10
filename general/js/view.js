@@ -60,6 +60,14 @@ CanvasRenderingContext2D.prototype.strokeLine = function(x1, y1, x2, y2)
     this.stroke();
 };
 
+CanvasRenderingContext2D.prototype.strokeTextWithColorFont = function(text, color, font)
+{
+	this.strokeStyle = color;
+	this.font = font;
+	this.textAlign = 'start';
+	this.strokeText(text, 10, 20);
+};
+
 function getClickLoc(event)
 {
     var element = event.target;
