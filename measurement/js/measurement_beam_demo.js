@@ -191,7 +191,6 @@ function getSensorRadius()
 
 function toggleColoring(event)
 {
-	console.log(event);
 	var target = event.target || event.srcElement;
 	if(target.checked)
 	{
@@ -208,6 +207,7 @@ function colorMap()
 	var resolution = getValue('colorRes');
 	var probs = new Array(Math.ceil(bgCanvas.height/resolution));
 	var sum = 0;
+	var max = 0;
 	for(var i = 0; i < probs.length; i ++)
 	{
 		probs[i] = new Array(Math.ceil(bgCanvas.width/resolution));
@@ -216,15 +216,19 @@ function colorMap()
 			var p = sensorModel.probability(z, new RobotState(j*resolution + resolution/2, i*resolution + resolution/2, robotDir));
 			console.assert(p >= 0 && p < 1);
 			sum += p;
+			max = Math.max(p, max);
 			probs[i][j] = p;
 		}
 	}
+
+	max /= sum;
 
 	for(var i = 0; i < probs.length; i ++)
 	{
 		for(var j = 0; j < probs[i].length; j ++)
 		{
-			var p = probs[i][j] / sum;
+			var p = probs[i][j] / max;
+			console.log(p);
 			ctx.fillStyle = 'rgba(' + round(p*255) + ', 0, ' + (255-round(p*255)) + ', 0.5)';
 			ctx.fillRect(j*resolution, i*resolution, resolution, resolution);
 		}
