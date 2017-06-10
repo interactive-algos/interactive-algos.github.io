@@ -185,3 +185,47 @@ function getSensorRadius()
 {
 	return getValue('sensorRadius')/0.02;
 }
+
+function toggleColoring(event)
+{
+	console.log(event);
+	var target = event.target || event.srcElement;
+	if(target.checked)
+	{
+		colorMap();
+	}else
+	{
+		clearCanvas(bgCanvas);
+	}
+}
+
+function colorMap()
+{
+	var ctx = bgCanvas.getContext('2d');
+	var resolution = getValue('colorRes');
+	var probs = new Array(round(bgCanvas.height/resolution));
+	var sum = 0;
+	for(var i = 0; i < probs.length; i ++)
+	{
+		probs[i] = new Array(bgCanvas.width/resolution);
+		for(var j = 0; j < probs[i].length; j ++)
+		{
+			var p = sensorModel.probability(z, new RobotState(j*resolution + resolution/2, i*resolution + resolution/2, robotDir));
+			console.log(p);
+			console.assert(p >= 0 && p < 1);
+			sum += p;
+			probs[i][j] = p;
+		}
+	}
+
+	for(var i = 0; i < probs.length; i ++)
+	{
+		for(var j = 0; j < probs[i].length; j ++)
+		{
+			var p = probs[i][j] / sum;
+			// console.log(p*255);
+			ctx.fillStyle = 'rgba(' + round(p*255) + ', 0, ' + round(p*255) + ', 0.5)';
+			ctx.fillRect(j*resolution, i*resolution, resolution, resolution);
+		}
+	}
+}
