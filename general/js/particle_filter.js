@@ -179,7 +179,7 @@ ParticleFilter.prototype.resample = function (percent)
 
 	for (var i = m; i < z_t.length; i++)
 	{
-		z_t[randint(0, z_t.length)] = new Particle(random() * this.sensorModel.width, random() * this.sensorModel.height, random() * TWO_PI, 1);
+		z_t[i] = new Particle(random() * this.sensorModel.width, random() * this.sensorModel.height, random() * TWO_PI, 1);
 	}
 	this.particles = z_t;
 };

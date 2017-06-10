@@ -236,7 +236,6 @@ function stepForward()
 
 function parameterChanged(event)
 {
-	console.log(event);
 	var target = event.target;
 	var value = Number(event.target.value);
 	if(target.id === 'robotForwardNoise')
