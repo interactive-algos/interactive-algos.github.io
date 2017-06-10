@@ -204,11 +204,11 @@ function colorMap()
 {
 	var ctx = bgCanvas.getContext('2d');
 	var resolution = getValue('colorRes');
-	var probs = new Array(round(bgCanvas.height/resolution));
+	var probs = new Array(Math.ceil(bgCanvas.height/resolution));
 	var sum = 0;
 	for(var i = 0; i < probs.length; i ++)
 	{
-		probs[i] = new Array(bgCanvas.width/resolution);
+		probs[i] = new Array(Math.ceil(bgCanvas.width/resolution));
 		for(var j = 0; j < probs[i].length; j ++)
 		{
 			var p = sensorModel.probability(z, new RobotState(j*resolution + resolution/2, i*resolution + resolution/2, robotDir));
@@ -225,7 +225,7 @@ function colorMap()
 		{
 			var p = probs[i][j] / sum;
 			// console.log(p*255);
-			ctx.fillStyle = 'rgba(' + round(p*255) + ', 0, ' + round(p*255) + ', 0.5)';
+			ctx.fillStyle = 'rgba(' + round(p*255) + ', 0, ' + (255-round(p*255)) + ', 0.5)';
 			ctx.fillRect(j*resolution, i*resolution, resolution, resolution);
 		}
 	}
