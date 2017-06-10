@@ -1,6 +1,6 @@
 function getMapForCanvas(canvas)
 {
-    map = 
+    var map =
     [
         new Line(30, 0, 110, 130),
         new Line(110, 130, 220, 60),
