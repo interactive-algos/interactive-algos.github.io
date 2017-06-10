@@ -190,22 +190,15 @@ ParticleFilter.prototype.resample = function (percent)
  */
 ParticleFilter.prototype.normalizeWeights = function ()
 {
-	var max = 0;
+	var sum = 0;
 	// Convert logs back to weights
 	for (var i = this.particles.length - 1; i >= 0; i--)
 	{
 		var p = this.particles[i];
-		// Normalize the logs
-		// p.w -= max;
-
-		// Exponentiation to recover relative proportion
-		// p.w = Math.exp(p.w);
-		// sum += p.w;
-
-		if (max < p.w) max = p.w;
+		sum += p.w;
 	}
 
-	if (max === 0)
+	if (sum === 0)
 	{
 		// If every particle has a probability of 0,
 		// just regenrate all particles
@@ -215,7 +208,7 @@ ParticleFilter.prototype.normalizeWeights = function ()
 		// Otherwise normalize the weights
 		this.particles.forEach(function (p)
 		{
-			p.w /= max
+			p.w /= sum
 		});
 	}
 };
