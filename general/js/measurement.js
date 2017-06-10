@@ -8,7 +8,8 @@
  * @param {int} width - The width of the map
  * @param {int} height - The height of the map
  */
-function BeamModel(a1, sensorRadius, map, width, height){
+function BeamModel(a1, sensorRadius, map, width, height)
+{
 	this.a1 = a1;
 	this.map = map;
 	this.width = width;
