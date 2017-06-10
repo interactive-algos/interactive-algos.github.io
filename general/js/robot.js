@@ -195,3 +195,8 @@ Robot.prototype.getSensorReading = function()
 {
 	return this.z;
 };
+
+Robot.prototype.getState = function()
+{
+	return new RobotState(this.x, this.y, this.dir);
+};

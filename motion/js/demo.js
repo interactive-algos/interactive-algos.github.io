@@ -217,6 +217,7 @@ function init()
     height = canvas.height * scale;
     map = getMapForCanvas(canvas);
     bgCanvas.getContext('2d').drawMap(map);
+	bgCanvas.onmousedown = queryProbability;
 
 	smoothenPath(vanillaPath);
 
@@ -343,7 +344,22 @@ function toScreenCoor(coor)
     coor.y = toScreenY(coor.y);
 }
 
+function queryProbability(event)
+{
+	var coor = getClickLoc(event);
+	var x = coor.x;
+	var y = coor.y;
 
+	if(event.altKey)
+	{
+		var probability = robot.filter.sensorModel.probability(
+			robot.getSensorReading(),
+			new RobotState(toWorldX(x), toWorldY(y), robot.dir));
+
+		document.getElementById('probability').innerHTML = "Probability: " + probability;
+		console.log('(' + x + ', ' + y + '): ' + probability);
+	}
+}
 
 //Functional API, return a new point.
 function getWorldCoor(coor)
@@ -383,7 +399,6 @@ Particle.prototype.draw = function(ctx)
     ctx.strokeStyle = 'rgba(0, 0, 255, 0.1)';
     ctx.drawRobot(x, y, -this.dir, Particle.size/scale);
 };
-
 
 CanvasRenderingContext2D.prototype.strokePath = function(path)
 {
