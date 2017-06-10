@@ -27,6 +27,9 @@ function update()
 {
     //Only scan if location changed
     scan(robotX, robotY, robotDir, senseRadius, map, z);
+    var checkbox = document.getElementById('shouldColor');
+    checkbox.checked = false;
+	clearColor();
 }
 
 function drawLaserLines(ctx)
@@ -195,8 +198,7 @@ function toggleColoring(event)
 		colorMap();
 	}else
 	{
-		clearCanvas(bgCanvas);
-		bgCanvas.getContext('2d').drawMap(map);
+		clearColor();
 	}
 }
 
@@ -212,7 +214,6 @@ function colorMap()
 		for(var j = 0; j < probs[i].length; j ++)
 		{
 			var p = sensorModel.probability(z, new RobotState(j*resolution + resolution/2, i*resolution + resolution/2, robotDir));
-			console.log(p);
 			console.assert(p >= 0 && p < 1);
 			sum += p;
 			probs[i][j] = p;
@@ -224,9 +225,14 @@ function colorMap()
 		for(var j = 0; j < probs[i].length; j ++)
 		{
 			var p = probs[i][j] / sum;
-			// console.log(p*255);
 			ctx.fillStyle = 'rgba(' + round(p*255) + ', 0, ' + (255-round(p*255)) + ', 0.5)';
 			ctx.fillRect(j*resolution, i*resolution, resolution, resolution);
 		}
 	}
+}
+
+function clearColor()
+{
+	clearCanvas(bgCanvas);
+	bgCanvas.getContext('2d').drawMap(map);
 }
