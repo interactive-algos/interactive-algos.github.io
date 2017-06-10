@@ -107,6 +107,7 @@ BeamModel.prototype.calcProbGrid = function(resolution, robotDir, z)
 	var probs = new Array(Math.ceil(this.height/resolution));
 	// var sum = 0;
 	var max = 0;
+	var min = 1;
 	for(var i = 0; i < probs.length; i ++)
 	{
 		probs[i] = new Array(Math.ceil(this.width/resolution));
@@ -115,6 +116,7 @@ BeamModel.prototype.calcProbGrid = function(resolution, robotDir, z)
 			var p = this.probability(z, new RobotState(j*resolution + resolution/2, i*resolution + resolution/2, robotDir));
 			// sum += p;
 			max = Math.max(p, max);
+			min = Math.min(p, min);
 			probs[i][j] = p;
 		}
 	}
@@ -123,7 +125,8 @@ BeamModel.prototype.calcProbGrid = function(resolution, robotDir, z)
 	{
 		for(var j = 0; j < probs[i].length; j ++)
 		{
-			probs[i][j] /= max;
+			probs[i][j] -= min;
+			probs[i][j] /= (max-min);
 		}
 	}
 	return probs;

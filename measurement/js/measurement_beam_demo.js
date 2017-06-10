@@ -23,6 +23,8 @@ var z = new Array(nLasers);
 
 var sensorModel;
 
+var map;
+
 function update()
 {
     //Only scan if location changed
@@ -157,7 +159,7 @@ function init()
     bgCanvas = document.getElementById('background');
 
     //Draw the map
-    var map = getMapForCanvas(canvas);
+	map = getMapForCanvas(canvas);
     bgCanvas.getContext('2d').drawMap(map);
     robotX = floor(random()*canvas.width);
     robotY = floor(random()*canvas.height);
