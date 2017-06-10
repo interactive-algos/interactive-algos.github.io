@@ -16,7 +16,6 @@ function start()
 
 	robot = new Robot(filter, path);
 	robot.draw(ctx);
-	animating = true;
 	lastFrame = Date.now();
 	requestAnimationFrame(frame);
 }
