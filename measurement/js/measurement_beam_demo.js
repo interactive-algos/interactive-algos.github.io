@@ -196,6 +196,7 @@ function toggleColoring(event)
 	}else
 	{
 		clearCanvas(bgCanvas);
+		bgCanvas.getContext('2d').drawMap(map);
 	}
 }
 
