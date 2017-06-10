@@ -26,8 +26,8 @@ function BeamModel(a1, sensorRadius, map, width, height){
  */
 BeamModel.prototype.probability = function(z, state)
 {
-    // if(state.x < 0 || state.y < 0 || state.x >= this.width || state.y >= this.height)
-    //     return 0;
+    if(state.x < 0 || state.y < 0 || state.x >= this.width || state.y >= this.height)
+        return 0;
 
     const m = this.map;
 
@@ -71,8 +71,8 @@ BeamModel.prototype.probability = function(z, state)
  */
 BeamModel.prototype.prob_log = function(z, state)
 {
-    // if(state.x < 0 || state.y < 0 || state.x >= this.width || state.y >= this.height)
-    //     return Number.NEGATIVE_INFINITY;
+    if(state.x < 0 || state.y < 0 || state.x >= this.width || state.y >= this.height)
+        return Number.NEGATIVE_INFINITY;
 
     const m = this.map;
 
