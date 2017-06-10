@@ -221,7 +221,7 @@ function colorMap()
 		}
 	}
 
-	max /= sum;
+	// max /= sum;
 
 	for(var i = 0; i < probs.length; i ++)
 	{
