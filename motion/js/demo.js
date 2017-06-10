@@ -394,7 +394,7 @@ Particle.prototype.draw = function(ctx)
     var x = toScreenX(this.x);
     var y = toScreenY(this.y);
 
-    // ctx.strokeStyle = 'rgba('+ 255-this.w*255 +','+ 255-this.w*255 +', 0, 1)';
+    // ctx.strokeStyle = 'rgba('+ 255-this.w*255 +','+ 255-this.w*255 +', 255, 1)';
 
     ctx.strokeStyle = 'rgba(0, 0, 255, 0.1)';
     ctx.drawRobot(x, y, -this.dir, Particle.size/scale);
