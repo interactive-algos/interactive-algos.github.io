@@ -2,10 +2,6 @@ function getMapForCanvas(canvas)
 {
     map = 
     [
-        new Line(0, 0, canvas.width, 0),
-        new Line(canvas.width, 0, canvas.width, canvas.height),
-        new Line(canvas.width, canvas.height, 0, canvas.height),
-		new Line(0, canvas.height, 0, 0),
         new Line(30, 0, 110, 130),
         new Line(110, 130, 220, 60),
         new Line(270, 0, 370, 130),
@@ -21,5 +17,14 @@ function getMapForCanvas(canvas)
         new Line(220, 270, 290, 270),
         new Line(370, 270, 450, 270)
     ];
+	// map =
+	// 	[new Line(16, 192, 677, 192)
+	// 	];
+
+	map.push(new Line(0, 0, canvas.width, 0));
+	map.push(new Line(canvas.width, 0, canvas.width, canvas.height));
+	map.push(new Line(canvas.width, canvas.height, 0, canvas.height));
+	map.push(new Line(0, canvas.height, 0, 0));
+
     return map;
 }
