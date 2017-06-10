@@ -101,6 +101,34 @@ BeamModel.prototype.prob_log = function(z, state)
     return q/(nLasers/2+1);
 };
 
+BeamModel.prototype.calcProbGrid = function(resolution, robotDir)
+{
+	var probs = new Array(Math.ceil(this.height/resolution));
+	var sum = 0;
+	var max = 0;
+	for(var i = 0; i < probs.length; i ++)
+	{
+		probs[i] = new Array(Math.ceil(this.width/resolution));
+		for(var j = 0; j < probs[i].length; j ++)
+		{
+			var p = sensorModel.probability(z, new RobotState(j*resolution + resolution/2, i*resolution + resolution/2, robotDir));
+			console.assert(p >= 0 && p < 1);
+			sum += p;
+			max = Math.max(p, max);
+			probs[i][j] = p;
+		}
+	}
+
+	for(var i = 0; i < probs.length; i ++)
+	{
+		for(var j = 0; j < probs[i].length; j ++)
+		{
+			probs[i][j] /= max;
+		}
+	}
+	return probs;
+};
+
 /**
  * Scans the map in (x,y); with direction of dir0;
  * with sensor radius of r; And assign the result into z.
