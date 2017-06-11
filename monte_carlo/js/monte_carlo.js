@@ -21,6 +21,7 @@ function start()
 		line.t.y = toWorldY(line.t.y);
 	});
 
+	Robot.sensorRadius = getSensorRadius();
 	var sensorModel = new BeamModel(getSensorNoise(), getSensorRadius(), map, width, height);
 	var filter = new ParticleFilter(getParticleCount(), motionModel, sensorModel);
 
