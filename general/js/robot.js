@@ -43,11 +43,23 @@ function Robot(filter, path, nLasers)
 	this.z = new Array(nLasers);
 }
 
+/**
+ * Function that used to update stride noise for the motion model
+ * @function
+ * @param {float} noise - The stride noise for motion model
+ */
+BeamModel.
 Robot.prototype.setStrideNoise = function(noise)
 {
     this.filter.motionModel.a2 = noise;
 };
 
+/**
+ * Function that used to update turning noise for the motion model
+ * Assume the noise is the same for turning both direction.
+ * @function
+ * @param {float} noise - The turn noise for motion model
+ */
 Robot.prototype.setTurnNoise = function(noise)
 {
     this.filter.motionModel.a1 = noise;
@@ -83,6 +95,25 @@ Robot.prototype.setTurnNoise = function(noise)
 //     }
 // };
 
+/**
+ * Function that used to update the robot
+ * @function
+ */
+Robot.prototype.update = function()
+{
+    this.updateMotion();
+
+    this.updateParticles();
+
+    this.updateSenseCircle();
+};
+
+/**
+ * Function that used to update the motion of the robot
+ * Based on the path
+ * @function
+ * @param {float} noise - The stride noise for motion model
+ */
 Robot.prototype.updateMotion = function()
 {
 	console.assert(typeof this.path !== 'undefined');
@@ -117,28 +148,6 @@ Robot.prototype.updateMotion = function()
     this.x = x;
 	this.y = y;
 	this.dir = atan2(targetPoint.y-y, targetPoint.x-x);
-};
-
-Robot.prototype.update = function()
-{
-    this.updateMotion();
-
-    this.updateParticles();
-
-    this.updateSenseCircle();
-};
-
-Robot.prototype.updateSenseCircle = function()
-{
-    if(this.senseCircle > Robot.sensorRadius)
-    {
-        if(Date.now() - this.lastScan >= Robot.scanInterval)
-        {
-            this.senseCircle = Robot.size;
-            this.lastScan = Date.now();
-        }
-    }
-    this.senseCircle += 0.1;
 };
 
 Robot.prototype.updateParticles = function()
@@ -176,6 +185,19 @@ Robot.prototype.updateParticles = function()
     this.lastX = this.x;
     this.lastY = this.y;
     this.lastDir = this.dir;
+};
+
+Robot.prototype.updateSenseCircle = function()
+{
+    if(this.senseCircle > Robot.sensorRadius)
+    {
+        if(Date.now() - this.lastScan >= Robot.scanInterval)
+        {
+            this.senseCircle = Robot.size;
+            this.lastScan = Date.now();
+        }
+    }
+    this.senseCircle += 0.1;
 };
 
 Robot.prototype.draw = function(ctx)
