@@ -1,8 +1,18 @@
+//Predefined params
 
-/*Costructor of robot; 
-*filter for calculating bel base on measurement and control data
-*path as the path that robot is going to take
-*/
+Robot.size = 0.2;
+Robot.sensorRadius = 1.5;
+Robot.scanInterval = 2500;
+Robot.stride = 0.01;
+const EPS = 1E-5;
+
+/**
+ * A representation of a Robot
+ * @constructor
+ * @param {ParticleFilter} filter - The sampling filter that the robot uses to calculate bel
+ * @param {Point[]} path - The predefined map that the robot will follow
+ * @param {int} nLasers - The number of rays that the robot have.
+ */
 function Robot(filter, path, nLasers)
 {
     if (typeof(dir) === 'undefined') dir = 0;
@@ -32,12 +42,6 @@ function Robot(filter, path, nLasers)
 
 	this.z = new Array(nLasers);
 }
-
-Robot.size = 0.2;
-Robot.sensorRadius = 1.5;
-Robot.scanInterval = 2500;
-Robot.stride = 0.01;
-const EPS = 1E-5;
 
 Robot.prototype.setStrideNoise = function(noise)
 {
