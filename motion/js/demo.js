@@ -277,6 +277,9 @@ function parameterChanged(event)
 	}else if(target.id === 'robotSenseNoise')
 	{
 		robot.filter.sensorModel.a1 = value*scale;
+	}else if(target.id === 'fogOfWar')
+	{
+		Robot.sensorRadius = value;
 	}
 }
 
