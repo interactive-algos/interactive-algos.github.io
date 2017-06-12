@@ -48,7 +48,6 @@ function Robot(filter, path, nLasers)
  * @function
  * @param {float} noise - The stride noise for motion model
  */
-BeamModel.
 Robot.prototype.setStrideNoise = function(noise)
 {
     this.filter.motionModel.a2 = noise;
