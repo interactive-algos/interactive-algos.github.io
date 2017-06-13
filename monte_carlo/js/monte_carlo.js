@@ -35,5 +35,5 @@ function start()
 
 function getSensorNoise()
 {
-	return getValue('robotSenseNoise')*scale;
+	return getValue('robotSenseNoise');
 }

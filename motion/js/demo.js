@@ -276,7 +276,7 @@ function parameterChanged(event)
 		Robot.stride = value;
 	}else if(target.id === 'robotSenseNoise')
 	{
-		robot.filter.sensorModel.a1 = value*scale;
+		robot.filter.sensorModel.a1 = value;
 	}else if(target.id === 'fogOfWar')
 	{
 		Robot.sensorRadius = value;
