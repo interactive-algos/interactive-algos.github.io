@@ -25,7 +25,7 @@ function start()
 	var sensorModel = new BeamModel(getSensorNoise(), getSensorRadius(), map, width, height);
 	var filter = new ParticleFilter(getParticleCount(), motionModel, sensorModel, new RobotState(path[0].x, path[0].y, 0));
 
-	robot = new Robot(filter, path);
+	robot = new Robot(filter, path, 36);
 	robot.draw(ctx);
 
 	animating = true;
