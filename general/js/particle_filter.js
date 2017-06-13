@@ -22,7 +22,7 @@ function ParticleFilter(particleCount, motionModel, sensorModel, robotState)
 		// generate initial particles around the robot
 		for (var i = particleCount - 1; i >= 0; i--)
 		{
-			this.particles[i] = new Particle(robotState.x, robotState.y, robotState.dir, 1);
+			this.particles[i] = new Particle(robotState.x + gaussian()*2, robotState.y+gaussian()*2, gaussian()*TWO_PI, 1);
 		}
 	} else
 	{
@@ -140,7 +140,7 @@ ParticleFilter.prototype.sensorUpdate = function (z)
 
 	// Resample the particles
 	this.normalizeWeights();
-	this.resample(0.9);
+	this.resample(1);
 };
 
 /**
