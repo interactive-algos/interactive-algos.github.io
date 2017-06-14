@@ -161,7 +161,7 @@ ParticleFilter.prototype.resample = function (percent)
 
 	//Running sum
 	var cumulativeProbability = this.particles[0].w;
-	for (var i = 0, j = 0; i < z_t.length; i++)
+	for (var i = 0, j = 0; i < m; i++)
 	{
 		while (j < this.particles.length - 1 && cumulativeProbability < cur)
 		{
