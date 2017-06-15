@@ -140,7 +140,7 @@ ParticleFilter.prototype.sensorUpdate = function (z)
 
 	// Resample the particles
 	this.normalizeWeights();
-	this.resample(1);
+	this.resample(0.9);
 };
 
 /**
