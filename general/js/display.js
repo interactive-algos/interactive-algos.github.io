@@ -1,6 +1,6 @@
 
 
-function Display(canvas, bgCanvas, map, robot, particles) {
+function Display(canvas, bgCanvas, map, robot, particleFilter) {
 	this.canvas = canvas;
 	this.bgCanvas = bgCanvas;
 }
