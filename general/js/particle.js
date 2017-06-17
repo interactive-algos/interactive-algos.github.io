@@ -1,3 +1,7 @@
+//Constants
+
+Particle.size = 0.08;
+
 /**
  * A representation of particle robot in Particle Filter which is --
  * A representation of nonparametric implementation of the Bayes filter
@@ -52,5 +56,3 @@ Particle.prototype.clone = function()
 {
 	return new Particle(this.x, this.y, this.dir, this.w);
 };
-
-Particle.size = 0.08;

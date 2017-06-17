@@ -1,3 +1,7 @@
+//Constants
+
+ParticleFilter.resampleRate = 0.9;
+
 /**
  * A simulation of Particle Filter --
  * A representation of nonparametric implementation of the Bayes filter
@@ -50,6 +54,17 @@ ParticleFilter.prototype.draw = function (ctx)
 };
 
 /**
+ * Return a new random particle
+ * @function
+ * @return {Particle} newParticle - A random generated particle
+ */
+ParticleFilter.prototype.newParticle = function ()
+{
+	return new Particle(this.sensorModel.width * random(),
+		this.sensorModel.height * random(), TWO_PI * random(), 1.0);
+};
+
+/**
  * Regenerate all particles of the Particle filter
  * @function
  */
@@ -75,17 +90,6 @@ ParticleFilter.prototype.refillAll = function ()
 	{
 		this.particles.push(this.newParticle());
 	}
-};
-
-/**
- * Return a new random particle
- * @function
- * @return {Particle} newParticle - A random generated particle
- */
-ParticleFilter.prototype.newParticle = function ()
-{
-	return new Particle(this.sensorModel.width * random(),
-		this.sensorModel.height * random(), TWO_PI * random(), 1.0);
 };
 
 /**
@@ -140,7 +144,7 @@ ParticleFilter.prototype.sensorUpdate = function (z)
 
 	// Resample the particles
 	this.normalizeWeights();
-	this.resample(0.9);
+	this.resample(this.resampleRate);
 };
 
 /**
