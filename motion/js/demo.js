@@ -275,9 +275,12 @@ function parameterChanged(event)
 	{
 		Robot.stride = value;
 	}else if(target.id === 'robotSenseNoise')
-	{
-		robot.filter.sensorModel.a1 = value;
-	}else if(target.id === 'fogOfWar')
+    {
+        robot.filter.sensorModel.a1 = value;
+    }else if(target.id === 'pRatio')
+    {
+        robot.filter.resampleRatio = value;
+    }else if(target.id === 'fogOfWar')
 	{
 		Robot.sensorRadius = value;
 	}
@@ -309,6 +312,11 @@ function getStrideNoise()
 function getTurnNoise()
 {
     return getValue('robotTurnNoise') / 100.0;
+}
+
+function getResampleRatio()
+{
+    return getValue('pRatio');
 }
 
 //convert x coordinate in world to x coordinate on screen

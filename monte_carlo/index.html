@@ -93,6 +93,17 @@
                     </tr>
                     <tr>
                         <td>
+                            <label for="pRatio">% of particles being resampled</label>:
+                        </td>
+                        <td>
+                            <input type='text' id="pRatio"
+                                   onkeypress='return isDecimal(event);'
+                                   class="form-control" value="0.8"
+                                   size="3 ">
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
                             <label for="goByOneStep">Step length</label>:
                         </td>
                         <td>

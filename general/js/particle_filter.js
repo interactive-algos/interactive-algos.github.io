@@ -1,7 +1,3 @@
-//Constants
-
-ParticleFilter.resampleRate = 0.9;
-
 /**
  * A simulation of Particle Filter --
  * A representation of nonparametric implementation of the Bayes filter
@@ -11,7 +7,7 @@ ParticleFilter.resampleRate = 0.9;
  * @param {BeamModel} sensorModel - The sensor model that is used to measure environment over time.
  * @param {RobotState} robotState - The state of the robot while creating the particle filter
  */
-function ParticleFilter(particleCount, motionModel, sensorModel, robotState)
+function ParticleFilter(particleCount, motionModel, sensorModel, robotState, resampleRatio)
 {
 	this.count = particleCount;
 	// Init the array that stores particles
@@ -19,6 +15,7 @@ function ParticleFilter(particleCount, motionModel, sensorModel, robotState)
 
 	this.motionModel = motionModel;
 	this.sensorModel = sensorModel;
+	this.resampleRatio = resampleRatio;
 
 	if (typeof robotState !== 'undefined')
 	{
@@ -155,8 +152,9 @@ ParticleFilter.prototype.resample = function ()
 {
 	var z_t = new Array(this.particles.length);
 
-	//Resample percent% of all particles, the rest 20% will be randomly generated
-	const m = z_t.length * this.resampleRate;
+	//Resample percent% of all particles, the rest will be randomly generated
+	console.log(this.resampleRatio)
+	const m = z_t.length * this.resampleRatio;
 
 	const step = 1.0 / m;
 

@@ -231,3 +231,33 @@ function smoothenPath(path, windowSize)
 		path[i].y = copy[i-1].y + dy/windowSize/2;
 	}
 }
+
+// //convert x coordinate on screen to x coordinate in world
+// function toWorldX(x)
+// {
+//     return x*scale;
+// }
+
+// //convert y coordinate in world to y coordinate on screen
+// function toScreenY(y)
+// {
+//     return round(canvas.height - y/scale);
+// }
+
+// //convert y coordinate on screen to y coordinate in world
+// function toWorldY(y)
+// {
+//     return (canvas.height - y)*scale;
+// }
+
+// function toWorldCoor(coor)
+// {
+//     coor.x = toWorldX(coor.x);
+//     coor.y = toWorldY(coor.y);
+// }
+
+// function toScreenCoor(coor)
+// {
+//     coor.x = toScreenX(coor.x);
+//     coor.y = toScreenY(coor.y);
+// }

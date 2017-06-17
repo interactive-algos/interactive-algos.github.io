@@ -1,7 +1,3 @@
-//Constants
-
-Particle.size = 0.08;
-
 /**
  * A representation of particle robot in Particle Filter which is --
  * A representation of nonparametric implementation of the Bayes filter
@@ -24,6 +20,8 @@ function Particle(x, y, dir, weight)
 	this.w = weight;
 }
 
+//Constants
+Particle.size = 0.08;
 
 /**
  * Draws the particle on the context

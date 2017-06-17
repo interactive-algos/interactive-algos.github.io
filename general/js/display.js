@@ -6,5 +6,6 @@ function Display(canvas, bgCanvas, map, robot, particleFilter) {
 }
 
 Display.prototype.update = function () {
-	
+
 }
+
