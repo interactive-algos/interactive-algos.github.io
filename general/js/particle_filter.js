@@ -144,20 +144,19 @@ ParticleFilter.prototype.sensorUpdate = function (z)
 
 	// Resample the particles
 	this.normalizeWeights();
-	this.resample(this.resampleRate);
+	this.resample();
 };
 
 /**
  * Resample a part of the particles base on input
  * @function
- * @param {float} percent - The ratio of which will be resampled
  */
-ParticleFilter.prototype.resample = function (percent)
+ParticleFilter.prototype.resample = function ()
 {
 	var z_t = new Array(this.particles.length);
 
 	//Resample percent% of all particles, the rest 20% will be randomly generated
-	const m = z_t.length * percent;
+	const m = z_t.length * this.resampleRate;
 
 	const step = 1.0 / m;
 
