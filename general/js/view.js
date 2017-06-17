@@ -68,30 +68,30 @@ CanvasRenderingContext2D.prototype.strokePath = function(path)
     this.stroke();
 };
 
-CanvasRenderingContext2D.prototype.drawLaserLines = function (nLasers, x, y, diroff)
+CanvasRenderingContext2D.prototype.drawLaserLines = function (n, x, y, diroff)
 {
     //Angle between each laser, in radians
-    var rad = Math.PI*2/nLasers;
+    var rad = Math.PI*2/n;
 
     //index of corresponding entry in z
-    var i = (diroff - nLasers/4);
-    i = (i+nLasers+nLasers);
+    var i = (diroff + n/4 + n/2);
+    i = (i+n+n);
 
-    for(var index = 0; index <= nLasers/2; index ++, i++)
+    for(var index = 0; index <= n/2; index ++, i++)
     {
         //dirOffset is the direction the user's mouse
-        //is point at, -nLasers/4 to offset it by 90 degrees,
+        //is point at, -n/4 to offset it by 90 degrees,
         //so that laser scan is centered at where the user
         //points to
 
         //get i stay in bound
-        i %= nLasers;
+        i %= n;
 
         var dir = i * rad;
-        var laserLen = senseRadius/scale;
+        var laserLen = senseRadius;
 
         //Grey color for a miss
-        if(z[i] >= senseRadius/scale)
+        if(z[i] >= senseRadius)
         {
             this.strokeStyle = 'grey';
         }else

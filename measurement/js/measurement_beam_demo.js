@@ -4,14 +4,14 @@ var bgCanvas;
 var robotX;
 var robotY;
 
-var senseRadius = 150;
+var senseRadius = 3;
 
 var nLasers = 36;
 
 var robotDir = 0;
 var dirOffset = 0;
 
-var sensorNoise = 0.1;
+var sensorNoise = 0.0;
 
 //Results of laser scan
 var z = new Array(nLasers);
@@ -23,7 +23,8 @@ var map;
 function update()
 {
     //Only scan if location changed
-    scan(robotX, robotY, robotDir, senseRadius/scale, map, z);
+    console.log(senseRadius);
+    scan(robotX, robotY, robotDir, senseRadius, map, z);
     var checkbox = document.getElementById('shouldColor');
     checkbox.checked = false;
     clearColor();
@@ -84,7 +85,7 @@ function parameterChanged(event)
 
     if(target.id === 'sensorRadius')
     {
-        senseRadius = Number(target.value) / 0.02;
+        senseRadius = Number(target.value);
     }
     else if(target.id === 'sensorNoise')
     {
@@ -121,11 +122,11 @@ function mouseDown(event)
     {
     	clearCanvas(canvas);
 		var ctx = canvas.getContext('2d');
-		drawRobot(ctx);
-		drawLaserLines(ctx);
+        ctx.drawLaserLines(nLasers, robotX, robotY, -dirOffset);
+        ctx.drawRobot(robotX, robotY, robotDir, 20);
 		ctx.strokeStyle = 'rgba(0, 0, 255, 0.5)';
 		ctx.drawRobot(x, y, robotDir, 5);
-		var probability = sensorModel.probability(z, new RobotState(toWorldX(x), toWorldY(y), robotDir));
+		var probability = sensorModel.probability(z, new RobotState(x, y, robotDir));
 		document.getElementById('probability').innerHTML = "Probability: " + probability;
 		return;
 	}
@@ -181,7 +182,7 @@ function getSensorNoise()
 
 function getSensorRadius()
 {
-	return getValue('sensorRadius')/0.02;
+	return getValue('sensorRadius');
 }
 
 function toggleColoring(event)
