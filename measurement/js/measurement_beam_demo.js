@@ -170,7 +170,7 @@ function init()
 	sensorModel = new BeamModel(getSensorNoise(), getSensorRadius(), map,
 		canvas.width, canvas.height);
 
-    Particle.size = 5;
+    Particle.size = 0.2/scale;
 
     //Listen to mouse click events
     bgCanvas.onmousedown = mouseDown;
