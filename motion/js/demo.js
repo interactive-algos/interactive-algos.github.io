@@ -42,6 +42,26 @@ function getSensorRadius()
     return getValue('fogOfWar');
 }
 
+function getParticleCount()
+{
+    return getValue('nParticles');
+}
+
+function getStrideNoise()
+{
+    return getValue('robotForwardNoise') / 100.0;
+}
+
+function getTurnNoise()
+{
+    return getValue('robotTurnNoise') / 100.0;
+}
+
+function getResampleRatio()
+{
+    return getValue('pRatio');
+}
+
 function refreshSelect()
 {
     $('.selectpicker').selectpicker('refresh');
@@ -299,62 +319,6 @@ function printPath(path)
     console.log(str);
 }
 
-function getParticleCount()
-{
-    return getValue('nParticles');
-}
-
-function getStrideNoise()
-{
-    return getValue('robotForwardNoise') / 100.0;
-}
-
-function getTurnNoise()
-{
-    return getValue('robotTurnNoise') / 100.0;
-}
-
-function getResampleRatio()
-{
-    return getValue('pRatio');
-}
-
-//convert x coordinate in world to x coordinate on screen
-function toScreenX(x)
-{
-    return round(x/scale);
-}
-
-//convert x coordinate on screen to x coordinate in world
-function toWorldX(x)
-{
-    return x*scale;
-}
-
-//convert y coordinate in world to y coordinate on screen
-function toScreenY(y)
-{
-    return round(canvas.height - y/scale);
-}
-
-//convert y coordinate on screen to y coordinate in world
-function toWorldY(y)
-{
-    return (canvas.height - y)*scale;
-}
-
-function toWorldCoor(coor)
-{
-    coor.x = toWorldX(coor.x);
-    coor.y = toWorldY(coor.y);
-}
-
-function toScreenCoor(coor)
-{
-    coor.x = toScreenX(coor.x);
-    coor.y = toScreenY(coor.y);
-}
-
 function queryProbability(event)
 {
 	var coor = getClickLoc(event);
@@ -370,17 +334,6 @@ function queryProbability(event)
 		document.getElementById('probability').innerHTML = "Probability: " + probability;
 		console.log('(' + x + ', ' + y + '): ' + probability);
 	}
-}
-
-//Functional API, return a new point.
-function getWorldCoor(coor)
-{
-    return new Point(toWorldX(coor.x), toWorldY(coor.y));
-}
-
-function getScreenCoor(coor)
-{
-    return new Point(toScreenX(coor.x), toScreenY(coor.y));
 }
 
 Robot.prototype.draw = function(ctx)
