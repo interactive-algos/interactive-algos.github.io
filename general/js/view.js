@@ -1,22 +1,7 @@
-/**
- * Created by kelvinzhang on 5/29/17.
- */
 
 
-function isNumber(event)
-{
-    return event.charCode >= 48 && event.charCode <= 57;
-}
-
-function isDecimal(event)
-{
-    return isNumber(event) || event.charCode === 46;
-}
-
-function getValue(id)
-{
-    return Number(document.getElementById(id).value);
-}
+//meter/pixel scale
+var scale = 0.02;
 
 CanvasRenderingContext2D.prototype.drawRobot = function (x, y, dir, size)
 {
@@ -25,15 +10,15 @@ CanvasRenderingContext2D.prototype.drawRobot = function (x, y, dir, size)
 
     this.beginPath();
     //draw a line to show Robot's orientation
-    this.moveTo(x, y);
-    this.lineTo(x + cos(dir)*size, y + sin(dir)*size);
+    this.moveTo(toScreenX(x), toScreenY(y));
+    this.lineTo(toScreenX(x) + cos(dir)*size, toScreenY(y) + sin(dir)*size);
 
     this.stroke();
 };
 
 CanvasRenderingContext2D.prototype.circle = function(x, y, size)
 {
-    return this.arc(x, y, size, 0, Math.PI*2);
+    return this.arc(toScreenX(x), toScreenY(y), size, 0, Math.PI*2);
 };
 
 CanvasRenderingContext2D.prototype.strokeCircle = function(x, y, size)
@@ -43,6 +28,7 @@ CanvasRenderingContext2D.prototype.strokeCircle = function(x, y, size)
     this.stroke();
 };
 
+// m is in World Coor
 CanvasRenderingContext2D.prototype.drawMap = function(m)
 {
     for (var i = m.length - 1; i >= 0; i--)
@@ -54,6 +40,11 @@ CanvasRenderingContext2D.prototype.drawMap = function(m)
 
 CanvasRenderingContext2D.prototype.strokeLine = function(x1, y1, x2, y2)
 {
+
+    x1 = toScreenX(x1);
+    y1 = toScreenY(y1);
+    x2 = toScreenX(x2);
+    y2 = toScreenY(y2);
     this.beginPath();
     this.moveTo(x1, y1);
     this.lineTo(x2, y2);
@@ -68,20 +59,13 @@ CanvasRenderingContext2D.prototype.strokeTextWithColorFont = function(text, colo
 	this.strokeText(text, 10, 20);
 };
 
-function getClickLoc(event)
+CanvasRenderingContext2D.prototype.strokePath = function(path)
 {
-    var element = event.target;
-
-    var offsetX = 0, offsetY = 0;
-
-    if (element.offsetParent) {
-        do {
-            offsetX += element.offsetLeft;
-            offsetY += element.offsetTop;
-        } while ((element = element.offsetParent));
+    this.beginPath();
+    this.moveTo(toScreenX(path[0].x), toScreenY(path[0].y));
+    for(var i = 1; i < path.length; i ++)
+    {
+        this.lineTo(toScreenX(path[i].x), toScreenY(path[i].y));
     }
-
-    x = event.pageX - offsetX;
-    y = event.pageY - offsetY;
-    return {x:x, y:y};
-}
+    this.stroke();
+};

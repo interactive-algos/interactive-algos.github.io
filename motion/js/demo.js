@@ -8,9 +8,6 @@ var frameCount = 0;
 var lastFrame;
 var fps = 0;
 
-//meter/pixel scale
-var scale = 0.02;
-
 var requestAnimationFrame = window.msRequestAnimationFrame || window.webkitRequestAnimationFrame || window.mozRequestAnimationFrame || window.requestAnimationFrame;
 
 var animating = false;
@@ -36,36 +33,6 @@ var pathSelect;
 var customPathGroup;
 
 var alphanumericRE = new RegExp('^[a-zA-Z0-9]+$');
-
-function getSensorRadius()
-{
-    return getValue('fogOfWar');
-}
-
-function getParticleCount()
-{
-    return getValue('nParticles');
-}
-
-function getStrideNoise()
-{
-    return getValue('robotForwardNoise') / 100.0;
-}
-
-function getTurnNoise()
-{
-    return getValue('robotTurnNoise') / 100.0;
-}
-
-function getResampleRatio()
-{
-    return getValue('pRatio');
-}
-
-function refreshSelect()
-{
-    $('.selectpicker').selectpicker('refresh');
-}
 
 function frame(timestamp)
 {
@@ -336,41 +303,30 @@ function queryProbability(event)
 	}
 }
 
-Robot.prototype.draw = function(ctx)
-{
-    ctx.strokeStyle = 'black';
+// Robot.prototype.draw = function(ctx)
+// {
+//     ctx.strokeStyle = 'black';
 
-    var x = toScreenX(this.x);
-    var y = toScreenY(this.y);
+//     var x = toScreenX(this.x);
+//     var y = toScreenY(this.y);
 
-    ctx.drawRobot(x, y, -this.dir, Robot.size/scale);
+//     ctx.drawRobot(x, y, -this.dir, Robot.size/scale);
 
-    ctx.strokeStyle = 'rgba(0, 0, 255, '+ (1-this.senseCircle/Robot.sensorRadius) +')';
+//     ctx.strokeStyle = 'rgba(0, 0, 255, '+ (1-this.senseCircle/Robot.sensorRadius) +')';
 
-    //draw Robot's sensing circle
-    ctx.strokeCircle(x, y, this.senseCircle/scale);
+//     //draw Robot's sensing circle
+//     ctx.strokeCircle(x, y, this.senseCircle/scale);
 
-    this.filter.draw(ctx);
-};
+//     this.filter.draw(ctx);
+// };
 
-Particle.prototype.draw = function(ctx)
-{
-    var x = toScreenX(this.x);
-    var y = toScreenY(this.y);
+// Particle.prototype.draw = function(ctx)
+// {
+//     var x = toScreenX(this.x);
+//     var y = toScreenY(this.y);
 
-    // ctx.strokeStyle = 'rgba('+ 255-this.w*255 +','+ 255-this.w*255 +', 255, 1)';
+//     // ctx.strokeStyle = 'rgba('+ 255-this.w*255 +','+ 255-this.w*255 +', 255, 1)';
 
-    ctx.strokeStyle = 'rgba(0, 0, 255, 0.1)';
-    ctx.drawRobot(x, y, -this.dir, Particle.size/scale);
-};
-
-CanvasRenderingContext2D.prototype.strokePath = function(path)
-{
-	this.beginPath();
-	this.moveTo(toScreenX(path[0].x), toScreenY(path[0].y));
-	for(var i = 1; i < path.length; i ++)
-	{
-		this.lineTo(toScreenX(path[i].x), toScreenY(path[i].y));
-	}
-	this.stroke();
-};
+//     ctx.strokeStyle = 'rgba(0, 0, 255, 0.1)';
+//     ctx.drawRobot(x, y, -this.dir, Particle.size/scale);
+// };

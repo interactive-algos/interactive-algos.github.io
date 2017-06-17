@@ -278,3 +278,78 @@ function getScreenCoor(coor)
 {
     return new Point(toScreenX(coor.x), toScreenY(coor.y));
 }
+
+//Functional API, return a new point.
+function getWorldLine(l)
+{
+    return new Line(toWorldX(l.s.x), toWorldY(l.s.y), toWorldX(l.t.x), toWorldY(l.t.y));
+}
+
+function getScreenLine(l)
+{
+    return new Line(toScreenX(l.s.x), toScreenY(l.s.y), toScreenX(l.t.x), toScreenY(l.t.y));
+}
+
+
+function isNumber(event)
+{
+    return event.charCode >= 48 && event.charCode <= 57;
+}
+
+function isDecimal(event)
+{
+    return isNumber(event) || event.charCode === 46;
+}
+
+function getValue(id)
+{
+    return Number(document.getElementById(id).value);
+}
+
+function getSensorRadius()
+{
+    return getValue('fogOfWar');
+}
+
+function getParticleCount()
+{
+    return getValue('nParticles');
+}
+
+function getStrideNoise()
+{
+    return getValue('robotForwardNoise') / 100.0;
+}
+
+function getTurnNoise()
+{
+    return getValue('robotTurnNoise') / 100.0;
+}
+
+function getResampleRatio()
+{
+    return getValue('pRatio');
+}
+
+function refreshSelect()
+{
+    $('.selectpicker').selectpicker('refresh');
+}
+
+function getClickLoc(event)
+{
+    var element = event.target;
+
+    var offsetX = 0, offsetY = 0;
+
+    if (element.offsetParent) {
+        do {
+            offsetX += element.offsetLeft;
+            offsetY += element.offsetTop;
+        } while ((element = element.offsetParent));
+    }
+
+    x = event.pageX - offsetX;
+    y = event.pageY - offsetY;
+    return {x:x, y:y};
+}

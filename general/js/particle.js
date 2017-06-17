@@ -21,7 +21,7 @@ function Particle(x, y, dir, weight)
 }
 
 //Constants
-Particle.size = 0.08;
+Particle.size = 0.1;
 
 /**
  * Draws the particle on the context
@@ -30,11 +30,11 @@ Particle.size = 0.08;
  */
 Particle.prototype.draw = function (ctx)
 {
-	var x = round(this.x);
-	var y = round(this.y);
+	var x = this.x;//round(this.x);
+	var y = this.y;//round(this.y);
 
 	ctx.strokeStyle = 'rgba(0, 0, 255, 0.1)';
-	ctx.drawRobot(x, y, -this.dir, Particle.size);
+	ctx.drawRobot(x, y, -this.dir, Particle.size/scale);
 };
 
 /**

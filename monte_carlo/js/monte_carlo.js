@@ -11,14 +11,14 @@ function start()
 
 	var map = getMapForCanvas(canvas);
 
-	map.forEach(function(line)
-	{
-		line.s.x = toWorldX(line.s.x);
-		line.s.y = toWorldY(line.s.y);
+	// map.forEach(function(line)
+	// {
+	// 	line.s.x = toWorldX(line.s.x);
+	// 	line.s.y = toWorldY(line.s.y);
 
-		line.t.x = toWorldX(line.t.x);
-		line.t.y = toWorldY(line.t.y);
-	});
+	// 	line.t.x = toWorldX(line.t.x);
+	// 	line.t.y = toWorldY(line.t.y);
+	// });
 
 	Robot.sensorRadius = getSensorRadius();
 	var sensorModel = new BeamModel(getSensorNoise(), getSensorRadius(), map, width, height);

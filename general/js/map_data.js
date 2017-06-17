@@ -23,5 +23,12 @@ function getMapForCanvas(canvas)
 	map.push(new Line(canvas.width, canvas.height, 0, canvas.height));
 	map.push(new Line(0, canvas.height, 0, 0));
 
+    convertToWorld(map);
     return map;
+}
+
+function convertToWorld(map) {
+    for (i = 0; i < map.length; i++) {
+        map[i] = getWorldLine(map[i]);
+    }
 }

@@ -1,8 +1,3 @@
-/**
- * Created by kelvinzhang on 5/29/17.
- */
-
-
 var canvas;
 var bgCanvas;
 
@@ -118,6 +113,8 @@ function trackRobotDir(event)
 function mouseDown(event)
 {
 	var coor = getClickLoc(event);
+    console.log(coor.x);
+    console.log(coor.y);
 	var x = coor.x;
 	var y = coor.y;
 
@@ -130,7 +127,7 @@ function mouseDown(event)
 		drawLaserLines(ctx);
 		ctx.strokeStyle = 'rgba(0, 0, 255, 0.5)';
 		ctx.drawRobot(x, y, robotDir, 5);
-		var probability = sensorModel.probability(z, new RobotState(x, y, robotDir));
+		var probability = sensorModel.probability(z, new RobotState(toWorldX(x), toWorldY(y), robotDir));
 		document.getElementById('probability').innerHTML = "Probability: " + probability;
 		return;
 	}
