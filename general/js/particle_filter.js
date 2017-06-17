@@ -6,6 +6,7 @@
  * @param {OdometryModel} motionModel - The motion model that is used to calculate its motion over time.
  * @param {BeamModel} sensorModel - The sensor model that is used to measure environment over time.
  * @param {RobotState} robotState - The state of the robot while creating the particle filter
+ * @param {float} resampleRatio - The percentage of the particles that will be resampled
  */
 function ParticleFilter(particleCount, motionModel, sensorModel, robotState, resampleRatio)
 {
@@ -21,13 +22,15 @@ function ParticleFilter(particleCount, motionModel, sensorModel, robotState, res
 	{
 		// If current robot state is already defined
 		// generate initial particles around the robot
+		// being used for motion demo
 		for (var i = particleCount - 1; i >= 0; i--)
 		{
-			this.particles[i] = new Particle(robotState.x + gaussian()*2, robotState.y+gaussian()*2, gaussian()*TWO_PI, 1);
+			this.particles[i] = new Particle(robotState.x + gaussian()*2, robotState.y+gaussian()*2, gaussian()*TWO_PI, undefined);
 		}
 	} else
 	{
 		// generate random particles within the map
+		// being used for mcl
 		var weight = 1.0 / particleCount;
 		for (var i = particleCount - 1; i >= 0; i--)
 		{
