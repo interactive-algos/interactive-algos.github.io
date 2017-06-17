@@ -23,54 +23,54 @@ var map;
 function update()
 {
     //Only scan if location changed
-    scan(robotX, robotY, robotDir, senseRadius, map, z);
+    scan(robotX, robotY, robotDir, senseRadius/scale, map, z);
     var checkbox = document.getElementById('shouldColor');
     checkbox.checked = false;
-	clearColor();
+    clearColor();
 }
 
-function drawLaserLines(ctx)
-{
-    //Angle between each laser, in radians
-    var rad = Math.PI*2/nLasers;
-
-    //index of corresponding entry in z
-    var i = (dirOffset - nLasers/4);
-    i = (i+nLasers+nLasers);
-
-    for(var index = 0; index <= nLasers/2; index ++, i++)
-    {
-        //dirOffset is the direction the user's mouse
-        //is point at, -nLasers/4 to offset it by 90 degrees,
-        //so that laser scan is centered at where the user
-        //points to
-
-        //get i stay in bound
-        i %= nLasers;
-
-        var dir = i * rad;
-        var laserLen = senseRadius;
-
-        //Grey color for a miss
-        if(z[i] >= senseRadius)
-        {
-            ctx.strokeStyle = 'grey';
-        }else
-        {
-            //distance reported by the laser sensor
-            var dist = z[i] + gaussian()*sensorNoise;
-            laserLen = min(laserLen, dist);
-
-            //red for a hit
-            ctx.strokeStyle = 'red';
-            ctx.fillStyle = 'red';
-            ctx.beginPath();
-            ctx.circle(robotX + cos(dir)*dist, robotY + sin(dir)*dist, 5);
-            ctx.fill();
-        }
-        ctx.strokeLine(robotX, robotY, robotX + cos(dir)*laserLen, robotY + sin(dir)*laserLen)
-    }
-}
+// function drawLaserLines(ctx)
+// {
+//     //Angle between each laser, in radians
+//     var rad = Math.PI*2/nLasers;
+//
+//     //index of corresponding entry in z
+//     var i = (dirOffset - nLasers/4);
+//     i = (i+nLasers+nLasers);
+//
+//     for(var index = 0; index <= nLasers/2; index ++, i++)
+//     {
+//         //dirOffset is the direction the user's mouse
+//         //is point at, -nLasers/4 to offset it by 90 degrees,
+//         //so that laser scan is centered at where the user
+//         //points to
+//
+//         //get i stay in bound
+//         i %= nLasers;
+//
+//         var dir = i * rad;
+//         var laserLen = senseRadius;
+//
+//         //Grey color for a miss
+//         if(z[i] >= senseRadius)
+//         {
+//             ctx.strokeStyle = 'grey';
+//         }else
+//         {
+//             //distance reported by the laser sensor
+//             var dist = z[i] + gaussian()*sensorNoise;
+//             laserLen = min(laserLen, dist);
+//
+//             //red for a hit
+//             ctx.strokeStyle = 'red';
+//             ctx.fillStyle = 'red';
+//             ctx.beginPath();
+//             ctx.circle(robotX + cos(dir)*dist, robotY + sin(dir)*dist, 5);
+//             ctx.fill();
+//         }
+//         ctx.strokeLine(robotX, robotY, robotX + cos(dir)*laserLen, robotY + sin(dir)*laserLen)
+//     }
+// }
 
 function drawRobot(ctx)
 {
@@ -101,10 +101,10 @@ function parameterChanged(event)
 function trackRobotDir(event)
 {
     var coor = getClickLoc(event);
-    var x = coor.x;
-    var y = coor.y;
+    var x = toWorldX(coor.x);
+    var y = toWorldY(coor.y);
 
-    robotDir = atan2(y-robotY, x-robotX);
+    robotDir = -atan2(y-robotY, x-robotX);
     dirOffset = round(robotDir/Math.PI/2 * nLasers);
     clearCanvas(canvas);
     canvas.getContext('2d').drawRobot(robotX, robotY, robotDir, 20);
@@ -113,10 +113,8 @@ function trackRobotDir(event)
 function mouseDown(event)
 {
 	var coor = getClickLoc(event);
-    console.log(coor.x);
-    console.log(coor.y);
-	var x = coor.x;
-	var y = coor.y;
+    var x = toWorldX(coor.x);
+    var y = toWorldY(coor.y);
 
 	//Do nothing if it is not a left button event
 	if(event.altKey)
@@ -135,7 +133,7 @@ function mouseDown(event)
     robotX = x;
     robotY = y;
     clearCanvas(canvas);
-    drawRobot(canvas.getContext('2d'));
+    canvas.getContext('2d').drawRobot(robotX, robotY, robotDir, 20);
     bgCanvas.onmousemove = trackRobotDir;
     bgCanvas.onmouseout = mouseUp;
 	bgCanvas.onmouseup = mouseUp;
@@ -147,7 +145,7 @@ function mouseUp()
     bgCanvas.onmouseout = undefined;
     bgCanvas.onmouseup = undefined;
     update();
-    drawLaserLines(canvas.getContext('2d'));
+    canvas.getContext('2d').drawLaserLines(nLasers, robotX, robotY, -dirOffset);
 }
 
 function init()
@@ -164,8 +162,6 @@ function init()
     dirOffset = round(robotDir/Math.PI/2 * nLasers);
 
     update();
-    drawRobot(canvas.getContext('2d'));
-    drawLaserLines(canvas.getContext('2d'));
 
 	sensorModel = new BeamModel(getSensorNoise(), getSensorRadius(), map,
 		canvas.width, canvas.height);

@@ -1,5 +1,3 @@
-
-
 //meter/pixel scale
 var scale = 0.02;
 
@@ -69,3 +67,46 @@ CanvasRenderingContext2D.prototype.strokePath = function(path)
     }
     this.stroke();
 };
+
+CanvasRenderingContext2D.prototype.drawLaserLines = function (nLasers, x, y, diroff)
+{
+    //Angle between each laser, in radians
+    var rad = Math.PI*2/nLasers;
+
+    //index of corresponding entry in z
+    var i = (diroff - nLasers/4);
+    i = (i+nLasers+nLasers);
+
+    for(var index = 0; index <= nLasers/2; index ++, i++)
+    {
+        //dirOffset is the direction the user's mouse
+        //is point at, -nLasers/4 to offset it by 90 degrees,
+        //so that laser scan is centered at where the user
+        //points to
+
+        //get i stay in bound
+        i %= nLasers;
+
+        var dir = i * rad;
+        var laserLen = senseRadius/scale;
+
+        //Grey color for a miss
+        if(z[i] >= senseRadius/scale)
+        {
+            this.strokeStyle = 'grey';
+        }else
+        {
+            //distance reported by the laser sensor
+            var dist = z[i] + gaussian()*sensorNoise;
+            laserLen = min(laserLen, dist);
+
+            //red for a hit
+            this.strokeStyle = 'red';
+            this.fillStyle = 'red';
+            this.beginPath();
+            this.circle(x + cos(dir)*dist, y + sin(dir)*dist, 5);
+            this.fill();
+        }
+        this.strokeLine(x, y, x + cos(dir)*laserLen, y + sin(dir)*laserLen)
+    }
+}
