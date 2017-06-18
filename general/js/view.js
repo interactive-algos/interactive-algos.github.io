@@ -1,8 +1,17 @@
 //meter/pixel scale
 var scale = 0.02;
 
-CanvasRenderingContext2D.prototype.drawRobot = function (x, y, dir, size)
+var map;
+
+CanvasRenderingContext2D.prototype.drawRobot = function (x, y, dir, size, isRobot)
 {
+    if (isRobot) {
+        rcOffsetY = y;
+        rcOffsetX = x;
+        if (map) {
+            this.drawMap(map);
+        }
+    }
     //The robot's main circle
     this.strokeCircle(x, y, size);
 
@@ -29,6 +38,7 @@ CanvasRenderingContext2D.prototype.strokeCircle = function(x, y, size)
 // m is in World Coor
 CanvasRenderingContext2D.prototype.drawMap = function(m)
 {
+    map = m;
     for (var i = m.length - 1; i >= 0; i--)
     {
         var l = m[i];

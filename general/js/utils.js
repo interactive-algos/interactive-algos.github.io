@@ -10,6 +10,9 @@ const min = Math.min;
 const round = Math.round;
 const TWO_PI = Math.PI*2;
 
+var rcOffsetX = 0;
+var rcOffsetY = 0;
+
 function randint(min, max)
 {
 	min = Math.ceil(min);
@@ -235,25 +238,27 @@ function smoothenPath(path, windowSize)
 //convert x coordinate in world to x coordinate on screen
 function toScreenX(x)
 {
-    return round(x/scale);
+    return (x-rcOffsetX)/scale + canvas.width/2;
 }
 
 //convert x coordinate on screen to x coordinate in world
 function toWorldX(x)
 {
-    return x*scale;
+	// return x*scale;
+    return (x - canvas.width/2) * scale + rcOffsetX;
 }
 
 //convert y coordinate in world to y coordinate on screen
 function toScreenY(y)
 {
-    return round(canvas.height - y/scale);
+    return (- y + rcOffsetY)/scale + canvas.height/2;
 }
 
 //convert y coordinate on screen to y coordinate in world
 function toWorldY(y)
 {
-    return (canvas.height - y)*scale;
+	// return (canvas.height - y) * scale;
+    return -((y-canvas.height/2)*scale - rcOffsetY);
 }
 
 function toWorldCoor(coor)
@@ -279,7 +284,7 @@ function getScreenCoor(coor)
     return new Point(toScreenX(coor.x), toScreenY(coor.y));
 }
 
-//Functional API, return a new point.
+//Functional API, return a new line.
 function getWorldLine(l)
 {
     return new Line(toWorldX(l.s.x), toWorldY(l.s.y), toWorldX(l.t.x), toWorldY(l.t.y));

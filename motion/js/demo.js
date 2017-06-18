@@ -202,6 +202,8 @@ function init()
 
     width = canvas.width * scale;
     height = canvas.height * scale;
+    rcOffsetX = width/2;
+    rcOffsetY = height/2;
     map = getMapForCanvas(canvas);
     bgCanvas.getContext('2d').drawMap(map);
 	bgCanvas.onmousedown = queryProbability;
