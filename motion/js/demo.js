@@ -106,14 +106,14 @@ function mouseMotion(event)
     {
         var map_line = m[i];
 
-        if (doIntersect(map_line.s, map_line.t, untkingPath.s, untkingPath.t))
+        if (doIntersect(map_line.s, map_line.t, getWorldCoor(untkingPath.s), getWorldCoor(untkingPath.t)))
         {
             return;
         }
     }
 
     ctx.strokeStyle = 'red';
-    ctx.strokeLine(toScreenX(lastPoint.x), toScreenY(lastPoint.y), coor.x, coor.y);
+    ctx.strokeLine(lastPoint.x, lastPoint.y, toWorldX(coor.x), toWorldY(coor.y));
     toWorldCoor(coor);
     path.push(coor);
 }
@@ -181,6 +181,13 @@ function mouseUp(event)
 
 function startRecordingPath()
 {
+    width = canvas.width * scale;
+    height = canvas.height * scale;
+    rcOffsetX = width/2;
+    rcOffsetY = height/2;
+    map = getMapForCanvas(canvas);
+    bgCanvas.getContext('2d').drawMap(map);
+
     console.log("start recording...");
     animating = false;
     clearCanvas(canvas);
