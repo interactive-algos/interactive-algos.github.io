@@ -48,15 +48,15 @@ function frame(timestamp)
 		 ctx.fillRect(0, 0, canvas.width, canvas.height);
 		 */
 		ctx.clearRect(0, 0, canvas.width, canvas.height);
-		ctx.strokeTextWithColorFont(fps + " FPS", 'black', '10px Menlo');
-
 		robot.update();
+
 		robot.draw(ctx);
 
 		if (shouldColorMap)
 		{
 			colorMap(ctx, getValue('colorRes'));
 		}
+		ctx.strokeTextWithColorFont(fps + " FPS", 'black', '10px Menlo');
 	}
 	if (animating)
 		requestAnimationFrame(frame);
