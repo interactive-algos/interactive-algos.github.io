@@ -21,14 +21,21 @@ var sensorModel;
 
 var map;
 
+var clickedParticles = [];
+
 function update()
 {
 	//Only scan if location changed
 	console.log(senseRadius);
 	scan(robotX, robotY, robotDir, senseRadius, map, z);
 	var checkbox = document.getElementById('shouldColor');
-	checkbox.checked = false;
-	clearColor();
+	if(checkbox.checked)
+	{
+		clearCanvas(bgCanvas);
+		bgCanvas.getContext('2d').drawMap(map);
+		colorMap();
+	}
+	clickedParticles = [];
 }
 
 // function drawLaserLines(ctx)
@@ -119,16 +126,11 @@ function mouseDown(event)
 	var y = toWorldY(coor.y);
 
 	//Do nothing if it is not a left button event
-	if (event.altKey)
+	if (event.altKey && !shouldColorMap)
 	{
-		clearCanvas(canvas);
-		var ctx = canvas.getContext('2d');
-		ctx.drawLaserLines(nLasers, robotX, robotY, -dirOffset);
-		ctx.drawRobot(robotX, robotY, robotDir, robotSize);
-		ctx.strokeStyle = 'rgba(0, 0, 255, 0.5)';
-		ctx.drawRobot(x, y, robotDir, 5);
 		var probability = sensorModel.probability(z, new RobotState(x, y, robotDir));
-		document.getElementById('probability').innerHTML = "Probability: " + probability;
+		clickedParticles.push(new Particle(x, y, robotDir, probability));
+		console.log(coor);
 		return;
 	}
 
