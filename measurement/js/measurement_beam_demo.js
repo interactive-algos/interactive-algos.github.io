@@ -4,6 +4,7 @@ var bgCanvas;
 var robotX;
 var robotY;
 
+var robotSize = 10*scale;
 var senseRadius = 3;
 
 var nLasers = 36;
@@ -76,7 +77,7 @@ function update()
 function drawRobot(ctx)
 {
     ctx.strokeStyle = 'black';
-    ctx.drawRobot(robotX, robotY, robotDir, 20);
+    ctx.drawRobot(robotX, robotY, robotDir, robotSize);
 }
 
 function parameterChanged(event)
@@ -108,7 +109,7 @@ function trackRobotDir(event)
     robotDir = -atan2(y-robotY, x-robotX);
     dirOffset = round(robotDir/Math.PI/2 * nLasers);
     clearCanvas(canvas);
-    canvas.getContext('2d').drawRobot(robotX, robotY, robotDir, 20);
+    canvas.getContext('2d').drawRobot(robotX, robotY, robotDir, robotSize);
 }
 
 function mouseDown(event)
@@ -123,7 +124,7 @@ function mouseDown(event)
     	clearCanvas(canvas);
 		var ctx = canvas.getContext('2d');
         ctx.drawLaserLines(nLasers, robotX, robotY, -dirOffset);
-        ctx.drawRobot(robotX, robotY, robotDir, 20);
+        ctx.drawRobot(robotX, robotY, robotDir, robotSize);
 		ctx.strokeStyle = 'rgba(0, 0, 255, 0.5)';
 		ctx.drawRobot(x, y, robotDir, 5);
 		var probability = sensorModel.probability(z, new RobotState(x, y, robotDir));
@@ -134,7 +135,7 @@ function mouseDown(event)
     robotX = x;
     robotY = y;
     clearCanvas(canvas);
-    canvas.getContext('2d').drawRobot(robotX, robotY, robotDir, 20);
+    canvas.getContext('2d').drawRobot(robotX, robotY, robotDir, robotSize);
     bgCanvas.onmousemove = trackRobotDir;
     bgCanvas.onmouseout = mouseUp;
 	bgCanvas.onmouseup = mouseUp;
