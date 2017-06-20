@@ -157,6 +157,11 @@ function init()
 
     //Draw the map
 	map = getMapForCanvas(canvas);
+    setPreview(true);
+    width = canvas.width * scale;
+    height = canvas.height * scale;
+    rcOffsetX = width/2;
+    rcOffsetY = height/2;
     bgCanvas.getContext('2d').drawMap(map);
     robotX = floor(random()*canvas.width);
     robotY = floor(random()*canvas.height);

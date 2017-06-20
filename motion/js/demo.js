@@ -181,11 +181,14 @@ function mouseUp(event)
 
 function startRecordingPath()
 {
+    clearCanvas(bgCanvas);
     width = canvas.width * scale;
     height = canvas.height * scale;
     rcOffsetX = width/2;
     rcOffsetY = height/2;
     map = getMapForCanvas(canvas);
+
+    console.log(rcOffsetX+" "+rcOffsetY);
     bgCanvas.getContext('2d').drawMap(map);
 
     console.log("start recording...");
@@ -207,21 +210,25 @@ function init()
     bgCanvas = document.getElementById('background');
     customPathGroup = document.getElementById('customPathGroup');
 
+    map = getMapForCanvas(canvas);
+    console.log(rcOffsetX+" "+rcOffsetY);
+
+    setPreview(true);
+
     width = canvas.width * scale;
     height = canvas.height * scale;
     rcOffsetX = width/2;
     rcOffsetY = height/2;
-    map = getMapForCanvas(canvas);
     bgCanvas.getContext('2d').drawMap(map);
 	bgCanvas.onmousedown = queryProbability;
 
 	smoothenPath(vanillaPath);
 
-    for(var i = 0; i < vanillaPath.length; i ++)
-	{
-		vanillaPath[i].x = toWorldX(vanillaPath[i].x);
-		vanillaPath[i].y = toWorldY(vanillaPath[i].y);
-	}
+    // for(var i = 0; i < vanillaPath.length; i ++)
+	// {
+	// 	vanillaPath[i].x = toWorldX(vanillaPath[i].x);
+	// 	vanillaPath[i].y = toWorldY(vanillaPath[i].y);
+	// }
 
     knownPath['Vanilla'] = vanillaPath;
 

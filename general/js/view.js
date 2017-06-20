@@ -3,13 +3,28 @@ var scale = 0.02;
 
 var map;
 
-CanvasRenderingContext2D.prototype.drawRobot = function (wx, wy, dir, wsize, isRobot)
+function setPreview(isPreview) {
+    if (isPreview) {
+        s1 = canvas.width / getMapScreenSize(map).x;
+        s2 = canvas.height / getMapScreenSize(map).y;
+        if (s1>s2) {
+            dspscale = s2;
+        } else {
+            dspscale = s1;
+        }
+        scale = 0.02/dspscale;
+    } else {
+        scale = 0.02;
+    }
+}
+
+CanvasRenderingContext2D.prototype.drawRobot = function (wx, wy, dir, wsize, isRobot, isPreview)
 {
     if (isRobot) {
         rcOffsetY = wy;
         rcOffsetX = wx;
         if (map) {
-            this.drawMap(map);
+            this.drawMap(map, isPreview);
         }
     }
     //The robot's main circle

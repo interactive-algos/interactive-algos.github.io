@@ -3,6 +3,7 @@ function start()
 	if(animating)
 		return;
 
+	setPreview(false);
 	if (bgCanvas) {
 		clearCanvas(bgCanvas);
 	}

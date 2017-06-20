@@ -189,7 +189,7 @@ function getMapForCanvas(canvas)
     ];
 
 
-    convertToWorld(map);
+    // convertToWorld(map);
     return map;
 }
 
@@ -211,17 +211,16 @@ function getMapScreenSize (map) {
             h =map[i].t.y;
         }
     }
-    console.log(w+" "+h);
-    return new Point(w*6,h*6);
+    return new Point((w/scale), (h/scale));
 }
 
-function convertToWorld(map) {
-    for (i = 0; i < map.length; i++) {
-          var sc = 6;
-          map[i].s.x = map[i].s.x * sc;
-          map[i].s.y = map[i].s.y * sc;
-          map[i].t.x = map[i].t.x * sc;
-          map[i].t.y = map[i].t.y * sc;
-          map[i] = getWorldLine(map[i]);
-    }
-}
+// function convertToWorld(map) {
+//     for (i = 0; i < map.length; i++) {
+//           var sc = 30;
+//           map[i].s.x = map[i].s.x * sc;
+//           map[i].s.y = map[i].s.y * sc;
+//           map[i].t.x = map[i].t.x * sc;
+//           map[i].t.y = map[i].t.y * sc;
+//           map[i] = getWorldLine(map[i]);
+//     }
+// }
