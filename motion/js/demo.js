@@ -73,7 +73,7 @@ function colorMap(ctx, resolution)
 		{
 			var p = probabilityGrid[i][j];
 			ctx.fillStyle = 'rgba(' + round(p * 255) + ', 0, ' + (255 - round(p * 255)) + ', 0.5)';
-			ctx.fillRect(toScreenX(j * resolution), toScreenY(i * resolution), resolution / scale, resolution / scale);
+			ctx.fillRect(j * resolution, i * resolution, resolution, resolution);
 		}
 	}
 }
