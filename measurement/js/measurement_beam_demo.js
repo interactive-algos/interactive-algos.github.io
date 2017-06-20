@@ -134,6 +134,7 @@ function mouseDown(event)
 	if (event.altKey && !shouldColor.checked)
 	{
 		var probability = sensorModel.probability(z, new RobotState(x, y, robotDir));
+		document.getElementById('probability').innerHTML = probability;
 		clickedParticles.push(new Particle(x, y, robotDir, probability));
 		maxW = max(maxW, probability);
 		minW = min(minW, probability);
