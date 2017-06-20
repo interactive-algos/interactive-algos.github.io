@@ -166,7 +166,7 @@ function drawParticles(ctx, particles)
 	{
 		particles.forEach(function(p)
 		{
-			var w = (p.w - maxW)/(maxW-minW);
+			var w = (p.w - minW)/(maxW-minW);
 			ctx.fillStyle = 'rgba(' + round(w * 255) + ', 0, ' + (255 - round(w * 255)) + ', 0.5)';
 			ctx.fillRect(toScreenX(p.x), toScreenY(p.y), getColoringResolution(), getColoringResolution());
 		});
