@@ -1,10 +1,11 @@
 function start()
 {
-	if(animating)
+	if (animating)
 		return;
 
 	setPreview(false);
-	if (bgCanvas) {
+	if (bgCanvas)
+	{
 		clearCanvas(bgCanvas);
 	}
 	animating = true;
@@ -26,10 +27,10 @@ function start()
 
 	Robot.sensorRadius = getSensorRadius();
 	var sensorModel = new BeamModel(getSensorNoise(), getSensorRadius(), map,
-		getMapScreenSize(map).x*scale, getMapScreenSize(map).y*scale);
+		getMapScreenSize(map).x * scale, getMapScreenSize(map).y * scale);
 	var filter = new ParticleFilter(getParticleCount(), motionModel, sensorModel,
-		// new RobotState(path[0].x, path[0].y, 0),
-		undefined,
+		new RobotState(path[0].x, path[0].y, 0),
+		// undefined,
 		getResampleRatio());
 
 	robot = new Robot(filter, path, 36);

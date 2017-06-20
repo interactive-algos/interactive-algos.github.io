@@ -25,8 +25,7 @@ function ParticleFilter(particleCount, motionModel, sensorModel, robotState, res
 		// being used for motion demo
 		for (var i = particleCount - 1; i >= 0; i--)
 		{
-			// this.particles[i] = new Particle(robotState.x + gaussian()*2, robotState.y+gaussian()*2, gaussian()*TWO_PI, undefined);
-			this.particles[i] = new Particle(robotState.x, robotState.y, robotState.dir, undefined);
+			this.particles[i] = new Particle(robotState.x + gaussian()*2, robotState.y+gaussian()*2, robotState.dir + gaussian()*Math.PI, undefined);
 		}
 	} else
 	{

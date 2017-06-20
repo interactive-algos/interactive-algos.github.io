@@ -4,7 +4,7 @@ var bgCanvas;
 var robotX;
 var robotY;
 
-var robotSize = 10*scale;
+var robotSize = 10 * scale;
 var senseRadius = 3;
 
 var nLasers = 36;
@@ -23,12 +23,12 @@ var map;
 
 function update()
 {
-    //Only scan if location changed
-    console.log(senseRadius);
-    scan(robotX, robotY, robotDir, senseRadius, map, z);
-    var checkbox = document.getElementById('shouldColor');
-    checkbox.checked = false;
-    clearColor();
+	//Only scan if location changed
+	console.log(senseRadius);
+	scan(robotX, robotY, robotDir, senseRadius, map, z);
+	var checkbox = document.getElementById('shouldColor');
+	checkbox.checked = false;
+	clearColor();
 }
 
 // function drawLaserLines(ctx)
@@ -76,55 +76,55 @@ function update()
 
 function drawRobot(ctx)
 {
-    ctx.strokeStyle = 'black';
-    ctx.drawRobot(robotX, robotY, robotDir, robotSize);
+	ctx.strokeStyle = 'black';
+	ctx.drawRobot(robotX, robotY, robotDir, robotSize);
 }
 
 function parameterChanged(event)
 {
-    var target = event.target || event.srcElement;
+	var target = event.target || event.srcElement;
 
-    if(target.id === 'sensorRadius')
-    {
-        senseRadius = Number(target.value);
-    }
-    else if(target.id === 'sensorNoise')
-    {
-        sensorNoise = Number(target.value);
-        sensorModel.a1 = sensorNoise;
-    }
-    else if(target.id === 'nLasers')
-    {
-        nLasers = Number(target.value) * 2;
-        z = new Array(nLasers);
-    }
+	if (target.id === 'sensorRadius')
+	{
+		senseRadius = Number(target.value);
+	}
+	else if (target.id === 'sensorNoise')
+	{
+		sensorNoise = Number(target.value);
+		sensorModel.a1 = sensorNoise;
+	}
+	else if (target.id === 'nLasers')
+	{
+		nLasers = Number(target.value) * 2;
+		z = new Array(nLasers);
+	}
 }
 
 function trackRobotDir(event)
 {
-    var coor = getClickLoc(event);
-    var x = toWorldX(coor.x);
-    var y = toWorldY(coor.y);
+	var coor = getClickLoc(event);
+	var x = toWorldX(coor.x);
+	var y = toWorldY(coor.y);
 
-    robotDir = -atan2(y-robotY, x-robotX);
-    dirOffset = round(robotDir/Math.PI/2 * nLasers);
-    clearCanvas(canvas);
-    canvas.getContext('2d').drawRobot(robotX, robotY, robotDir, robotSize);
+	robotDir = -atan2(y - robotY, x - robotX);
+	dirOffset = round(robotDir / Math.PI / 2 * nLasers);
+	clearCanvas(canvas);
+	canvas.getContext('2d').drawRobot(robotX, robotY, robotDir, robotSize);
 }
 
 function mouseDown(event)
 {
 	var coor = getClickLoc(event);
-    var x = toWorldX(coor.x);
-    var y = toWorldY(coor.y);
+	var x = toWorldX(coor.x);
+	var y = toWorldY(coor.y);
 
 	//Do nothing if it is not a left button event
-	if(event.altKey)
-    {
-    	clearCanvas(canvas);
+	if (event.altKey)
+	{
+		clearCanvas(canvas);
 		var ctx = canvas.getContext('2d');
-        ctx.drawLaserLines(nLasers, robotX, robotY, -dirOffset);
-        ctx.drawRobot(robotX, robotY, robotDir, robotSize);
+		ctx.drawLaserLines(nLasers, robotX, robotY, -dirOffset);
+		ctx.drawRobot(robotX, robotY, robotDir, robotSize);
 		ctx.strokeStyle = 'rgba(0, 0, 255, 0.5)';
 		ctx.drawRobot(x, y, robotDir, 5);
 		var probability = sensorModel.probability(z, new RobotState(x, y, robotDir));
@@ -132,53 +132,53 @@ function mouseDown(event)
 		return;
 	}
 
-    robotX = x;
-    robotY = y;
-    clearCanvas(canvas);
-    canvas.getContext('2d').drawRobot(robotX, robotY, robotDir, robotSize);
-    bgCanvas.onmousemove = trackRobotDir;
-    bgCanvas.onmouseout = mouseUp;
+	robotX = x;
+	robotY = y;
+	clearCanvas(canvas);
+	canvas.getContext('2d').drawRobot(robotX, robotY, robotDir, robotSize);
+	bgCanvas.onmousemove = trackRobotDir;
+	bgCanvas.onmouseout = mouseUp;
 	bgCanvas.onmouseup = mouseUp;
 }
 
 function mouseUp()
 {
-    bgCanvas.onmousemove = undefined;
-    bgCanvas.onmouseout = undefined;
-    bgCanvas.onmouseup = undefined;
-    update();
-    canvas.getContext('2d').drawLaserLines(nLasers, robotX, robotY, -dirOffset);
+	bgCanvas.onmousemove = undefined;
+	bgCanvas.onmouseout = undefined;
+	bgCanvas.onmouseup = undefined;
+	update();
+	canvas.getContext('2d').drawLaserLines(nLasers, robotX, robotY, -dirOffset);
 }
 
 function init()
 {
-    canvas = document.getElementById('canvas');
-    bgCanvas = document.getElementById('background');
+	canvas = document.getElementById('canvas');
+	bgCanvas = document.getElementById('background');
 
-    //Draw the map
+	//Draw the map
 	map = getMapForCanvas(canvas);
-    setPreview(true);
-    width = canvas.width * scale;
-    height = canvas.height * scale;
-    rcOffsetX = width/2;
-    rcOffsetY = height/2;
-    bgCanvas.getContext('2d').drawMap(map);
-    robotX = floor(random()*canvas.width);
-    robotY = floor(random()*canvas.height);
-    robotDir = random()*TWO_PI;
-    dirOffset = round(robotDir/Math.PI/2 * nLasers);
+	setPreview(true);
+	width = canvas.width * scale;
+	height = canvas.height * scale;
+	rcOffsetX = width / 2;
+	rcOffsetY = height / 2;
+	bgCanvas.getContext('2d').drawMap(map);
+	robotX = floor(random() * canvas.width);
+	robotY = floor(random() * canvas.height);
+	robotDir = random() * TWO_PI;
+	dirOffset = round(robotDir / Math.PI / 2 * nLasers);
 
-    update();
+	update();
 
 	sensorModel = new BeamModel(getSensorNoise(), getSensorRadius(), map,
-		getMapScreenSize(map).x, getMapScreenSize(map).y);
+		canvas.width * scale, canvas.height * scale);
 
-    Particle.size = 0.2/scale;
+	Particle.size = 0.2 / scale;
 
-    //Listen to mouse click events
-    bgCanvas.onmousedown = mouseDown;
-    senseRadius = getSensorRadius();
-    sensorNoise = getSensorNoise();
+	//Listen to mouse click events
+	bgCanvas.onmousedown = mouseDown;
+	senseRadius = getSensorRadius();
+	sensorNoise = getSensorNoise();
 }
 
 function getSensorNoise()
@@ -194,10 +194,10 @@ function getSensorRadius()
 function toggleColoring(event)
 {
 	var target = event.target || event.srcElement;
-	if(target.checked)
+	if (target.checked)
 	{
 		colorMap();
-	}else
+	} else
 	{
 		clearColor();
 	}
@@ -207,15 +207,15 @@ function colorMap()
 {
 	var ctx = bgCanvas.getContext('2d');
 	var resolution = getValue('colorRes');
-	var probabilityGrid = sensorModel.calcProbGrid(resolution, robotDir, z);
+	var probabilityGrid = sensorModel.calcProbGrid(resolution, robotDir, z, canvas.width, canvas.height);
 
-	for(var i = 0; i < probabilityGrid.length; i ++)
+	for (var i = 0; i < probabilityGrid.length; i++)
 	{
-		for(var j = 0; j < probabilityGrid[i].length; j ++)
+		for (var j = 0; j < probabilityGrid[i].length; j++)
 		{
 			var p = probabilityGrid[i][j];
-			ctx.fillStyle = 'rgba(' + round(p*255) + ', 0, ' + (255-round(p*255)) + ', 0.5)';
-			ctx.fillRect(j*resolution, i*resolution, resolution, resolution);
+			ctx.fillStyle = 'rgba(' + round(p * 255) + ', 0, ' + (255 - round(p * 255)) + ', 0.5)';
+			ctx.fillRect(j * resolution, i * resolution, resolution, resolution);
 		}
 	}
 }
