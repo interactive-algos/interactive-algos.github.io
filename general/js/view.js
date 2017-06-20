@@ -105,14 +105,17 @@ CanvasRenderingContext2D.prototype.strokePath = function (wpath)
 
 CanvasRenderingContext2D.prototype.drawLaserLines = function (n, wx, wy, diroff)
 {
+	//number of lasers for 360 degrees
+	var nLasers = (n-1)*2;
+
 	//Angle between each laser, in radians
-	var rad = Math.PI * 2 / n;
+	var rad = Math.PI * 2 / nLasers;
 
 	//index of corresponding entry in z
-	var i = (diroff + n / 4 + n / 2);
-	i = (i + n + n);
+	var i = (diroff + nLasers / 4 + nLasers / 2);
+	i = (i + nLasers + nLasers);
 
-	for (var index = 0; index <= n / 2; index++, i++)
+	for (var index = 0; index < n; index++, i++)
 	{
 		//dirOffset is the direction the user's mouse
 		//is point at, -n/4 to offset it by 90 degrees,
@@ -120,19 +123,19 @@ CanvasRenderingContext2D.prototype.drawLaserLines = function (n, wx, wy, diroff)
 		//points to
 
 		//get i stay in bound
-		i %= n;
+		i %= nLasers;
 
 		var dir = i * rad;
 		var laserLen = senseRadius;
 
 		//Grey color for a miss
-		if (z[i] >= senseRadius)
+		if (z[index] >= senseRadius)
 		{
 			this.strokeStyle = 'grey';
 		} else
 		{
 			//distance reported by the laser sensor
-			var dist = z[i] + gaussian() * sensorNoise;
+			var dist = z[index] + gaussian() * sensorNoise;
 			laserLen = min(laserLen, dist);
 
 			//red for a hit

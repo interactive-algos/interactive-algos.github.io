@@ -44,17 +44,11 @@ BeamModel.prototype.probability = function (z, state)
 	//Number of lasers that robot use to sense
 	const nLasers = z.length;
 
-	//Adjust the direction of all lasers base on the (estimated?) rotation of the robot
-	const dirOffset = Math.round(state.dir / (TWO_PI) * nLasers);
-
-	var i = (dirOffset - nLasers / 4);
-	i += nLasers + nLasers;
-
-	for (var index = 0; index <= nLasers / 2; index++, i++)
+	for (var i = 0; i < nLasers; i++)
 	{
 		// if(z[i] >= this.sensorRadius || z_true[i] >= this.sensorRadius)
 		//     continue;
-		i %= nLasers;
+		console.assert(typeof z[i] !== 'undefined');
 		q += Math.log(prob_gaussian(z[i] - z_true[i], this.a1));
 	}
 	q /= (nLasers / 2 + 1);
@@ -84,15 +78,10 @@ BeamModel.prototype.prob_log = function (z, state)
 	//Obtain the true distances
 	scan(state.x, state.y, state.dir, this.sensorRadius, m, z_true);
 
+	//Number of lasers that robot use to sense
 	const nLasers = z.length;
 
-	const dirOffset = Math.round(state.dir / (TWO_PI) * nLasers);
-
-	//z will be an array of noised distances, obtained by robot's sensor
-	var i = (dirOffset - nLasers / 4);
-	i += nLasers + nLasers;
-
-	for (var index = 0; index <= nLasers / 2; index++, i++)
+	for (var i = 0; i < nLasers; i++)
 	{
 		// if(z[i] > this.senseRadius || z_true[i] > this.sensorRadius)
 		//     continue;
@@ -102,7 +91,7 @@ BeamModel.prototype.prob_log = function (z, state)
 	return q / (nLasers / 2 + 1);
 };
 
-BeamModel.prototype.calcProbGrid = function(resolution, robotDir, z, width, height)
+BeamModel.prototype.calcProbGrid = function (resolution, robotDir, z, width, height)
 {
 	var probs = new Array(Math.ceil(height / resolution));
 	// var sum = 0;
@@ -146,10 +135,15 @@ BeamModel.prototype.calcProbGrid = function(resolution, robotDir, z, width, heig
  */
 function scan(x, y, dir0, r, map, z)
 {
-	var nLasers = z.length;
+	var nLasers = (z.length-1)*2;
+	const dirOffset = Math.round(dir0 / TWO_PI * nLasers);
+	var i = (dirOffset - nLasers / 4);
+	i += nLasers + nLasers;
 
-	for (var i = 0; i < nLasers; i++)
+	// for (var i = 0; i < nLasers; i++)
+	for (var index = 0; index <= nLasers / 2; index++, i++)
 	{
+		i %= nLasers;
 		var dir = TWO_PI * i / nLasers;
 
 		//End points of the laser line
@@ -164,15 +158,14 @@ function scan(x, y, dir0, r, map, z)
 		else if (i * 2 === nLasers)
 			t1.y = y;
 
-
-		z[i] = r;
+		z[index] = r;
 		for (var j = 0; j < map.length; j++)
 		{
 			if (doIntersect(s1, t1, map[j].s, map[j].t))
 			{
 				var p = intersectionPoint(s1, t1, map[j].s, map[j].t);
 				var dist = p.distanceTo(new Point(x, y));
-				z[i] = min(z[i], dist);
+				z[index] = min(z[index], dist);
 			}
 		}
 	}

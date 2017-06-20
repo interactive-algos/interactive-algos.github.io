@@ -8,7 +8,7 @@ const random = Math.random;
 const max = Math.max;
 const min = Math.min;
 const round = Math.round;
-const TWO_PI = Math.PI*2;
+const TWO_PI = Math.PI * 2;
 
 var rcOffsetX = 0;
 var rcOffsetY = 0;
@@ -23,16 +23,16 @@ function randint(min, max)
 //return a gaussian distributed random number
 function gaussian()
 {
-    return ((Math.random() + Math.random() + Math.random() + Math.random() + Math.random() + Math.random()) - 3) / 3;
+	return ((Math.random() + Math.random() + Math.random() + Math.random() + Math.random() + Math.random()) - 3) / 3;
 }
 
 //Bound radian a to interval [-pi, pi]
 function boundRadian(a)
 {
 	a %= TWO_PI;
-	if(a > Math.PI)
+	if (a > Math.PI)
 		a -= TWO_PI;
-	else if(a < -Math.PI)
+	else if (a < -Math.PI)
 		a += TWO_PI;
 	return a;
 }
@@ -41,8 +41,8 @@ function boundRadian(a)
 // point q lies on line segment 'pr'
 function onSegment(p, q, r)
 {
-    return q.x <= max(p.x, r.x) && q.x >= min(p.x, r.x) &&
-        q.y <= max(p.y, r.y) && q.y >= min(p.y, r.y);
+	return q.x <= max(p.x, r.x) && q.x >= min(p.x, r.x) &&
+		q.y <= max(p.y, r.y) && q.y >= min(p.y, r.y);
 }
 
 // To find orientation of ordered triplet (p, q, r).
@@ -52,14 +52,14 @@ function onSegment(p, q, r)
 // 2 --> Counterclockwise
 function orientation(p, q, r)
 {
-    // See http://www.geeksforgeeks.org/orientation-3-ordered-points/
-    // for details of below formula.
-    const val = (q.y - p.y) * (r.x - q.x) -
-    (q.x - p.x) * (r.y - q.y);
+	// See http://www.geeksforgeeks.org/orientation-3-ordered-points/
+	// for details of below formula.
+	const val = (q.y - p.y) * (r.x - q.x) -
+		(q.x - p.x) * (r.y - q.y);
 
-    if (val === 0) return 0;  // colinear
+	if (val === 0) return 0;  // colinear
 
-    return (val > 0)? 1: 2; // clock or counterclock wise
+	return (val > 0) ? 1 : 2; // clock or counterclock wise
 }
 
 // The main function that returns true if line segment 'p1q1'
@@ -67,94 +67,94 @@ function orientation(p, q, r)
 function doIntersect(p1, q1, p2, q2)
 {
 	//Broad phase check
-	if(p1.x > max(p2.x, q2.x) && q1.x > max(p2.x, q2.x))
+	if (p1.x > max(p2.x, q2.x) && q1.x > max(p2.x, q2.x))
 		return false;
-	if(p1.x < min(p2.x, q2.x) && q1.x < min(p2.x, q2.x))
+	if (p1.x < min(p2.x, q2.x) && q1.x < min(p2.x, q2.x))
 		return false;
 
-	if(p1.y > max(p2.y, q2.y) && q1.y > max(p2.y, q2.y))
+	if (p1.y > max(p2.y, q2.y) && q1.y > max(p2.y, q2.y))
 		return false;
-	if(p1.y < min(p2.y, q2.y) && q1.y < min(p2.y, q2.y))
+	if (p1.y < min(p2.y, q2.y) && q1.y < min(p2.y, q2.y))
 		return false;
 
 	// Find the four orientations needed for general and
-    // special cases
-    const o1 = orientation(p1, q1, p2);
-    const o2 = orientation(p1, q1, q2);
-    const o3 = orientation(p2, q2, p1);
-    const o4 = orientation(p2, q2, q1);
+	// special cases
+	const o1 = orientation(p1, q1, p2);
+	const o2 = orientation(p1, q1, q2);
+	const o3 = orientation(p2, q2, p1);
+	const o4 = orientation(p2, q2, q1);
 
-    // General case
-    if (o1 !== o2 && o3 !== o4)
-        return true;
+	// General case
+	if (o1 !== o2 && o3 !== o4)
+		return true;
 
-    // Special Cases
-    // p1, q1 and p2 are colinear and p2 lies on segment p1q1
-    if (o1 === 0 && onSegment(p1, p2, q1)) return true;
+	// Special Cases
+	// p1, q1 and p2 are colinear and p2 lies on segment p1q1
+	if (o1 === 0 && onSegment(p1, p2, q1)) return true;
 
-    // p1, q1 and p2 are colinear and q2 lies on segment p1q1
-    else if (o2 === 0 && onSegment(p1, q2, q1)) return true;
+	// p1, q1 and p2 are colinear and q2 lies on segment p1q1
+	else if (o2 === 0 && onSegment(p1, q2, q1)) return true;
 
-    // p2, q2 and p1 are colinear and p1 lies on segment p2q2
-    else if (o3 === 0 && onSegment(p2, p1, q2)) return true;
+	// p2, q2 and p1 are colinear and p1 lies on segment p2q2
+	else if (o3 === 0 && onSegment(p2, p1, q2)) return true;
 
-    // p2, q2 and q1 are colinear and q1 lies on segment p2q2
-    else if (o4 === 0 && onSegment(p2, q1, q2)) return true;
+	// p2, q2 and q1 are colinear and q1 lies on segment p2q2
+	else if (o4 === 0 && onSegment(p2, q1, q2)) return true;
 
-    return false; // Doesn't fall in any of the above cases
+	return false; // Doesn't fall in any of the above cases
 }
 
 //Return the intersection of two LINE! (NOT LINE SEGMENTS!)
 function intersectionPoint(p1, q1, p2, q2)
 {
-	var m1 = (q1.y-p1.y)/(q1.x-p1.x);
-	var b1 = p1.y - p1.x*m1;
+	var m1 = (q1.y - p1.y) / (q1.x - p1.x);
+	var b1 = p1.y - p1.x * m1;
 
-    var m2 = (q2.y-p2.y)/(q2.x-p2.x);
-    var b2 = p2.y - p2.x*m2;
+	var m2 = (q2.y - p2.y) / (q2.x - p2.x);
+	var b2 = p2.y - p2.x * m2;
 
-    if(p1.x === q1.x)
-		return new Point(p1.x, m2*p1.x + b2);
+	if (p1.x === q1.x)
+		return new Point(p1.x, m2 * p1.x + b2);
 
-    if(p2.x === q2.x)
-		return new Point(p2.x, m1*p2.x + b1);
+	if (p2.x === q2.x)
+		return new Point(p2.x, m1 * p2.x + b1);
 
-    var x = (b2 - b1) / (m1 - m2);
-    var y = m1*x + b1;
-    return new Point(x, y);
+	var x = (b2 - b1) / (m1 - m2);
+	var y = m1 * x + b1;
+	return new Point(x, y);
 }
 
 
 //We are sort of treating this as a vector...
 function Point(x, y)
 {
-    this.x = x;
-    this.y = y;
+	this.x = x;
+	this.y = y;
 }
 
-Point.prototype.length = function()
+Point.prototype.length = function ()
 {
-    if(!this.len)
-        this.len = Math.sqrt(this.x*this.x + this.y*this.y);
-    return this.len;
+	if (!this.len)
+		this.len = Math.sqrt(this.x * this.x + this.y * this.y);
+	return this.len;
 };
 
-Point.prototype.normalize = function()
+Point.prototype.normalize = function ()
 {
-    var l = this.length();
-    return new Point(this.x/l, this.y/l);
+	var l = this.length();
+	return new Point(this.x / l, this.y / l);
 };
 
-Point.prototype.toString = function()
+Point.prototype.toString = function ()
 {
-    return "(" + this.x + ", " + this.y + ")";
+	return "(" + this.x + ", " + this.y + ")";
 };
 
-Point.prototype.distanceTo = function(v)
+Point.prototype.distanceTo = function (v)
 {
-    var x = this.x - v.x;
-    var y = this.y - v.y;
-    return sqrt(x * x + y * y);
+	var x = this.x - v.x;
+	var y = this.y - v.y;
+	return sqrt(x * x + y * y);
 };
 
 function distance(x1, y1, x2, y2)
@@ -167,10 +167,10 @@ function distance(x1, y1, x2, y2)
 //Starting point and ending point
 function Line(sx, sy, tx, ty)
 {
-    //Starting point
-    this.s = new Point(sx, sy);
-    //Ending point
-    this.t = new Point(tx, ty);
+	//Starting point
+	this.s = new Point(sx, sy);
+	//Ending point
+	this.t = new Point(tx, ty);
 }
 
 const ROOT_TWO_PI = sqrt(TWO_PI);
@@ -181,180 +181,181 @@ const ROOT_TWO_PI = sqrt(TWO_PI);
 //2006
 function prob_gaussian(a, b)
 {
-    var variance = b*b;
-    return Math.exp(-0.5 * (a*a)/(variance)) / (ROOT_TWO_PI*abs(b));
+	var variance = b * b;
+	return Math.exp(-0.5 * (a * a) / (variance)) / (ROOT_TWO_PI * abs(b));
 }
 
 //return log of prob_gaussian(a, b)
 function prob_gaussian_log(a, b)
 {
-    var variance = b*b;
-    return (-0.5 * (a*a)/(variance)) - Math.log(ROOT_TWO_PI*abs(b));
+	var variance = b * b;
+	return (-0.5 * (a * a) / (variance)) - Math.log(ROOT_TWO_PI * abs(b));
 }
 
 const prob_normal = prob_gaussian;
 
 function RobotState(x, y, dir)
 {
-    this.x = x;
-    this.y = y;
-    this.dir = dir;
+	this.x = x;
+	this.y = y;
+	this.dir = dir;
 }
 
 function clearCanvas(canvas)
 {
-    var ctx = canvas.getContext('2d');
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
+	var ctx = canvas.getContext('2d');
+	ctx.clearRect(0, 0, canvas.width, canvas.height);
 }
 
 function smoothenPath(path, windowSize)
 {
-    var copy = path.slice();
-    if(typeof windowSize === 'undefined')
-        windowSize = 10;
+	var copy = path.slice();
+	if (typeof windowSize === 'undefined')
+		windowSize = 10;
 
-    for(var i = windowSize; i < path.length-windowSize; i ++)
-    {
-        var dx = 0;
+	for (var i = windowSize; i < path.length - windowSize; i++)
+	{
+		var dx = 0;
 		var dy = 0;
 
-        for(var j = i-windowSize; j < i; j ++)
-        {
-            dx += copy[j+1].x-copy[j].x;
-			dy += copy[j+1].y-copy[j].y;
-		}
-
-		for(var j = i+1; j < i+windowSize; j ++)
+		for (var j = i - windowSize; j < i; j++)
 		{
-			dx += copy[j].x-copy[j-1].x;
-			dy += copy[j].y-copy[j-1].y;
+			dx += copy[j + 1].x - copy[j].x;
+			dy += copy[j + 1].y - copy[j].y;
 		}
 
-		path[i].x = copy[i-1].x + dx/windowSize/2;
-		path[i].y = copy[i-1].y + dy/windowSize/2;
+		for (var j = i + 1; j < i + windowSize; j++)
+		{
+			dx += copy[j].x - copy[j - 1].x;
+			dy += copy[j].y - copy[j - 1].y;
+		}
+
+		path[i].x = copy[i - 1].x + dx / windowSize / 2;
+		path[i].y = copy[i - 1].y + dy / windowSize / 2;
 	}
 }
 
 //convert x coordinate in world to x coordinate on screen
 function toScreenX(x)
 {
-    return (x-rcOffsetX)/scale + canvas.width/2;
+	return (x - rcOffsetX) / scale + canvas.width / 2;
 }
 
 //convert x coordinate on screen to x coordinate in world
 function toWorldX(x)
 {
 	// return x*scale;
-    return (x - canvas.width/2) * scale + rcOffsetX;
+	return (x - canvas.width / 2) * scale + rcOffsetX;
 }
 
 //convert y coordinate in world to y coordinate on screen
 function toScreenY(y)
 {
-    return (- y + rcOffsetY)/scale + canvas.height/2;
+	return (-y + rcOffsetY) / scale + canvas.height / 2;
 }
 
 //convert y coordinate on screen to y coordinate in world
 function toWorldY(y)
 {
 	// return (canvas.height - y) * scale;
-    return -((y-canvas.height/2)*scale - rcOffsetY);
+	return -((y - canvas.height / 2) * scale - rcOffsetY);
 }
 
 function toWorldCoor(coor)
 {
-    coor.x = toWorldX(coor.x);
-    coor.y = toWorldY(coor.y);
+	coor.x = toWorldX(coor.x);
+	coor.y = toWorldY(coor.y);
 }
 
 function toScreenCoor(coor)
 {
-    coor.x = toScreenX(coor.x);
-    coor.y = toScreenY(coor.y);
+	coor.x = toScreenX(coor.x);
+	coor.y = toScreenY(coor.y);
 }
 
 //Functional API, return a new point.
 function getWorldCoor(coor)
 {
-    return new Point(toWorldX(coor.x), toWorldY(coor.y));
+	return new Point(toWorldX(coor.x), toWorldY(coor.y));
 }
 
 function getScreenCoor(coor)
 {
-    return new Point(toScreenX(coor.x), toScreenY(coor.y));
+	return new Point(toScreenX(coor.x), toScreenY(coor.y));
 }
 
 //Functional API, return a new line.
 function getWorldLine(l)
 {
-    return new Line(toWorldX(l.s.x), toWorldY(l.s.y), toWorldX(l.t.x), toWorldY(l.t.y));
+	return new Line(toWorldX(l.s.x), toWorldY(l.s.y), toWorldX(l.t.x), toWorldY(l.t.y));
 }
 
 function getScreenLine(l)
 {
-    return new Line(toScreenX(l.s.x), toScreenY(l.s.y), toScreenX(l.t.x), toScreenY(l.t.y));
+	return new Line(toScreenX(l.s.x), toScreenY(l.s.y), toScreenX(l.t.x), toScreenY(l.t.y));
 }
 
 
 function isNumber(event)
 {
-    return event.charCode >= 48 && event.charCode <= 57;
+	return event.charCode >= 48 && event.charCode <= 57;
 }
 
 function isDecimal(event)
 {
-    return isNumber(event) || event.charCode === 46;
+	return isNumber(event) || event.charCode === 46;
 }
 
 function getValue(id)
 {
-    return Number(document.getElementById(id).value);
+	return Number(document.getElementById(id).value);
 }
 
 function getSensorRadius()
 {
-    return getValue('fogOfWar');
+	return getValue('fogOfWar');
 }
 
 function getParticleCount()
 {
-    return getValue('nParticles');
+	return getValue('nParticles');
 }
 
 function getStrideNoise()
 {
-    return getValue('robotForwardNoise') / 100.0;
+	return getValue('robotForwardNoise') / 100.0;
 }
 
 function getTurnNoise()
 {
-    return getValue('robotTurnNoise') / 100.0;
+	return getValue('robotTurnNoise') / 100.0;
 }
 
 function getResampleRatio()
 {
-    return getValue('pRatio');
+	return getValue('pRatio');
 }
 
 function refreshSelect()
 {
-    $('.selectpicker').selectpicker('refresh');
+	$('.selectpicker').selectpicker('refresh');
 }
 
 function getClickLoc(event)
 {
-    var element = event.target;
+	var element = event.target;
 
-    var offsetX = 0, offsetY = 0;
+	var offsetX = 0, offsetY = 0;
 
-    if (element.offsetParent) {
-        do {
-            offsetX += element.offsetLeft;
-            offsetY += element.offsetTop;
-        } while ((element = element.offsetParent));
-    }
+	if (element.offsetParent)
+	{
+		do {
+			offsetX += element.offsetLeft;
+			offsetY += element.offsetTop;
+		} while ((element = element.offsetParent));
+	}
 
-    x = event.pageX - offsetX;
-    y = event.pageY - offsetY;
-    return {x:x, y:y};
+	x = event.pageX - offsetX;
+	y = event.pageY - offsetY;
+	return {x: x, y: y};
 }

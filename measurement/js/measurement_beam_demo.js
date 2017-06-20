@@ -7,7 +7,7 @@ var robotY;
 var robotSize = 10 * scale;
 var senseRadius = 3;
 
-var nLasers = 36;
+var nLasers = 19;
 
 var robotDir = 0;
 var dirOffset = 0;
@@ -107,7 +107,7 @@ function parameterChanged(event)
 	}
 	else if (target.id === 'nLasers')
 	{
-		nLasers = Number(target.value) * 2;
+		nLasers = Number(target.value)+1;
 		z = new Array(nLasers);
 	}
 }
@@ -118,8 +118,8 @@ function trackRobotDir(event)
 	var x = toWorldX(coor.x);
 	var y = toWorldY(coor.y);
 
-	robotDir = -atan2(y - robotY, x - robotX);
-	dirOffset = round(robotDir / Math.PI / 2 * nLasers);
+	robotDir = atan2(y - robotY, x - robotX);
+	dirOffset = round(robotDir / Math.PI / 2 * (nLasers-1)*2);
 	clearCanvas(canvas);
 	canvas.getContext('2d').drawRobot(robotX, robotY, robotDir, robotSize);
 }
@@ -142,7 +142,7 @@ function mouseDown(event)
 		var ctx = canvas.getContext('2d');
 		drawParticles(ctx, clickedParticles);
 		ctx.drawRobot(robotX, robotY, robotDir, robotSize);
-		ctx.drawLaserLines(nLasers, robotX, robotY, -dirOffset);
+		ctx.drawLaserLines(nLasers, robotX, robotY, dirOffset);
 		return;
 	}
 
@@ -180,7 +180,7 @@ function mouseUp()
 	bgCanvas.onmouseout = undefined;
 	bgCanvas.onmouseup = undefined;
 	update();
-	canvas.getContext('2d').drawLaserLines(nLasers, robotX, robotY, -dirOffset);
+	canvas.getContext('2d').drawLaserLines(nLasers, robotX, robotY, dirOffset);
 }
 
 function init()
@@ -199,7 +199,7 @@ function init()
 	robotX = floor(random() * canvas.width);
 	robotY = floor(random() * canvas.height);
 	robotDir = random() * TWO_PI;
-	dirOffset = round(robotDir / Math.PI / 2 * nLasers);
+	dirOffset = round(robotDir / Math.PI / 2 * (nLasers-1)*2);
 
 	update();
 

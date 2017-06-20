@@ -33,7 +33,7 @@ function start()
 		// undefined,
 		getResampleRatio());
 
-	robot = new Robot(filter, path, 36);
+	robot = new Robot(filter, path, 19);
 	robot.draw(ctx);
 
 	animating = true;
