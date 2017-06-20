@@ -3,56 +3,56 @@ var scale = 0.02;
 
 var map;
 
-CanvasRenderingContext2D.prototype.drawRobot = function (x, y, dir, size, isRobot)
+CanvasRenderingContext2D.prototype.drawRobot = function (wx, wy, dir, wsize, isRobot)
 {
     if (isRobot) {
-        rcOffsetY = y;
-        rcOffsetX = x;
+        rcOffsetY = wy;
+        rcOffsetX = wx;
         if (map) {
             this.drawMap(map);
         }
     }
     //The robot's main circle
-    this.strokeCircle(x, y, size);
+    this.strokeCircle(wx, wy, wsize);
 
     this.beginPath();
     //draw a line to show Robot's orientation
-    this.moveTo(toScreenX(x), toScreenY(y));
-    this.lineTo(toScreenX(x) + cos(dir)*size, toScreenY(y) + sin(dir)*size);
+    this.moveTo(toScreenX(wx), toScreenY(wy));
+    this.lineTo(toScreenX(wx) + cos(dir)*wsize/scale, toScreenY(wy) + sin(dir)*wsize/scale);
 
     this.stroke();
 };
 
-CanvasRenderingContext2D.prototype.circle = function(x, y, size)
+CanvasRenderingContext2D.prototype.circle = function(wx, wy, wsize)
 {
-    return this.arc(toScreenX(x), toScreenY(y), size, 0, Math.PI*2);
+    return this.arc(toScreenX(wx), toScreenY(wy), wsize/scale, 0, Math.PI*2);
 };
 
-CanvasRenderingContext2D.prototype.strokeCircle = function(x, y, size)
+CanvasRenderingContext2D.prototype.strokeCircle = function(wx, wy, wsize)
 {
     this.beginPath();
-    this.circle(x, y, size);
+    this.circle(wx, wy, wsize);
     this.stroke();
 };
 
 // m is in World Coor
-CanvasRenderingContext2D.prototype.drawMap = function(m)
+CanvasRenderingContext2D.prototype.drawMap = function(wm)
 {
-    map = m;
-    for (var i = m.length - 1; i >= 0; i--)
+    map = wm;
+    for (var i = wm.length - 1; i >= 0; i--)
     {
-        var l = m[i];
+        var l = wm[i];
         this.strokeLine(l.s.x, l.s.y, l.t.x, l.t.y);
     }
 };
 
-CanvasRenderingContext2D.prototype.strokeLine = function(x1, y1, x2, y2)
+CanvasRenderingContext2D.prototype.strokeLine = function(wx1, wy1, wx2, wy2)
 {
 
-    x1 = toScreenX(x1);
-    y1 = toScreenY(y1);
-    x2 = toScreenX(x2);
-    y2 = toScreenY(y2);
+    var x1 = toScreenX(wx1);
+    var y1 = toScreenY(wy1);
+    var x2 = toScreenX(wx2);
+    var y2 = toScreenY(wy2);
     this.beginPath();
     this.moveTo(x1, y1);
     this.lineTo(x2, y2);
@@ -67,18 +67,18 @@ CanvasRenderingContext2D.prototype.strokeTextWithColorFont = function(text, colo
 	this.strokeText(text, 10, 20);
 };
 
-CanvasRenderingContext2D.prototype.strokePath = function(path)
+CanvasRenderingContext2D.prototype.strokePath = function(wpath)
 {
     this.beginPath();
-    this.moveTo(toScreenX(path[0].x), toScreenY(path[0].y));
-    for(var i = 1; i < path.length; i ++)
+    this.moveTo(toScreenX(wpath[0].x), toScreenY(wpath[0].y));
+    for(var i = 1; i < wpath.length; i ++)
     {
-        this.lineTo(toScreenX(path[i].x), toScreenY(path[i].y));
+        this.lineTo(toScreenX(wpath[i].x), toScreenY(wpath[i].y));
     }
     this.stroke();
 };
 
-CanvasRenderingContext2D.prototype.drawLaserLines = function (n, x, y, diroff)
+CanvasRenderingContext2D.prototype.drawLaserLines = function (n, wx, wy, diroff)
 {
     //Angle between each laser, in radians
     var rad = Math.PI*2/n;
@@ -114,9 +114,9 @@ CanvasRenderingContext2D.prototype.drawLaserLines = function (n, x, y, diroff)
             this.strokeStyle = 'red';
             this.fillStyle = 'red';
             this.beginPath();
-            this.circle(x + cos(dir)*dist, y + sin(dir)*dist, 5);
+            this.circle(wx + cos(dir)*dist, wy + sin(dir)*dist, 5);
             this.fill();
         }
-        this.strokeLine(x, y, x + cos(dir)*laserLen, y + sin(dir)*laserLen)
+        this.strokeLine(wx, wy, wx + cos(dir)*laserLen, wy + sin(dir)*laserLen)
     }
 }
