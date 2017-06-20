@@ -22,14 +22,19 @@ var sensorModel;
 var map;
 
 var clickedParticles = [];
+var maxW = Number.NEGATIVE_INFINITY;
+var minW = Number.POSITIVE_INFINITY;
+
+var shouldColor;
+
 
 function update()
 {
 	//Only scan if location changed
 	console.log(senseRadius);
 	scan(robotX, robotY, robotDir, senseRadius, map, z);
-	var checkbox = document.getElementById('shouldColor');
-	if(checkbox.checked)
+	shouldColor = document.getElementById('shouldColor');
+	if(shouldColor.checked)
 	{
 		clearCanvas(bgCanvas);
 		bgCanvas.getContext('2d').drawMap(map);
@@ -126,11 +131,17 @@ function mouseDown(event)
 	var y = toWorldY(coor.y);
 
 	//Do nothing if it is not a left button event
-	if (event.altKey && !shouldColorMap)
+	if (event.altKey && !shouldColor.checked)
 	{
 		var probability = sensorModel.probability(z, new RobotState(x, y, robotDir));
 		clickedParticles.push(new Particle(x, y, robotDir, probability));
-		console.log(coor);
+		maxW = max(maxW, probability);
+		minW = min(minW, probability);
+		clearCanvas(canvas);
+		var ctx = canvas.getContext('2d');
+		drawParticles(ctx, clickedParticles);
+		ctx.drawRobot(robotX, robotY, robotDir, robotSize);
+		ctx.drawLaserLines(nLasers, robotX, robotY, -dirOffset);
 		return;
 	}
 
@@ -141,6 +152,25 @@ function mouseDown(event)
 	bgCanvas.onmousemove = trackRobotDir;
 	bgCanvas.onmouseout = mouseUp;
 	bgCanvas.onmouseup = mouseUp;
+}
+
+function drawParticles(ctx, particles)
+{
+	if(particles.length === 1)
+	{
+		var p = particles[0];
+		var w = p.w;
+		ctx.fillStyle = 'rgba(' + round(w * 255) + ', 0, ' + (255 - round(w * 255)) + ', 0.5)';
+		ctx.fillRect(toScreenX(p.x), toScreenY(p.y), getColoringResolution(), getColoringResolution());
+	}else
+	{
+		particles.forEach(function(p)
+		{
+			var w = (p.w - maxW)/(maxW-minW);
+			ctx.fillStyle = 'rgba(' + round(w * 255) + ', 0, ' + (255 - round(w * 255)) + ', 0.5)';
+			ctx.fillRect(toScreenX(p.x), toScreenY(p.y), getColoringResolution(), getColoringResolution());
+		});
+	}
 }
 
 function mouseUp()
@@ -208,7 +238,7 @@ function toggleColoring(event)
 function colorMap()
 {
 	var ctx = bgCanvas.getContext('2d');
-	var resolution = getValue('colorRes');
+	var resolution = getColoringResolution();
 	var probabilityGrid = sensorModel.calcProbGrid(resolution, robotDir, z, canvas.width, canvas.height);
 
 	for (var i = 0; i < probabilityGrid.length; i++)
@@ -220,6 +250,11 @@ function colorMap()
 			ctx.fillRect(j * resolution, i * resolution, resolution, resolution);
 		}
 	}
+}
+
+function getColoringResolution()
+{
+	return getValue('colorRes');
 }
 
 function clearColor()
