@@ -166,7 +166,7 @@ function init()
     update();
 
 	sensorModel = new BeamModel(getSensorNoise(), getSensorRadius(), map,
-		canvas.width, canvas.height);
+		getMapScreenSize(map).x, getMapScreenSize(map).y);
 
     Particle.size = 0.2/scale;
 

@@ -193,24 +193,26 @@ function getMapForCanvas(canvas)
     return map;
 }
 
-function getMapWorldSize (map) {
-    var width = 0;
-    var height = 0;
+
+function getMapScreenSize (map) {
+    var w = 0;
+    var h = 0;
     for (i = 0; i < map.length; i++) {
-        if (map[0] > width ) {
-            width = map[0];
+        if (map[i].s.x > w ) {
+            w = map[i].s.x;
         }
-        if (map[1] > height) {
-            height = map[1];
+        if (map[i].s.y > h) {
+            h =map[i].s.y;
         }
-        if (map[2] > width ) {
-            width = map[2];
+        if (map[i].t.x > w ) {
+            w = map[i].t.x;
         }
-        if (map[3] > height) {
-            height = map[3];
+        if (map[i].t.y > h) {
+            h =map[i].t.y;
         }
     }
-    return new Point(width, height);
+    console.log(w+" "+h);
+    return new Point(w*6,h*6);
 }
 
 function convertToWorld(map) {
