@@ -207,7 +207,9 @@ Robot.prototype.draw = function(ctx)
     var x = this.x;
     var y = this.y;
 
-    robotHistory.push(new Point(x,y));
+    if (typeof(robotHistory) !== 'undefined'){
+        robotHistory.push(new Point(x,y));
+    }
 
     ctx.drawRobot(x, y, -this.dir, Robot.size, true);
 
