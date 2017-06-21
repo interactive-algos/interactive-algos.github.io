@@ -219,14 +219,3 @@ function getMapScreenSize(map)
 	}
 	return new Point((w / scale), (h / scale));
 }
-
-// function convertToWorld(map) {
-//     for (i = 0; i < map.length; i++) {
-//           var sc = 30;
-//           map[i].s.x = map[i].s.x * sc;
-//           map[i].s.y = map[i].s.y * sc;
-//           map[i].t.x = map[i].t.x * sc;
-//           map[i].t.y = map[i].t.y * sc;
-//           map[i] = getWorldLine(map[i]);
-//     }
-// }

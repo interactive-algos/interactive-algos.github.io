@@ -9,6 +9,7 @@ const max = Math.max;
 const min = Math.min;
 const round = Math.round;
 const TWO_PI = Math.PI * 2;
+const ROOT_TWO_PI = sqrt(TWO_PI);
 
 var rcOffsetX = 0;
 var rcOffsetY = 0;
@@ -173,7 +174,6 @@ function Line(sx, sy, tx, ty)
 	this.t = new Point(tx, ty);
 }
 
-const ROOT_TWO_PI = sqrt(TWO_PI);
 
 //Probability of getting a from a 0 centered
 //gaussian distribution with stdandard deviation b
@@ -234,6 +234,9 @@ function smoothenPath(path, windowSize)
 		path[i].y = copy[i - 1].y + dy / windowSize / 2;
 	}
 }
+
+
+//coordinate converter
 
 //convert x coordinate in world to x coordinate on screen
 function toScreenX(x)
@@ -296,6 +299,7 @@ function getScreenLine(l)
 }
 
 
+//HTML Helper Methods
 function isNumber(event)
 {
 	return event.charCode >= 48 && event.charCode <= 57;
@@ -336,11 +340,6 @@ function getResampleRatio()
 	return getValue('pRatio');
 }
 
-function refreshSelect()
-{
-	$('.selectpicker').selectpicker('refresh');
-}
-
 function getClickLoc(event)
 {
 	var element = event.target;
@@ -358,4 +357,24 @@ function getClickLoc(event)
 	x = event.pageX - offsetX;
 	y = event.pageY - offsetY;
 	return {x: x, y: y};
+}
+
+function getSensorNoise()
+{
+	return getValue('sensorNoise');
+}
+
+function getSensorRadius()
+{
+	return getValue('sensorRadius');
+}
+
+function getColoringResolution()
+{
+	return getValue('colorRes');
+}
+
+function refreshSelect()
+{
+	$('.selectpicker').selectpicker('refresh');
 }

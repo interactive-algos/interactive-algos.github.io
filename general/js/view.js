@@ -60,7 +60,6 @@ CanvasRenderingContext2D.prototype.strokeCircle = function (wx, wy, wsize)
 	this.stroke();
 };
 
-// m is in World Coor
 CanvasRenderingContext2D.prototype.drawMap = function (wm)
 {
 	map = wm;

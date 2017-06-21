@@ -43,53 +43,23 @@ function update()
 	clickedParticles = [];
 }
 
-// function drawLaserLines(ctx)
-// {
-//     //Angle between each laser, in radians
-//     var rad = Math.PI*2/nLasers;
-//
-//     //index of corresponding entry in z
-//     var i = (dirOffset - nLasers/4);
-//     i = (i+nLasers+nLasers);
-//
-//     for(var index = 0; index <= nLasers/2; index ++, i++)
-//     {
-//         //dirOffset is the direction the user's mouse
-//         //is point at, -nLasers/4 to offset it by 90 degrees,
-//         //so that laser scan is centered at where the user
-//         //points to
-//
-//         //get i stay in bound
-//         i %= nLasers;
-//
-//         var dir = i * rad;
-//         var laserLen = senseRadius;
-//
-//         //Grey color for a miss
-//         if(z[i] >= senseRadius)
-//         {
-//             ctx.strokeStyle = 'grey';
-//         }else
-//         {
-//             //distance reported by the laser sensor
-//             var dist = z[i] + gaussian()*sensorNoise;
-//             laserLen = min(laserLen, dist);
-//
-//             //red for a hit
-//             ctx.strokeStyle = 'red';
-//             ctx.fillStyle = 'red';
-//             ctx.beginPath();
-//             ctx.circle(robotX + cos(dir)*dist, robotY + sin(dir)*dist, 5);
-//             ctx.fill();
-//         }
-//         ctx.strokeLine(robotX, robotY, robotX + cos(dir)*laserLen, robotY + sin(dir)*laserLen)
-//     }
-// }
-
-function drawRobot(ctx)
+function drawParticles(ctx, particles)
 {
-	ctx.strokeStyle = 'black';
-	ctx.drawRobot(robotX, robotY, robotDir, robotSize);
+	if(particles.length === 1)
+	{
+		var p = particles[0];
+		var w = p.w;
+		ctx.fillStyle = 'rgba(' + round(w * 255) + ', 0, ' + (255 - round(w * 255)) + ', 0.5)';
+		ctx.fillRect(toScreenX(p.x), toScreenY(p.y), getColoringResolution(), getColoringResolution());
+	}else
+	{
+		particles.forEach(function(p)
+		{
+			var w = (p.w - minW)/(maxW-minW);
+			ctx.fillStyle = 'rgba(' + round(w * 255) + ', 0, ' + (255 - round(w * 255)) + ', 0.5)';
+			ctx.fillRect(toScreenX(p.x), toScreenY(p.y), getColoringResolution(), getColoringResolution());
+		});
+	}
 }
 
 function parameterChanged(event)
@@ -155,25 +125,6 @@ function mouseDown(event)
 	bgCanvas.onmouseup = mouseUp;
 }
 
-function drawParticles(ctx, particles)
-{
-	if(particles.length === 1)
-	{
-		var p = particles[0];
-		var w = p.w;
-		ctx.fillStyle = 'rgba(' + round(w * 255) + ', 0, ' + (255 - round(w * 255)) + ', 0.5)';
-		ctx.fillRect(toScreenX(p.x), toScreenY(p.y), getColoringResolution(), getColoringResolution());
-	}else
-	{
-		particles.forEach(function(p)
-		{
-			var w = (p.w - minW)/(maxW-minW);
-			ctx.fillStyle = 'rgba(' + round(w * 255) + ', 0, ' + (255 - round(w * 255)) + ', 0.5)';
-			ctx.fillRect(toScreenX(p.x), toScreenY(p.y), getColoringResolution(), getColoringResolution());
-		});
-	}
-}
-
 function mouseUp()
 {
 	bgCanvas.onmousemove = undefined;
@@ -214,16 +165,6 @@ function init()
 	sensorNoise = getSensorNoise();
 }
 
-function getSensorNoise()
-{
-	return getValue('sensorNoise');
-}
-
-function getSensorRadius()
-{
-	return getValue('sensorRadius');
-}
-
 function toggleColoring(event)
 {
 	var target = event.target || event.srcElement;
@@ -251,11 +192,6 @@ function colorMap()
 			ctx.fillRect(j * resolution, i * resolution, resolution, resolution);
 		}
 	}
-}
-
-function getColoringResolution()
-{
-	return getValue('colorRes');
 }
 
 function clearColor()

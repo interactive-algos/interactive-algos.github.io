@@ -1,5 +1,4 @@
 //Predefined params
-
 Robot.size = 0.2;
 Robot.sensorRadius = 1.5;
 Robot.scanInterval = 2500;
