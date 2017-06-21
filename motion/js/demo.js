@@ -246,6 +246,7 @@ function init()
 
 function stop()
 {
+	robotHistory = [];
 	animating = !animating;
 	if (animating)
 	{
