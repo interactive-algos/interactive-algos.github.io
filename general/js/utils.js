@@ -366,7 +366,7 @@ function getSensorNoise()
 
 function getSensorRadius()
 {
-	return getValue('sensorRadius');
+	return getValue('fogOfWar');
 }
 
 function getColoringResolution()

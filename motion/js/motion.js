@@ -17,7 +17,7 @@ function start()
 	var dir = atan2(path[1].y-path[0].y, path[1].x-path[0].x);	//orientation in radians
 
 	var motionModel = new OdometryModel(getTurnNoise(), getStrideNoise(), getTurnNoise(), getTurnNoise());
-	var filter = new ParticleFilter(getParticleCount(), motionModel, undefined, new RobotState(x, y, dir), 1);
+	var filter = new ParticleFilter(getParticleCount(), motionModel, undefined, new RobotState(x, y, dir+TWO_PI/2), 1);
 
 	robot = new Robot(filter, path);
 	robot.draw(ctx);

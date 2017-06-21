@@ -3,7 +3,6 @@ var bgCanvas; //The HTML element of the background canvas
 var robot;
 
 //actual map data
-var map;
 var frameCount = 0;
 var lastFrame;
 var fps = 0;
