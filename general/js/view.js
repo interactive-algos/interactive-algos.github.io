@@ -72,7 +72,7 @@ CanvasRenderingContext2D.prototype.strokeSemiCircle = function (wx, wy, dir, wsi
 	this.stroke();
 };
 
-CanvasRenderingContext2D.prototype.drawMap = function (wm)
+CanvasRenderingContext2D.prototype.drawMap = function (wm, isSmall)
 {
 	map = wm;
 	for (var i = wm.length - 1; i >= 0; i--)
@@ -81,14 +81,23 @@ CanvasRenderingContext2D.prototype.drawMap = function (wm)
 		this.strokeLine(l.s.x, l.s.y, l.t.x, l.t.y);
 	}
 
-	if (typeof(robotHistory) !== 'undefined'){
+	if (!isSmall) {
+		this.strokeStyle = 'rgba(255, 0, 0, 0.5)';
+		var o = 20;
+		scale *=o;
+		this.drawMap(wm, true);
+		scale /=o;
+		this.strokeStyle = 'rgba(0, 0, 0, 1)';
+	}
+
+	if (typeof(robotHistory) !== 'undefined' && isSmall){
 		if (robotHistory.length == 0) {
 			return;
 		}
 		for (var i = robotHistory.length-1; i >= 0; i--) {
-			this.strokeCircle(robotHistory[i].x, robotHistory[i].y, scale);
+			this.strokeCircle(robotHistory[i].x, robotHistory[i].y, 0.0002/scale);
 		}
-		if (robotHistory.length >= 200) {
+		if (robotHistory.length >= 5000) {
 			robotHistory.shift();
 		}
 	}
