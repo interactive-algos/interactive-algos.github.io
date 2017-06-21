@@ -33,6 +33,8 @@ var customPathGroup;
 
 var alphanumericRE = new RegExp('^[a-zA-Z0-9]+$');
 
+var robotHistory = [];
+
 function frame(timestamp)
 {
 	frameCount++;

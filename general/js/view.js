@@ -80,6 +80,15 @@ CanvasRenderingContext2D.prototype.drawMap = function (wm)
 		var l = wm[i];
 		this.strokeLine(l.s.x, l.s.y, l.t.x, l.t.y);
 	}
+	if (robotHistory.length == 0) {
+		return;
+	}
+	for (var i = robotHistory.length-1; i >= 0; i--) {
+		this.strokeCircle(robotHistory[i].x, robotHistory[i].y, scale);
+	}
+	if (robotHistory.length >= 200) {
+		robotHistory.shift();
+	}
 };
 
 CanvasRenderingContext2D.prototype.strokeLine = function (wx1, wy1, wx2, wy2)
