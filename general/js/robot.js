@@ -195,7 +195,7 @@ Robot.prototype.updateSenseCircle = function()
             this.lastScan = Date.now();
         }
     }
-    this.senseCircle += 0.04;
+    this.senseCircle += 0.02;
 };
 
 Robot.prototype.draw = function(ctx)
@@ -212,7 +212,12 @@ Robot.prototype.draw = function(ctx)
     ctx.strokeStyle = 'rgba(0, 0, 255, '+ (this.senseCircle/Robot.sensorRadius) +')';
 
     //draw Robot's sensing circle
-    ctx.strokeCircle(x, y, this.senseCircle);
+    ctx.strokeSemiCircle(x, y, -this.dir, this.senseCircle);
+
+    ctx.strokeStyle = 'rgba(0, 0, 0, 0.2)';
+    ctx.strokeSemiCircle(x, y, -this.dir, Robot.sensorRadius);
+    ctx.strokeLine(x-sin(-this.dir)*Robot.sensorRadius, y-cos(-this.dir)*Robot.sensorRadius,
+        x+sin(-this.dir)*Robot.sensorRadius, y+cos(-this.dir)*Robot.sensorRadius);
 
     this.filter.draw(ctx);
 };

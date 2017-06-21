@@ -53,10 +53,22 @@ CanvasRenderingContext2D.prototype.circle = function (wx, wy, wsize)
 	return this.arc(toScreenX(wx), toScreenY(wy), wsize / scale, 0, Math.PI * 2);
 };
 
+CanvasRenderingContext2D.prototype.semicircle = function (wx, wy, dir, wsize)
+{
+	return this.arc(toScreenX(wx), toScreenY(wy), wsize / scale, dir-Math.PI/2, dir+Math.PI/2);
+};
+
 CanvasRenderingContext2D.prototype.strokeCircle = function (wx, wy, wsize)
 {
 	this.beginPath();
 	this.circle(wx, wy, wsize);
+	this.stroke();
+};
+
+CanvasRenderingContext2D.prototype.strokeSemiCircle = function (wx, wy, dir, wsize)
+{
+	this.beginPath();
+	this.semicircle(wx, wy, dir, wsize);
 	this.stroke();
 };
 
