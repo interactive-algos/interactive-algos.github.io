@@ -55,7 +55,7 @@ CanvasRenderingContext2D.prototype.circle = function (wx, wy, wsize)
 
 CanvasRenderingContext2D.prototype.semicircle = function (wx, wy, dir, wsize)
 {
-	return this.arc(toScreenX(wx), toScreenY(wy), wsize / scale, dir-Math.PI/2, dir+Math.PI/2);
+	return this.arc(toScreenX(wx), toScreenY(wy), wsize / scale, dir - Math.PI / 2, dir + Math.PI / 2);
 };
 
 CanvasRenderingContext2D.prototype.strokeCircle = function (wx, wy, wsize)
@@ -74,30 +74,35 @@ CanvasRenderingContext2D.prototype.strokeSemiCircle = function (wx, wy, dir, wsi
 
 CanvasRenderingContext2D.prototype.drawMap = function (wm, isSmall)
 {
-	map = wm;
+	this.strokeStyle = 'black';
 	for (var i = wm.length - 1; i >= 0; i--)
 	{
 		var l = wm[i];
 		this.strokeLine(l.s.x, l.s.y, l.t.x, l.t.y);
 	}
 
-	if (!isSmall) {
+	if (!isSmall)
+	{
 		this.strokeStyle = 'rgba(255, 0, 0, 0.5)';
 		var o = 20;
-		scale *=o;
+		scale *= o;
 		this.drawMap(wm, true);
-		scale /=o;
+		scale /= o;
 		this.strokeStyle = 'rgba(0, 0, 0, 1)';
 	}
 
-	if (typeof(robotHistory) !== 'undefined' && isSmall){
-		if (robotHistory.length == 0) {
+	if (typeof(robotHistory) !== 'undefined' && isSmall)
+	{
+		if (robotHistory.length === 0)
+		{
 			return;
 		}
-		for (var i = robotHistory.length-1; i >= 0; i--) {
-			this.strokeCircle(robotHistory[i].x, robotHistory[i].y, 0.0002/scale);
+		for (var i = robotHistory.length - 1; i >= 0; i--)
+		{
+			this.strokeCircle(robotHistory[i].x, robotHistory[i].y, 0.0002 / scale);
 		}
-		if (robotHistory.length >= 5000) {
+		if (robotHistory.length >= 5000)
+		{
 			robotHistory.shift();
 		}
 	}
@@ -105,7 +110,6 @@ CanvasRenderingContext2D.prototype.drawMap = function (wm, isSmall)
 
 CanvasRenderingContext2D.prototype.strokeLine = function (wx1, wy1, wx2, wy2)
 {
-
 	var x1 = toScreenX(wx1);
 	var y1 = toScreenY(wy1);
 	var x2 = toScreenX(wx2);
@@ -138,7 +142,7 @@ CanvasRenderingContext2D.prototype.strokePath = function (wpath)
 CanvasRenderingContext2D.prototype.drawLaserLines = function (n, wx, wy, diroff)
 {
 	//number of lasers for 360 degrees
-	var nLasers = (n-1)*2;
+	var nLasers = (n - 1) * 2;
 
 	//Angle between each laser, in radians
 	var rad = Math.PI * 2 / nLasers;

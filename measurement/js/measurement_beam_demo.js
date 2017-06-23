@@ -1,5 +1,4 @@
 var canvas;
-var bgCanvas;
 
 var robotX;
 var robotY;
@@ -36,8 +35,8 @@ function update()
 	shouldColor = document.getElementById('shouldColor');
 	if(shouldColor.checked)
 	{
-		clearCanvas(bgCanvas);
-		bgCanvas.getContext('2d').drawMap(map);
+		clearCanvas(canvas);
+		canvas.getContext('2d').drawMap(map);
 		colorMap();
 	}
 	clickedParticles = [];
@@ -91,6 +90,7 @@ function trackRobotDir(event)
 	robotDir = atan2(y - robotY, x - robotX);
 	dirOffset = round(robotDir / Math.PI / 2 * (nLasers-1)*2);
 	clearCanvas(canvas);
+	canvas.getContext('2d').drawMap(map);
 	canvas.getContext('2d').drawRobot(robotX, robotY, robotDir, robotSize);
 }
 
@@ -119,17 +119,18 @@ function mouseDown(event)
 	robotX = x;
 	robotY = y;
 	clearCanvas(canvas);
+	canvas.getContext('2d').drawMap(map);
 	canvas.getContext('2d').drawRobot(robotX, robotY, robotDir, robotSize);
-	bgCanvas.onmousemove = trackRobotDir;
-	bgCanvas.onmouseout = mouseUp;
-	bgCanvas.onmouseup = mouseUp;
+	canvas.onmousemove = trackRobotDir;
+	canvas.onmouseout = mouseUp;
+	canvas.onmouseup = mouseUp;
 }
 
 function mouseUp()
 {
-	bgCanvas.onmousemove = undefined;
-	bgCanvas.onmouseout = undefined;
-	bgCanvas.onmouseup = undefined;
+	canvas.onmousemove = undefined;
+	canvas.onmouseout = undefined;
+	canvas.onmouseup = undefined;
 	update();
 	canvas.getContext('2d').drawLaserLines(nLasers, robotX, robotY, dirOffset);
 }
@@ -137,7 +138,6 @@ function mouseUp()
 function init()
 {
 	canvas = document.getElementById('canvas');
-	bgCanvas = document.getElementById('background');
 
 	//Draw the map
 	map = getMapForCanvas(canvas);
@@ -146,7 +146,7 @@ function init()
 	height = canvas.height * scale;
 	rcOffsetX = width / 2;
 	rcOffsetY = height / 2;
-	bgCanvas.getContext('2d').drawMap(map);
+	canvas.getContext('2d').drawMap(map);
 	robotX = floor(random() * canvas.width);
 	robotY = floor(random() * canvas.height);
 	robotDir = random() * TWO_PI;
@@ -160,7 +160,7 @@ function init()
 	Particle.size = 0.2 / scale;
 
 	//Listen to mouse click events
-	bgCanvas.onmousedown = mouseDown;
+	canvas.onmousedown = mouseDown;
 	senseRadius = getSensorRadius();
 	sensorNoise = getSensorNoise();
 }
@@ -179,7 +179,7 @@ function toggleColoring(event)
 
 function colorMap()
 {
-	var ctx = bgCanvas.getContext('2d');
+	var ctx = canvas.getContext('2d');
 	var resolution = getColoringResolution();
 	var probabilityGrid = sensorModel.calcProbGrid(resolution, robotDir, z, canvas.width, canvas.height);
 
@@ -196,6 +196,6 @@ function colorMap()
 
 function clearColor()
 {
-	clearCanvas(bgCanvas);
-	bgCanvas.getContext('2d').drawMap(map);
+	clearCanvas(canvas);
+	canvas.getContext('2d').drawMap(map);
 }

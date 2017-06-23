@@ -1,5 +1,4 @@
 var canvas; //The HTML Element of the canvas
-var bgCanvas; //The HTML element of the background canvas
 var robot;
 
 //actual map data
@@ -51,6 +50,7 @@ function frame(timestamp)
 		ctx.clearRect(0, 0, canvas.width, canvas.height);
 		robot.update();
 
+		clearCanvas(canvas);
 		robot.draw(ctx);
 
 		if (shouldColorMap)
@@ -126,18 +126,18 @@ function mouseDown(event)
 	toWorldCoor(coor);
 
 	path.push(coor);
-	bgCanvas.onmousemove = mouseMotion;
-	bgCanvas.onmouseup = mouseUp;
-	bgCanvas.onmouseout = mouseUp;
+	canvas.onmousemove = mouseMotion;
+	canvas.onmouseup = mouseUp;
+	canvas.onmouseout = mouseUp;
 	clearCanvas(canvas);
 }
 
 function mouseUp(event)
 {
-	bgCanvas.onmousemove = undefined;
-	bgCanvas.onmouseup = undefined;
-	bgCanvas.onmouseout = undefined;
-	bgCanvas.onmousedown = undefined;
+	canvas.onmousemove = undefined;
+	canvas.onmouseup = undefined;
+	canvas.onmouseout = undefined;
+	canvas.onmousedown = undefined;
 
 	clearCanvas(canvas);
 
@@ -183,7 +183,7 @@ function mouseUp(event)
 
 function startRecordingPath()
 {
-	clearCanvas(bgCanvas);
+	clearCanvas(canvas);
 	width = canvas.width * scale;
 	height = canvas.height * scale;
 	rcOffsetX = width / 2;
@@ -191,7 +191,7 @@ function startRecordingPath()
 	map = getMapForCanvas(canvas);
 
 	console.log(rcOffsetX + " " + rcOffsetY);
-	bgCanvas.getContext('2d').drawMap(map);
+	canvas.getContext('2d').drawMap(map);
 
 	console.log("start recording...");
 	animating = false;
@@ -201,7 +201,7 @@ function startRecordingPath()
 	ctx.strokeStyle = 'black';
 	ctx.textAlign = 'center';
 	ctx.strokeText('Start drawing a path here', canvas.width / 2, canvas.height / 2);
-	bgCanvas.onmousedown = mouseDown;
+	canvas.onmousedown = mouseDown;
 	path = [];
 }
 
@@ -209,7 +209,6 @@ function init()
 {
 	canvas = document.getElementById('canvas');
 	pathSelect = document.getElementById('path');
-	bgCanvas = document.getElementById('background');
 	customPathGroup = document.getElementById('customPathGroup');
 
 	map = getMapForCanvas(canvas);
@@ -221,8 +220,8 @@ function init()
 	height = canvas.height * scale;
 	rcOffsetX = width / 2;
 	rcOffsetY = height / 2;
-	bgCanvas.getContext('2d').drawMap(map);
-	bgCanvas.onmousedown = queryProbability;
+	canvas.getContext('2d').drawMap(map);
+	canvas.onmousedown = queryProbability;
 
 	smoothenPath(vanillaPath);
 
@@ -235,7 +234,6 @@ function init()
 	knownPath['Vanilla'] = vanillaPath;
 
 	var selectedPath = pathSelect.value;
-	clearCanvas(canvas);
 	var ctx = canvas.getContext('2d');
 	ctx.strokeStyle = 'green';
 	ctx.strokePath(knownPath[selectedPath]);

@@ -4,21 +4,27 @@
     <meta charset="utf-8"/>
 
     <script src="https://code.jquery.com/jquery-3.2.1.min.js"
-            integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+            integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4="
+            crossorigin="anonymous"></script>
 
     <!-- Latest compiled and minified CSS -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.12.2/css/bootstrap-select.min.css">
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.12.2/css/bootstrap-select.min.css">
 
     <!-- Latest compiled and minified JavaScript -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.12.2/js/bootstrap-select.min.js"></script>
 
     <!-- Latest compiled and minified CSS -->
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
-          integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+    <link rel="stylesheet"
+          href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
+          integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u"
+          crossorigin="anonymous">
 
     <!-- Optional theme -->
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css"
-          integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">
+    <link rel="stylesheet"
+          href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css"
+          integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp"
+          crossorigin="anonymous">
 
     <!-- Latest compiled and minified JavaScript -->
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"
@@ -50,9 +56,9 @@
 
     <div class='row'>
 			<span style="position: relative;">
-				<canvas id="canvas" style='position: absolute;top: 0;left: 0; z-index: 1;' width="700"
-                        height="400"></canvas>
-				<canvas id="background" style='position: absolute;top: 0;left: 0; z-index: 2;' width="700"
+				<canvas id="canvas"
+                        style='position: absolute;top: 0;left: 0; z-index: 1;'
+                        width="700"
                         height="400"></canvas>
 			</span>
         <div style="float:right;">
@@ -68,12 +74,15 @@
                             <label for="path">Movement Path:</label>
                         </td>
                         <td>
-                            <select id="path" class="selectpicker" onchange="selectPath(event);">
+                            <select id="path" class="selectpicker"
+                                    onchange="selectPath(event);">
                                 <optgroup label="Built-In">
                                     <option>Vanilla</option>
                                 </optgroup>
                                 <optgroup label="Custom" id="customPathGroup">
-                                    <option data-icon="glyphicon glyphicon-plus" id="addPath">Add a path</option>
+                                    <option data-icon="glyphicon glyphicon-plus"
+                                            id="addPath">Add a path
+                                    </option>
                                 </optgroup>
                             </select>
                         </td>
@@ -103,16 +112,23 @@
                     </tr>
 
                     <tr>
-                        <td><label for="robotForwardNoise">Move noise</label>:</td>
-                        <td><input type='text' id="robotForwardNoise" onblur='return parameterChanged(event);'
-                                   onkeypress='return isDecimal(event);' class="form-control form-control-sm" value="10"
+                        <td><label for="robotForwardNoise">Move noise</label>:
+                        </td>
+                        <td><input type='text' id="robotForwardNoise"
+                                   onblur='return parameterChanged(event);'
+                                   onkeypress='return isDecimal(event);'
+                                   class="form-control form-control-sm"
+                                   value="10"
                                    size="3"></td>
                         <td><label>%</label></td>
                     </tr>
                     <tr>
                         <td><label for="robotTurnNoise">Turn noise</label>:</td>
-                        <td><input type='text' id="robotTurnNoise" onblur='return parameterChanged(event);'
-                                   onkeypress='return isDecimal(event);' class="form-control form-control-sm" value="5"
+                        <td><input type='text' id="robotTurnNoise"
+                                   onblur='return parameterChanged(event);'
+                                   onkeypress='return isDecimal(event);'
+                                   class="form-control form-control-sm"
+                                   value="5"
                                    size="3"></td>
                         <td><label>%</label></td>
                     </tr>
