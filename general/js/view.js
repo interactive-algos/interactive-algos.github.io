@@ -72,7 +72,7 @@ CanvasRenderingContext2D.prototype.strokeSemiCircle = function (wx, wy, dir, wsi
 	this.stroke();
 };
 
-CanvasRenderingContext2D.prototype.drawMap = function (wm, isSmall)
+CanvasRenderingContext2D.prototype.drawMap = function (wm)
 {
 	this.strokeStyle = 'black';
 	for (var i = wm.length - 1; i >= 0; i--)
@@ -80,40 +80,14 @@ CanvasRenderingContext2D.prototype.drawMap = function (wm, isSmall)
 		var l = wm[i];
 		this.strokeLine(l.s.x, l.s.y, l.t.x, l.t.y);
 	}
-
-	if (!isSmall)
-	{
-		this.strokeStyle = 'rgba(255, 0, 0, 0.5)';
-		var o = 20;
-		scale *= o;
-		this.drawMap(wm, true);
-		scale /= o;
-		this.strokeStyle = 'rgba(0, 0, 0, 1)';
-	}
-
-	if (typeof(robotHistory) !== 'undefined' && isSmall)
-	{
-		if (robotHistory.length === 0)
-		{
-			return;
-		}
-		for (var i = robotHistory.length - 1; i >= 0; i--)
-		{
-			this.strokeCircle(robotHistory[i].x, robotHistory[i].y, 0.0002 / scale);
-		}
-		if (robotHistory.length >= 5000)
-		{
-			robotHistory.shift();
-		}
-	}
 };
 
 CanvasRenderingContext2D.prototype.strokeLine = function (wx1, wy1, wx2, wy2)
 {
-	var x1 = toScreenX(wx1);
-	var y1 = toScreenY(wy1);
-	var x2 = toScreenX(wx2);
-	var y2 = toScreenY(wy2);
+	var x1 = round(toScreenX(wx1));
+	var y1 = round(toScreenY(wy1));
+	var x2 = round(toScreenX(wx2));
+	var y2 = round(toScreenY(wy2));
 	this.beginPath();
 	this.moveTo(x1, y1);
 	this.lineTo(x2, y2);

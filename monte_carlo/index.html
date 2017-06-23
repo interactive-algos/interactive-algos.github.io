@@ -4,7 +4,8 @@
     <meta charset="utf-8"/>
 
     <script src="https://code.jquery.com/jquery-3.2.1.min.js"
-            integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+            integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4="
+            crossorigin="anonymous"></script>
 
     <!-- Latest compiled and minified CSS -->
     <link rel="stylesheet"
@@ -14,12 +15,16 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.12.2/js/bootstrap-select.min.js"></script>
 
     <!-- Latest compiled and minified CSS -->
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
-          integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+    <link rel="stylesheet"
+          href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
+          integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u"
+          crossorigin="anonymous">
 
     <!-- Optional theme -->
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css"
-          integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">
+    <link rel="stylesheet"
+          href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css"
+          integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp"
+          crossorigin="anonymous">
 
     <!-- Latest compiled and minified JavaScript -->
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"
@@ -51,11 +56,10 @@
     <div class="row"><h3>Monte Carlo</h3></div>
 
     <div class='row'>
-			<span style="position: relative;">
-				<canvas id="canvas" style='position: absolute;top: 0;left: 0; z-index: 1;' width="700"
-                        height="400"></canvas>
-			</span>
-        <div style="float:right;">
+        <div class="col-lg-8">
+            <canvas id="canvas" width="700" height="400"></canvas>
+        </div>
+        <div class='col-sm-4'>
             <fieldset>
                 <legend>Configuration</legend>
                 <table>
@@ -65,22 +69,25 @@
                     </tr>
                     <tr>
                         <td>
-                            <label for="path">Movement Path:</label>
+                            <label for="path">Movement Path</label>
                         </td>
                         <td>
-                            <select id="path" class="selectpicker" onchange="selectPath(event);">
+                            <select id="path" class="selectpicker"
+                                    onchange="selectPath(event);">
                                 <optgroup label="Built-In">
                                     <option>Vanilla</option>
                                 </optgroup>
                                 <optgroup label="Custom" id="customPathGroup">
-                                    <option data-icon="glyphicon glyphicon-plus" id="addPath">Add a path</option>
+                                    <option data-icon="glyphicon glyphicon-plus"
+                                            id="addPath">Add a path
+                                    </option>
                                 </optgroup>
                             </select>
                         </td>
                     </tr>
                     <tr>
                         <td>
-                            <label for="nParticles"># of particles</label>:
+                            <label for="nParticles"># of particles</label>
                         </td>
                         <td>
                             <input type='text' id="nParticles"
@@ -91,7 +98,8 @@
                     </tr>
                     <tr>
                         <td>
-                            <label for="pRatio">% of particles being resampled</label>:
+                            <label for="pRatio">% of particles being
+                                resampled</label>
                         </td>
                         <td>
                             <input type='text' id="pRatio"
@@ -102,7 +110,7 @@
                     </tr>
                     <tr>
                         <td>
-                            <label for="goByOneStep">Step length</label>:
+                            <label for="goByOneStep">Step length</label>
                         </td>
                         <td>
                             <input type='text' id="goByOneStep"
@@ -114,22 +122,29 @@
                     </tr>
 
                     <tr>
-                        <td><label for="robotForwardNoise">Move noise</label>:</td>
-                        <td><input type='text' id="robotForwardNoise" onblur='return parameterChanged(event);'
-                                   onkeypress='return isDecimal(event);' class="form-control form-control-sm" value="10"
+                        <td><label for="robotForwardNoise">Move noise</label>
+                        </td>
+                        <td><input type='text' id="robotForwardNoise"
+                                   onblur='return parameterChanged(event);'
+                                   onkeypress='return isDecimal(event);'
+                                   class="form-control form-control-sm"
+                                   value="10"
                                    size="3"></td>
                         <td><label>%</label></td>
                     </tr>
                     <tr>
-                        <td><label for="robotTurnNoise">Turn noise</label>:</td>
-                        <td><input type='text' id="robotTurnNoise" onblur='return parameterChanged(event);'
-                                   onkeypress='return isDecimal(event);' class="form-control form-control-sm" value="5"
+                        <td><label for="robotTurnNoise">Turn noise</label></td>
+                        <td><input type='text' id="robotTurnNoise"
+                                   onblur='return parameterChanged(event);'
+                                   onkeypress='return isDecimal(event);'
+                                   class="form-control form-control-sm"
+                                   value="5"
                                    size="3"></td>
                         <td><label>%</label></td>
                     </tr>
                     <tr>
                         <td>
-                            <label for="fogOfWar">Sensor Radius</label>:
+                            <label for="fogOfWar">Sensor Radius</label>
                         </td>
                         <td>
                             <input id="fogOfWar"
@@ -139,25 +154,35 @@
                         </td>
                     </tr>
                     <tr>
-                        <td><label for="robotSenseNoise">Sensor noise</label>:</td>
-                        <td><input type='text' id="robotSenseNoise" onblur='return parameterChanged(event);'
-                                   onkeypress='return isDecimal(event);' class="form-control form-control-sm" value="0.3"
+                        <td><label for="robotSenseNoise">Sensor noise</label>
+                        </td>
+                        <td><input type='text' id="robotSenseNoise"
+                                   onblur='return parameterChanged(event);'
+                                   onkeypress='return isDecimal(event);'
+                                   class="form-control form-control-sm"
+                                   value="0.3"
                                    size="3"></td>
                     </tr>
                     <tr>
                         <td>
-                            <label for="colorRes">Coloring Resolution</label>:
+                            <label for="colorRes">Coloring Resolution</label>
                         </td>
                         <td>
-                            <input id="colorRes" class="form-control form-control-sm" value="10" size="4">
+                            <input id="colorRes"
+                                   class="form-control form-control-sm"
+                                   value="10" size="4">
                         </td>
                     </tr>
                     <tr>
                         <td>
-                            <label for="shouldColor" class="custom-control custom-checkbox">Color the Map</label>
+                            <label for="shouldColor"
+                                   class="custom-control custom-checkbox">Color
+                                the Map</label>
                         </td>
                         <td>
-                            <input id="shouldColor" class="form-check-input" onchange='return toggleColoring(event);' type="checkbox">
+                            <input id="shouldColor" class="form-check-input"
+                                   onchange='return toggleColoring(event);'
+                                   type="checkbox">
                         </td>
                     </tr>
                     </tbody>
