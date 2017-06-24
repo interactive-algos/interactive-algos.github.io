@@ -241,20 +241,20 @@ View.prototype.toScreenX = function(x)
 //convert x coordinate on screen to x coordinate in world
 View.prototype.toWorldX = function toWorldX(x)
 {
-	return x / this.scale + this.offsetX;
+	return (x-this.offsetX)/this.scale;
 };
 
 //convert y coordinate in world to y coordinate on screen
 View.prototype.toScreenY = function(y)
 {
-	return -(y*this.scale - this.offsetY);
+	return -y*this.scale + this.offsetY;
 };
 
 //convert y coordinate on screen to y coordinate in world
 View.prototype.toWorldY = function(y)
 {
 	// return (canvas.height - y) * scale;
-	return (-y+this.offsetY) / this.scale;
+	return -(y-this.offsetY) / this.scale;
 };
 
 View.prototype.toWorldCoor = function(coor)

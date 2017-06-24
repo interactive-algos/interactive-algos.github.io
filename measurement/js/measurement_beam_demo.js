@@ -45,19 +45,20 @@ function update()
 
 function drawParticles(ctx, particles)
 {
+	const resolution = getColoringResolution();
 	if(particles.length === 1)
 	{
 		var p = particles[0];
 		var w = p.w;
 		ctx.fillStyle = 'rgba(' + round(w * 255) + ', 0, ' + (255 - round(w * 255)) + ', 0.5)';
-		ctx.fillRect(toScreenX(p.x), toScreenY(p.y), getColoringResolution(), getColoringResolution());
+		ctx.fillRect(p.x-resolution/2, p.y-resolution/2, resolution, resolution);
 	}else
 	{
 		particles.forEach(function(p)
 		{
 			var w = (p.w - minW)/(maxW-minW);
 			ctx.fillStyle = 'rgba(' + round(w * 255) + ', 0, ' + (255 - round(w * 255)) + ', 0.5)';
-			ctx.fillRect(toScreenX(p.x), toScreenY(p.y), getColoringResolution(), getColoringResolution());
+			ctx.fillRect(p.x-resolution/2, p.y-resolution/2, resolution, resolution);
 		});
 	}
 }
@@ -111,9 +112,10 @@ function mouseDown(event)
 		minW = min(minW, probability);
 		clearCanvas(canvas);
 		var ctx = canvas.getContext('2d');
-		drawParticles(ctx, clickedParticles);
+		ctx.drawMap(map);
 		ctx.drawRobot(robotX, robotY, robotDir, robotSize);
 		ctx.drawLaserLines(nLasers, robotX, robotY, dirOffset);
+		drawParticles(ctx, clickedParticles);
 		return;
 	}
 
@@ -181,8 +183,11 @@ function toggleColoring(event)
 function colorMap()
 {
 	var ctx = canvas.getContext('2d');
+	ctx.save();
+	ctx.setTransform(1, 0, 0, 1, 0, 0);
+	
 	var resolution = getColoringResolution();
-	var probabilityGrid = sensorModel.calcProbGrid(resolution, robotDir, z, canvas.width, canvas.height);
+	var probabilityGrid = sensorModel.calcProbGrid(resolution, robotDir, z, canvas.width, canvas.height, view);
 
 	for (var i = 0; i < probabilityGrid.length; i++)
 	{
@@ -193,6 +198,7 @@ function colorMap()
 			ctx.fillRect(j * resolution, i * resolution, resolution, resolution);
 		}
 	}
+	ctx.restore();
 }
 
 function clearColor()

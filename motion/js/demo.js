@@ -74,18 +74,21 @@ function frame(timestamp)
 
 function colorMap(ctx, resolution)
 {
+	ctx.save();
+	ctx.setTransform(1, 0, 0, 1, 0, 0);
 	var probabilityGrid = robot.filter.sensorModel.calcProbGrid(resolution,
-		robot.dir, robot.getSensorReading(), canvas.width, canvas.height);
+		robot.dir, robot.getSensorReading(), canvas.width, canvas.height, view);
 
 	for (var i = 0; i < probabilityGrid.length; i++)
 	{
 		for (var j = 0; j < probabilityGrid[i].length; j++)
 		{
 			var p = probabilityGrid[i][j];
-			ctx.fillStyle = 'rgba(' + round(p * 255) + ', 0, ' + (255 - round(p * 255)) + ', 0.5)';
+			ctx.fillStyle = 'rgba(' + round(p * 255) + ', 0, ' + (255 - round(p * 255)) + ', 0.3)';
 			ctx.fillRect(j * resolution, i * resolution, resolution, resolution);
 		}
 	}
+	ctx.restore();
 }
 
 function selectPath(event)
