@@ -14,6 +14,12 @@ function start()
 	var motionModel = new OdometryModel(getTurnNoise(), getStrideNoise(), getTurnNoise(), getTurnNoise());
 	var filter = new ParticleFilter(getParticleCount(), motionModel, undefined, new RobotState(x, y, dir + TWO_PI / 2), 1);
 
+	filter.particles.forEach(function(p)
+	{
+		p.x = x;
+		p.y = y;
+		p.dir = dir;
+	});
 	view.setScale(50);
 
 	robot = new Robot(filter, path);
