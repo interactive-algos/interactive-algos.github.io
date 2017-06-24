@@ -39,23 +39,20 @@ CanvasRenderingContext2D.prototype.drawRobot = function (wx, wy, dir, wsize, isR
 
 	this.beginPath();
 	//draw a line to show Robot's orientation
-	var x = toScreenX(wx);
-	var y = toScreenY(wy);
-	wsize /= scale;
-	this.moveTo(x, y);
-	this.lineTo(x + cos(dir) * wsize, y + sin(dir) * wsize);
+	this.moveTo(wx, wy);
+	this.lineTo(wx + cos(dir) * wsize, wy + sin(dir) * wsize);
 
 	this.stroke();
 };
 
 CanvasRenderingContext2D.prototype.circle = function (wx, wy, wsize)
 {
-	return this.arc(toScreenX(wx), toScreenY(wy), wsize / scale, 0, Math.PI * 2);
+	return this.arc(wx, wy, wsize, 0, Math.PI * 2);
 };
 
 CanvasRenderingContext2D.prototype.semicircle = function (wx, wy, dir, wsize)
 {
-	return this.arc(toScreenX(wx), toScreenY(wy), wsize / scale, dir - Math.PI / 2, dir + Math.PI / 2);
+	return this.arc(wx, wy, wsize, dir - Math.PI / 2, dir + Math.PI / 2);
 };
 
 CanvasRenderingContext2D.prototype.strokeCircle = function (wx, wy, wsize)
@@ -82,12 +79,8 @@ CanvasRenderingContext2D.prototype.drawMap = function (wm)
 	}
 };
 
-CanvasRenderingContext2D.prototype.strokeLine = function (wx1, wy1, wx2, wy2)
+CanvasRenderingContext2D.prototype.strokeLine = function (x1, y1, x2, y2)
 {
-	var x1 = round(toScreenX(wx1));
-	var y1 = round(toScreenY(wy1));
-	var x2 = round(toScreenX(wx2));
-	var y2 = round(toScreenY(wy2));
 	this.beginPath();
 	this.moveTo(x1, y1);
 	this.lineTo(x2, y2);
@@ -96,19 +89,22 @@ CanvasRenderingContext2D.prototype.strokeLine = function (wx1, wy1, wx2, wy2)
 
 CanvasRenderingContext2D.prototype.strokeTextWithColorFont = function (text, color, font)
 {
+	this.save();
+	this.setTransform(1, 0, 0, 1, 0, 0);
 	this.strokeStyle = color;
 	this.font = font;
 	this.textAlign = 'start';
 	this.strokeText(text, 10, 20);
+	this.restore();
 };
 
 CanvasRenderingContext2D.prototype.strokePath = function (wpath)
 {
 	this.beginPath();
-	this.moveTo(toScreenX(wpath[0].x), toScreenY(wpath[0].y));
+	this.moveTo(wpath[0].x, wpath[0].y);
 	for (var i = 1; i < wpath.length; i++)
 	{
-		this.lineTo(toScreenX(wpath[i].x), toScreenY(wpath[i].y));
+		this.lineTo(wpath[i].x, wpath[i].y);
 	}
 	this.stroke();
 };

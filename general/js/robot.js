@@ -207,11 +207,12 @@ Robot.prototype.draw = function(ctx)
     var x = this.x;
     var y = this.y;
 
-    if (typeof(robotHistory) !== 'undefined'){
+    if (typeof(robotHistory) !== 'undefined')
+    {
         robotHistory.push(new Point(x,y));
     }
 
-    ctx.drawRobot(x, y, -this.dir, Robot.size, true);
+    ctx.drawRobot(x, y, this.dir, Robot.size, true);
 
     ctx.strokeStyle = 'rgba(0, 0, 255, '+ (this.senseCircle/Robot.sensorRadius) +')';
 
@@ -219,9 +220,9 @@ Robot.prototype.draw = function(ctx)
     // ctx.strokeSemiCircle(x, y, -this.dir, this.senseCircle);
 
     ctx.strokeStyle = 'rgba(0, 0, 0, 0.2)';
-    ctx.strokeSemiCircle(x, y, -this.dir, Robot.sensorRadius);
-    ctx.strokeLine(x-sin(-this.dir)*Robot.sensorRadius, y-cos(-this.dir)*Robot.sensorRadius,
-        x+sin(-this.dir)*Robot.sensorRadius, y+cos(-this.dir)*Robot.sensorRadius);
+    ctx.strokeSemiCircle(x, y, this.dir, Robot.sensorRadius);
+    ctx.strokeLine(x-sin(this.dir)*Robot.sensorRadius, y+cos(this.dir)*Robot.sensorRadius,
+        x+sin(this.dir)*Robot.sensorRadius, y-cos(this.dir)*Robot.sensorRadius);
 
     this.filter.draw(ctx);
 };

@@ -210,17 +210,21 @@ function init()
 	canvas = document.getElementById('canvas');
 	pathSelect = document.getElementById('path');
 	customPathGroup = document.getElementById('customPathGroup');
+	var ctx = canvas.getContext('2d');
+	ctx.translate(0, canvas.height);
+	ctx.scale(6, -6);
+	ctx.lineWidth = 0.2;
 
 	map = getMapForCanvas(canvas);
 	console.log(rcOffsetX + " " + rcOffsetY);
 
-	setPreview(true);
+	// setPreview(true);
 
 	width = canvas.width * scale;
 	height = canvas.height * scale;
 	rcOffsetX = width / 2;
 	rcOffsetY = height / 2;
-	canvas.getContext('2d').drawMap(map);
+	ctx.drawMap(map);
 	canvas.onmousedown = queryProbability;
 
 	smoothenPath(vanillaPath);
@@ -234,7 +238,7 @@ function init()
 	knownPath['Vanilla'] = vanillaPath;
 
 	var selectedPath = pathSelect.value;
-	var ctx = canvas.getContext('2d');
+
 	ctx.strokeStyle = 'green';
 	ctx.strokePath(knownPath[selectedPath]);
 

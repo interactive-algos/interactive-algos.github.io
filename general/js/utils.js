@@ -241,7 +241,8 @@ function smoothenPath(path, windowSize)
 //convert x coordinate in world to x coordinate on screen
 function toScreenX(x)
 {
-	return (x - rcOffsetX) / scale + canvas.width / 2;
+	// return (x - rcOffsetX) / scale + canvas.width / 2;
+	return x;
 }
 
 //convert x coordinate on screen to x coordinate in world
@@ -254,7 +255,8 @@ function toWorldX(x)
 //convert y coordinate in world to y coordinate on screen
 function toScreenY(y)
 {
-	return (-y + rcOffsetY) / scale + canvas.height / 2;
+	// return (-y + rcOffsetY) / scale + canvas.height / 2;
+	return y;
 }
 
 //convert y coordinate on screen to y coordinate in world
@@ -272,8 +274,8 @@ function toWorldCoor(coor)
 
 function toScreenCoor(coor)
 {
-	coor.x = toScreenX(coor.x);
-	coor.y = toScreenY(coor.y);
+	// coor.x = toScreenX(coor.x);
+	// coor.y = toScreenY(coor.y);
 }
 
 //Functional API, return a new point.
@@ -284,7 +286,8 @@ function getWorldCoor(coor)
 
 function getScreenCoor(coor)
 {
-	return new Point(toScreenX(coor.x), toScreenY(coor.y));
+	// return new Point(toScreenX(coor.x), toScreenY(coor.y));
+	return coor;
 }
 
 //Functional API, return a new line.

@@ -34,7 +34,7 @@ Particle.prototype.draw = function (ctx)
 	var y = this.y;//round(this.y);
 
 	ctx.strokeStyle = 'rgba(0, 0, 255, 0.1)';
-	ctx.drawRobot(x, y, -this.dir, Particle.size);
+	ctx.drawRobot(x, y, this.dir, Particle.size);
 };
 
 /**
