@@ -28,8 +28,9 @@ function start()
 		new RobotState(path[0].x, path[0].y, 0),
 		getResampleRatio());
 
-	robot = new Robot(filter, path, 19);
+	view.setScale(50);
 
+	robot = new Robot(filter, path, 19);
 	robot.draw(ctx);
 
 	animating = true;

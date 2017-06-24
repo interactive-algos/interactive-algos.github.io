@@ -14,10 +14,11 @@ function start()
 	var motionModel = new OdometryModel(getTurnNoise(), getStrideNoise(), getTurnNoise(), getTurnNoise());
 	var filter = new ParticleFilter(getParticleCount(), motionModel, undefined, new RobotState(x, y, dir + TWO_PI / 2), 1);
 
+	view.setScale(50);
+
 	robot = new Robot(filter, path);
 	robot.draw(ctx);
 
-	console.log(view.toScreenX(robot.x) + ", " + view.toScreenY(robot.y));
 	lastFrame = Date.now();
 	requestAnimationFrame(frame);
 }

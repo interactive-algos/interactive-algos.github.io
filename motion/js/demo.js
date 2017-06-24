@@ -38,6 +38,9 @@ var map;
 
 var view;
 
+//
+const lockRatio = 0.4;
+
 function frame(timestamp)
 {
 	frameCount++;
@@ -67,19 +70,19 @@ function frame(timestamp)
 
 		var dx = 0;
 		var dy = 0;
-		if(x < canvas.width*0.2)
+		if(x < canvas.width*lockRatio)
 		{
-			dx = canvas.width*0.2 - x;
-		}else if(x > canvas.width * 0.8)
+			dx = canvas.width*lockRatio - x;
+		}else if(x > canvas.width * (1-lockRatio))
 		{
-			dx = canvas.width*0.8 - x;
+			dx = canvas.width*(1-lockRatio) - x;
 		}
-		if(y < canvas.height*0.2)
+		if(y < canvas.height*lockRatio)
 		{
-			dy = canvas.height*0.2 - y;
-		}else if(y > canvas.height*0.8)
+			dy = canvas.height*lockRatio - y;
+		}else if(y > canvas.height*(1-lockRatio))
 		{
-			dy = canvas.height*0.8 - y;
+			dy = canvas.height*(1-lockRatio) - y;
 		}
 		view.addOffset(dx, dy);
 		console.log(view.toScreenX(robot.x) + ", " + view.toScreenY(robot.y));
