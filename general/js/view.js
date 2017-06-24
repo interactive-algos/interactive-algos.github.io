@@ -145,7 +145,7 @@ CanvasRenderingContext2D.prototype.strokeSemiCircle = function (wx, wy, dir, wsi
 
 CanvasRenderingContext2D.prototype.drawMap = function (wm)
 {
-	this.strokeStyle = 'black';
+	this.strokeStyle = 'rgba(0,0,0,1)';
 	for (var i = wm.length - 1; i >= 0; i--)
 	{
 		var l = wm[i];
@@ -161,10 +161,11 @@ CanvasRenderingContext2D.prototype.strokeLine = function (x1, y1, x2, y2)
 	this.stroke();
 };
 
-CanvasRenderingContext2D.prototype.strokeTextWithColorFont = function (text, color, font)
+CanvasRenderingContext2D.prototype.strokeTextWithColorFont = function(text, color, font)
 {
 	this.save();
 	this.setTransform(1, 0, 0, 1, 0, 0);
+	this.lineWidth = 1;
 	this.strokeStyle = color;
 	this.font = font;
 	this.textAlign = 'start';

@@ -200,8 +200,6 @@ Robot.prototype.updateSenseCircle = function()
 
 Robot.prototype.draw = function(ctx)
 {
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
-
     ctx.strokeStyle = 'black';
 
     var x = this.x;

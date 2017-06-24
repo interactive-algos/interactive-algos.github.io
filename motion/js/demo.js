@@ -53,20 +53,20 @@ function frame(timestamp)
 		 ctx.fillStyle = 'rgba(255, 255, 255, 0.3)';
 		 ctx.fillRect(0, 0, canvas.width, canvas.height);
 		 */
-		ctx.clearRect(0, 0, canvas.width, canvas.height);
 		robot.update();
+		var x = view.toScreenX(robot.x);
+		var y = view.toScreenY(robot.y);
+		view.adjustToPoint(x, y);
 
 		clearCanvas(canvas);
-		robot.draw(ctx);
 		ctx.drawMap(map);
+		robot.draw(ctx);
+
 		if (shouldColorMap)
 		{
 			colorMap(ctx, getValue('colorRes'));
 		}
-		ctx.strokeTextWithColorFont(fps + " FPS", 'rgba(0,0,0,0)', '10px Menlo');
-		var x = view.toScreenX(robot.x);
-		var y = view.toScreenY(robot.y);
-		view.adjustToPoint(x, y);
+		ctx.strokeTextWithColorFont(fps + " FPS", 'black', '10px Menlo');
 	}
 	if (animating)
 		requestAnimationFrame(frame);
