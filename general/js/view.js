@@ -11,6 +11,7 @@ function View(canvas, scale)
 
 	this.updateTransform();
 	this.ctx.lineWidth = 1/scale;
+	this.lockRatio = 0.4;
 }
 
 View.prototype.updateTransform = function()
@@ -57,7 +58,26 @@ View.prototype.setPreviewScale = function(map)
 
 View.prototype.adjustToPoint = function(x, y)
 {
+	const canvas = this.canvas;
+	const lockRatio = this.lockRatio;
 
+	var dx = 0;
+	var dy = 0;
+	if(x < canvas.width*lockRatio)
+	{
+		dx = canvas.width*lockRatio - x;
+	}else if(x > canvas.width * (1-lockRatio))
+	{
+		dx = canvas.width*(1-lockRatio) - x;
+	}
+	if(y < canvas.height*lockRatio)
+	{
+		dy = canvas.height*lockRatio - y;
+	}else if(y > canvas.height*(1-lockRatio))
+	{
+		dy = canvas.height*(1-lockRatio) - y;
+	}
+	view.addOffset(dx, dy);
 };
 
 

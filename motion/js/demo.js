@@ -39,7 +39,6 @@ var map;
 var view;
 
 //
-const lockRatio = 0.4;
 
 function frame(timestamp)
 {
@@ -64,28 +63,10 @@ function frame(timestamp)
 		{
 			colorMap(ctx, getValue('colorRes'));
 		}
-		ctx.strokeTextWithColorFont(fps + " FPS", 'black', '10px Menlo');
+		ctx.strokeTextWithColorFont(fps + " FPS", 'rgba(0,0,0,0)', '10px Menlo');
 		var x = view.toScreenX(robot.x);
 		var y = view.toScreenY(robot.y);
-
-		var dx = 0;
-		var dy = 0;
-		if(x < canvas.width*lockRatio)
-		{
-			dx = canvas.width*lockRatio - x;
-		}else if(x > canvas.width * (1-lockRatio))
-		{
-			dx = canvas.width*(1-lockRatio) - x;
-		}
-		if(y < canvas.height*lockRatio)
-		{
-			dy = canvas.height*lockRatio - y;
-		}else if(y > canvas.height*(1-lockRatio))
-		{
-			dy = canvas.height*(1-lockRatio) - y;
-		}
-		view.addOffset(dx, dy);
-		console.log(view.toScreenX(robot.x) + ", " + view.toScreenY(robot.y));
+		view.adjustToPoint(x, y);
 	}
 	if (animating)
 		requestAnimationFrame(frame);

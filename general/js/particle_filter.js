@@ -46,7 +46,6 @@ function ParticleFilter(particleCount, motionModel, sensorModel, robotState, res
  */
 ParticleFilter.prototype.draw = function (ctx)
 {
-	this.normalizeWeights();
 	for (var i = this.particles.length - 1; i >= 0; i--)
 	{
 		this.particles[i].draw(ctx);
