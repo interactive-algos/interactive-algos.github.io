@@ -34,6 +34,10 @@ var alphanumericRE = new RegExp('^[a-zA-Z0-9]+$');
 
 var robotHistory = [];
 
+var map;
+
+var view;
+
 function frame(timestamp)
 {
 	frameCount++;
@@ -58,6 +62,7 @@ function frame(timestamp)
 			colorMap(ctx, getValue('colorRes'));
 		}
 		ctx.strokeTextWithColorFont(fps + " FPS", 'black', '10px Menlo');
+		// console.log(view.toScreenX(robot.x) + " " + view.toScreenY(robot.y));
 	}
 	if (animating)
 		requestAnimationFrame(frame);
@@ -210,20 +215,16 @@ function init()
 	canvas = document.getElementById('canvas');
 	pathSelect = document.getElementById('path');
 	customPathGroup = document.getElementById('customPathGroup');
-	var ctx = canvas.getContext('2d');
-	ctx.translate(0, canvas.height);
-	ctx.scale(6, -6);
-	ctx.lineWidth = 0.2;
-
 	map = getMapForCanvas(canvas);
-	console.log(rcOffsetX + " " + rcOffsetY);
+	view = new View(canvas, 1);
 
-	// setPreview(true);
+	view.setPreviewScale(map);
 
-	width = canvas.width * scale;
-	height = canvas.height * scale;
-	rcOffsetX = width / 2;
-	rcOffsetY = height / 2;
+	var size = view.getMapSize(map);
+	width = size.width;
+	height = size.height;
+
+	var ctx = canvas.getContext('2d');
 	ctx.drawMap(map);
 	canvas.onmousedown = queryProbability;
 

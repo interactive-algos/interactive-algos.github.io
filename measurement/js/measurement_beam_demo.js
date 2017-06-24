@@ -3,7 +3,7 @@ var canvas;
 var robotX;
 var robotY;
 
-var robotSize = 10 * scale;
+var robotSize = 0.3;
 var senseRadius = 3;
 
 var nLasers = 19;
@@ -26,6 +26,7 @@ var minW = Number.POSITIVE_INFINITY;
 
 var shouldColor;
 
+var view;
 
 function update()
 {
@@ -84,8 +85,8 @@ function parameterChanged(event)
 function trackRobotDir(event)
 {
 	var coor = getClickLoc(event);
-	var x = toWorldX(coor.x);
-	var y = toWorldY(coor.y);
+	var x = view.toWorldX(coor.x);
+	var y = view.toWorldY(coor.y);
 
 	robotDir = atan2(y - robotY, x - robotX);
 	dirOffset = round(robotDir / Math.PI / 2 * (nLasers-1)*2);
@@ -97,8 +98,8 @@ function trackRobotDir(event)
 function mouseDown(event)
 {
 	var coor = getClickLoc(event);
-	var x = toWorldX(coor.x);
-	var y = toWorldY(coor.y);
+	var x = view.toWorldX(coor.x);
+	var y = view.toWorldY(coor.y);
 
 	//Do nothing if it is not a left button event
 	if (event.altKey && !shouldColor.checked)
@@ -138,14 +139,14 @@ function mouseUp()
 function init()
 {
 	canvas = document.getElementById('canvas');
+	view = new View(canvas, 1);
 
 	//Draw the map
 	map = getMapForCanvas(canvas);
-	setPreview(true);
-	width = canvas.width * scale;
-	height = canvas.height * scale;
-	rcOffsetX = width / 2;
-	rcOffsetY = height / 2;
+	view.setPreviewScale(map);
+	var size = view.getMapSize(map);
+	width = size.width;
+	height = size.height;
 	canvas.getContext('2d').drawMap(map);
 	robotX = floor(random() * canvas.width);
 	robotY = floor(random() * canvas.height);
@@ -155,9 +156,9 @@ function init()
 	update();
 
 	sensorModel = new BeamModel(getSensorNoise(), getSensorRadius(), map,
-		canvas.width * scale, canvas.height * scale);
+		width, height);
 
-	Particle.size = 0.2 / scale;
+	Particle.size = 0.2;
 
 	//Listen to mouse click events
 	canvas.onmousedown = mouseDown;

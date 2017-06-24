@@ -193,29 +193,3 @@ function getMapForCanvas(canvas)
 	return map;
 }
 
-
-function getMapScreenSize(map)
-{
-	var w = 0;
-	var h = 0;
-	for (i = 0; i < map.length; i++)
-	{
-		if (map[i].s.x > w)
-		{
-			w = map[i].s.x;
-		}
-		if (map[i].s.y > h)
-		{
-			h = map[i].s.y;
-		}
-		if (map[i].t.x > w)
-		{
-			w = map[i].t.x;
-		}
-		if (map[i].t.y > h)
-		{
-			h = map[i].t.y;
-		}
-	}
-	return new Point((w / scale), (h / scale));
-}

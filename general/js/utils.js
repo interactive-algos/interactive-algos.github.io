@@ -11,9 +11,6 @@ const round = Math.round;
 const TWO_PI = Math.PI * 2;
 const ROOT_TWO_PI = sqrt(TWO_PI);
 
-var rcOffsetX = 0;
-var rcOffsetY = 0;
-
 function randint(min, max)
 {
 	min = Math.ceil(min);
@@ -234,73 +231,6 @@ function smoothenPath(path, windowSize)
 		path[i].y = copy[i - 1].y + dy / windowSize / 2;
 	}
 }
-
-
-//coordinate converter
-
-//convert x coordinate in world to x coordinate on screen
-function toScreenX(x)
-{
-	// return (x - rcOffsetX) / scale + canvas.width / 2;
-	return x;
-}
-
-//convert x coordinate on screen to x coordinate in world
-function toWorldX(x)
-{
-	// return x*scale;
-	return (x - canvas.width / 2) * scale + rcOffsetX;
-}
-
-//convert y coordinate in world to y coordinate on screen
-function toScreenY(y)
-{
-	// return (-y + rcOffsetY) / scale + canvas.height / 2;
-	return y;
-}
-
-//convert y coordinate on screen to y coordinate in world
-function toWorldY(y)
-{
-	// return (canvas.height - y) * scale;
-	return -((y - canvas.height / 2) * scale - rcOffsetY);
-}
-
-function toWorldCoor(coor)
-{
-	coor.x = toWorldX(coor.x);
-	coor.y = toWorldY(coor.y);
-}
-
-function toScreenCoor(coor)
-{
-	// coor.x = toScreenX(coor.x);
-	// coor.y = toScreenY(coor.y);
-}
-
-//Functional API, return a new point.
-function getWorldCoor(coor)
-{
-	return new Point(toWorldX(coor.x), toWorldY(coor.y));
-}
-
-function getScreenCoor(coor)
-{
-	// return new Point(toScreenX(coor.x), toScreenY(coor.y));
-	return coor;
-}
-
-//Functional API, return a new line.
-function getWorldLine(l)
-{
-	return new Line(toWorldX(l.s.x), toWorldY(l.s.y), toWorldX(l.t.x), toWorldY(l.t.y));
-}
-
-function getScreenLine(l)
-{
-	return new Line(toScreenX(l.s.x), toScreenY(l.s.y), toScreenX(l.t.x), toScreenY(l.t.y));
-}
-
 
 //HTML Helper Methods
 function isNumber(event)

@@ -3,12 +3,6 @@ function start()
 	if (animating)
 		return;
 
-	setPreview(false);
-	if (canvas)
-	{
-		clearCanvas(canvas);
-	}
-
 	animating = true;
 	var ctx = canvas.getContext('2d');
 	var path = knownPath[pathSelect.value];
@@ -22,6 +16,8 @@ function start()
 
 	robot = new Robot(filter, path);
 	robot.draw(ctx);
+
+	console.log(view.toScreenX(robot.x) + " " + view.toScreenY(robot.y));
 	lastFrame = Date.now();
 	requestAnimationFrame(frame);
 }

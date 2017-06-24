@@ -2,7 +2,7 @@ function start()
 {
 	if (animating)
 		return;
-	setPreview(false);
+
 	animating = true;
 	var ctx = canvas.getContext('2d');
 	var path = knownPath[pathSelect.value];
@@ -21,14 +21,15 @@ function start()
 	// });
 
 	Robot.sensorRadius = getSensorRadius();
+	var size = view.getMapSize(map);
 	var sensorModel = new BeamModel(getSensorNoise(), getSensorRadius(), map,
-		getMapScreenSize(map).x * scale, getMapScreenSize(map).y * scale);
+		size.x, size.y);
 	var filter = new ParticleFilter(getParticleCount(), motionModel, sensorModel,
 		new RobotState(path[0].x, path[0].y, 0),
-		// undefined,
 		getResampleRatio());
 
 	robot = new Robot(filter, path, 19);
+
 	robot.draw(ctx);
 
 	animating = true;
