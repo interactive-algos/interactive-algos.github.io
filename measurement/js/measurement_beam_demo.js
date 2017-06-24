@@ -3,7 +3,7 @@ var canvas;
 var robotX;
 var robotY;
 
-var robotSize = 0.3;
+var robotSize = 0.2;
 var senseRadius = 3;
 
 var nLasers = 19;

@@ -62,7 +62,27 @@ function frame(timestamp)
 			colorMap(ctx, getValue('colorRes'));
 		}
 		ctx.strokeTextWithColorFont(fps + " FPS", 'black', '10px Menlo');
-		// console.log(view.toScreenX(robot.x) + " " + view.toScreenY(robot.y));
+		var x = view.toScreenX(robot.x);
+		var y = view.toScreenY(robot.y);
+
+		var dx = 0;
+		var dy = 0;
+		if(x < canvas.width*0.2)
+		{
+			dx = canvas.width*0.2 - x;
+		}else if(x > canvas.width * 0.8)
+		{
+			dx = canvas.width*0.8 - x;
+		}
+		if(y < canvas.height*0.2)
+		{
+			dy = canvas.height*0.2 - y;
+		}else if(y > canvas.height*0.8)
+		{
+			dy = canvas.height*0.8 - y;
+		}
+		view.addOffset(dx, dy);
+		console.log(view.toScreenX(robot.x) + ", " + view.toScreenY(robot.y));
 	}
 	if (animating)
 		requestAnimationFrame(frame);

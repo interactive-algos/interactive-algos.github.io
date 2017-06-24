@@ -9,15 +9,33 @@ function View(canvas, scale)
 	this.offsetX = 0;
 	this.offsetY = canvas.height;
 
-	this.ctx.scale(scale, -scale);
-	this.ctx.translate(this.offsetX, this.offsetY);
+	this.updateTransform();
 	this.ctx.lineWidth = 1/scale;
 }
+
+View.prototype.updateTransform = function()
+{
+	this.ctx.setTransform(this.scale, 0, 0, -this.scale, this.offsetX, this.offsetY);
+};
+
+View.prototype.setOffset = function(x, y)
+{
+	this.offsetX = x;
+	this.offsetY = y;
+	this.updateTransform();
+};
+
+View.prototype.addOffset = function(dx, dy)
+{
+	this.offsetX += dx;
+	this.offsetY += dy;
+	this.updateTransform();
+};
 
 View.prototype.setScale = function(scale)
 {
 	this.scale = scale;
-	this.ctx.setTransform(scale, 0, this.offsetX, -scale, 0, this.offsetY);
+	this.updateTransform();
 	this.ctx.lineWidth = 1/scale;
 };
 
@@ -196,7 +214,7 @@ CanvasRenderingContext2D.prototype.drawLaserLines = function (n, wx, wy, diroff)
 //convert x coordinate in world to x coordinate on screen
 View.prototype.toScreenX = function(x)
 {
-	return (x - this.offsetX) * this.scale;
+	return x*this.scale + this.offsetX;
 };
 
 //convert x coordinate on screen to x coordinate in world
