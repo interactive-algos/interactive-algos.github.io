@@ -23,17 +23,8 @@ function setPreview(isPreview)
 	}
 }
 
-CanvasRenderingContext2D.prototype.drawRobot = function (wx, wy, dir, wsize, isRobot, isPreview)
+CanvasRenderingContext2D.prototype.drawRobot = function (wx, wy, dir, wsize)
 {
-	if (isRobot)
-	{
-		rcOffsetX = wx;
-		rcOffsetY = wy;
-		if (map)
-		{
-			this.drawMap(map, isPreview);
-		}
-	}
 	//The robot's main circle
 	this.strokeCircle(wx, wy, wsize);
 

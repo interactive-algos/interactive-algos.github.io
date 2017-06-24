@@ -52,7 +52,7 @@ function frame(timestamp)
 
 		clearCanvas(canvas);
 		robot.draw(ctx);
-
+		ctx.drawMap(map);
 		if (shouldColorMap)
 		{
 			colorMap(ctx, getValue('colorRes'));

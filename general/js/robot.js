@@ -212,7 +212,7 @@ Robot.prototype.draw = function(ctx)
         robotHistory.push(new Point(x,y));
     }
 
-    ctx.drawRobot(x, y, this.dir, Robot.size, true);
+    ctx.drawRobot(x, y, this.dir, Robot.size);
 
     ctx.strokeStyle = 'rgba(0, 0, 255, '+ (this.senseCircle/Robot.sensorRadius) +')';
 
