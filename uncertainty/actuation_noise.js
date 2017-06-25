@@ -3,7 +3,7 @@
  */
 
 
-function ActuationDemo(id, dist1, turn, dist2)
+function ActuationDemo(id, dist1, turn, dist2, a1, a2, a3, a4)
 {
 	this.scale = 50;
 	//the canvas element
@@ -18,7 +18,8 @@ function ActuationDemo(id, dist1, turn, dist2)
 	//Distance of second forward movement
 	this.secondMove = dist2;
 
-	this.motionModel = new OdometryModel(0.05, 0.05, 0.05, 0.05);
+	//Noise parameters
+	this.motionModel = new OdometryModel(a1, a2, a3, a4);
 
 	//world size information
 	this.width = this.canvas.width/this.scale;
@@ -29,13 +30,13 @@ function ActuationDemo(id, dist1, turn, dist2)
 	this.y = random()*this.height;
 	this.dir = random()*TWO_PI;
 
-	this.render();
+	this.drawRobot();
 
 	const self = this;
 	this.canvas.onmousedown = function(event){return self.mouseDown(event)};
 }
 
-ActuationDemo.prototype.render = function()
+ActuationDemo.prototype.drawRobot = function()
 {
 	clearCanvas(this.canvas);
 	this.ctx.strokeStyle = 'black';
@@ -79,7 +80,7 @@ ActuationDemo.prototype.mouseDown = function(event)
 	//prevent drawing old path
 	this.p1 = this.p2 = undefined;
 
-	this.render();
+	this.drawRobot();
 	const self = this;
 	this.canvas.onmousemove = function(event){return self.trackDirection(event);};
 	this.canvas.onmouseup = function(event){return self.mouseUp(event);};
@@ -94,7 +95,7 @@ ActuationDemo.prototype.trackDirection = function(event)
 	const y = view.toWorldY(coor.y);
 
 	this.dir = atan2(y - this.y, x - this.x);
-	this.render();
+	this.drawRobot();
 };
 
 ActuationDemo.prototype.mouseUp = function(event)
@@ -103,13 +104,14 @@ ActuationDemo.prototype.mouseUp = function(event)
 	this.canvas.onmouseout = undefined;
 	this.canvas.onmouseup = undefined;
 
-	this.simulateMovement();
-	this.render();
-	// this.lastFrame = Date.now();
-	// requestAnimationFrame(function(timestamp){self.frame(timestamp);});
+	this.drawActuation();
+	this.drawRobot();
+	this.lastFrame = Date.now();
+	const self = this;
+	requestAnimationFrame(function(timestamp){self.frame(timestamp);});
 };
 
-ActuationDemo.prototype.simulateMovement = function()
+ActuationDemo.prototype.drawActuation = function()
 {
 	//planned location after first move
 	const x1 = this.x + cos(this.dir)*this.firstMove;
@@ -137,25 +139,54 @@ ActuationDemo.prototype.frame = function(timestamp)
 {
 	this.fps = 60/(timestamp-this.lastFrame);
 	this.lastFrame = timestamp;
+
 };
 
 ActuationDemo.prototype.setDist1 = function(dist1)
 {
 	this.firstMove = dist1;
-	this.simulateMovement();
-	this.render();
+	this.drawActuation();
+	this.drawRobot();
 };
 
 ActuationDemo.prototype.setTurnAngle = function(turn)
 {
 	this.turn = turn;
-	this.simulateMovement();
-	this.render();
+	this.drawActuation();
+	this.drawRobot();
 };
 
 ActuationDemo.prototype.setDist2 = function(dist2)
 {
 	this.secondMove = dist2;
-	this.simulateMovement();
-	this.render();
+	this.drawActuation();
+	this.drawRobot();
+};
+
+ActuationDemo.prototype.setRotation1Noise = function(noise)
+{
+	this.motionModel.a1 = noise;
+	this.drawRobot();
+	this.drawActuation();
+};
+
+ActuationDemo.prototype.setTransNoise = function(noise)
+{
+	this.motionModel.a2 = noise;
+	this.drawRobot();
+	this.drawActuation();
+};
+
+ActuationDemo.prototype.setRotation2Noise = function(noise)
+{
+	this.motionModel.a3 = noise;
+	this.drawRobot();
+	this.drawActuation();
+};
+
+ActuationDemo.prototype.setFinalRotationNoise = function(noise)
+{
+	this.motionModel.a4 = noise;
+	this.drawRobot();
+	this.drawActuation();
 };
