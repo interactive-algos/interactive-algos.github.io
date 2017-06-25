@@ -38,14 +38,14 @@
 		function init()
 		{
 			//Noise parameters
-			const a1 = getValue('a1')/100.0;
-			const a2 = getValue('a2')/100.0;
-			const a3 = getValue('a3')/100.0;
-			const a4 = getValue('a4')/100.0;
+			const a1 = getValue('a1') / 100.0;
+			const a2 = getValue('a2') / 100.0;
+			const a3 = getValue('a3') / 100.0;
+			const a4 = getValue('a4') / 100.0;
 
 			actuationDemo = new ActuationDemo('actuation_demo',
 				getValue('dist1'), getValue('turn') / 180 * Math.PI,
-                getValue('dist2'), a1, a2, a3, a4);
+				getValue('dist2'), a1, a2, a3, a4);
 		}
 
 		function parameterChanged(event)
@@ -61,18 +61,18 @@
 			} else if (target.id === 'dist2')
 			{
 				actuationDemo.setDist2(value);
-			} else if(target.id === 'a1')
-            {
-                actuationDemo.setA1(value/100.0);
-            } else if(target.id === 'a2')
-            {
-            	actuationDemo.setA2(value/100.0);
-			} else if(target.id === 'a3')
+			} else if (target.id === 'a1')
 			{
-				actuationDemo.setA3(value/100.0);
-			} else if(target.id === 'a4')
+				actuationDemo.setA1(value / 100.0);
+			} else if (target.id === 'a2')
 			{
-				actuationDemo.setA4(value/100.0);
+				actuationDemo.setA2(value / 100.0);
+			} else if (target.id === 'a3')
+			{
+				actuationDemo.setA3(value / 100.0);
+			} else if (target.id === 'a4')
+			{
+				actuationDemo.setA4(value / 100.0);
 			}
 		}
     </script>
@@ -141,10 +141,19 @@
         </div>
 
         <div class="col-sm-4">
+            <h4>Try the demo</h4>
+            <p>
+                The blue line represents planned motion while the red line
+                represents actual motion. <b>Click</b> anywhere on the canvas to place
+                the robot. <b>Press and hold</b> to change the direction of robot.
+            </p>
+        </div>
+        <div class="col-sm-4">
             <canvas id="actuation_demo"></canvas>
         </div>
-
-        <div class="col-sm-4">
+    </div>
+    <div class="row">
+        <div class="col-sm-6">
             <fieldset>
                 <table>
                     <caption>Movement Configuration</caption>
@@ -199,12 +208,17 @@
                     </tr>
                     </tbody>
                 </table>
+            </fieldset>
+        </div>
+        <div class="col-sm-6">
+            <fieldset>
                 <table>
                     <caption>Noise Configuration</caption>
                     <tbody>
                     <tr>
                         <td>
-                            <label for="a1">Rotational error from rotational motion</label>
+                            <label for="a1">Rotational error from rotational
+                                motion</label>
                         </td>
                         <td>
                             <input id='a1' size="3" value="1"
@@ -216,7 +230,8 @@
                     </tr>
                     <tr>
                         <td>
-                            <label for="a2">Rotational error from translational motion</label>
+                            <label for="a2">Rotational error from translational
+                                motion</label>
                         </td>
                         <td>
                             <input id='a2' size="3" value="1"
@@ -228,7 +243,8 @@
                     </tr>
                     <tr>
                         <td>
-                            <label for="a3">Translational error from translational motion</label>
+                            <label for="a3">Translational error from
+                                translational motion</label>
                         </td>
                         <td>
                             <input id='a3' size="3" value="1"
@@ -240,7 +256,8 @@
                     </tr>
                     <tr>
                         <td>
-                            <label for="a4">Translational error from rotational motion</label>
+                            <label for="a4">Translational error from rotational
+                                motion</label>
                         </td>
                         <td>
                             <input id='a4' size="3" value="1"
