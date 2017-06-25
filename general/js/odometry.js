@@ -19,10 +19,10 @@ function Odometry(lastState, state)
  * A simulation of Odometry Model --
  * A representation of Motion Model
  * @constructor
- * @param {float} a1 - Noise on rotation 1
- * @param {float} a2 - Noise on translation displacement
- * @param {float} a3 - Nooise on rotation 2
- * @param {float} a4 - Final Rotation
+ * @param {number} a1 - Noise on rotation 1
+ * @param {number} a2 - Noise on translation displacement
+ * @param {number} a3 - Nooise on rotation 2
+ * @param {number} a4 - Final Rotation
  */
 function OdometryModel(a1, a2, a3, a4)
 {

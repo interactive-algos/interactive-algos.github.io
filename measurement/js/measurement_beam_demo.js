@@ -185,7 +185,7 @@ function colorMap()
 	var ctx = canvas.getContext('2d');
 	ctx.save();
 	ctx.setTransform(1, 0, 0, 1, 0, 0);
-	
+
 	var resolution = getColoringResolution();
 	var probabilityGrid = sensorModel.calcProbGrid(resolution, robotDir, z, canvas.width, canvas.height, view);
 

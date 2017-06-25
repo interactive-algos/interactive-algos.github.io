@@ -1,5 +1,7 @@
 //meter/pixel scale
 
+const requestAnimationFrame = window.msRequestAnimationFrame || window.webkitRequestAnimationFrame || window.mozRequestAnimationFrame || window.requestAnimationFrame;
+
 function View(canvas, scale)
 {
 	this.canvas = canvas;

@@ -3,6 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <title>Interactive Robotics Algorithms</title>
+    <style type="text/css">
+        canvas {
+            border: 1px solid black;
+        }
+    </style>
+    <script src="https://code.jquery.com/jquery-3.2.1.min.js"
+            integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4="
+            crossorigin="anonymous"></script>
     <!-- Latest compiled and minified CSS -->
     <link rel="stylesheet"
           href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
@@ -19,6 +27,11 @@
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"
             integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa"
             crossorigin="anonymous"></script>
+
+    <script src="uncertainty/actuation_noise.js"></script>
+    <script src="general/js/odometry.js"></script>
+    <script src="general/js/utils.js"></script>
+    <script src="general/js/view.js"></script>
 </head>
 <body>
 
@@ -75,6 +88,30 @@
     </div>
     <div class="row">
         <div class="col-sm-4">
+            <h4>Robot Actuation Noise</h4>
+            <p>
+                Robot actuation involves motors that are, at least to some
+                extent, unpredictable. Uncertainty arises from effects like
+                control noise, wear-and-tear, and mechanical failure.
+            </p>
+        </div>
+
+        <div class="col-sm-4">
+            <canvas id="actuation_demo"></canvas>
+        </div>
+        <script>
+            var actuationDemo = new ActuationDemo('actuation_demo')
+        </script>
+
+        <div class="col-sm-4">
+            <fieldset>
+                <legend>Configuration</legend>
+                <table>
+
+                </table>
+            </fieldset>
+        </div>
+        <div class="col-sm-4">
             <h4>Inherently Unpredictable Environment</h4>
             <p>
                 Let's take self driving car as an example. When driving, it
@@ -92,14 +129,6 @@
                 limited. Sensors are also subject to noise. And finally,
                 sensors can break. Detecting a faulty sensor can be
                 extremely difficult.
-            </p>
-        </div>
-        <div class="col-sm-4">
-            <h4>Robot Actuation Noise</h4>
-            <p>
-                Robot actuation involves motors that are, at least to some
-                extent, unpredictable. Uncertainty arises from effects like
-                control noise, wear-and-tear, and mechanical failure.
             </p>
         </div>
     </div>

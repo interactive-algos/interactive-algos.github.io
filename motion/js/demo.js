@@ -6,8 +6,6 @@ var frameCount = 0;
 var lastFrame;
 var fps = 0;
 
-var requestAnimationFrame = window.msRequestAnimationFrame || window.webkitRequestAnimationFrame || window.mozRequestAnimationFrame || window.requestAnimationFrame;
-
 var animating = false;
 var shouldColorMap = false;
 
