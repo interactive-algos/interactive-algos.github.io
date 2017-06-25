@@ -21,9 +21,7 @@ function start()
 	// });
 
 	Robot.sensorRadius = getSensorRadius();
-	var size = view.getMapSize(map);
-	var sensorModel = new BeamModel(getSensorNoise(), getSensorRadius(), map,
-		size.x, size.y);
+	var sensorModel = new BeamModel(getSensorNoise(), getSensorRadius(), map);
 	var filter = new ParticleFilter(getParticleCount(), motionModel, sensorModel,
 		new RobotState(path[0].x, path[0].y, 0),
 		getResampleRatio());

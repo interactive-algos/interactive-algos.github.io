@@ -1,3 +1,19 @@
+function BeamModelDemo(view, map, robotSize, sensorRadius, sensorNoise)
+{
+	this.view = view;
+	this.map = map;
+
+	//Initial robot pose
+	this.x = random() * view.width;
+	this.y = random() * view.height;
+	this.dir = random() * TWO_PI;
+
+	this.robotSize = robotSize;
+	this.sensorRadius = sensorRadius;
+
+	this.sensorModel = new BeamModel(sensorNoise, sensorRadius, map);
+}
+
 var canvas;
 
 var robotX;
@@ -34,7 +50,7 @@ function update()
 	console.log(senseRadius);
 	scan(robotX, robotY, robotDir, senseRadius, map, z);
 	shouldColor = document.getElementById('shouldColor');
-	if(shouldColor.checked)
+	if (shouldColor.checked)
 	{
 		clearCanvas(canvas);
 		canvas.getContext('2d').drawMap(map);
@@ -46,19 +62,19 @@ function update()
 function drawParticles(ctx, particles)
 {
 	const resolution = getColoringResolution();
-	if(particles.length === 1)
+	if (particles.length === 1)
 	{
 		var p = particles[0];
 		var w = p.w;
 		ctx.fillStyle = 'rgba(' + round(w * 255) + ', 0, ' + (255 - round(w * 255)) + ', 0.5)';
-		ctx.fillRect(p.x-resolution/2, p.y-resolution/2, resolution, resolution);
-	}else
+		ctx.fillRect(p.x - resolution / 2, p.y - resolution / 2, resolution, resolution);
+	} else
 	{
-		particles.forEach(function(p)
+		particles.forEach(function (p)
 		{
-			var w = (p.w - minW)/(maxW-minW);
+			var w = (p.w - minW) / (maxW - minW);
 			ctx.fillStyle = 'rgba(' + round(w * 255) + ', 0, ' + (255 - round(w * 255)) + ', 0.5)';
-			ctx.fillRect(p.x-resolution/2, p.y-resolution/2, resolution, resolution);
+			ctx.fillRect(p.x - resolution / 2, p.y - resolution / 2, resolution, resolution);
 		});
 	}
 }
@@ -78,7 +94,7 @@ function parameterChanged(event)
 	}
 	else if (target.id === 'nLasers')
 	{
-		nLasers = Number(target.value)+1;
+		nLasers = Number(target.value) + 1;
 		z = new Array(nLasers);
 	}
 }
@@ -90,7 +106,7 @@ function trackRobotDir(event)
 	var y = view.toWorldY(coor.y);
 
 	robotDir = atan2(y - robotY, x - robotX);
-	dirOffset = round(robotDir / Math.PI / 2 * (nLasers-1)*2);
+	dirOffset = round(robotDir / Math.PI / 2 * (nLasers - 1) * 2);
 	clearCanvas(canvas);
 	canvas.getContext('2d').drawMap(map);
 	canvas.getContext('2d').drawRobot(robotX, robotY, robotDir, robotSize);
@@ -146,19 +162,15 @@ function init()
 	//Draw the map
 	map = getMapForCanvas(canvas);
 	view.setPreviewScale(map);
-	var size = view.getMapSize(map);
-	width = size.width;
-	height = size.height;
 	canvas.getContext('2d').drawMap(map);
 	robotX = floor(random() * canvas.width);
 	robotY = floor(random() * canvas.height);
 	robotDir = random() * TWO_PI;
-	dirOffset = round(robotDir / Math.PI / 2 * (nLasers-1)*2);
+	dirOffset = round(robotDir / Math.PI / 2 * (nLasers - 1) * 2);
 
 	update();
 
-	sensorModel = new BeamModel(getSensorNoise(), getSensorRadius(), map,
-		width, height);
+	sensorModel = new BeamModel(getSensorNoise(), getSensorRadius(), map);
 
 	Particle.size = 0.2;
 
