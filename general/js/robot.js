@@ -41,26 +41,24 @@ function Robot(filter, path, nLasers)
 	this.z = new Array(nLasers);
 }
 
-/**
- * Function that used to update stride noise for the motion model
- * @function
- * @param {float} noise - The stride noise for motion model
- */
-Robot.prototype.setStrideNoise = function(noise)
-{
-    this.filter.motionModel.a2 = noise;
-};
-
-/**
- * Function that used to update turning noise for the motion model
- * Assume the noise is the same for turning both direction.
- * @function
- * @param {float} noise - The turn noise for motion model
- */
-Robot.prototype.setTurnNoise = function(noise)
+Robot.prototype.setA1 = function(noise)
 {
     this.filter.motionModel.a1 = noise;
-    this.filter.motionModel.a3 = noise;
+};
+
+Robot.prototype.setA2 = function(noise)
+{
+	this.filter.motionModel.a2 = noise;
+};
+
+Robot.prototype.setA3 = function(noise)
+{
+	this.filter.motionModel.a3 = noise;
+};
+
+Robot.prototype.setA4 = function(noise)
+{
+	this.filter.motionModel.a4 = noise;
 };
 
 // Robot.prototype.checkCollision = function()

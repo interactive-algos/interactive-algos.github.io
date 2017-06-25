@@ -279,12 +279,18 @@ function parameterChanged(event)
 {
 	var target = event.target;
 	var value = Number(event.target.value);
-	if (target.id === 'robotForwardNoise')
+	if (target.id === 'a1')
 	{
-		robot.setStrideNoise(value / 100.0);
-	} else if (target.id === 'robotTurnNoise')
+		robot.setA1(value / 100.0);
+	} else if (target.id === 'a2')
 	{
-		robot.setTurnNoise(value);
+		robot.setA2(value / 100.0);
+	} else if (target.id === 'a3')
+	{
+		robot.setA3(value / 100.0);
+	} else if (target.id === 'a4')
+	{
+		robot.setA4(value / 100.0);
 	} else if (target.id === 'goByOneStep')
 	{
 		Robot.stride = value;

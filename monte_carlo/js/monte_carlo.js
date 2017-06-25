@@ -7,7 +7,7 @@ function start()
 	var ctx = canvas.getContext('2d');
 	var path = knownPath[pathSelect.value];
 
-	var motionModel = new OdometryModel(getTurnNoise(), getStrideNoise(), getTurnNoise(), getTurnNoise());
+	var motionModel = new OdometryModel(getValue('a1'), getValue('a2'), getValue('a3'), getValue('a4'));
 
 	var map = getMapForCanvas(canvas);
 

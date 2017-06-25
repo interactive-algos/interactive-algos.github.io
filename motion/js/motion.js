@@ -11,7 +11,7 @@ function start()
 	var y = path[0].y;		//y coordinate
 	var dir = atan2(path[1].y - path[0].y, path[1].x - path[0].x);	//orientation in radians
 
-	var motionModel = new OdometryModel(getTurnNoise(), getStrideNoise(), getTurnNoise(), getTurnNoise());
+	var motionModel = new OdometryModel(getValue('a1'), getValue('a2'), getValue('a3'), getValue('a4'));
 	var filter = new ParticleFilter(getParticleCount(), motionModel, undefined, new RobotState(x, y, dir + TWO_PI / 2), 1);
 
 	filter.particles.forEach(function(p)

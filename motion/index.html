@@ -107,26 +107,56 @@
                                    size="3">
                         </td>
                     </tr>
-
                     <tr>
-                        <td><label for="robotForwardNoise">Move noise</label>
+                        <td>
+                            <label for="a1">Rotational error from rotational
+                                motion</label>
                         </td>
-                        <td><input type='text' id="robotForwardNoise"
-                                   onblur='return parameterChanged(event);'
+                        <td>
+                            <input id='a1' size="3" value="1"
+                                   type="text" class="form-control"
                                    onkeypress='return isDecimal(event);'
-                                   class="form-control form-control-sm"
-                                   value="10"
-                                   size="3"></td>
+                                   onblur='return parameterChanged(event);'>
+                        </td>
                         <td><label>%</label></td>
                     </tr>
                     <tr>
-                        <td><label for="robotTurnNoise">Turn noise</label></td>
-                        <td><input type='text' id="robotTurnNoise"
-                                   onblur='return parameterChanged(event);'
+                        <td>
+                            <label for="a2">Rotational error from translational
+                                motion</label>
+                        </td>
+                        <td>
+                            <input id='a2' size="3" value="1"
+                                   type="text" class="form-control"
                                    onkeypress='return isDecimal(event);'
-                                   class="form-control form-control-sm"
-                                   value="5"
-                                   size="3"></td>
+                                   onblur='return parameterChanged(event);'>
+                        </td>
+                        <td><label>%</label></td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <label for="a3">Translational error from
+                                translational motion</label>
+                        </td>
+                        <td>
+                            <input id='a3' size="3" value="1"
+                                   type="text" class="form-control"
+                                   onkeypress='return isDecimal(event);'
+                                   onblur='return parameterChanged(event);'>
+                        </td>
+                        <td><label>%</label></td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <label for="a4">Translational error from rotational
+                                motion</label>
+                        </td>
+                        <td>
+                            <input id='a4' size="3" value="1"
+                                   type="text" class="form-control"
+                                   onkeypress='return isDecimal(event);'
+                                   onblur='return parameterChanged(event);'>
+                        </td>
                         <td><label>%</label></td>
                     </tr>
                     <tr>
