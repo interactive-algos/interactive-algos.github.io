@@ -2,6 +2,8 @@
 
 const requestAnimationFrame = window.msRequestAnimationFrame || window.webkitRequestAnimationFrame || window.mozRequestAnimationFrame || window.requestAnimationFrame;
 
+const cancelAnimationFrame = window.cancelAnimationFrame || window.mozCancelAnimationFrame;
+
 function View(canvas, scale)
 {
 	this.canvas = canvas;

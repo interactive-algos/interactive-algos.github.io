@@ -71,6 +71,7 @@ ActuationDemo.prototype.draw = function()
 
 ActuationDemo.prototype.mouseDown = function(event)
 {
+	cancelAnimationFrame(this.frameId);
 	//Shorthand for this.view and this.ctx
 	const view = this.view;
 
@@ -110,11 +111,11 @@ ActuationDemo.prototype.mouseUp = function(event)
 	this.canvas.onmouseup = undefined;
 
 	this.simulateActuation();
-	this.draw();
 };
 
 ActuationDemo.prototype.simulateActuation = function()
 {
+	cancelAnimationFrame(this.frameId);
 	//planned location after first move
 	const x1 = this.x + cos(this.dir)*this.firstMove;
 	const y1 = this.y + sin(this.dir)*this.firstMove;
@@ -147,7 +148,7 @@ ActuationDemo.prototype.startAnimation = function()
 	this.targetIndex = 0;
 	this.curX = this.x;
 	this.curY = this.y;
-	requestAnimationFrame(function(timestamp){self.frame(timestamp);});
+	this.frameId = requestAnimationFrame(function(timestamp){self.frame(timestamp);});
 };
 
 ActuationDemo.prototype.frame = function(timestamp)
@@ -191,14 +192,13 @@ ActuationDemo.prototype.frame = function(timestamp)
 	this.draw();
 
 	const self = this;
-	requestAnimationFrame(function(timestamp){self.frame(timestamp);});
+	this.frameId = requestAnimationFrame(function(timestamp){self.frame(timestamp);});
 };
 
 ActuationDemo.prototype.setDist1 = function(dist1)
 {
 	this.firstMove = dist1;
 	this.simulateActuation();
-	this.draw();
 };
 
 ActuationDemo.prototype.setTurnAngle = function(turn)
