@@ -14,7 +14,6 @@ const EPS = 1E-5;
  */
 function Robot(filter, path, nLasers)
 {
-    if (typeof(dir) === 'undefined') dir = 0;
     if (typeof(nLasers) === 'undefined') nLasers = 19;
 
     this.x = path[0].x;		//x coordinate
