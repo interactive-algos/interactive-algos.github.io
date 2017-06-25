@@ -63,12 +63,16 @@
 				actuationDemo.setDist2(value);
 			} else if(target.id === 'a1')
             {
-//                actuationDemo.setTransNoise(value/100.0);
+                actuationDemo.setA1(value/100.0);
             } else if(target.id === 'a2')
             {
-//				actuationDemo.setRotation1Noise(value/100.0);
-//				actuationDemo.setRotation2Noise(value/100.0);
-//				actuationDemo.setFinalRotationNoise(value/100.0);
+            	actuationDemo.setA2(value/100.0);
+			} else if(target.id === 'a3')
+			{
+				actuationDemo.setA3(value/100.0);
+			} else if(target.id === 'a4')
+			{
+				actuationDemo.setA4(value/100.0);
 			}
 		}
     </script>

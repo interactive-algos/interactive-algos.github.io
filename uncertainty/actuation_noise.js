@@ -163,28 +163,28 @@ ActuationDemo.prototype.setDist2 = function(dist2)
 	this.drawRobot();
 };
 
-ActuationDemo.prototype.setRotation1Noise = function(noise)
+ActuationDemo.prototype.setA1 = function(noise)
 {
 	this.motionModel.a1 = noise;
 	this.drawRobot();
 	this.drawActuation();
 };
 
-ActuationDemo.prototype.setTransNoise = function(noise)
+ActuationDemo.prototype.setA2 = function(noise)
 {
 	this.motionModel.a2 = noise;
 	this.drawRobot();
 	this.drawActuation();
 };
 
-ActuationDemo.prototype.setRotation2Noise = function(noise)
+ActuationDemo.prototype.setA3 = function(noise)
 {
 	this.motionModel.a3 = noise;
 	this.drawRobot();
 	this.drawActuation();
 };
 
-ActuationDemo.prototype.setFinalRotationNoise = function(noise)
+ActuationDemo.prototype.setA4 = function(noise)
 {
 	this.motionModel.a4 = noise;
 	this.drawRobot();
