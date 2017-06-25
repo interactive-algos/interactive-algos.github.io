@@ -111,7 +111,6 @@ ActuationDemo.prototype.mouseUp = function(event)
 
 	this.simulateActuation();
 	this.draw();
-	this.startAnimation();
 };
 
 ActuationDemo.prototype.simulateActuation = function()
@@ -138,6 +137,7 @@ ActuationDemo.prototype.simulateActuation = function()
 	const p2 = this.motionModel.sample(u2, p1);
 
 	this.path = [new Point(this.x, this.y), p1, p2];
+	this.startAnimation();
 };
 
 ActuationDemo.prototype.startAnimation = function()
@@ -205,40 +205,34 @@ ActuationDemo.prototype.setTurnAngle = function(turn)
 {
 	this.turn = turn;
 	this.simulateActuation();
-	this.draw();
 };
 
 ActuationDemo.prototype.setDist2 = function(dist2)
 {
 	this.secondMove = dist2;
 	this.simulateActuation();
-	this.draw();
 };
 
 ActuationDemo.prototype.setA1 = function(noise)
 {
 	this.motionModel.a1 = noise;
 	this.simulateActuation();
-	this.draw();
 };
 
 ActuationDemo.prototype.setA2 = function(noise)
 {
 	this.motionModel.a2 = noise;
 	this.simulateActuation();
-	this.draw();
 };
 
 ActuationDemo.prototype.setA3 = function(noise)
 {
 	this.motionModel.a3 = noise;
 	this.simulateActuation();
-	this.draw();
 };
 
 ActuationDemo.prototype.setA4 = function(noise)
 {
 	this.motionModel.a4 = noise;
 	this.simulateActuation();
-	this.draw();
 };
