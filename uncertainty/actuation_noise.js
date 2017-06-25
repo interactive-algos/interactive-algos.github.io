@@ -30,13 +30,13 @@ function ActuationDemo(id, dist1, turn, dist2, a1, a2, a3, a4)
 	this.y = random()*this.height;
 	this.dir = random()*TWO_PI;
 
-	this.drawRobot();
+	this.draw();
 
 	const self = this;
 	this.canvas.onmousedown = function(event){return self.mouseDown(event)};
 }
 
-ActuationDemo.prototype.drawRobot = function()
+ActuationDemo.prototype.draw = function()
 {
 	clearCanvas(this.canvas);
 	this.ctx.strokeStyle = 'black';
@@ -61,6 +61,10 @@ ActuationDemo.prototype.drawRobot = function()
 		this.ctx.strokeStyle = 'red';
 		this.ctx.strokeLine(this.x, this.y, this.p1.x, this.p1.y);
 		this.ctx.strokeLine(this.p1.x, this.p1.y, this.p2.x, this.p2.y);
+		if(typeof this.curX !== 'undefined')
+		{
+			this.ctx.drawRobot(this.curX, this.curY, this.curDir, 0.2);
+		}
 	}
 };
 
@@ -78,9 +82,9 @@ ActuationDemo.prototype.mouseDown = function(event)
 	this.y = y;
 
 	//prevent drawing old path
-	this.p1 = this.p2 = undefined;
+	this.p1 = this.p2 = this.curX = this.curY = this.curDir = undefined;
 
-	this.drawRobot();
+	this.draw();
 	const self = this;
 	this.canvas.onmousemove = function(event){return self.trackDirection(event);};
 	this.canvas.onmouseup = function(event){return self.mouseUp(event);};
@@ -95,7 +99,7 @@ ActuationDemo.prototype.trackDirection = function(event)
 	const y = view.toWorldY(coor.y);
 
 	this.dir = atan2(y - this.y, x - this.x);
-	this.drawRobot();
+	this.draw();
 };
 
 ActuationDemo.prototype.mouseUp = function(event)
@@ -104,14 +108,12 @@ ActuationDemo.prototype.mouseUp = function(event)
 	this.canvas.onmouseout = undefined;
 	this.canvas.onmouseup = undefined;
 
-	this.drawActuation();
-	this.drawRobot();
-	this.lastFrame = Date.now();
-	const self = this;
-	requestAnimationFrame(function(timestamp){self.frame(timestamp);});
+	this.simulateActuation();
+	this.draw();
+	this.startAnimation();
 };
 
-ActuationDemo.prototype.drawActuation = function()
+ActuationDemo.prototype.simulateActuation = function()
 {
 	//planned location after first move
 	const x1 = this.x + cos(this.dir)*this.firstMove;
@@ -124,69 +126,117 @@ ActuationDemo.prototype.drawActuation = function()
 	const x2 = x1 + cos(dir)*this.secondMove;
 	const y2 = y1 + sin(dir)*this.secondMove;
 
-	this.u1 = new Odometry(new RobotState(this.x, this.y, this.dir),
+	const u1 = new Odometry(new RobotState(this.x, this.y, this.dir),
 		new RobotState(x1, y1, dir));
-	this.u2 = new Odometry(new RobotState(x1, y1, dir),
+	const u2 = new Odometry(new RobotState(x1, y1, dir),
 		new RobotState(x2, y2, dir));
 
 	//actual location after first move
-	this.p1 = this.motionModel.sample(this.u1, new RobotState(this.x, this.y, this.dir));
+	this.p1 = this.motionModel.sample(u1, new RobotState(this.x, this.y, this.dir));
 	//actual location after the second move
-	this.p2 = this.motionModel.sample(this.u2, this.p1);
+	this.p2 = this.motionModel.sample(u2, this.p1);
+};
+
+ActuationDemo.prototype.startAnimation = function()
+{
+	this.lastFrame = Date.now();
+	const self = this;
+	this.path = [this.p1, this.p2];
+	this.targetIndex = 0;
+	this.curX = this.x;
+	this.curY = this.y;
+	requestAnimationFrame(function(timestamp){self.frame(timestamp);});
 };
 
 ActuationDemo.prototype.frame = function(timestamp)
 {
 	this.fps = 60/(timestamp-this.lastFrame);
 	this.lastFrame = timestamp;
+	var stride = 0.04;
+	var x = this.curX;
+	var y = this.curY;
+	const EPS = 1E-6;
+	while(stride > 0)
+	{
+		var targetPoint = this.path[this.targetIndex];
 
+		var dist = distance(x, y, targetPoint.x, targetPoint.y);
+		while(dist <= EPS)
+		{
+			this.targetIndex++;
+			if(this.targetIndex >= this.path.length)
+			{
+				this.curX = this.curY = this.curDir = undefined;
+				return;
+			}
+			targetPoint = this.path[this.targetIndex];
+			dist = distance(x, y, targetPoint.x, targetPoint.y);
+		}
+
+		var cosx = (targetPoint.x-x)/dist;
+		var sinx = (targetPoint.y-y)/dist;
+		dist = min(dist, stride);
+
+		x += cosx * dist;
+		y += sinx * dist;
+		stride -= dist;
+	}
+
+	//Move the robot
+	this.curX = x;
+	this.curY = y;
+	this.curDir = atan2(targetPoint.y-y, targetPoint.x-x);
+	this.draw();
+
+	const self = this;
+	requestAnimationFrame(function(timestamp){self.frame(timestamp);});
 };
 
 ActuationDemo.prototype.setDist1 = function(dist1)
 {
 	this.firstMove = dist1;
-	this.drawActuation();
-	this.drawRobot();
+	this.simulateActuation();
+	this.draw();
 };
 
 ActuationDemo.prototype.setTurnAngle = function(turn)
 {
 	this.turn = turn;
-	this.drawActuation();
-	this.drawRobot();
+	this.simulateActuation();
+	this.draw();
 };
 
 ActuationDemo.prototype.setDist2 = function(dist2)
 {
 	this.secondMove = dist2;
-	this.drawActuation();
-	this.drawRobot();
+	this.simulateActuation();
+	this.draw();
 };
 
 ActuationDemo.prototype.setA1 = function(noise)
 {
 	this.motionModel.a1 = noise;
-	this.drawRobot();
-	this.drawActuation();
+	this.simulateActuation();
+	this.draw();
 };
 
 ActuationDemo.prototype.setA2 = function(noise)
 {
 	this.motionModel.a2 = noise;
-	this.drawRobot();
-	this.drawActuation();
+	this.simulateActuation();
+	this.draw();
 };
 
 ActuationDemo.prototype.setA3 = function(noise)
 {
 	this.motionModel.a3 = noise;
-	this.drawRobot();
-	this.drawActuation();
+	this.simulateActuation();
+	this.draw();
 };
 
 ActuationDemo.prototype.setA4 = function(noise)
 {
 	this.motionModel.a4 = noise;
-	this.drawRobot();
-	this.drawActuation();
+	this.simulateActuation();
+	this.draw();
 };
