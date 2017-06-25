@@ -3,7 +3,7 @@
  */
 
 
-function ActuationDemo(id)
+function ActuationDemo(id, dist1, turn, dist2)
 {
 	this.scale = 50;
 	//the canvas element
@@ -12,11 +12,11 @@ function ActuationDemo(id)
 	this.ctx = this.canvas.getContext('2d');
 
 	//Distance of first forward movement
-	this.firstMove = 1;
+	this.firstMove = dist1;
 	//Angle of first turn
-	this.turn = Math.PI/6;
+	this.turn = turn;
 	//Distance of second forward movement
-	this.secondMove = 1;
+	this.secondMove = dist2;
 
 	this.motionModel = new OdometryModel(0.05, 0.05, 0.05, 0.05);
 
@@ -54,6 +54,13 @@ ActuationDemo.prototype.render = function()
 	var x2 = x1 + cos(dir)*this.secondMove;
 	var y2 = y1 + sin(dir)*this.secondMove;
 	this.ctx.strokeLine(x1, y1, x2, y2);
+
+	if(typeof this.p1 !== 'undefined')
+	{
+		this.ctx.strokeStyle = 'red';
+		this.ctx.strokeLine(this.x, this.y, this.p1.x, this.p1.y);
+		this.ctx.strokeLine(this.p1.x, this.p1.y, this.p2.x, this.p2.y);
+	}
 };
 
 ActuationDemo.prototype.mouseDown = function(event)
@@ -65,13 +72,18 @@ ActuationDemo.prototype.mouseDown = function(event)
 	const x = view.toWorldX(coor.x);
 	const y = view.toWorldY(coor.y);
 
+	//update robot's location
 	this.x = x;
 	this.y = y;
+
+	//prevent drawing old path
+	this.p1 = this.p2 = undefined;
 
 	this.render();
 	const self = this;
 	this.canvas.onmousemove = function(event){return self.trackDirection(event);};
 	this.canvas.onmouseup = function(event){return self.mouseUp(event);};
+	this.canvas.onmouseout = this.canvas.onmouseup;
 };
 
 ActuationDemo.prototype.trackDirection = function(event)
@@ -88,8 +100,17 @@ ActuationDemo.prototype.trackDirection = function(event)
 ActuationDemo.prototype.mouseUp = function(event)
 {
 	this.canvas.onmousemove = undefined;
-	const self = this;
+	this.canvas.onmouseout = undefined;
+	this.canvas.onmouseup = undefined;
 
+	this.simulateMovement();
+	this.render();
+	// this.lastFrame = Date.now();
+	// requestAnimationFrame(function(timestamp){self.frame(timestamp);});
+};
+
+ActuationDemo.prototype.simulateMovement = function()
+{
 	//planned location after first move
 	const x1 = this.x + cos(this.dir)*this.firstMove;
 	const y1 = this.y + sin(this.dir)*this.firstMove;
@@ -110,16 +131,31 @@ ActuationDemo.prototype.mouseUp = function(event)
 	this.p1 = this.motionModel.sample(this.u1, new RobotState(this.x, this.y, this.dir));
 	//actual location after the second move
 	this.p2 = this.motionModel.sample(this.u2, this.p1);
-
-	this.ctx.strokeStyle = 'red';
-	this.ctx.strokeLine(this.x, this.y, this.p1.x, this.p1.y);
-	this.ctx.strokeLine(this.p1.x, this.p1.y, this.p2.x, this.p2.y);
-	// this.lastFrame = Date.now();
-	// requestAnimationFrame(function(timestamp){self.frame(timestamp);});
 };
 
 ActuationDemo.prototype.frame = function(timestamp)
 {
 	this.fps = 60/(timestamp-this.lastFrame);
 	this.lastFrame = timestamp;
+};
+
+ActuationDemo.prototype.setDist1 = function(dist1)
+{
+	this.firstMove = dist1;
+	this.simulateMovement();
+	this.render();
+};
+
+ActuationDemo.prototype.setTurnAngle = function(turn)
+{
+	this.turn = turn;
+	this.simulateMovement();
+	this.render();
+};
+
+ActuationDemo.prototype.setDist2 = function(dist2)
+{
+	this.secondMove = dist2;
+	this.simulateMovement();
+	this.render();
 };
