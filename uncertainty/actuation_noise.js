@@ -56,11 +56,12 @@ ActuationDemo.prototype.draw = function()
 	var y2 = y1 + sin(dir)*this.secondMove;
 	this.ctx.strokeLine(x1, y1, x2, y2);
 
-	if(typeof this.p1 !== 'undefined')
+	if(typeof this.path !== 'undefined')
 	{
 		this.ctx.strokeStyle = 'red';
-		this.ctx.strokeLine(this.x, this.y, this.p1.x, this.p1.y);
-		this.ctx.strokeLine(this.p1.x, this.p1.y, this.p2.x, this.p2.y);
+		this.ctx.strokePath(this.path);
+		// this.ctx.strokeLine(this.x, this.y, this.p1.x, this.p1.y);
+		// this.ctx.strokeLine(this.p1.x, this.p1.y, this.p2.x, this.p2.y);
 		if(typeof this.curX !== 'undefined')
 		{
 			this.ctx.drawRobot(this.curX, this.curY, this.curDir, 0.2);
@@ -82,7 +83,7 @@ ActuationDemo.prototype.mouseDown = function(event)
 	this.y = y;
 
 	//prevent drawing old path
-	this.p1 = this.p2 = this.curX = this.curY = this.curDir = undefined;
+	this.path = this.curX = this.curY = this.curDir = undefined;
 
 	this.draw();
 	const self = this;
@@ -132,16 +133,17 @@ ActuationDemo.prototype.simulateActuation = function()
 		new RobotState(x2, y2, dir));
 
 	//actual location after first move
-	this.p1 = this.motionModel.sample(u1, new RobotState(this.x, this.y, this.dir));
+	const p1 = this.motionModel.sample(u1, new RobotState(this.x, this.y, this.dir));
 	//actual location after the second move
-	this.p2 = this.motionModel.sample(u2, this.p1);
+	const p2 = this.motionModel.sample(u2, p1);
+
+	this.path = [new Point(this.x, this.y), p1, p2];
 };
 
 ActuationDemo.prototype.startAnimation = function()
 {
 	this.lastFrame = Date.now();
 	const self = this;
-	this.path = [this.p1, this.p2];
 	this.targetIndex = 0;
 	this.curX = this.x;
 	this.curY = this.y;
