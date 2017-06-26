@@ -217,7 +217,7 @@ CanvasRenderingContext2D.prototype.strokePath = function (wpath)
 	this.stroke();
 };
 
-CanvasRenderingContext2D.prototype.drawLaserLines = function (z, wx, wy, dir)
+CanvasRenderingContext2D.prototype.drawLaserLines = function (z, wx, wy, dir, sensorRadius)
 {
 	const n = z.length;
 
@@ -244,16 +244,16 @@ CanvasRenderingContext2D.prototype.drawLaserLines = function (z, wx, wy, dir)
 		i %= nLasers;
 
 		var dir = i * rad;
-		var laserLen = senseRadius;
+		var laserLen = sensorRadius;
 
 		//Grey color for a miss
-		if (z[index] >= senseRadius)
+		if (z[index] >= sensorRadius)
 		{
 			this.strokeStyle = 'grey';
 		} else
 		{
 			//distance reported by the laser sensor
-			var dist = z[index] + gaussian() * sensorNoise;
+			var dist = z[index];
 			laserLen = min(laserLen, dist);
 
 			//red for a hit

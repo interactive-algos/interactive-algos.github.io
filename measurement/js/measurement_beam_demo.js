@@ -74,7 +74,7 @@ BeamModelDemo.prototype.mouseUp = function (event)
 	this.view.canvas.onmouseout = undefined;
 	this.view.canvas.onmouseup = undefined;
 	this.update();
-	this.view.ctx.drawLaserLines(this.z, this.x, this.y, this.dir);
+	this.drawLaserLines();
 };
 
 BeamModelDemo.prototype.draw = function ()
@@ -89,6 +89,10 @@ BeamModelDemo.prototype.update = function ()
 {
 	//Only scan if location changed
 	scan(this.x, this.y, this.dir, this.sensorRadius, this.map, this.z);
+	for(var i = 0; i < this.z.length; i ++)
+	{
+		this.z[i] += gaussian()*this.sensorModel.a1;
+	}
 };
 
 BeamModelDemo.prototype.setNLasers = function(n)
@@ -96,7 +100,28 @@ BeamModelDemo.prototype.setNLasers = function(n)
 	this.z = new Array(n);
 	this.update();
 	this.draw();
-	this.view.ctx.drawLaserLines(this.z, this.x, this.y, this.dir);
+	this.drawLaserLines();
+};
+
+BeamModelDemo.prototype.setSensorRadius = function(r)
+{
+	this.sensorRadius = r;
+	this.update();
+	this.draw();
+	this.drawLaserLines();
+};
+
+BeamModelDemo.prototype.setSensorNoise = function(p)
+{
+	this.sensorModel.a1 = p;
+	this.update();
+	this.draw();
+	this.drawLaserLines();
+};
+
+BeamModelDemo.prototype.drawLaserLines = function()
+{
+	this.view.ctx.drawLaserLines(this.z, this.x, this.y, this.dir, this.sensorRadius);
 };
 
 function ParticleTracker()
@@ -252,7 +277,7 @@ function mouseDown(event)
 		var ctx = canvas.getContext('2d');
 		ctx.drawMap(map);
 		ctx.drawRobot(robotX, robotY, robotDir, robotSize);
-		ctx.drawLaserLines(z, robotX, robotY, robotDir);
+		ctx.drawLaserLines(z, robotX, robotY, robotDir, senseRadius);
 		drawParticles(ctx, clickedParticles);
 		return;
 	}
@@ -273,7 +298,7 @@ function mouseUp()
 	canvas.onmouseout = undefined;
 	canvas.onmouseup = undefined;
 	update();
-	view.canvas.getContext('2d').drawLaserLines(z, robotX, robotY, robotDir);
+	view.canvas.getContext('2d').drawLaserLines(z, robotX, robotY, robotDir, senseRadius);
 }
 
 function init()
@@ -324,5 +349,5 @@ function clearColor()
 	clearCanvas(view.canvas);
 	view.canvas.getContext('2d').drawMap(map);
 	view.canvas.getContext('2d').drawRobot(robotX, robotY, robotDir, robotSize);
-	view.canvas.getContext('2d').drawLaserLines(z, robotX, robotY, robotDir);
+	view.canvas.getContext('2d').drawLaserLines(z, robotX, robotY, robotDir, senseRadius);
 }
