@@ -74,6 +74,7 @@ BeamModelDemo.prototype.mouseUp = function (event)
 	this.view.canvas.onmouseout = undefined;
 	this.view.canvas.onmouseup = undefined;
 	this.update();
+	this.view.ctx.drawLaserLines(this.z, this.x, this.y, this.dir);
 };
 
 BeamModelDemo.prototype.draw = function ()
