@@ -1,18 +1,57 @@
 function BeamModelDemo(view, map, robotSize, sensorRadius, sensorNoise)
 {
+	//Visualization stuff
 	this.view = view;
 	this.map = map;
+	this.nLasers = 19;
+	this.z = new Array(this.nLasers);
+	this.tracker = new ParticleTracker();
 
 	//Initial robot pose
 	this.x = random() * view.width;
 	this.y = random() * view.height;
 	this.dir = random() * TWO_PI;
 
-	this.robotSize = robotSize;
-	this.sensorRadius = sensorRadius;
-
+	//Math model used for likelihood calculation
 	this.sensorModel = new BeamModel(sensorNoise, sensorRadius, map);
 }
+
+function ParticleTracker()
+{
+	this.clear();
+}
+
+ParticleTracker.prototype.clear = function ()
+{
+	this.maxW = Number.NEGATIVE_INFINITY;
+	this.minW = Number.POSITIVE_INFINITY;
+	this.particles = [];
+};
+
+ParticleTracker.prototype.addParticle = function (particle)
+{
+	this.particles.push(particle);
+	this.maxW = max(particle.w, maxW);
+	this.minW = min(particle.w, minW);
+};
+
+ParticleTracker.prototype.forEach = function (callback)
+{
+	const minW = this.minW;
+	const maxW = this.maxW;
+	{
+		if (this.particles.length === 1)
+		{
+			callback(this.particles[0].w);
+		} else if (this.particles.length)
+		{
+			this.particles.forEach(function (p)
+			{
+				callback((p.w - minW) / (maxW - minW));
+			});
+		}
+	}
+};
 
 var canvas;
 
@@ -151,7 +190,7 @@ function mouseUp()
 	canvas.onmouseout = undefined;
 	canvas.onmouseup = undefined;
 	update();
-	canvas.getContext('2d').drawLaserLines(nLasers, robotX, robotY, dirOffset);
+	view.canvas.getContext('2d').drawLaserLines(nLasers, robotX, robotY, dirOffset);
 }
 
 function init()
@@ -194,27 +233,13 @@ function toggleColoring(event)
 
 function colorMap()
 {
-	var ctx = canvas.getContext('2d');
-	ctx.save();
-	ctx.setTransform(1, 0, 0, 1, 0, 0);
-
-	var resolution = getColoringResolution();
-	var probabilityGrid = sensorModel.calcProbGrid(resolution, robotDir, z, canvas.width, canvas.height, view);
-
-	for (var i = 0; i < probabilityGrid.length; i++)
-	{
-		for (var j = 0; j < probabilityGrid[i].length; j++)
-		{
-			var p = probabilityGrid[i][j];
-			ctx.fillStyle = 'rgba(' + round(p * 255) + ', 0, ' + (255 - round(p * 255)) + ', 0.5)';
-			ctx.fillRect(j * resolution, i * resolution, resolution, resolution);
-		}
-	}
-	ctx.restore();
+	view.colorMap(getColoringResolution(), sensorModel, z, robotDir);
 }
 
 function clearColor()
 {
-	clearCanvas(canvas);
-	canvas.getContext('2d').drawMap(map);
+	clearCanvas(view.canvas);
+	view.canvas.getContext('2d').drawMap(map);
+	view.canvas.getContext('2d').drawRobot(robotX, robotY, robotDir, robotSize);
+	view.canvas.getContext('2d').drawLaserLines(nLasers, robotX, robotY, dirOffset);
 }

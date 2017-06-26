@@ -7,8 +7,8 @@ const cancelAnimationFrame = window.cancelAnimationFrame || window.mozCancelAnim
 function View(canvas, scale)
 {
 	this.canvas = canvas;
-	this.width = canvas.width/scale;
-	this.height = canvas.height/scale;
+	this.width = canvas.width / scale;
+	this.height = canvas.height / scale;
 
 	this.ctx = canvas.getContext('2d');
 
@@ -17,37 +17,37 @@ function View(canvas, scale)
 	this.offsetY = canvas.height;
 
 	this.updateTransform();
-	this.ctx.lineWidth = 1/scale;
+	this.ctx.lineWidth = 1 / scale;
 	this.lockRatio = 0.4;
 }
 
-View.prototype.updateTransform = function()
+View.prototype.updateTransform = function ()
 {
 	this.ctx.setTransform(this.scale, 0, 0, -this.scale, this.offsetX, this.offsetY);
 };
 
-View.prototype.setOffset = function(x, y)
+View.prototype.setOffset = function (x, y)
 {
 	this.offsetX = x;
 	this.offsetY = y;
 	this.updateTransform();
 };
 
-View.prototype.addOffset = function(dx, dy)
+View.prototype.addOffset = function (dx, dy)
 {
 	this.offsetX += dx;
 	this.offsetY += dy;
 	this.updateTransform();
 };
 
-View.prototype.setScale = function(scale)
+View.prototype.setScale = function (scale)
 {
 	this.scale = scale;
 	this.updateTransform();
-	this.ctx.lineWidth = 1/scale;
+	this.ctx.lineWidth = 1 / scale;
 };
 
-View.prototype.setPreviewScale = function(map)
+View.prototype.setPreviewScale = function (map)
 {
 	var size = this.getMapSize(map);
 	var s1 = this.canvas.width / size.x;
@@ -63,32 +63,32 @@ View.prototype.setPreviewScale = function(map)
 	this.setScale(dspscale);
 };
 
-View.prototype.adjustToPoint = function(x, y)
+View.prototype.adjustToPoint = function (x, y)
 {
 	const canvas = this.canvas;
 	const lockRatio = this.lockRatio;
 
 	var dx = 0;
 	var dy = 0;
-	if(x < canvas.width*lockRatio)
+	if (x < canvas.width * lockRatio)
 	{
-		dx = canvas.width*lockRatio - x;
-	}else if(x > canvas.width * (1-lockRatio))
+		dx = canvas.width * lockRatio - x;
+	} else if (x > canvas.width * (1 - lockRatio))
 	{
-		dx = canvas.width*(1-lockRatio) - x;
+		dx = canvas.width * (1 - lockRatio) - x;
 	}
-	if(y < canvas.height*lockRatio)
+	if (y < canvas.height * lockRatio)
 	{
-		dy = canvas.height*lockRatio - y;
-	}else if(y > canvas.height*(1-lockRatio))
+		dy = canvas.height * lockRatio - y;
+	} else if (y > canvas.height * (1 - lockRatio))
 	{
-		dy = canvas.height*(1-lockRatio) - y;
+		dy = canvas.height * (1 - lockRatio) - y;
 	}
 	view.addOffset(dx, dy);
 };
 
 
-View.prototype.getMapSize = function(map)
+View.prototype.getMapSize = function (map)
 {
 	var w = 0;
 	var h = 0;
@@ -112,6 +112,27 @@ View.prototype.getMapSize = function(map)
 		}
 	}
 	return new Point(w, h);
+};
+
+View.prototype.colorMap = function (resolution, sensorModel, z, robotDir)
+{
+	const ctx = this.ctx;
+	ctx.save();
+	ctx.setTransform(1, 0, 0, 1, 0, 0);
+
+	var probabilityGrid = sensorModel.calcProbGrid(resolution, robotDir, z,
+		this.canvas.width, this.canvas.height, this);
+
+	for (var i = 0; i < probabilityGrid.length; i++)
+	{
+		for (var j = 0; j < probabilityGrid[i].length; j++)
+		{
+			var p = probabilityGrid[i][j];
+			ctx.fillStyle = 'rgba(' + round(p * 255) + ', 0, ' + (255 - round(p * 255)) + ', 0.5)';
+			ctx.fillRect(j * resolution, i * resolution, resolution, resolution);
+		}
+	}
+	ctx.restore();
 };
 
 CanvasRenderingContext2D.prototype.drawRobot = function (wx, wy, dir, wsize)
@@ -168,7 +189,7 @@ CanvasRenderingContext2D.prototype.strokeLine = function (x1, y1, x2, y2)
 	this.stroke();
 };
 
-CanvasRenderingContext2D.prototype.strokeTextWithColorFont = function(text, color, font)
+CanvasRenderingContext2D.prototype.strokeTextWithColorFont = function (text, color, font)
 {
 	this.save();
 	this.setTransform(1, 0, 0, 1, 0, 0);
@@ -240,44 +261,44 @@ CanvasRenderingContext2D.prototype.drawLaserLines = function (n, wx, wy, diroff)
 //coordinate converter
 
 //convert x coordinate in world to x coordinate on screen
-View.prototype.toScreenX = function(x)
+View.prototype.toScreenX = function (x)
 {
-	return x*this.scale + this.offsetX;
+	return x * this.scale + this.offsetX;
 };
 
 //convert x coordinate on screen to x coordinate in world
 View.prototype.toWorldX = function toWorldX(x)
 {
-	return (x-this.offsetX)/this.scale;
+	return (x - this.offsetX) / this.scale;
 };
 
 //convert y coordinate in world to y coordinate on screen
-View.prototype.toScreenY = function(y)
+View.prototype.toScreenY = function (y)
 {
-	return -y*this.scale + this.offsetY;
+	return -y * this.scale + this.offsetY;
 };
 
 //convert y coordinate on screen to y coordinate in world
-View.prototype.toWorldY = function(y)
+View.prototype.toWorldY = function (y)
 {
 	// return (canvas.height - y) * scale;
-	return -(y-this.offsetY) / this.scale;
+	return -(y - this.offsetY) / this.scale;
 };
 
-View.prototype.toWorldCoor = function(coor)
+View.prototype.toWorldCoor = function (coor)
 {
 	coor.x = toWorldX(coor.x);
 	coor.y = toWorldY(coor.y);
 };
 
-View.prototype.toScreenCoor = function(coor)
+View.prototype.toScreenCoor = function (coor)
 {
 	coor.x = toScreenX(coor.x);
 	coor.y = toScreenY(coor.y);
 };
 
 //Functional API, return a new point.
-View.prototype.getWorldCoor = function(coor)
+View.prototype.getWorldCoor = function (coor)
 {
 	return new Point(toWorldX(coor.x), toWorldY(coor.y));
 };
