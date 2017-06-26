@@ -217,16 +217,20 @@ CanvasRenderingContext2D.prototype.strokePath = function (wpath)
 	this.stroke();
 };
 
-CanvasRenderingContext2D.prototype.drawLaserLines = function (n, wx, wy, diroff)
+CanvasRenderingContext2D.prototype.drawLaserLines = function (z, wx, wy, dir)
 {
+	const n = z.length;
+
 	//number of lasers for 360 degrees
-	var nLasers = (n - 1) * 2;
+	const nLasers = (n - 1) * 2;
 
 	//Angle between each laser, in radians
-	var rad = Math.PI * 2 / nLasers;
+	const rad = Math.PI * 2 / nLasers;
+
+	var dirOffset = round(dir / Math.PI / 2 * nLasers);
 
 	//index of corresponding entry in z
-	var i = (diroff + nLasers / 4 + nLasers / 2);
+	var i = (dirOffset + nLasers / 4 + nLasers / 2);
 	i = (i + nLasers + nLasers);
 
 	for (var index = 0; index < n; index++, i++)

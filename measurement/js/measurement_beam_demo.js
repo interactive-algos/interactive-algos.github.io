@@ -19,14 +19,18 @@ function BeamModelDemo(id, map, sensorRadius, sensorNoise)
 
 	//Math model used for likelihood calculation
 	this.sensorModel = new BeamModel(sensorNoise, sensorRadius, map);
+	this.sensorRadius = sensorRadius;
 
 	//Event listeners
 	const self = this;
-	this.view.canvas.onmousedown = function(event){return self.mouseDown(event)};
+	this.view.canvas.onmousedown = function (event)
+	{
+		return self.mouseDown(event)
+	};
 	this.view.ctx.drawMap(map);
 }
 
-BeamModelDemo.prototype.mouseDown = function(event)
+BeamModelDemo.prototype.mouseDown = function (event)
 {
 	cancelAnimationFrame(this.frameId);
 	//Shorthand for this.view and this.ctx
@@ -42,12 +46,18 @@ BeamModelDemo.prototype.mouseDown = function(event)
 
 	this.draw();
 	const self = this;
-	this.view.canvas.onmousemove = function(event){return self.trackDirection(event);};
-	this.view.canvas.onmouseup = function(event){return self.mouseUp(event);};
+	this.view.canvas.onmousemove = function (event)
+	{
+		return self.trackDirection(event);
+	};
+	this.view.canvas.onmouseup = function (event)
+	{
+		return self.mouseUp(event);
+	};
 	this.view.canvas.onmouseout = this.view.canvas.onmouseup;
 };
 
-BeamModelDemo.prototype.trackDirection = function(event)
+BeamModelDemo.prototype.trackDirection = function (event)
 {
 	const view = this.view;
 	const coor = getClickLoc(event);
@@ -58,19 +68,26 @@ BeamModelDemo.prototype.trackDirection = function(event)
 	this.draw();
 };
 
-BeamModelDemo.prototype.mouseUp = function(event)
+BeamModelDemo.prototype.mouseUp = function (event)
 {
 	this.view.canvas.onmousemove = undefined;
 	this.view.canvas.onmouseout = undefined;
 	this.view.canvas.onmouseup = undefined;
+	this.update();
 };
 
-BeamModelDemo.prototype.draw = function()
+BeamModelDemo.prototype.draw = function ()
 {
 	clearCanvas(this.view.canvas);
 	const ctx = this.view.ctx;
 	ctx.drawMap(this.map);
 	ctx.drawRobot(this.x, this.y, this.dir, this.robotSize);
+};
+
+BeamModelDemo.prototype.update = function ()
+{
+	//Only scan if location changed
+	scan(this.x, this.y, this.dir, this.sensorRadius, this.map, this.z);
 };
 
 function ParticleTracker()
@@ -226,7 +243,7 @@ function mouseDown(event)
 		var ctx = canvas.getContext('2d');
 		ctx.drawMap(map);
 		ctx.drawRobot(robotX, robotY, robotDir, robotSize);
-		ctx.drawLaserLines(nLasers, robotX, robotY, dirOffset);
+		ctx.drawLaserLines(z, robotX, robotY, robotDir);
 		drawParticles(ctx, clickedParticles);
 		return;
 	}
@@ -247,7 +264,7 @@ function mouseUp()
 	canvas.onmouseout = undefined;
 	canvas.onmouseup = undefined;
 	update();
-	view.canvas.getContext('2d').drawLaserLines(nLasers, robotX, robotY, dirOffset);
+	view.canvas.getContext('2d').drawLaserLines(z, robotX, robotY, robotDir);
 }
 
 function init()
@@ -298,5 +315,5 @@ function clearColor()
 	clearCanvas(view.canvas);
 	view.canvas.getContext('2d').drawMap(map);
 	view.canvas.getContext('2d').drawRobot(robotX, robotY, robotDir, robotSize);
-	view.canvas.getContext('2d').drawLaserLines(nLasers, robotX, robotY, dirOffset);
+	view.canvas.getContext('2d').drawLaserLines(z, robotX, robotY, robotDir);
 }
