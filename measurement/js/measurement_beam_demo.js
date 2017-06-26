@@ -44,10 +44,13 @@ BeamModelDemo.prototype.mouseDown = function (event)
 	{
 		if (this.shouldColor)
 			return;
-		const w = this.sensorModel.probability(this.z, new RobotState(x, y, this.dir));
+		const resolution = this.resolution / this.view.scale;
+		const w = this.sensorModel.probability(this.z,
+			new RobotState(x - resolution / 2, y - resolution / 2, this.dir));
 		this.tracker.addParticle(new Particle(x, y, this.dir, w));
 		this.draw();
 		this.drawLaserLines();
+		this.view.ctx.strokeTextWithColorFont('probability: ' + w, 'black', '12 Menlo Regular');
 		return;
 	}
 
@@ -101,11 +104,11 @@ BeamModelDemo.prototype.draw = function ()
 	ctx.drawRobot(this.x, this.y, this.dir, this.robotSize);
 	if (!this.shouldColor)
 	{
-		const resolution = this.resolution;
+		const resolution = this.resolution / this.view.scale;
 		this.tracker.forEach(function (x, y, dir, w)
 		{
 			ctx.fillStyle = 'rgba(' + round(w * 255) + ', 0, ' + (255 - round(w * 255)) + ', 0.5)';
-			ctx.fillRect(x - resolution, y - resolution, resolution, resolution);
+			ctx.fillRect(x - resolution / 2, y - resolution / 2, resolution, resolution);
 		});
 	} else
 	{
@@ -162,7 +165,7 @@ BeamModelDemo.prototype.setColoring = function (shouldColor)
 	this.drawLaserLines();
 };
 
-BeamModelDemo.prototype.setColoringResolution = function(resolution)
+BeamModelDemo.prototype.setColoringResolution = function (resolution)
 {
 	this.resolution = resolution;
 	this.draw();
