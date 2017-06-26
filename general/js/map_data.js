@@ -1,4 +1,4 @@
-function getMapForCanvas(canvas)
+function getMap()
 {
 	//   var map =
 	//   [

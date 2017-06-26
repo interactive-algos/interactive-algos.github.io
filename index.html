@@ -34,9 +34,13 @@
     <script src="general/js/odometry.js"></script>
     <script src="general/js/utils.js"></script>
     <script src="general/js/view.js"></script>
+    <script src="general/js/map_data.js"></script>
+    <script src="general/js/measurement.js"></script>
+    <script src="measurement/js/measurement_beam_demo.js"></script>
 
     <script>
 		var actuationDemo;
+		var measurementDemo;
 		function init()
 		{
 			//Noise parameters
@@ -48,6 +52,8 @@
 			actuationDemo = new ActuationDemo('actuation_demo',
 				getValue('dist1'), getValue('turn') / 180 * Math.PI,
 				getValue('dist2'), a1, a2, a3, a4);
+
+			measurementDemo = new BeamModelDemo('measurement_demo', getMap(), 3, 0.3);
 		}
 
 		function parameterChanged(event)
@@ -299,7 +305,7 @@
     </div>
     <div class="row">
         <div class="col-lg-12">
-            <canvas></canvas>
+            <canvas id="measurement_demo"></canvas>
         </div>
     </div>
     <div class="row">

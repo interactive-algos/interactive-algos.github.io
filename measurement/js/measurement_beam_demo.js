@@ -1,11 +1,11 @@
 function BeamModelDemo(id, map, sensorRadius, sensorNoise)
 {
 	//Visualization stuff
-	const scale = 50;
 	const nLasers = 19;
 
 	//the canvas element
-	this.view = new View(document.getElementById(id), scale);
+	this.view = new View(document.getElementById(id), 1);
+	this.view.setPreviewScale(map);
 
 	this.robotSize = 0.2;
 	this.map = map;
@@ -13,8 +13,8 @@ function BeamModelDemo(id, map, sensorRadius, sensorNoise)
 	this.tracker = new ParticleTracker();
 
 	//Initial robot pose
-	this.x = random() * view.width;
-	this.y = random() * view.height;
+	this.x = random() * this.view.width;
+	this.y = random() * this.view.height;
 	this.dir = random() * TWO_PI;
 
 	//Math model used for likelihood calculation
@@ -23,7 +23,7 @@ function BeamModelDemo(id, map, sensorRadius, sensorNoise)
 	//Event listeners
 	const self = this;
 	this.view.canvas.onmousedown = function(event){return self.mouseDown(event)};
-	
+	this.view.ctx.drawMap(map);
 }
 
 BeamModelDemo.prototype.mouseDown = function(event)
@@ -44,7 +44,7 @@ BeamModelDemo.prototype.mouseDown = function(event)
 	const self = this;
 	this.view.canvas.onmousemove = function(event){return self.trackDirection(event);};
 	this.view.canvas.onmouseup = function(event){return self.mouseUp(event);};
-	this.view.canvas.onmouseout = this.canvas.onmouseup;
+	this.view.canvas.onmouseout = this.view.canvas.onmouseup;
 };
 
 BeamModelDemo.prototype.trackDirection = function(event)
@@ -60,14 +60,16 @@ BeamModelDemo.prototype.trackDirection = function(event)
 
 BeamModelDemo.prototype.mouseUp = function(event)
 {
-	this.canvas.onmousemove = undefined;
-	this.canvas.onmouseout = undefined;
-	this.canvas.onmouseup = undefined;
+	this.view.canvas.onmousemove = undefined;
+	this.view.canvas.onmouseout = undefined;
+	this.view.canvas.onmouseup = undefined;
 };
 
 BeamModelDemo.prototype.draw = function()
 {
+	clearCanvas(this.view.canvas);
 	const ctx = this.view.ctx;
+	ctx.drawMap(this.map);
 	ctx.drawRobot(this.x, this.y, this.dir, this.robotSize);
 };
 
@@ -254,7 +256,7 @@ function init()
 	view = new View(canvas, 1);
 
 	//Draw the map
-	map = getMapForCanvas(canvas);
+	map = getMap();
 	view.setPreviewScale(map);
 	canvas.getContext('2d').drawMap(map);
 	robotX = floor(random() * canvas.width);

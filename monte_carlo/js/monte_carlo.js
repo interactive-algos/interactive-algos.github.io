@@ -9,7 +9,7 @@ function start()
 
 	var motionModel = new OdometryModel(getValue('a1'), getValue('a2'), getValue('a3'), getValue('a4'));
 
-	var map = getMapForCanvas(canvas);
+	var map = getMap();
 
 	// map.forEach(function(line)
 	// {

@@ -98,7 +98,7 @@ function mouseMotion(event)
 	var ctx = canvas.getContext('2d');
 	var lastPoint = path[path.length - 1];
 
-	var m = getMapForCanvas(canvas);
+	var m = getMap();
 	var untkingPath = new Line(toScreenX(lastPoint.x), toScreenY(lastPoint.y), coor.x, coor.y);
 
 	for (var i = 0; i < m.length; i++)
@@ -185,7 +185,7 @@ function startRecordingPath()
 	height = canvas.height * scale;
 	rcOffsetX = width / 2;
 	rcOffsetY = height / 2;
-	map = getMapForCanvas(canvas);
+	map = getMap();
 
 	console.log(rcOffsetX + " " + rcOffsetY);
 	canvas.getContext('2d').drawMap(map);
@@ -207,7 +207,7 @@ function init()
 	canvas = document.getElementById('canvas');
 	pathSelect = document.getElementById('path');
 	customPathGroup = document.getElementById('customPathGroup');
-	map = getMapForCanvas(canvas);
+	map = getMap();
 	view = new View(canvas, 1);
 
 	view.setPreviewScale(map);
