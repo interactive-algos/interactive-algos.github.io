@@ -15,6 +15,20 @@
     <style type="text/css">
         canvas { border: 1px solid black; }
     </style>
+
+    <script>
+        var measurementDemo;
+        function init()
+        {
+			measurementDemo = new BeamModelDemo('canvas', getMap(), 3, 0.3);
+        }
+
+        function toggleColoring(event)
+        {
+        	const target = event.target || event.srcElement;
+        	measurementDemo.setColoring(target.checked);
+        }
+    </script>
 </head>
 <body onload="init();">
 <div class="container">
