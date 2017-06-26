@@ -11,7 +11,7 @@ function BeamModelDemo(id, map, sensorRadius, sensorNoise)
 	this.map = map;
 	this.z = new Array(nLasers);
 	this.tracker = new ParticleTracker();
-	this.resolution = 0.2;
+	this.resolution = 10;
 	this.shouldColor = false;
 
 	//Initial robot pose
@@ -57,7 +57,6 @@ BeamModelDemo.prototype.mouseDown = function (event)
 	this.x = x;
 	this.y = y;
 
-	this.draw();
 	const self = this;
 	this.view.canvas.onmousemove = function (event)
 	{
@@ -68,6 +67,8 @@ BeamModelDemo.prototype.mouseDown = function (event)
 		return self.mouseUp(event);
 	};
 	this.view.canvas.onmouseout = this.view.canvas.onmouseup;
+
+	this.draw();
 };
 
 BeamModelDemo.prototype.trackDirection = function (event)
@@ -111,7 +112,7 @@ BeamModelDemo.prototype.draw = function ()
 		//If user is moving its mouse, don't color the map, too expensive
 		if (this.view.canvas.onmousemove)
 			return;
-		this.view.colorMap(getColoringResolution(), this.sensorModel, this.z, this.dir);
+		this.view.colorMap(this.resolution, this.sensorModel, this.z, this.dir);
 	}
 };
 
@@ -157,6 +158,13 @@ BeamModelDemo.prototype.drawLaserLines = function ()
 BeamModelDemo.prototype.setColoring = function (shouldColor)
 {
 	this.shouldColor = shouldColor;
+	this.draw();
+	this.drawLaserLines();
+};
+
+BeamModelDemo.prototype.setColoringResolution = function(resolution)
+{
+	this.resolution = resolution;
 	this.draw();
 	this.drawLaserLines();
 };

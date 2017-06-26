@@ -28,6 +28,25 @@
         	const target = event.target || event.srcElement;
         	measurementDemo.setColoring(target.checked);
         }
+
+        function parameterChanged(event)
+        {
+			const target = event.target || event.srcElement;
+			const value = Number(target.value);
+			if(target.id === 'nLasers')
+            {
+				measurementDemo.setNLasers(value+1);
+            }else if(target.id === 'fogOfWar')
+            {
+            	measurementDemo.setSensorRadius(value);
+            }else if(target.id === 'sensorNoise')
+            {
+            	measurementDemo.setSensorNoise(value);
+            }else if(target.id === 'colorRes')
+            {
+            	measurementDemo.setColoringResolution(value);
+            }
+        }
     </script>
 </head>
 <body onload="init();">
@@ -72,7 +91,7 @@
                                 <label for="colorRes">Coloring Resolution</label>:
                             </td>
                             <td>
-                                <input id="colorRes" class="form-control form-control-sm" value="10" size="4">
+                                <input id="colorRes" onblur='return parameterChanged(event);' class="form-control form-control-sm" value="10" size="4">
                             </td>
                         </tr>
                         <tr>
