@@ -11,6 +11,8 @@ function BeamModelDemo(id, map, sensorRadius, sensorNoise)
 	this.map = map;
 	this.z = new Array(nLasers);
 	this.tracker = new ParticleTracker();
+	this.resolution = 0.2;
+	this.shouldColor = false;
 
 	//Initial robot pose
 	this.x = random() * this.view.width;
@@ -32,13 +34,24 @@ function BeamModelDemo(id, map, sensorRadius, sensorNoise)
 
 BeamModelDemo.prototype.mouseDown = function (event)
 {
-	cancelAnimationFrame(this.frameId);
 	//Shorthand for this.view and this.ctx
 	const view = this.view;
-
 	var coor = getClickLoc(event);
+
 	const x = view.toWorldX(coor.x);
 	const y = view.toWorldY(coor.y);
+	if (event.altKey)
+	{
+		if(this.shouldColor)
+			return;
+		const w = this.sensorModel.probability(this.z, new RobotState(x, y, this.dir));
+		this.tracker.addParticle(new Particle(x, y, this.dir, w));
+		this.draw();
+		this.drawLaserLines();
+		return;
+	}
+
+	cancelAnimationFrame(this.frameId);
 
 	//update robot's location
 	this.x = x;
@@ -83,6 +96,16 @@ BeamModelDemo.prototype.draw = function ()
 	const ctx = this.view.ctx;
 	ctx.drawMap(this.map);
 	ctx.drawRobot(this.x, this.y, this.dir, this.robotSize);
+	if(!this.shouldColor)
+	{
+		const resolution = this.resolution;
+		this.tracker.forEach(function(x, y, dir, w)
+		{
+			console.log(w);
+			ctx.fillStyle = 'rgba(' + round(w * 255) + ', 0, ' + (255 - round(w * 255)) + ', 0.5)';
+			ctx.fillRect(x-resolution, y-resolution, resolution, resolution);
+		});
+	}
 };
 
 BeamModelDemo.prototype.update = function ()
@@ -139,8 +162,8 @@ ParticleTracker.prototype.clear = function ()
 ParticleTracker.prototype.addParticle = function (particle)
 {
 	this.particles.push(particle);
-	this.maxW = max(particle.w, maxW);
-	this.minW = min(particle.w, minW);
+	this.maxW = max(particle.w, this.maxW);
+	this.minW = min(particle.w, this.minW);
 };
 
 ParticleTracker.prototype.forEach = function (callback)
@@ -150,12 +173,13 @@ ParticleTracker.prototype.forEach = function (callback)
 	{
 		if (this.particles.length === 1)
 		{
-			callback(this.particles[0].w);
+			const p = this.particles[0];
+			callback(p.x, p.y, p.dir, p.w);
 		} else if (this.particles.length)
 		{
 			this.particles.forEach(function (p)
 			{
-				callback((p.w - minW) / (maxW - minW));
+				callback(p.x, p.y, p.dir, (p.w - minW) / (maxW - minW));
 			});
 		}
 	}
