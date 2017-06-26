@@ -5,11 +5,12 @@
 
 function ActuationDemo(id, dist1, turn, dist2, a1, a2, a3, a4)
 {
-	this.scale = 50;
+	const scale = 50;
 	//the canvas element
 	this.canvas = document.getElementById(id);
-	this.view = new View(this.canvas, this.scale);
+	this.view = new View(this.canvas, scale);
 	this.ctx = this.canvas.getContext('2d');
+	this.robotSize = 0.2;
 
 	//Distance of first forward movement
 	this.firstMove = dist1;
@@ -22,8 +23,8 @@ function ActuationDemo(id, dist1, turn, dist2, a1, a2, a3, a4)
 	this.motionModel = new OdometryModel(a1, a2, a3, a4);
 
 	//world size information
-	this.width = this.canvas.width/this.scale;
-	this.height = this.canvas.height/this.scale;
+	this.width = this.canvas.width/scale;
+	this.height = this.canvas.height/scale;
 
 	//place the robot on a random spot
 	this.x = random()*this.width;
@@ -40,7 +41,7 @@ ActuationDemo.prototype.draw = function()
 {
 	clearCanvas(this.canvas);
 	this.ctx.strokeStyle = 'black';
-	this.ctx.drawRobot(this.x, this.y, this.dir, 0.2);
+	this.ctx.drawRobot(this.x, this.y, this.dir, this.robotSize);
 
 	this.ctx.strokeStyle = 'blue';
 	//location after first move
@@ -64,7 +65,7 @@ ActuationDemo.prototype.draw = function()
 		// this.ctx.strokeLine(this.p1.x, this.p1.y, this.p2.x, this.p2.y);
 		if(typeof this.curX !== 'undefined')
 		{
-			this.ctx.drawRobot(this.curX, this.curY, this.curDir, 0.2);
+			this.ctx.drawRobot(this.curX, this.curY, this.curDir, this.robotSize);
 		}
 	}
 };

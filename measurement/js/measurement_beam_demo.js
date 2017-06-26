@@ -1,10 +1,15 @@
-function BeamModelDemo(view, map, robotSize, sensorRadius, sensorNoise)
+function BeamModelDemo(id, map, sensorRadius, sensorNoise)
 {
 	//Visualization stuff
-	this.view = view;
+	const scale = 50;
+	const nLasers = 19;
+
+	//the canvas element
+	this.view = new View(document.getElementById(id), scale);
+
+	this.robotSize = 0.2;
 	this.map = map;
-	this.nLasers = 19;
-	this.z = new Array(this.nLasers);
+	this.z = new Array(nLasers);
 	this.tracker = new ParticleTracker();
 
 	//Initial robot pose
@@ -14,7 +19,57 @@ function BeamModelDemo(view, map, robotSize, sensorRadius, sensorNoise)
 
 	//Math model used for likelihood calculation
 	this.sensorModel = new BeamModel(sensorNoise, sensorRadius, map);
+
+	//Event listeners
+	const self = this;
+	this.view.canvas.onmousedown = function(event){return self.mouseDown(event)};
+	
 }
+
+BeamModelDemo.prototype.mouseDown = function(event)
+{
+	cancelAnimationFrame(this.frameId);
+	//Shorthand for this.view and this.ctx
+	const view = this.view;
+
+	var coor = getClickLoc(event);
+	const x = view.toWorldX(coor.x);
+	const y = view.toWorldY(coor.y);
+
+	//update robot's location
+	this.x = x;
+	this.y = y;
+
+	this.draw();
+	const self = this;
+	this.view.canvas.onmousemove = function(event){return self.trackDirection(event);};
+	this.view.canvas.onmouseup = function(event){return self.mouseUp(event);};
+	this.view.canvas.onmouseout = this.canvas.onmouseup;
+};
+
+BeamModelDemo.prototype.trackDirection = function(event)
+{
+	const view = this.view;
+	const coor = getClickLoc(event);
+	const x = view.toWorldX(coor.x);
+	const y = view.toWorldY(coor.y);
+
+	this.dir = atan2(y - this.y, x - this.x);
+	this.draw();
+};
+
+BeamModelDemo.prototype.mouseUp = function(event)
+{
+	this.canvas.onmousemove = undefined;
+	this.canvas.onmouseout = undefined;
+	this.canvas.onmouseup = undefined;
+};
+
+BeamModelDemo.prototype.draw = function()
+{
+	const ctx = this.view.ctx;
+	ctx.drawRobot(this.x, this.y, this.dir, this.robotSize);
+};
 
 function ParticleTracker()
 {

@@ -7,14 +7,16 @@ const cancelAnimationFrame = window.cancelAnimationFrame || window.mozCancelAnim
 function View(canvas, scale)
 {
 	this.canvas = canvas;
-	this.width = canvas.width / scale;
-	this.height = canvas.height / scale;
+	this.canvas.width = this.canvas.clientWidth;
+	this.canvas.height = this.canvas.clientHeight;
+	this.width = canvas.clientWidth / scale;
+	this.height = canvas.clientHeight / scale;
 
 	this.ctx = canvas.getContext('2d');
 
 	this.scale = scale;
 	this.offsetX = 0;
-	this.offsetY = canvas.height;
+	this.offsetY = canvas.clientHeight;
 
 	this.updateTransform();
 	this.ctx.lineWidth = 1 / scale;

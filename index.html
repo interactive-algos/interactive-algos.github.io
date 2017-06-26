@@ -6,6 +6,8 @@
     <style type="text/css">
         canvas {
             border: 1px solid black;
+            width: 100%;
+            height: auto;
         }
     </style>
     <script src="https://code.jquery.com/jquery-3.2.1.min.js"
@@ -144,16 +146,18 @@
             <h4>Try the demo</h4>
             <p>
                 The blue line represents planned motion while the red line
-                represents actual motion. <b>Click</b> anywhere on the canvas to place
-                the robot. <b>Press and hold</b> to change the direction of robot.
+                represents actual motion. <b>Click</b> anywhere on the canvas to
+                place
+                the robot. <b>Press and hold</b> to change the direction of
+                robot.
             </p>
-        </div>
-        <div class="col-sm-4">
-            <canvas id="actuation_demo"></canvas>
         </div>
     </div>
     <div class="row">
-        <div class="col-sm-6">
+        <div class="col-sm-4">
+            <canvas id="actuation_demo"></canvas>
+        </div>
+        <div class="col-sm-4">
             <fieldset>
                 <table>
                     <caption>Movement Configuration</caption>
@@ -210,7 +214,7 @@
                 </table>
             </fieldset>
         </div>
-        <div class="col-sm-6">
+        <div class="col-sm-4">
             <fieldset>
                 <table>
                     <caption>Noise Configuration</caption>
@@ -274,16 +278,6 @@
     </div>
     <div class="row">
         <div class="col-sm-4">
-            <h4>Inherently Unpredictable Environment</h4>
-            <p>
-                Let's take self driving car as an example. When driving, it
-                is impossible to predict the weather conditions, motion
-                dynamics of pedestrians and other cars, traffic lights, or
-                car accidents.
-            </p>
-        </div>
-
-        <div class="col-sm-4">
             <h4>Sensor Limitations</h4>
             <p>
                 Sensors are limited in what they can perceive. Cameras
@@ -293,8 +287,31 @@
                 extremely difficult.
             </p>
         </div>
+        <div class="col-sm-4">
+            <h4>Simulating Robot Sensors</h4>
+            <p>
+                Robot's sensors have noises, meaning that measurements are not
+                exactly accurate. <b>Click</b> to place the robot, <b>hold and
+                move</b>
+                to change direction of robot.
+            </p>
+        </div>
     </div>
     <div class="row">
+        <div class="col-lg-12">
+            <canvas></canvas>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-sm-4">
+            <h4>Inherently Unpredictable Environment</h4>
+            <p>
+                Let's take self driving car as an example. When driving, it
+                is impossible to predict the weather conditions, motion
+                dynamics of pedestrians and other cars, traffic lights, or
+                car accidents.
+            </p>
+        </div>
         <div class="col-sm-4">
             <h4>Model Limitations</h4>
             <p>
