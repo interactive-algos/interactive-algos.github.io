@@ -131,7 +131,7 @@ BeamModelDemo.prototype.update = function ()
 
 BeamModelDemo.prototype.setNLasers = function (n)
 {
-	this.z = new Array(n);
+	this.z = new Array(n+1);
 	this.update();
 	this.draw();
 	this.drawLaserLines();

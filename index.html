@@ -54,7 +54,7 @@
 				getValue('dist1'), getValue('turn') / 180 * Math.PI,
 				getValue('dist2'), a1, a2, a3, a4);
 
-			measurementDemo = new BeamModelDemo('measurement_demo', getMap(), 3, 0.3);
+			measurementDemo = new BeamModelDemo('sensor_model_demo', getMap(), 3, 0.3);
 		}
 
 		function parameterChanged(event)
@@ -82,7 +82,22 @@
 			} else if (target.id === 'a4')
 			{
 				actuationDemo.setA4(value / 100.0);
-			}
+			}else if(target.id === 'nLasers')
+            {
+				measurementDemo.setNLasers(value);
+            }else if(target.id === 'sensorRadius')
+            {
+            	measurementDemo.setSensorRadius(value);
+            }else if(target.id === 'sensorNoise')
+            {
+            	measurementDemo.setSensorNoise(value);
+            }else if(target.id === 'colorRes')
+            {
+            	measurementDemo.setColoringResolution(value);
+            }else if(target.id === 'shouldColor')
+            {
+            	measurementDemo.setColoring(target.checked);
+            }
 		}
     </script>
 </head>
@@ -287,26 +302,103 @@
         <div class="col-sm-4">
             <h4>Sensor Limitations</h4>
             <p>
-                Sensors are limited in what they can perceive. Cameras
-                cannot see through walls, and the resolution of a camera is
-                limited. Sensors are also subject to noise. And finally,
-                sensors can break. Detecting a faulty sensor can be
-                extremely difficult.
+                Sensors are limited in what they can perceive. Cameras cannot
+                see through walls, and the resolution of a camera is limited.
+                Sensors are also subject to noise. And finally, sensors can
+                break. Detecting a faulty sensor can be extremely difficult.
+                Robots take these into accounts and use a sensor model to deal
+                with these uncertainties.
             </p>
         </div>
         <div class="col-sm-4">
-            <h4>Simulating Robot Sensors</h4>
+            <h4>Robot Sensor Noise</h4>
             <p>
-                Robot's sensors have noises, meaning that measurements are not
-                exactly accurate. <b>Click</b> to place the robot, <b>hold and
-                move</b>
-                to change direction of robot.
+                There is always a noise when sensing. Whether the sensor is a
+                laser range finder, a sonic sensor or a camera does not matter.
+                Click on the button to take sensor readings.
             </p>
         </div>
     </div>
     <div class="row">
+        <div class="col-lg-6">
+            <canvas id="sensor_demo"></canvas>
+        </div>
+        <div class="col-sm-6">
+            <fieldset>
+                <table>
+                    <caption>Configuration</caption>
+                    <tbody></tbody>
+                </table>
+            </fieldset>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-sm-6">
+            <h4>Simulating Robot Sensor Model</h4>
+            <p>This demo is about robot's internal sensor model</p>
+            <p>
+                Robot's sensors have noises, meaning that measurements are not
+                exactly accurate. The robot's internal model must be aware of
+                this when estimating its location. <b>Click</b> to place the
+                robot, <b>hold and move</b> to change direction of robot.
+            </p>
+        </div>
+        <div class="col-sm-6">
+            <fieldset>
+                <table>
+                    <caption>Configuration</caption>
+                    <tbody>
+                    <tr>
+                        <td>
+                            <label for="nLasers">Number of Lasers</label>:
+                        </td>
+                        <td>
+                            <input size="3" id="nLasers" onblur='return parameterChanged(event);' onkeypress='return isNumber(event);' class="form-control form-control-sm" value="18" size="4">
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <label for="sensorRadius">Sensor Radius</label>:
+                        </td>
+                        <td>
+                            <input size="3" id="sensorRadius" onblur='return parameterChanged(event);' onkeypress='return isNumber(event);' class="form-control form-control-sm" value="3" size="4">
+                        </td>
+                        <td>m</td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <label for="sensorNoise">Sensor Noise</label>:
+                        </td>
+                        <td>
+                            <input size="3" id="sensorNoise" onblur='return parameterChanged(event);' onkeypress='return isDecimal(event);' class="form-control form-control-sm" value="0.3" size="4">
+                        </td>
+                        <td>m</td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <label for="colorRes">Coloring Resolution</label>:
+                        </td>
+                        <td>
+                            <input size="3" id="colorRes" onblur='return parameterChanged(event);' class="form-control form-control-sm" value="10" size="4">
+                        </td>
+                        <td>pixels</td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <label for="shouldColor">Color the Map</label>
+                        </td>
+                        <td>
+                            <input size="3" id="shouldColor" onchange='return parameterChanged(event);' type="checkbox">
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </fieldset>
+        </div>
+    </div>
+    <div class="row">
         <div class="col-lg-12">
-            <canvas id="measurement_demo"></canvas>
+            <canvas id="sensor_model_demo"></canvas>
         </div>
     </div>
     <div class="row">
