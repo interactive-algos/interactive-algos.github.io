@@ -91,6 +91,14 @@ BeamModelDemo.prototype.update = function ()
 	scan(this.x, this.y, this.dir, this.sensorRadius, this.map, this.z);
 };
 
+BeamModelDemo.prototype.setNLasers = function(n)
+{
+	this.z = new Array(n);
+	this.update();
+	this.draw();
+	this.view.ctx.drawLaserLines(this.z, this.x, this.y, this.dir);
+};
+
 function ParticleTracker()
 {
 	this.clear();
@@ -197,7 +205,7 @@ function parameterChanged(event)
 {
 	var target = event.target || event.srcElement;
 
-	if (target.id === 'sensorRadius')
+	if (target.id === 'fogOfWar')
 	{
 		senseRadius = Number(target.value);
 	}
