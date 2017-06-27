@@ -58,7 +58,7 @@
 				getValue('dist2'), a1, a2, a3, a4);
 
 			measurementDemo = new BeamModelDemo('sensor_model_demo', getMap(), 3, 0.3);
-			sensorDemo = new SensorDemo('sensor_demo');
+			sensorDemo = new SensorDemo('sensor_demo', 1);
 		}
 
 		function parameterChanged(event)
@@ -324,17 +324,27 @@
         </div>
     </div>
     <div class="row">
-        <div class="col-sm-4">
+        <div class="col-sm-8">
             <canvas id="sensor_demo"></canvas>
-        </div>
-        <div class="col-sm-4">
-            <canvas id="sensor_demo_graph"></canvas>
         </div>
         <div class="col-sm-4">
             <fieldset>
                 <table>
                     <caption>Configuration</caption>
-                    <tbody></tbody>
+                    <tbody>
+                    <tr>
+                        <td>
+                            <button type="button" class="btn btn-success"
+                                    onclick="sensorDemo.sample(Number(document.getElementById('nSamples').value));">
+                                Sense
+                            </button>
+                        </td>
+                        <td><input id="nSamples" type="text"
+                                   class="form-control form-control-sm"
+                                   value="100"></td>
+                        <td>times</td>
+                    </tr>
+                    </tbody>
                 </table>
             </fieldset>
         </div>
