@@ -11,47 +11,62 @@ function SensorDemo(id, sensorNoise)
 	this.nBuckets = 100;
 
 	//create an 0 filled array of size this.nBuckets
-	this.buckets = Array.apply(null, new Array(this.nBuckets)).map(Number.prototype.valueOf,0);
+	this.buckets = Array.apply(null, new Array(this.nBuckets)).map(Number.prototype.valueOf, 0);
 	this.maxCount = 0;
 
 	//Demo parameters
 	// this.sensorRadius = sensorRadius;
 	this.sensorNoise = sensorNoise;
 
-	this.actualDistance = this.view.width/2;
+	this.actualDistance = this.view.width / 2;
 
 	this.draw();
 }
 
-SensorDemo.prototype.sample = function(n)
+SensorDemo.prototype.sample = function (n)
 {
 	//If there is animation going on, just return
-	if(this.readingsLeft > 0){return;}
+	if (this.readingsLeft > 0)
+	{
+		return;
+	}
 
 	this.readingsLeft = n;
-	const self = this;
-	this.intervalId = window.setInterval(function(){self.takeSingleReading();}, 1000/n);
+	if (n < 10000)
+	{
+		const self = this;
+		this.intervalId = window.setInterval(function ()
+		{
+			self.takeSingleReading();
+		}, 1000 / n);
+	} else
+	{
+		for(var i = 0; i < n; i ++)
+		{
+			this.takeSingleReading();
+		}
+	}
 };
 
-SensorDemo.prototype.takeSingleReading = function()
+SensorDemo.prototype.takeSingleReading = function ()
 {
 	//We are done, stop the animation
-	if(this.readingsLeft-- <= 0)
+	if (this.readingsLeft-- <= 0)
 		window.clearInterval(this.intervalId);
 
-	var reading = this.actualDistance + gaussian()*this.sensorNoise;
+	var reading = this.actualDistance + gaussian() * this.sensorNoise;
 	this.draw();
 	this.ctx.lineWidth *= 3;
 	this.ctx.strokeStyle = 'green';
 	this.ctx.strokeLine(reading, 0, reading, this.view.height);
 	this.ctx.lineWidth /= 3;
 	// if(reading > this.sensorRadius)reading = this.sensorRadius;
-	var index = round(reading/this.view.width * this.nBuckets);
+	var index = round(reading / this.view.width * this.nBuckets);
 	this.buckets[index]++;
 	this.maxCount = max(this.maxCount, this.buckets[index]);
 };
 
-SensorDemo.prototype.draw = function()
+SensorDemo.prototype.draw = function ()
 {
 	const ctx = this.ctx;
 
@@ -64,18 +79,18 @@ SensorDemo.prototype.draw = function()
 	//Draw sensor readings
 	ctx.strokeStyle = 'grey';
 	var x = 0;
-	const step =  1.0/this.buckets.length * this.view.width;
-	for(var i = 0; i < this.buckets.length; i ++, x+=step)
+	const step = 1.0 / this.buckets.length * this.view.width;
+	for (var i = 0; i < this.buckets.length; i++, x += step)
 	{
 		var count = this.buckets[i];
-		if(count > 0)
+		if (count > 0)
 		{
 			ctx.strokeLine(x + step / 2, 0, x + step / 2, count * 1.0 / this.maxCount * this.view.height);
 		}
 	}
 };
 
-SensorDemo.prototype.setSensorNoise = function(noise)
+SensorDemo.prototype.setSensorNoise = function (noise)
 {
 	this.sensorNoise = noise;
 	this.buckets.fill(0);
