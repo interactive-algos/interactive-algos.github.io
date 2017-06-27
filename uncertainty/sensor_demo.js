@@ -9,6 +9,10 @@ function SensorDemo(id, sensorNoise)
 	this.ctx = this.view.canvas.getContext('2d');
 	this.robotSize = 0.2;
 	this.nBuckets = 100;
+	//Sum of all readings
+	this.readingSum = 0;
+	//Total number of readings done
+	this.nReadings = 0;
 
 	//create an 0 filled array of size this.nBuckets
 	this.buckets = Array.apply(null, new Array(this.nBuckets)).map(Number.prototype.valueOf, 0);
@@ -56,14 +60,22 @@ SensorDemo.prototype.takeSingleReading = function ()
 
 	var reading = this.actualDistance + gaussian() * this.sensorNoise;
 	this.draw();
-	this.ctx.lineWidth *= 3;
-	this.ctx.strokeStyle = 'green';
-	this.ctx.strokeLine(reading, 0, reading, this.view.height);
-	this.ctx.lineWidth /= 3;
+	const ctx = this.ctx;
+	ctx.lineWidth *= 3;
+	ctx.strokeStyle = 'green';
+	ctx.strokeLine(reading, 0, reading, this.view.height);
+	ctx.lineWidth /= 3;
 	// if(reading > this.sensorRadius)reading = this.sensorRadius;
 	var index = round(reading / this.view.width * this.nBuckets);
 	this.buckets[index]++;
 	this.maxCount = max(this.maxCount, this.buckets[index]);
+	this.readingSum += reading;
+	this.nReadings ++;
+	ctx.strokeTextWithColorFont('Actual Distance: ' + this.actualDistance,
+		'black', '12 Menlo Regular',
+		10, 20);
+	ctx.strokeTextWithColorFont('Average Sensor Readings: ' +
+		this.readingSum/this.nReadings, 'black', '12 Menlo Regular', 10, 40);
 };
 
 SensorDemo.prototype.draw = function ()
@@ -104,4 +116,6 @@ SensorDemo.prototype.clearBuckets = function()
 {
 	this.buckets.fill(0);
 	this.maxCount = 0;
+	this.readingSum = 0;
+	this.nReadings = 0;
 };

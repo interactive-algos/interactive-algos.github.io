@@ -194,7 +194,7 @@ CanvasRenderingContext2D.prototype.strokeLine = function (x1, y1, x2, y2)
 	this.stroke();
 };
 
-CanvasRenderingContext2D.prototype.strokeTextWithColorFont = function (text, color, font)
+CanvasRenderingContext2D.prototype.strokeTextWithColorFont = function (text, color, font, x, y)
 {
 	this.save();
 	this.setTransform(1, 0, 0, 1, 0, 0);
@@ -202,7 +202,7 @@ CanvasRenderingContext2D.prototype.strokeTextWithColorFont = function (text, col
 	this.strokeStyle = color;
 	this.font = font;
 	this.textAlign = 'start';
-	this.strokeText(text, 10, 20);
+	this.strokeText(text, x, y);
 	this.restore();
 };
 
