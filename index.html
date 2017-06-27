@@ -31,6 +31,7 @@
             crossorigin="anonymous"></script>
 
     <script src="uncertainty/actuation_noise.js"></script>
+    <script src="uncertainty/sensor_demo.js"></script>
     <script src="general/js/odometry.js"></script>
     <script src="general/js/utils.js"></script>
     <script src="general/js/view.js"></script>
@@ -42,6 +43,8 @@
     <script>
 		var actuationDemo;
 		var measurementDemo;
+		var sensorDemo;
+
 		function init()
 		{
 			//Noise parameters
@@ -55,6 +58,7 @@
 				getValue('dist2'), a1, a2, a3, a4);
 
 			measurementDemo = new BeamModelDemo('sensor_model_demo', getMap(), 3, 0.3);
+			sensorDemo = new SensorDemo('sensor_demo');
 		}
 
 		function parameterChanged(event)
@@ -82,22 +86,22 @@
 			} else if (target.id === 'a4')
 			{
 				actuationDemo.setA4(value / 100.0);
-			}else if(target.id === 'nLasers')
-            {
+			} else if (target.id === 'nLasers')
+			{
 				measurementDemo.setNLasers(value);
-            }else if(target.id === 'sensorRadius')
-            {
-            	measurementDemo.setSensorRadius(value);
-            }else if(target.id === 'sensorNoise')
-            {
-            	measurementDemo.setSensorNoise(value);
-            }else if(target.id === 'colorRes')
-            {
-            	measurementDemo.setColoringResolution(value);
-            }else if(target.id === 'shouldColor')
-            {
-            	measurementDemo.setColoring(target.checked);
-            }
+			} else if (target.id === 'sensorRadius')
+			{
+				measurementDemo.setSensorRadius(value);
+			} else if (target.id === 'sensorNoise')
+			{
+				measurementDemo.setSensorNoise(value);
+			} else if (target.id === 'colorRes')
+			{
+				measurementDemo.setColoringResolution(value);
+			} else if (target.id === 'shouldColor')
+			{
+				measurementDemo.setColoring(target.checked);
+			}
 		}
     </script>
 </head>
@@ -320,10 +324,13 @@
         </div>
     </div>
     <div class="row">
-        <div class="col-lg-6">
+        <div class="col-sm-4">
             <canvas id="sensor_demo"></canvas>
         </div>
-        <div class="col-sm-6">
+        <div class="col-sm-4">
+            <canvas id="sensor_demo_graph"></canvas>
+        </div>
+        <div class="col-sm-4">
             <fieldset>
                 <table>
                     <caption>Configuration</caption>
@@ -353,7 +360,11 @@
                             <label for="nLasers">Number of Lasers</label>:
                         </td>
                         <td>
-                            <input size="3" id="nLasers" onblur='return parameterChanged(event);' onkeypress='return isNumber(event);' class="form-control form-control-sm" value="18" size="4">
+                            <input size="3" id="nLasers"
+                                   onblur='return parameterChanged(event);'
+                                   onkeypress='return isNumber(event);'
+                                   class="form-control form-control-sm"
+                                   value="18" size="4">
                         </td>
                     </tr>
                     <tr>
@@ -361,7 +372,11 @@
                             <label for="sensorRadius">Sensor Radius</label>:
                         </td>
                         <td>
-                            <input size="3" id="sensorRadius" onblur='return parameterChanged(event);' onkeypress='return isNumber(event);' class="form-control form-control-sm" value="3" size="4">
+                            <input size="3" id="sensorRadius"
+                                   onblur='return parameterChanged(event);'
+                                   onkeypress='return isNumber(event);'
+                                   class="form-control form-control-sm"
+                                   value="3" size="4">
                         </td>
                         <td>m</td>
                     </tr>
@@ -370,7 +385,11 @@
                             <label for="sensorNoise">Sensor Noise</label>:
                         </td>
                         <td>
-                            <input size="3" id="sensorNoise" onblur='return parameterChanged(event);' onkeypress='return isDecimal(event);' class="form-control form-control-sm" value="0.3" size="4">
+                            <input size="3" id="sensorNoise"
+                                   onblur='return parameterChanged(event);'
+                                   onkeypress='return isDecimal(event);'
+                                   class="form-control form-control-sm"
+                                   value="0.3" size="4">
                         </td>
                         <td>m</td>
                     </tr>
@@ -379,7 +398,10 @@
                             <label for="colorRes">Coloring Resolution</label>:
                         </td>
                         <td>
-                            <input size="3" id="colorRes" onblur='return parameterChanged(event);' class="form-control form-control-sm" value="10" size="4">
+                            <input size="3" id="colorRes"
+                                   onblur='return parameterChanged(event);'
+                                   class="form-control form-control-sm"
+                                   value="10" size="4">
                         </td>
                         <td>pixels</td>
                     </tr>
@@ -388,7 +410,9 @@
                             <label for="shouldColor">Color the Map</label>
                         </td>
                         <td>
-                            <input size="3" id="shouldColor" onchange='return parameterChanged(event);' type="checkbox">
+                            <input size="3" id="shouldColor"
+                                   onchange='return parameterChanged(event);'
+                                   type="checkbox">
                         </td>
                     </tr>
                     </tbody>
