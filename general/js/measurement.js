@@ -102,8 +102,8 @@ BeamModel.prototype.calcProbGrid = function (resolution, robotDir, z, width, hei
 		probs[i] = new Array(Math.ceil(width / resolution));
 		for (var j = 0; j < probs[i].length; j++)
 		{
-			var p = this.probability(z, new RobotState(view.toWorldX(j * resolution + resolution / 2),
-				view.toWorldY(i * resolution + resolution / 2), robotDir));
+			var p = this.probability(z, new RobotState(view.toWorldX(j * resolution - resolution / 2),
+				view.toWorldY(i * resolution - resolution / 2), robotDir));
 			// sum += p;
 			max = Math.max(p, max);
 			min = Math.min(p, min);
