@@ -74,3 +74,10 @@ SensorDemo.prototype.draw = function()
 		}
 	}
 };
+
+SensorDemo.prototype.setSensorNoise = function(noise)
+{
+	this.sensorNoise = noise;
+	this.buckets.fill(0);
+	this.draw();
+};
