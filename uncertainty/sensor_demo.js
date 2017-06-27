@@ -92,7 +92,16 @@ SensorDemo.prototype.draw = function ()
 
 SensorDemo.prototype.setSensorNoise = function (noise)
 {
+	if(noise === this.sensorNoise)
+		return;
+
 	this.sensorNoise = noise;
-	this.buckets.fill(0);
+	this.clearBuckets();
 	this.draw();
+};
+
+SensorDemo.prototype.clearBuckets = function()
+{
+	this.buckets.fill(0);
+	this.maxCount = 0;
 };
