@@ -45,37 +45,39 @@ SensorDemo.prototype.sample = function (n)
 		}, 1000 / n);
 	} else
 	{
-		for(var i = 0; i < n; i ++)
+		for (var i = 0; i < n; i++)
 		{
-			this.takeSingleReading();
+			this.takeSingleReading(false);
 		}
+		this.draw();
 	}
 };
 
-SensorDemo.prototype.takeSingleReading = function ()
+SensorDemo.prototype.takeSingleReading = function (redraw)
 {
 	//We are done, stop the animation
 	if (this.readingsLeft-- <= 0)
 		window.clearInterval(this.intervalId);
 
+	if (typeof redraw === 'undefined')
+		redraw = true;
+
 	var reading = this.actualDistance + gaussian() * this.sensorNoise;
-	this.draw();
-	const ctx = this.ctx;
-	ctx.lineWidth *= 3;
-	ctx.strokeStyle = 'green';
-	ctx.strokeLine(reading, 0, reading, this.view.height);
-	ctx.lineWidth /= 3;
-	// if(reading > this.sensorRadius)reading = this.sensorRadius;
 	var index = round(reading / this.view.width * this.nBuckets);
 	this.buckets[index]++;
 	this.maxCount = max(this.maxCount, this.buckets[index]);
 	this.readingSum += reading;
-	this.nReadings ++;
-	ctx.strokeTextWithColorFont('Actual Distance: ' + this.actualDistance,
-		'black', '12 Menlo Regular',
-		10, 20);
-	ctx.strokeTextWithColorFont('Average Sensor Readings: ' +
-		this.readingSum/this.nReadings, 'black', '12 Menlo Regular', 10, 40);
+	this.nReadings++;
+
+	if (redraw)
+	{
+		this.draw();
+		const ctx = this.ctx;
+		ctx.lineWidth *= 3;
+		ctx.strokeStyle = 'green';
+		ctx.strokeLine(reading, 0, reading, this.view.height);
+		ctx.lineWidth /= 3;
+	}
 };
 
 SensorDemo.prototype.draw = function ()
@@ -100,11 +102,16 @@ SensorDemo.prototype.draw = function ()
 			ctx.strokeLine(x + step / 2, 0, x + step / 2, count * 1.0 / this.maxCount * this.view.height);
 		}
 	}
+	ctx.strokeTextWithColorFont('Actual Distance: ' + this.actualDistance,
+		'black', '12 Menlo Regular',
+		10, 20);
+	ctx.strokeTextWithColorFont('Average Sensor Readings: ' +
+		this.readingSum / this.nReadings, 'black', '12 Menlo Regular', 10, 40);
 };
 
 SensorDemo.prototype.setSensorNoise = function (noise)
 {
-	if(noise === this.sensorNoise)
+	if (noise === this.sensorNoise)
 		return;
 
 	this.sensorNoise = noise;
@@ -112,7 +119,7 @@ SensorDemo.prototype.setSensorNoise = function (noise)
 	this.draw();
 };
 
-SensorDemo.prototype.clearBuckets = function()
+SensorDemo.prototype.clearBuckets = function ()
 {
 	this.buckets.fill(0);
 	this.maxCount = 0;
