@@ -25,15 +25,17 @@ function SensorDemo(id, sensorNoise)
 
 SensorDemo.prototype.sample = function(n)
 {
-	if(this.readingsLeft > 0)
-		return;
+	//If there is animation going on, just return
+	if(this.readingsLeft > 0){return;}
+
 	this.readingsLeft = n;
 	const self = this;
-	this.intervalId = window.setInterval(function(){self.takeSingleReading();}, 100);
+	this.intervalId = window.setInterval(function(){self.takeSingleReading();}, 1000/n);
 };
 
 SensorDemo.prototype.takeSingleReading = function()
 {
+	//We are done, stop the animation
 	if(this.readingsLeft-- <= 0)
 		window.clearInterval(this.intervalId);
 
@@ -66,6 +68,9 @@ SensorDemo.prototype.draw = function()
 	for(var i = 0; i < this.buckets.length; i ++, x+=step)
 	{
 		var count = this.buckets[i];
-		ctx.strokeLine(x+step/2, 0, x+step/2, count*1.0/this.maxCount*this.view.height);
+		if(count > 0)
+		{
+			ctx.strokeLine(x + step / 2, 0, x + step / 2, count * 1.0 / this.maxCount * this.view.height);
+		}
 	}
 };
