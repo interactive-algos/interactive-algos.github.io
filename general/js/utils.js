@@ -240,7 +240,8 @@ function isNumber(event)
 
 function isDecimal(event)
 {
-	return isNumber(event) || event.charCode === 46;
+	const target = event.target || event.srcElement;
+	return isNumber(event) || (!target.value.includes('.') && event.charCode === 46);
 }
 
 function getValue(id)
