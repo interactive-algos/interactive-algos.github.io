@@ -1,0 +1,314 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8"/>
+
+    <script src="https://code.jquery.com/jquery-3.2.1.min.js"
+            integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4="
+            crossorigin="anonymous"></script>
+
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.12.2/css/bootstrap-select.min.css">
+
+    <!-- Latest compiled and minified JavaScript -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.12.2/js/bootstrap-select.min.js"></script>
+
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet"
+          href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
+          integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u"
+          crossorigin="anonymous">
+
+    <!-- Optional theme -->
+    <link rel="stylesheet"
+          href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css"
+          integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp"
+          crossorigin="anonymous">
+
+    <!-- Latest compiled and minified JavaScript -->
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"
+            integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa"
+            crossorigin="anonymous"></script>
+
+    <script src='../general/js/utils.js'></script>
+    <script src='../general/js/path_data.js'></script>
+    <script src='../general/js/map_data.js'></script>
+    <script src='../general/js/odometry.js'></script>
+    <script src='../general/js/measurement.js'></script>
+    <script src='../general/js/particle.js'></script>
+    <script src='../general/js/particle_filter.js'></script>
+    <script src='../general/js/robot.js'></script>
+    <script src='../general/js/view.js'></script>
+    <script src='./js/mcl_sim.js'></script>
+    <script>
+        var mclDemo;
+        function init()
+        {
+			mclDemo = new MCLDemo(
+                'canvas', 'minicanvas',
+                getMap(),
+                getParticleCount(),
+                getSensorRadius(),
+                getValue('goByOneStep'),
+                getValue('robotSenseNoise'),
+                getValue('a1'),getValue('a2'),getValue('a3'),getValue('a4'), //Noise
+                getValue('colorRes')
+            );
+        }
+
+        function start() {mclDemo.start();}
+
+        function stop() {mclDemo.stop();}
+
+        function stepForward() {mclDemo.stepForward();}
+
+        function selectPath(event) {
+            var selectedOption = event.target.selectedOptions[0];
+        	if (selectedOption.id === 'addPath')
+        	{
+        		mclDemo.startRecordingPath();
+        	} else
+        	{
+        		var selectedPath = selectedOption.value;
+        		clearCanvas(mclDemo.lcanvas);
+                mclDemo.lctx.drawMap(mclDemo.map);
+        		mclDemo.lctx.strokeStyle = 'green';
+        		mclDemo.lctx.strokePath(mclDemo.paths[selectedPath]);
+        		clearCanvas(mclDemo.scanvas);
+                mclDemo.sctx.drawMap(mclDemo.map);
+        		mclDemo.sctx.strokeStyle = 'green';
+        		mclDemo.sctx.strokePath(mclDemo.paths[selectedPath]);
+        	}
+        }
+        function parameterChanged(event)
+        {
+        	var target = event.target;
+        	var value = Number(event.target.value);
+        	if (target.id === 'a1' || target.id === 'a2' ||
+                target.id === 'a3' || target.id === 'a4')
+        	{
+        		mclDemo.setA();
+        	} else if (target.id === 'goByOneStep')
+        	{
+        		mclDemo.setStride(value);
+        	} else if (target.id === 'fogOfWar')
+        	{
+        		mclDemo.setSensorRadius(value);
+        	} else if (target.id === 'nParticles') {
+                mclDemo.setParticleCount(value);
+            } else if (target.id === 'colorRes') {
+                mclDemo.colorRes = value;
+            } else if (target.id === 'pRatio') {
+                mclDemo.robot.filter.resampleRatio = value;
+            }
+        }
+
+        function toggleColoring(event)
+        {
+        	var target = event.target || event.srcElement;
+        	mclDemo.shouldColorMap = target.checked;
+        }
+    </script>
+    <title>Robot MCL Demo</title>
+
+    <style type="text/css">
+        canvas {
+            border: 1px solid black;
+            width: 100%;
+            height: auto;
+        }
+    </style>
+</head>
+<body onload="init();">
+<div class="container">
+
+    <div class='row'>
+        <div class="col-lg-8">
+            <div class="row"><h3>Robot MCL Demo</h3></div>
+            <canvas id="canvas" width="7" height="4"></canvas>
+            <span id="probability"></span>
+        </div>
+        <div class='col-sm-4'>
+            <br>
+            <canvas id="minicanvas" width="7" height="4"></canvas>
+            <fieldset>
+                <!-- <legend>Configuration</legend> -->
+                <table>
+                    <tbody>
+                    <tr>
+                        <td>
+                            <label for="path">Movement Path</label>
+                        </td>
+                        <td>
+                            <select id="path" class="selectpicker"
+                                    onchange="selectPath(event);" size="3">
+                                <optgroup label="Built-In">
+                                    <option>Vanilla</option>
+                                </optgroup>
+                                <optgroup label="Custom" id="customPathGroup">
+                                    <option data-icon="glyphicon glyphicon-plus"
+                                            id="addPath">Add a path
+                                    </option>
+                                </optgroup>
+                            </select>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <label for="nParticles"># of particles</label>
+                        </td>
+                        <td>
+                            <input type='text' id="nParticles"
+                                   onblur='return parameterChanged(event);'
+                                   onkeypress='return isNumber(event);'
+                                   class="form-control" value="500"
+                                   size="3 ">
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <label for="pRatio">% of particles being
+                                resampled</label>
+                        </td>
+                        <td>
+                            <input type='text' id="pRatio"
+                                   onblur='return parameterChanged(event);'
+                                   onkeypress='return isDecimal(event);'
+                                   class="form-control" value="0.9"
+                                   size="3 ">
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <label for="goByOneStep">Step length</label>
+                        </td>
+                        <td>
+                            <input type='text' id="goByOneStep"
+                                   onblur='return parameterChanged(event);'
+                                   onkeypress='return isDecimal(event);'
+                                   class="form-control" value="0.04"
+                                   size="3">
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <label for="a1">Rotational error from
+                                rotation</label>
+                        </td>
+                        <td>
+                            <input id='a1' size="3" value="1"
+                                   type="text" class="form-control"
+                                   onkeypress='return isDecimal(event);'
+                                   onblur='return parameterChanged(event);'>
+                        </td>
+                        <td><label>%</label></td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <label for="a2">Rotational error from
+                                translation</label>
+                        </td>
+                        <td>
+                            <input id='a2' size="3" value="1"
+                                   type="text" class="form-control"
+                                   onkeypress='return isDecimal(event);'
+                                   onblur='return parameterChanged(event);'>
+                        </td>
+                        <td><label>%</label></td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <label for="a3">Translational error from
+                                translation</label>
+                        </td>
+                        <td>
+                            <input id='a3' size="3" value="1"
+                                   type="text" class="form-control"
+                                   onkeypress='return isDecimal(event);'
+                                   onblur='return parameterChanged(event);'>
+                        </td>
+                        <td><label>%</label></td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <label for="a4">Translational error from
+                                rotation</label>
+                        </td>
+                        <td>
+                            <input id='a4' size="3" value="1"
+                                   type="text" class="form-control"
+                                   onkeypress='return isDecimal(event);'
+                                   onblur='return parameterChanged(event);'>
+                        </td>
+                        <td><label>%</label></td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <label for="fogOfWar">Sensor Radius of Robot</label>
+                        </td>
+                        <td>
+                            <input id="fogOfWar"
+                                   onblur='return parameterChanged(event);'
+                                   onkeypress='return isNumber(event);'
+                                   class="form-control" value="3" size="3">
+                        </td>
+                    </tr>
+                    <tr>
+                        <td><label for="robotSenseNoise">Sensor Noise of Robot</label>
+                        </td>
+                        <td><input type='text' id="robotSenseNoise"
+                                   onblur='return parameterChanged(event);'
+                                   onkeypress='return isDecimal(event);'
+                                   class="form-control form-control-sm"
+                                   value="0.3"
+                                   size="3"></td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <label for="colorRes">Coloring Resolution</label>
+                        </td>
+                        <td>
+                            <input id="colorRes"
+                                   onblur='return parameterChanged(event);'
+                                   class="form-control form-control-sm"
+                                   value="10" size="3">
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <label for="shouldColor"
+                                   class="custom-control custom-checkbox">Color
+                                the Map</label>
+                        </td>
+                        <td>
+                            <input id="shouldColor" class="form-check-input"
+                                   onchange='return toggleColoring(event);'
+                                   type="checkbox" size="3">
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+
+                <button onclick="stop()" class="btn btn-danger">
+                    <span class="glyphicon glyphicon-stop"
+                          aria-hidden="true"></span>
+                </button>
+                <button onclick="setBackward()" class="btn btn-info">
+                    <span class="glyphicon glyphicon-step-backward"
+                          aria-hidden="true"></span>
+                </button>
+                <button onclick="start()" class="btn btn-success">
+                    <span class="glyphicon glyphicon-play"
+                          aria-hidden="true"></span>
+                </button>
+                <button onclick="stepForward()" class="btn btn-info">
+                    <span class="glyphicon glyphicon-step-forward"
+                          aria-hidden="true"></span>
+                </button>
+            </fieldset>
+        </div>
+    </div>
+</div>
+</body>
+</html>

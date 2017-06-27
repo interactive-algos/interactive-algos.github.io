@@ -89,7 +89,7 @@ View.prototype.adjustToPoint = function (x, y)
 	{
 		dy = canvas.height * (1 - lockRatio) - y;
 	}
-	view.addOffset(dx, dy);
+	this.addOffset(dx, dy);
 };
 
 
@@ -296,20 +296,20 @@ View.prototype.toWorldY = function (y)
 
 View.prototype.toWorldCoor = function (coor)
 {
-	coor.x = toWorldX(coor.x);
-	coor.y = toWorldY(coor.y);
+	coor.x = this.toWorldX(coor.x);
+	coor.y = this.toWorldY(coor.y);
 };
 
 View.prototype.toScreenCoor = function (coor)
 {
-	coor.x = toScreenX(coor.x);
-	coor.y = toScreenY(coor.y);
+	coor.x = this.toScreenX(coor.x);
+	coor.y = this.toScreenY(coor.y);
 };
 
 //Functional API, return a new point.
 View.prototype.getWorldCoor = function (coor)
 {
-	return new Point(toWorldX(coor.x), toWorldY(coor.y));
+	return new Point(this.toWorldX(coor.x), this.toWorldY(coor.y));
 };
 
 // function getScreenCoor(coor)
