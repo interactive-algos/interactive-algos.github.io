@@ -50,7 +50,7 @@ BeamModelDemo.prototype.mouseDown = function (event)
 		this.tracker.addParticle(new Particle(x, y, this.dir, w));
 		this.draw();
 		this.drawLaserLines();
-		this.view.ctx.strokeTextWithColorFont('probability: ' + w, 'black', '12 Menlo Regular');
+		this.view.ctx.strokeTextWithColorFont('probability: ' + w, 'black', '12 Menlo Regular', 10, 20);
 		return;
 	}
 
