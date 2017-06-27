@@ -25,18 +25,28 @@ function SensorDemo(id, sensorNoise)
 
 SensorDemo.prototype.sample = function(n)
 {
-	this.ctx.strokeStyle = 'green';
-	for(var i = 0; i < n; i ++)
-	{
-		var reading = this.actualDistance + gaussian()*this.sensorNoise;
-		// this.draw();
-		// this.ctx.strokeLine(reading, 0, reading, this.view.height);
-		// if(reading > this.sensorRadius)reading = this.sensorRadius;
-		var index = round(reading/this.view.width * this.nBuckets);
-		this.buckets[index]++;
-		this.maxCount = max(this.maxCount, this.buckets[index]);
-	}
+	if(this.readingsLeft > 0)
+		return;
+	this.readingsLeft = n;
+	const self = this;
+	this.intervalId = window.setInterval(function(){self.takeSingleReading();}, 100);
+};
+
+SensorDemo.prototype.takeSingleReading = function()
+{
+	if(this.readingsLeft-- <= 0)
+		window.clearInterval(this.intervalId);
+
+	var reading = this.actualDistance + gaussian()*this.sensorNoise;
 	this.draw();
+	this.ctx.lineWidth *= 3;
+	this.ctx.strokeStyle = 'green';
+	this.ctx.strokeLine(reading, 0, reading, this.view.height);
+	this.ctx.lineWidth /= 3;
+	// if(reading > this.sensorRadius)reading = this.sensorRadius;
+	var index = round(reading/this.view.width * this.nBuckets);
+	this.buckets[index]++;
+	this.maxCount = max(this.maxCount, this.buckets[index]);
 };
 
 SensorDemo.prototype.draw = function()
