@@ -4,6 +4,11 @@ const requestAnimationFrame = window.msRequestAnimationFrame || window.webkitReq
 
 const cancelAnimationFrame = window.cancelAnimationFrame || window.mozCancelAnimationFrame;
 
+window.onerror = function (message, url, lineNo){
+    console.log('Error: ' + message + '\n' + 'Line Number: ' + lineNo);
+    return true;
+}
+
 function View(canvas, scale)
 {
 	this.canvas = canvas;
