@@ -23,13 +23,23 @@ function BeamModel(a1, sensorRadius, map)
  * @function
  * @param {float[]} z - The given reading of measurement sensor
  * @param {RobotState} state - The actual robot state
- * @returns {float} q - The probability of getting z
+ * @returns {Number} q - The probability of getting z
  */
 BeamModel.prototype.probability = function (z, state)
 {
-	// if (state.x < 0 || state.y < 0 || state.x >= this.width || state.y >= this.height)
-	// 	return 0;
+	return Math.exp(this.prob_log(z, state));
+};
 
+/**
+ * The log of probability for the robot to get a sensor reading "z"
+ * when it has a state "state"
+ * @function
+ * @param {float[]} z - The given reading of measurement sensor
+ * @param {RobotState} state - The actual robot state
+ * @returns {number} q - The log of probability of getting z
+ */
+BeamModel.prototype.prob_log = function (z, state)
+{
 	const m = this.map;
 
 	//Actual sensor data
@@ -53,42 +63,7 @@ BeamModel.prototype.probability = function (z, state)
 	}
 	q /= (nLasers / 2 + 1);
 
-	return Math.exp(q);
-};
-
-/**
- * The log of probability for the robot to get a sensor reading "z"
- * when it has a state "state"
- * @function
- * @param {float[]} z - The given reading of measurement sensor
- * @param {RobotState} state - The actual robot state
- * @returns {number} q - The log of probability of getting z
- */
-BeamModel.prototype.prob_log = function (z, state)
-{
-	// if (state.x < 0 || state.y < 0 || state.x >= this.width || state.y >= this.height)
-	// 	return Number.NEGATIVE_INFINITY;
-
-	const m = this.map;
-
-	var z_true = new Array(z.length);
-
-	var q = 0;
-
-	//Obtain the true distances
-	scan(state.x, state.y, state.dir, this.sensorRadius, m, z_true);
-
-	//Number of lasers that robot use to sense
-	const nLasers = z.length;
-
-	for (var i = 0; i < nLasers; i++)
-	{
-		// if(z[i] > this.senseRadius || z_true[i] > this.sensorRadius)
-		//     continue;
-		i %= nLasers;
-		q += prob_gaussian_log(z[i] - z_true[i], this.a1);
-	}
-	return q / (nLasers / 2 + 1);
+	return q;
 };
 
 BeamModel.prototype.calcProbGrid = function (resolution, robotDir, z, width, height, view)

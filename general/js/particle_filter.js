@@ -174,11 +174,6 @@ ParticleFilter.prototype.resample = function ()
 		cur += step;
 	}
 
-	// For testing, clone only
-	// for (var i = 0; i < z_t.length; i++) {
-	// 	z_t[i] = this.particles[i].clone();
-	// }
-
 	for (var i = m; i < z_t.length; i++)
 	{
 		z_t[i] = new Particle(random() * this.sensorModel.width, random() * this.sensorModel.height, random() * TWO_PI, 1);
