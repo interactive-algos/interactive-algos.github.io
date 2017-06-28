@@ -131,7 +131,7 @@ BeamModelDemo.prototype.update = function ()
 
 BeamModelDemo.prototype.setNLasers = function (n)
 {
-	this.z = new Array(n+1);
+	this.z = new Array(n + 1);
 	this.update();
 	this.draw();
 	this.drawLaserLines();
@@ -195,17 +195,15 @@ ParticleTracker.prototype.forEach = function (callback)
 {
 	const minW = this.minW;
 	const maxW = this.maxW;
+	if (this.particles.length === 1)
 	{
-		if (this.particles.length === 1)
+		const p = this.particles[0];
+		callback(p.x, p.y, p.dir, p.w);
+	} else if (this.particles.length)
+	{
+		this.particles.forEach(function (p)
 		{
-			const p = this.particles[0];
-			callback(p.x, p.y, p.dir, p.w);
-		} else if (this.particles.length)
-		{
-			this.particles.forEach(function (p)
-			{
-				callback(p.x, p.y, p.dir, (p.w - minW) / (maxW - minW));
-			});
-		}
+			callback(p.x, p.y, p.dir, (p.w - minW) / (maxW - minW));
+		});
 	}
 };
