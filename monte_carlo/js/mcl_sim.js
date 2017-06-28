@@ -4,7 +4,7 @@ function MCLDemo (
     map,
     particleCount, sensorRadius, stride, sensorNoise,
     a1, a2, a3, a4,
-    colorRes
+    colorRes, resampleRatio
 ) {
     const scale = 50;
     //the Large canvas elements
@@ -28,6 +28,8 @@ function MCLDemo (
     this.paths['Vanilla'] = vanillaPath;
     this.currPathName = 'Vanilla';
     this.colorRes = colorRes;
+    this.particleCount = particleCount;
+    this.resampleRatio = resampleRatio;
 
     var path = this.paths[this.currPathName];
 	var x = path[0].x;		//x coordinate
@@ -35,16 +37,18 @@ function MCLDemo (
 	var dir = atan2(path[1].y - path[0].y, path[1].x - path[0].x);	//orientation in radians
 
     //Robot
+    this.mModel = new OdometryModel(a1,a2,a3,a4);
+    this.sModel = new BeamModel(sensorNoise, sensorRadius, map)
     this.robot = new Robot(
         new ParticleFilter(
-            getParticleCount(),
-            new OdometryModel(a1,a2,a3,a4),
-            new BeamModel(sensorNoise, sensorRadius, map),
+            particleCount,
+            this.mModel,
+            this.sModel,
             new RobotState(x, y, dir + TWO_PI / 2),
-            getResampleRatio()
+            resampleRatio
         ),
         this.paths[this.currPathName],
-        undefined
+        19
     );
 
     //Other Properties
@@ -140,23 +144,27 @@ MCLDemo.prototype.drawSCanvas = function() {
 }
 
 //Setters
-MCLDemo.prototype.setA = function(noise){
-    this.robot.filter.mclModel = new OdometryModel(
-        getValue('a1'),
-        getValue('a2'),
-        getValue('a3'),
-        getValue('a4')
-    );
+MCLDemo.prototype.setA1 = function(noise){
+    this.robot.filter.motionModel.a1 = noise;
+};
+MCLDemo.prototype.setA2 = function(noise){
+    this.robot.filter.motionModel.a2 = noise;
+};
+MCLDemo.prototype.setA3 = function(noise){
+    this.robot.filter.motionModel.a3 = noise;
+};
+MCLDemo.prototype.setA4 = function(noise){
+    this.robot.filter.motionModel.a4 = noise;
 };
 
 MCLDemo.prototype.setParticleCount = function(n){
     this.particleCount = n;
     this.robot.filter = new ParticleFilter(
-        n,
-        new OdometryModel(getValue('a1'), getValue('a2'), getValue('a3'), getValue('a4')),
-        new BeamModel(getValue('robotSenseNoise'), getSensorRadius(), this.map),
+        this.particleCount,
+        this.mModel,
+        this.sModel,
         new RobotState(this.robot.x, this.robot.y, this.robot.dir + TWO_PI / 2),
-        getResampleRatio()
+        this.resampleRatio
     );
 };
 
@@ -178,14 +186,14 @@ MCLDemo.prototype.updateRobot = function () {
     //Robot
     this.robot = new Robot(
         new ParticleFilter(
-            getParticleCount(),
-            new OdometryModel(getValue('a1'), getValue('a2'), getValue('a3'), getValue('a4')),
-            new BeamModel(getValue('robotSenseNoise'), getSensorRadius(), this.map),
+            this.particleCount,
+            this.mModel,
+            this.sModel,
             new RobotState(x, y, dir + TWO_PI / 2),
-            getResampleRatio()
+            this.resampleRatio
         ),
         this.paths[this.currPathName],
-        undefined
+        19
     );
 }
 

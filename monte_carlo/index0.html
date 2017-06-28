@@ -53,7 +53,8 @@
                 getValue('goByOneStep'),
                 getValue('robotSenseNoise'),
                 getValue('a1'),getValue('a2'),getValue('a3'),getValue('a4'), //Noise
-                getValue('colorRes')
+                getValue('colorRes'),
+                getResampleRatio()
             );
         }
 
@@ -85,10 +86,18 @@
         {
         	var target = event.target;
         	var value = Number(event.target.value);
-        	if (target.id === 'a1' || target.id === 'a2' ||
-                target.id === 'a3' || target.id === 'a4')
+        	if (target.id === 'a1')
         	{
-        		mclDemo.setA();
+        		mclDemo.setA1();
+        	} else if (target.id === 'a2')
+        	{
+        		mclDemo.setA2();
+        	} else if (target.id === 'a3')
+        	{
+        		mclDemo.setA3();
+        	} else if (target.id === 'a4')
+        	{
+        		mclDemo.setA4();
         	} else if (target.id === 'goByOneStep')
         	{
         		mclDemo.setStride(value);
@@ -176,7 +185,7 @@
                                    onblur='return parameterChanged(event);'
                                    onkeypress='return isDecimal(event);'
                                    class="form-control" value="0.9"
-                                   size="3 ">
+                                   size="3">
                         </td>
                     </tr>
                     <tr>
