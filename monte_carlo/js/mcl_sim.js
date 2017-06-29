@@ -7,16 +7,14 @@ function MCLDemo(lid, //Main Canvas id
 {
 	const scale = 50;
 	//the Large canvas elements
-	this.lcanvas = document.getElementById(lid);
-	this.lview = new View(this.lcanvas, scale);
+	this.largeCanvas = document.getElementById(lid);
+	this.lctx = this.largeCanvas.getContext('2d');
+	this.lview = new View(this.largeCanvas, scale);
 	this.lview.setPreviewScale(map);
-	this.lctx = this.lcanvas.getContext('2d');
 
 	//The Small canvas elements
-	this.scanvas = document.getElementById(sid);
-	this.sview = new View(this.scanvas, scale);
+	this.sview = new View(document.getElementById(sid), scale);
 	this.sview.setPreviewScale(map);
-	this.sctx = this.scanvas.getContext('2d');
 
 	this.pathSelect = document.getElementById('path');
 
@@ -36,13 +34,15 @@ function MCLDemo(lid, //Main Canvas id
 	var dir = atan2(path[1].y - path[0].y, path[1].x - path[0].x);	//orientation in radians
 
 	//Robot
-	this.mModel = new OdometryModel(a1, a2, a3, a4);
-	this.sModel = new BeamModel(sensorNoise, sensorRadius, map);
-	this.robot = new Robot(
-		new ParticleFilter(
+	this.motionModel = new OdometryModel(a1, a2, a3, a4);
+	this.sensorModel = new BeamModel(sensorNoise, sensorRadius, map);
+	this.robot = new Robot
+	(
+		new ParticleFilter
+		(
 			particleCount,
-			this.mModel,
-			this.sModel,
+			this.motionModel,
+			this.sensorModel,
 			new RobotState(x, y, dir + TWO_PI / 2),
 			resampleRatio
 		),
@@ -54,7 +54,6 @@ function MCLDemo(lid, //Main Canvas id
 	Robot.sensorRadius = sensorRadius;
 	Robot.stride = stride;
 	this.animating = false;
-	this.isPreview = true;
 	this.shouldColorMap = false;
 
 	this.tempPath = undefined;
@@ -66,10 +65,10 @@ MCLDemo.prototype.start = function ()
 	if (this.animating) return;
 
 	this.animating = true;
-	this.isPreview = false;
+	this.lview.setScale(50);
 	const self = this;
 
-	this.lcanvas.onmousedown = function (event)
+	this.largeCanvas.onmousedown = function (event)
 	{
 		self.queryProbability(event);
 	};
@@ -86,13 +85,17 @@ MCLDemo.prototype.frame = function (timestamp)
 	var fps = Math.round(1000.0 / (timestamp - this.lastFrame));
 	this.lastFrame = timestamp;
 
+	this.robot.update();
 	this.draw();
 
 	this.lctx.strokeTextWithColorFont(fps + "\tFPS", 'black', '10px Menlo', 10, 20);
 	if (this.animating)
 	{
 		const self = this;
-		requestAnimationFrame(function(timestamp){self.frame(timestamp);});
+		requestAnimationFrame(function (timestamp)
+		{
+			self.frame(timestamp);
+		});
 	}
 };
 
@@ -103,7 +106,7 @@ MCLDemo.prototype.stop = function ()
 		this.animating = false;
 	} else
 	{ //stop
-		this.lcanvas.onmousedown = undefined;
+		this.largeCanvas.onmousedown = undefined;
 		init();
 	}
 };
@@ -112,25 +115,20 @@ MCLDemo.prototype.stepForward = function ()
 {
 	this.animating = false;
 	const self = this;
-	requestAnimationFrame(function(timestamp){self.frame(timestamp);});
+	requestAnimationFrame(function (timestamp)
+	{
+		self.frame(timestamp);
+	});
 };
 
 MCLDemo.prototype.draw = function ()
 {
-	if (!this.isPreview)
-	{
-		this.lview.setScale(50);
-		this.robot.update();
-		var x = this.lview.toScreenX(this.robot.x);
-		var y = this.lview.toScreenY(this.robot.y);
-		this.lview.adjustToPoint(x, y);
-	} else
-	{
-		this.lview.setPreviewScale(this.map);
-	}
+	var x = this.lview.toScreenX(this.robot.x);
+	var y = this.lview.toScreenY(this.robot.y);
+	this.lview.adjustToPoint(x, y);
 
-	this.drawLCanvas();
-	this.drawSCanvas();
+	this.drawView(this.lview);
+	this.drawView(this.sview);
 	if (this.shouldColorMap) this.colorMap();
 };
 
@@ -140,28 +138,14 @@ MCLDemo.prototype.colorMap = function ()
 		this.robot.getSensorReading(), this.robot.dir);
 };
 
-MCLDemo.prototype.drawLCanvas = function ()
+MCLDemo.prototype.drawView = function (view)
 {
-	clearCanvas(this.lcanvas);
-	this.lctx.strokeStyle = 'black';
-	this.lctx.drawMap(this.map);
-	this.lctx.strokeStyle = 'green';
-	this.lctx.strokePath(this.paths[this.currPathName]);
-	this.lctx.strokeStyle = 'black';
-	this.robot.draw(this.lctx);
-};
-
-MCLDemo.prototype.drawSCanvas = function ()
-{
-	clearCanvas(this.scanvas);
-	this.sctx.strokeStyle = 'black';
-	this.sctx.drawMap(this.map);
-	this.sctx.strokeStyle = 'green';
-	this.sctx.strokePath(this.paths[this.currPathName]);
-	this.sctx.strokeStyle = 'black';
-	this.robot.draw(this.sctx);
-	this.sctx.strokeStyle = 'black';
-	this.sctx.drawRobot(this.robot.x, this.robot.y, this.robot.dir, 1);
+	clearCanvas(view.canvas);
+	const ctx = view.ctx;
+	ctx.drawMap(this.map);
+	ctx.strokeStyle = 'green';
+	ctx.strokePath(this.paths[this.currPathName]);
+	this.robot.draw(ctx);
 };
 
 //Setters
@@ -188,9 +172,9 @@ MCLDemo.prototype.setParticleCount = function (n)
 	this.robot.filter = new ParticleFilter
 	(
 		this.particleCount,
-		this.mModel,
-		this.sModel,
-		new RobotState(this.robot.x, this.robot.y, this.robot.dir + TWO_PI / 2),
+		this.motionModel,
+		this.sensorModel,
+		new RobotState(this.robot.x, this.robot.y, this.robot.dir),
 		this.resampleRatio
 	);
 };
@@ -216,8 +200,8 @@ MCLDemo.prototype.updateRobot = function ()
 	this.robot = new Robot(
 		new ParticleFilter(
 			this.particleCount,
-			this.mModel,
-			this.sModel,
+			this.motionModel,
+			this.sensorModel,
 			new RobotState(x, y, dir + TWO_PI / 2),
 			this.resampleRatio
 		),
@@ -231,12 +215,12 @@ MCLDemo.prototype.startRecordingPath = function ()
 {
 	animating = false;
 
-	clearCanvas(this.lcanvas);
+	clearCanvas(this.largeCanvas);
 	this.lview.setPreviewScale(this.map);
 	this.lctx.drawMap(this.map);
 
 	const self = this;
-	this.lcanvas.onmousedown = function (event)
+	this.largeCanvas.onmousedown = function (event)
 	{
 		self.mouseDown(event);
 	};
@@ -250,9 +234,18 @@ MCLDemo.prototype.mouseDown = function (event)
 
 	this.tempPath.push(coor);
 	const self = this;
-	this.lcanvas.onmousemove = function (event){self.mouseMotion(event);};
-	this.lcanvas.onmouseup = function (event){self.mouseUp(event);};
-	this.lcanvas.onmouseout = function (event){self.mouseUp(event);}
+	this.largeCanvas.onmousemove = function (event)
+	{
+		self.mouseMotion(event);
+	};
+	this.largeCanvas.onmouseup = function (event)
+	{
+		self.mouseUp(event);
+	};
+	this.largeCanvas.onmouseout = function (event)
+	{
+		self.mouseUp(event);
+	}
 };
 
 MCLDemo.prototype.mouseMotion = function (event)
@@ -275,10 +268,10 @@ MCLDemo.prototype.mouseMotion = function (event)
 
 MCLDemo.prototype.mouseUp = function (event)
 {
-	this.lcanvas.onmousemove = undefined;
-	this.lcanvas.onmouseup = undefined;
-	this.lcanvas.onmouseout = undefined;
-	this.lcanvas.onmousedown = undefined;
+	this.largeCanvas.onmousemove = undefined;
+	this.largeCanvas.onmouseup = undefined;
+	this.largeCanvas.onmouseout = undefined;
+	this.largeCanvas.onmousedown = undefined;
 
 	var msg = "Enter a unique name for this path, alphanumeric please:";
 

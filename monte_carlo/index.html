@@ -42,82 +42,80 @@
     <script src='../general/js/view.js'></script>
     <script src='./js/mcl_sim.js'></script>
     <script>
-        var mclDemo;
-        function init()
-        {
+		var mclDemo;
+		function init()
+		{
 			mclDemo = new MCLDemo(
-                'canvas', 'minicanvas',
-                getMap(),
-                getParticleCount(),
-                getSensorRadius(),
-                getValue('goByOneStep'),
-                getValue('robotSenseNoise'),
-                getValue('a1'),getValue('a2'),getValue('a3'),getValue('a4'), //Noise
-                getValue('colorRes'),
-                getResampleRatio()
-            );
-        }
+				'canvas', 'minicanvas',
+				getMap(),
+				getParticleCount(),
+				getSensorRadius(),
+				getValue('goByOneStep'),
+				getValue('robotSenseNoise'),
+				getValue('a1'), getValue('a2'), getValue('a3'), getValue('a4'), //Noise
+				getValue('colorRes'),
+				getResampleRatio()
+			);
+		}
 
-        function start() {mclDemo.start();}
+		function selectPath(event)
+		{
+			var selectedOption = event.target.selectedOptions[0];
+			if (selectedOption.id === 'addPath')
+			{
+				mclDemo.startRecordingPath();
+			} else
+			{
+				var selectedPath = selectedOption.value;
+				clearCanvas(mclDemo.largeCanvas);
+				mclDemo.lctx.drawMap(mclDemo.map);
+				mclDemo.lctx.strokeStyle = 'green';
+				mclDemo.lctx.strokePath(mclDemo.paths[selectedPath]);
+				clearCanvas(mclDemo.scanvas);
+				mclDemo.sctx.drawMap(mclDemo.map);
+				mclDemo.sctx.strokeStyle = 'green';
+				mclDemo.sctx.strokePath(mclDemo.paths[selectedPath]);
+			}
+		}
+		function parameterChanged(event)
+		{
+			var target = event.target;
+			var value = Number(event.target.value);
+			if (target.id === 'a1')
+			{
+				mclDemo.setA1(value/100);
+			} else if (target.id === 'a2')
+			{
+				mclDemo.setA2(value/100);
+			} else if (target.id === 'a3')
+			{
+				mclDemo.setA3(value/100);
+			} else if (target.id === 'a4')
+			{
+				mclDemo.setA4(value/100);
+			} else if (target.id === 'goByOneStep')
+			{
+				mclDemo.setStride(value);
+			} else if (target.id === 'fogOfWar')
+			{
+				mclDemo.setSensorRadius(value);
+			} else if (target.id === 'nParticles')
+			{
+				mclDemo.setParticleCount(value);
+			} else if (target.id === 'colorRes')
+			{
+				mclDemo.colorRes = value;
+			} else if (target.id === 'pRatio')
+			{
+				mclDemo.robot.filter.resampleRatio = value;
+			}
+		}
 
-        function stop() {mclDemo.stop();}
-
-        function stepForward() {mclDemo.stepForward();}
-
-        function selectPath(event) {
-            var selectedOption = event.target.selectedOptions[0];
-        	if (selectedOption.id === 'addPath')
-        	{
-        		mclDemo.startRecordingPath();
-        	} else
-        	{
-        		var selectedPath = selectedOption.value;
-        		clearCanvas(mclDemo.lcanvas);
-                mclDemo.lctx.drawMap(mclDemo.map);
-        		mclDemo.lctx.strokeStyle = 'green';
-        		mclDemo.lctx.strokePath(mclDemo.paths[selectedPath]);
-        		clearCanvas(mclDemo.scanvas);
-                mclDemo.sctx.drawMap(mclDemo.map);
-        		mclDemo.sctx.strokeStyle = 'green';
-        		mclDemo.sctx.strokePath(mclDemo.paths[selectedPath]);
-        	}
-        }
-        function parameterChanged(event)
-        {
-        	var target = event.target;
-        	var value = Number(event.target.value);
-        	if (target.id === 'a1')
-        	{
-        		mclDemo.setA1();
-        	} else if (target.id === 'a2')
-        	{
-        		mclDemo.setA2();
-        	} else if (target.id === 'a3')
-        	{
-        		mclDemo.setA3();
-        	} else if (target.id === 'a4')
-        	{
-        		mclDemo.setA4();
-        	} else if (target.id === 'goByOneStep')
-        	{
-        		mclDemo.setStride(value);
-        	} else if (target.id === 'fogOfWar')
-        	{
-        		mclDemo.setSensorRadius(value);
-        	} else if (target.id === 'nParticles') {
-                mclDemo.setParticleCount(value);
-            } else if (target.id === 'colorRes') {
-                mclDemo.colorRes = value;
-            } else if (target.id === 'pRatio') {
-                mclDemo.robot.filter.resampleRatio = value;
-            }
-        }
-
-        function toggleColoring(event)
-        {
-        	var target = event.target || event.srcElement;
-        	mclDemo.shouldColorMap = target.checked;
-        }
+		function toggleColoring(event)
+		{
+			var target = event.target || event.srcElement;
+			mclDemo.shouldColorMap = target.checked;
+		}
     </script>
     <title>Robot MCL Demo</title>
 
@@ -264,7 +262,8 @@
                         </td>
                     </tr>
                     <tr>
-                        <td><label for="robotSenseNoise">Sensor Noise of Robot</label>
+                        <td><label for="robotSenseNoise">Sensor Noise of
+                            Robot</label>
                         </td>
                         <td><input type='text' id="robotSenseNoise"
                                    onblur='return parameterChanged(event);'
@@ -299,19 +298,19 @@
                     </tbody>
                 </table>
 
-                <button onclick="stop()" class="btn btn-danger">
+                <button onclick="mclDemo.stop();" class="btn btn-danger">
                     <span class="glyphicon glyphicon-stop"
                           aria-hidden="true"></span>
                 </button>
-                <button onclick="setBackward()" class="btn btn-info">
+                <button class="btn btn-info">
                     <span class="glyphicon glyphicon-step-backward"
                           aria-hidden="true"></span>
                 </button>
-                <button onclick="start()" class="btn btn-success">
+                <button onclick="mclDemo.start();" class="btn btn-success">
                     <span class="glyphicon glyphicon-play"
                           aria-hidden="true"></span>
                 </button>
-                <button onclick="stepForward()" class="btn btn-info">
+                <button onclick="mclDemo.stepForward();" class="btn btn-info">
                     <span class="glyphicon glyphicon-step-forward"
                           aria-hidden="true"></span>
                 </button>

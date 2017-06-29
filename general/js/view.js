@@ -4,12 +4,6 @@ const requestAnimationFrame = window.msRequestAnimationFrame || window.webkitReq
 
 const cancelAnimationFrame = window.cancelAnimationFrame || window.mozCancelAnimationFrame;
 
-window.onerror = function (message, url, lineNo){
-	alert('Error: ' + message + '\n' + 'Line Number: ' + lineNo);
-    console.log('Error: ' + message + '\n' + 'Line Number: ' + lineNo);
-    return true;
-};
-
 function View(canvas, scale)
 {
 	this.canvas = canvas;
@@ -184,7 +178,7 @@ CanvasRenderingContext2D.prototype.strokeSemiCircle = function (wx, wy, dir, wsi
 
 CanvasRenderingContext2D.prototype.drawMap = function (wm)
 {
-	this.strokeStyle = 'rgba(0,0,0,1)';
+	this.strokeStyle = 'black';
 	for (var i = wm.length - 1; i >= 0; i--)
 	{
 		var l = wm[i];

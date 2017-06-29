@@ -8,10 +8,10 @@ function MotionDemo (
 ) {
     const scale = 50;
     //the Large canvas elements
-    this.lcanvas = document.getElementById(lid);
-    this.lview = new View(this.lcanvas, scale);
+    this.largeCanvas = document.getElementById(lid);
+    this.lview = new View(this.largeCanvas, scale);
     this.lview.setPreviewScale(map);
-	this.lctx = this.lcanvas.getContext('2d');
+	this.lctx = this.largeCanvas.getContext('2d');
 
     //The Small canvas elements
     this.scanvas = document.getElementById(sid);
@@ -106,7 +106,7 @@ MotionDemo.prototype.draw = function () {
 }
 
 MotionDemo.prototype.drawLCanvas = function() {
-    clearCanvas(this.lcanvas);
+    clearCanvas(this.largeCanvas);
     this.lctx.strokeStyle = 'black';
     this.lctx.drawMap(this.map);
     this.lctx.strokeStyle = 'green';
@@ -180,12 +180,12 @@ MotionDemo.prototype.updateRobot = function () {
 MotionDemo.prototype.startRecordingPath = function () {
     animating = false;
 
-    clearCanvas(this.lcanvas);
+    clearCanvas(this.largeCanvas);
     this.lview.setPreviewScale(this.map);
     this.lctx.drawMap(this.map);
 
     console.log("start recording...");
-    this.lcanvas.onmousedown = function (event) {
+    this.largeCanvas.onmousedown = function (event) {
         motionDemo.mouseDown(event);
     }
     this.tempPath = [];
@@ -196,13 +196,13 @@ MotionDemo.prototype.mouseDown = function (event) {
 	this.lview.toWorldCoor(coor);
 
 	this.tempPath.push(coor);
-	this.lcanvas.onmousemove = function (event) {
+	this.largeCanvas.onmousemove = function (event) {
         motionDemo.mouseMotion(event);
     }
-	this.lcanvas.onmouseup = function (event) {
+	this.largeCanvas.onmouseup = function (event) {
         motionDemo.mouseUp(event);
     }
-	this.lcanvas.onmouseout = function (event) {
+	this.largeCanvas.onmouseout = function (event) {
         motionDemo.mouseUp(event);
     }
 }
@@ -231,10 +231,10 @@ MotionDemo.prototype.mouseMotion = function (event) {
 }
 
 MotionDemo.prototype.mouseUp = function (event) {
-    this.lcanvas.onmousemove = undefined;
-	this.lcanvas.onmouseup = undefined;
-	this.lcanvas.onmouseout = undefined;
-	this.lcanvas.onmousedown = undefined;
+    this.largeCanvas.onmousemove = undefined;
+	this.largeCanvas.onmouseup = undefined;
+	this.largeCanvas.onmouseout = undefined;
+	this.largeCanvas.onmousedown = undefined;
 
     var msg = "Enter a unique name for this path, alphanumeric please:";
 
