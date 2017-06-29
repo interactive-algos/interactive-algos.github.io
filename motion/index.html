@@ -39,7 +39,7 @@
     <script src='../general/js/particle_filter.js'></script>
     <script src='../general/js/robot.js'></script>
     <script src='../general/js/view.js'></script>
-    <script src='./js/motion_sim.js'></script>
+    <script src='js/motion_sim.js'></script>
     <script>
 		var motionDemo;
 		function init()
@@ -48,10 +48,11 @@
 				'canvas', 'minicanvas',
 				getMap(),
 				getParticleCount(),
-				getSensorRadius(),
 				getValue('goByOneStep'),
-				getValue('a1'), getValue('a2'), getValue('a3'), getValue('a4'), //Noise
-				undefined
+				getValue('a1')/100.0,
+                getValue('a2')/100.0,
+                getValue('a3')/100.0,
+                getValue('a4')/100.0
 			);
 		}
 
@@ -74,11 +75,7 @@
 		{
 			var target = event.target;
 			var value = Number(event.target.value);
-			if (target.id === 'a1' || target.id === 'a2' ||
-				target.id === 'a3' || target.id === 'a4')
-			{
-				motionDemo.setA();
-			} else if (target.id === 'goByOneStep')
+			if (target.id === 'goByOneStep')
 			{
 				motionDemo.setStride(value);
 			} else if (target.id === 'fogOfWar')
@@ -86,8 +83,19 @@
 				motionDemo.setSensorRadius(value);
 			} else if (target.id === 'nParticles')
 			{
-				console.log("setting");
 				motionDemo.setParticleCount(value);
+			}else if(target.id === 'a1')
+            {
+                motionDemo.setA1(value/100.0);
+            }else if(target.id === 'a2')
+			{
+				motionDemo.setA2(value/100.0);
+			}else if(target.id === 'a3')
+			{
+				motionDemo.setA3(value/100.0);
+			}else if(target.id === 'a4')
+			{
+				motionDemo.setA4(value/100.0);
 			}
 		}
     </script>
@@ -211,17 +219,6 @@
                                    onkeypress='return isDecimal(event);'
                         </td>
                         <td><label>%</label></td>
-                    </tr>
-                    <tr>
-                        <td>
-                            <label for="fogOfWar">Sensor Radius</label>
-                        </td>
-                        <td>
-                            <input id="fogOfWar"
-                                   onblur='return parameterChanged(event);'
-                                   onkeypress='return isNumber(event);'
-                                   class="form-control" value="3" size="4">
-                        </td>
                     </tr>
                     </tbody>
                 </table>

@@ -25,7 +25,6 @@ function MotionDemo(lid, //Main Canvas id
 	smoothenPath(vanillaPath);
 	this.paths['Vanilla'] = vanillaPath;
 	this.currPathName = 'Vanilla';
-	this.colorRes = colorRes;
 
 	var path = this.paths[this.currPathName];
 	var x = path[0].x;		//x coordinate
