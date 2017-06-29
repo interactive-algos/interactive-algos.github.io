@@ -5,15 +5,14 @@ function MCLDemo(lid, //Main Canvas id
 				 a1, a2, a3, a4,
 				 colorRes, resampleRatio)
 {
-	const scale = 50;
 	//the Large canvas elements
 	this.largeCanvas = document.getElementById(lid);
 	this.lctx = this.largeCanvas.getContext('2d');
-	this.lview = new View(this.largeCanvas, scale);
+	this.lview = new View(this.largeCanvas, 1);
 	this.lview.setPreviewScale(map);
 
 	//The Small canvas elements
-	this.sview = new View(document.getElementById(sid), scale);
+	this.sview = new View(document.getElementById(sid), 1);
 	this.sview.setPreviewScale(map);
 
 	this.pathSelect = document.getElementById('path');
@@ -86,6 +85,11 @@ MCLDemo.prototype.frame = function (timestamp)
 	this.lastFrame = timestamp;
 
 	this.robot.update();
+
+	var x = this.lview.toScreenX(this.robot.x);
+	var y = this.lview.toScreenY(this.robot.y);
+	this.lview.adjustToPoint(x, y);
+
 	this.draw();
 
 	this.lctx.strokeTextWithColorFont(fps + "\tFPS", 'black', '10px Menlo', 10, 20);
@@ -123,10 +127,6 @@ MCLDemo.prototype.stepForward = function ()
 
 MCLDemo.prototype.draw = function ()
 {
-	var x = this.lview.toScreenX(this.robot.x);
-	var y = this.lview.toScreenY(this.robot.y);
-	this.lview.adjustToPoint(x, y);
-
 	this.drawView(this.lview);
 	this.drawView(this.sview);
 	if (this.shouldColorMap) this.colorMap();
