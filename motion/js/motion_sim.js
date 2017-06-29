@@ -79,8 +79,8 @@ MotionDemo.prototype.frame = function (timestamp)
 	this.lview.adjustToPoint(x, y);
 	this.draw();
 
-	motionDemo.lctx.strokeTextWithColorFont(fps + "\tFPS", 'black', '10px Menlo', 10, 20);
-	if (motionDemo.animating)
+	this.lctx.strokeTextWithColorFont(fps + "\tFPS", 'black', '10px Menlo', 10, 20);
+	if (this.animating)
 	{
 		const self = this;
 		requestAnimationFrame(function(timestamp){self.frame(timestamp);});
@@ -183,10 +183,10 @@ MotionDemo.prototype.startRecordingPath = function ()
 	this.lview.setPreviewScale(this.map);
 	this.lctx.drawMap(this.map);
 
-	console.log("start recording...");
+	const self = this;
 	this.largeCanvas.onmousedown = function (event)
 	{
-		motionDemo.mouseDown(event);
+		self.mouseDown(event);
 	};
 	this.tempPath = [];
 };
@@ -197,17 +197,18 @@ MotionDemo.prototype.mouseDown = function (event)
 	this.lview.toWorldCoor(coor);
 
 	this.tempPath.push(coor);
+	const self = this;
 	this.largeCanvas.onmousemove = function (event)
 	{
-		motionDemo.mouseMotion(event);
+		self.mouseMotion(event);
 	};
 	this.largeCanvas.onmouseup = function (event)
 	{
-		motionDemo.mouseUp(event);
+		self.mouseUp(event);
 	};
 	this.largeCanvas.onmouseout = function (event)
 	{
-		motionDemo.mouseUp(event);
+		self.mouseUp(event);
 	}
 };
 
