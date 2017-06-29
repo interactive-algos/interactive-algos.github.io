@@ -41,57 +41,55 @@
     <script src='../general/js/view.js'></script>
     <script src='./js/motion_sim.js'></script>
     <script>
-        var motionDemo;
-        function init()
-        {
+		var motionDemo;
+		function init()
+		{
 			motionDemo = new MotionDemo(
-                'canvas', 'minicanvas',
-                getMap(),
-                getParticleCount(),
-                getSensorRadius(),
-                getValue('goByOneStep'),
-                getValue('a1'),getValue('a2'),getValue('a3'),getValue('a4'), //Noise
-                undefined
-            );
-        }
+				'canvas', 'minicanvas',
+				getMap(),
+				getParticleCount(),
+				getSensorRadius(),
+				getValue('goByOneStep'),
+				getValue('a1'), getValue('a2'), getValue('a3'), getValue('a4'), //Noise
+				undefined
+			);
+		}
 
-        function start() {motionDemo.start();}
-        function stop() {motionDemo.stop();}
-        function stepForward() {motionDemo.stepForward();}
-
-        function selectPath(event) {
-            var selectedOption = event.target.selectedOptions[0];
-        	if (selectedOption.id === 'addPath')
-        	{
-        		motionDemo.startRecordingPath();
-        	} else
-        	{
-        		var selectedPath = selectedOption.value;
-        		clearCanvas(canvas);
-        		var ctx = canvas.getContext('2d');
-        		ctx.strokeStyle = 'green';
-        		ctx.strokePath(knownPath[selectedPath]);
-        	}
-        }
-        function parameterChanged(event)
-        {
-        	var target = event.target;
-        	var value = Number(event.target.value);
-        	if (target.id === 'a1' || target.id === 'a2' ||
-                target.id === 'a3' || target.id === 'a4')
-        	{
-        		motionDemo.setA();
-        	} else if (target.id === 'goByOneStep')
-        	{
-        		motionDemo.setStride(value);
-        	} else if (target.id === 'fogOfWar')
-        	{
-        		motionDemo.setSensorRadius(value);
-        	} else if (target.id === 'nParticles') {
-                console.log("setting");
-                motionDemo.setParticleCount(value);
-            }
-        }
+		function selectPath(event)
+		{
+			var selectedOption = event.target.selectedOptions[0];
+			if (selectedOption.id === 'addPath')
+			{
+				motionDemo.startRecordingPath();
+			} else
+			{
+				var selectedPath = selectedOption.value;
+				clearCanvas(canvas);
+				var ctx = canvas.getContext('2d');
+				ctx.strokeStyle = 'green';
+				ctx.strokePath(knownPath[selectedPath]);
+			}
+		}
+		function parameterChanged(event)
+		{
+			var target = event.target;
+			var value = Number(event.target.value);
+			if (target.id === 'a1' || target.id === 'a2' ||
+				target.id === 'a3' || target.id === 'a4')
+			{
+				motionDemo.setA();
+			} else if (target.id === 'goByOneStep')
+			{
+				motionDemo.setStride(value);
+			} else if (target.id === 'fogOfWar')
+			{
+				motionDemo.setSensorRadius(value);
+			} else if (target.id === 'nParticles')
+			{
+				console.log("setting");
+				motionDemo.setParticleCount(value);
+			}
+		}
     </script>
     <title>Robot Motion Demo</title>
 
@@ -164,27 +162,27 @@
                     </tr>
                     <tr>
                         <td>
-                            <label for="a1">Rotational error from rotation</label>
+                            <label for="a1">Rotational error from
+                                rotation</label>
                         </td>
                         <td>
                             <input id='a1' size="3" value="1"
                                    onblur='return parameterChanged(event);'
                                    type="text" class="form-control"
                                    onkeypress='return isDecimal(event);'
-                                   onblur='return parameterChanged(event);'>
                         </td>
                         <td><label>%</label></td>
                     </tr>
                     <tr>
                         <td>
-                            <label for="a2">Rotational error from translation</label>
+                            <label for="a2">Rotational error from
+                                translation</label>
                         </td>
                         <td>
                             <input id='a2' size="3" value="1"
                                    onblur='return parameterChanged(event);'
                                    type="text" class="form-control"
                                    onkeypress='return isDecimal(event);'
-                                   onblur='return parameterChanged(event);'>
                         </td>
                         <td><label>%</label></td>
                     </tr>
@@ -198,20 +196,19 @@
                                    onblur='return parameterChanged(event);'
                                    type="text" class="form-control"
                                    onkeypress='return isDecimal(event);'
-                                   onblur='return parameterChanged(event);'>
                         </td>
                         <td><label>%</label></td>
                     </tr>
                     <tr>
                         <td>
-                            <label for="a4">Translational error from rotation</label>
+                            <label for="a4">Translational error from
+                                rotation</label>
                         </td>
                         <td>
                             <input id='a4' size="3" value="1"
                                    onblur='return parameterChanged(event);'
                                    type="text" class="form-control"
                                    onkeypress='return isDecimal(event);'
-                                   onblur='return parameterChanged(event);'>
                         </td>
                         <td><label>%</label></td>
                     </tr>
@@ -229,7 +226,8 @@
                     </tbody>
                 </table>
 
-                <button onclick="stop()" class="btn btn-danger">
+                <button onclick="motionDemo.stop()"
+                        class="btn btn-danger">
                     <span class="glyphicon glyphicon-stop"
                           aria-hidden="true"></span>
                 </button>
@@ -237,11 +235,11 @@
                     <span class="glyphicon glyphicon-step-backward"
                           aria-hidden="true"></span>
                 </button>
-                <button onclick="start()" class="btn btn-success">
+                <button onclick="motionDemo.start()" class="btn btn-success">
                     <span class="glyphicon glyphicon-play"
                           aria-hidden="true"></span>
                 </button>
-                <button onclick="stepForward()" class="btn btn-info">
+                <button onclick="motionDemo.stepForward()" class="btn btn-info">
                     <span class="glyphicon glyphicon-step-forward"
                           aria-hidden="true"></span>
                 </button>
