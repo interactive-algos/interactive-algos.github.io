@@ -64,7 +64,7 @@ function frame(timestamp)
 		{
 			colorMap(ctx, getValue('colorRes'));
 		}
-		ctx.strokeTextWithColorFont(fps + " FPS", 'black', '10px Menlo');
+		ctx.strokeTextWithColorFont(fps + " FPS", 'black', '10px Menlo', 10, 20);
 	}
 	if (animating)
 		requestAnimationFrame(frame);

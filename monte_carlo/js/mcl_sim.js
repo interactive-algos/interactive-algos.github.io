@@ -88,7 +88,7 @@ MCLDemo.prototype.frame = function (timestamp)
 
 	this.draw();
 
-	this.lctx.strokeTextWithColorFont(fps + "\tFPS", 'black', '10px Menlo');
+	this.lctx.strokeTextWithColorFont(fps + "\tFPS", 'black', '10px Menlo', 10, 20);
 	if (this.animating)
 	{
 		const self = this;
@@ -351,6 +351,5 @@ MCLDemo.prototype.queryProbability = function (event)
 		);
 
 		document.getElementById('probability').innerHTML = "Probability: " + probability;
-		console.log('(' + x + ', ' + y + '): ' + probability);
 	}
 };

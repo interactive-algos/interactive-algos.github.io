@@ -73,7 +73,7 @@ MotionDemo.prototype.frame = function (timestamp) {
 
     motionDemo.draw();
 
-    motionDemo.lctx.strokeTextWithColorFont(fps + "\tFPS", 'black', '10px Menlo');
+    motionDemo.lctx.strokeTextWithColorFont(fps + "\tFPS", 'black', '10px Menlo', 10, 20);
     if (motionDemo.animating) requestAnimationFrame(motionDemo.frame);
 }
 
