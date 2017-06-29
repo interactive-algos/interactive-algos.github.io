@@ -121,14 +121,24 @@ MotionDemo.prototype.drawView = function (view)
 };
 
 //Setters
-MotionDemo.prototype.setA = function (noise)
+MotionDemo.prototype.setA1 = function (noise)
 {
-	this.robot.filter.motionModel = new OdometryModel(
-		getValue('a1'),
-		getValue('a2'),
-		getValue('a3'),
-		getValue('a4')
-	);
+	this.robot.filter.motionModel.a1 = noise;
+};
+
+MotionDemo.prototype.setA2 = function (noise)
+{
+	this.robot.filter.motionModel.a2 = noise;
+};
+
+MotionDemo.prototype.setA3 = function (noise)
+{
+	this.robot.filter.motionModel.a3 = noise;
+};
+
+MotionDemo.prototype.setA4 = function (noise)
+{
+	this.robot.filter.motionModel.a3 = noise;
 };
 
 MotionDemo.prototype.setParticleCount = function (n)
