@@ -184,6 +184,11 @@ MCLDemo.prototype.setSensorRadius = function (radius)
 	Robot.sensorRadius = radius;
 };
 
+MCLDemo.prototype.setSensorNoise = function (noise)
+{
+	this.robot.filter.sensorModel.a1 = noise;
+};
+
 MCLDemo.prototype.setStride = function (stride)
 {
 	Robot.stride = stride;
