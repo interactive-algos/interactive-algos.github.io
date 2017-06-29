@@ -105,7 +105,8 @@ MotionDemo.prototype.stop = function ()
 MotionDemo.prototype.stepForward = function ()
 {
 	this.animating = false;
-	requestAnimationFrame(this.frame);
+	const self = this;
+	requestAnimationFrame(function(timestamp){self.frame(timestamp);});
 };
 
 MotionDemo.prototype.draw = function ()
