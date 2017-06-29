@@ -74,52 +74,6 @@
                 getValue('motion_a4')/100.0
 			);
 		}
-
-		function parameterChanged(event)
-		{
-			var target = event.target || event.srcElement;
-			var value = Number(event.target.value);
-			if (target.id === 'dist1')
-			{
-				actuationDemo.setDist1(value);
-			} else if (target.id === 'turn')
-			{
-				actuationDemo.setTurnAngle(value / 180 * Math.PI);
-			} else if (target.id === 'dist2')
-			{
-				actuationDemo.setDist2(value);
-			} else if (target.id === 'a1')
-			{
-				actuationDemo.setA1(value / 100.0);
-			} else if (target.id === 'a2')
-			{
-				actuationDemo.setA2(value / 100.0);
-			} else if (target.id === 'a3')
-			{
-				actuationDemo.setA3(value / 100.0);
-			} else if (target.id === 'a4')
-			{
-				actuationDemo.setA4(value / 100.0);
-			} else if (target.id === 'nLasers')
-			{
-				measurementDemo.setNLasers(value);
-			} else if (target.id === 'sensorRadius')
-			{
-				measurementDemo.setSensorRadius(value);
-			} else if (target.id === 'sensorNoise')
-			{
-				measurementDemo.setSensorNoise(value);
-			} else if (target.id === 'colorRes')
-			{
-				measurementDemo.setColoringResolution(value);
-			} else if (target.id === 'shouldColor')
-			{
-				measurementDemo.setColoring(target.checked);
-			} else if (target.id === 'sensor_demo_sensorNoise')
-			{
-				sensorDemo.setSensorNoise(value);
-			}
-		}
     </script>
 </head>
 <body onload="init();">
@@ -271,7 +225,7 @@
                             <input id='a1' size="3" value="1"
                                    type="text" class="form-control"
                                    onkeypress='return isDecimal(event);'
-                                   onblur='return parameterChanged(event);'>
+                                   onblur='actuationDemo.setA1(Number(event.target.value)/100.0);'>
                         </td>
                         <td><label>%</label></td>
                     </tr>
@@ -284,7 +238,7 @@
                             <input id='a2' size="3" value="1"
                                    type="text" class="form-control"
                                    onkeypress='return isDecimal(event);'
-                                   onblur='return parameterChanged(event);'>
+                                   onblur='actuationDemo.setA2(Number(event.target.value)/100.0);'>
                         </td>
                         <td><label>%</label></td>
                     </tr>
@@ -297,7 +251,7 @@
                             <input id='a3' size="3" value="1"
                                    type="text" class="form-control"
                                    onkeypress='return isDecimal(event);'
-                                   onblur='return parameterChanged(event);'>
+                                   onblur='actuationDemo.setA3(Number(event.target.value)/100.0);'>
                         </td>
                         <td><label>%</label></td>
                     </tr>
@@ -310,7 +264,7 @@
                             <input id='a4' size="3" value="1"
                                    type="text" class="form-control"
                                    onkeypress='return isDecimal(event);'
-                                   onblur='return parameterChanged(event);'>
+                                   onblur='actuationDemo.setA4(Number(event.target.value)/100.0)'>
                         </td>
                         <td><label>%</label></td>
                     </tr>
@@ -491,7 +445,7 @@
                         </td>
                         <td>
                             <input id="sensor_demo_sensorNoise" type="text"
-                                   onblur='return parameterChanged(event);'
+                                   onblur='sensorDemo.setSensorNoise(Number(event.target.value));'
                                    onkeypress='return isDecimal(event);'
                                    class="form-control form-control-sm"
                                    value="0.7">
@@ -537,8 +491,8 @@
                         </td>
                         <td>
                             <input id="nLasers"
-                                   onblur='return parameterChanged(event);'
-                                   onkeypress='sensorDemo.setNLasers(Number(event.target.value)+1)'
+                                   onblur='measurementDemo.setNLasers(Number(event.target.value)+1);'
+                                   onkeypress='return isNumber(event);'
                                    class="form-control form-control-sm"
                                    value="18" size="3">
                         </td>
