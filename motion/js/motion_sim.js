@@ -1,9 +1,8 @@
 function MotionDemo(lid, //Main Canvas id
 					sid, //Mini Canvas id
 					map,
-					particleCount, sensorRadius, stride,
-					a1, a2, a3, a4,
-					colorRes)
+					particleCount, stride,
+					a1, a2, a3, a4)
 {
 	const scale = 50;
 	//the Large canvas elements
@@ -48,7 +47,6 @@ function MotionDemo(lid, //Main Canvas id
 	});
 
 	//Other Properties
-	Robot.sensorRadius = sensorRadius;
 	Robot.stride = stride;
 	this.animating = false;
 
@@ -65,7 +63,10 @@ MotionDemo.prototype.start = function ()
 	this.lastFrame = Date.now();
 
 	const self = this;
-	requestAnimationFrame(function(timestamp){self.frame(timestamp);});
+	requestAnimationFrame(function (timestamp)
+	{
+		self.frame(timestamp);
+	});
 };
 
 MotionDemo.prototype.frame = function (timestamp)
@@ -83,7 +84,10 @@ MotionDemo.prototype.frame = function (timestamp)
 	if (this.animating)
 	{
 		const self = this;
-		requestAnimationFrame(function(timestamp){self.frame(timestamp);});
+		requestAnimationFrame(function (timestamp)
+		{
+			self.frame(timestamp);
+		});
 	}
 };
 
@@ -138,18 +142,17 @@ MotionDemo.prototype.setA3 = function (noise)
 
 MotionDemo.prototype.setA4 = function (noise)
 {
-	this.robot.filter.motionModel.a3 = noise;
+	this.robot.filter.motionModel.a4 = noise;
 };
 
 MotionDemo.prototype.setParticleCount = function (n)
 {
-	this.robot.filter = new ParticleFilter(
-		n,
-		new OdometryModel(getValue('a1'), getValue('a2'), getValue('a3'), getValue('a4')),
-		undefined,
-		new RobotState(this.robot.x, this.robot.y, this.robot.dir + TWO_PI / 2),
-		1
-	);
+	this.robot.filter.particles = new Array(n);
+	for (var i = 0; i < n; i++)
+	{
+		this.robot.filter.particles[i] =
+			new Particle(this.robot.x, this.robot.y, this.robot.dir, 0);
+	}
 };
 
 MotionDemo.prototype.setSensorRadius = function (radius)

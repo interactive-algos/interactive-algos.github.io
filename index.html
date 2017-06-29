@@ -39,6 +39,10 @@
     <script src="general/js/measurement.js"></script>
     <script src="measurement/js/measurement_beam_demo.js"></script>
     <script src="general/js/particle.js"></script>
+    <script src="motion/js/motion_sim.js"></script>
+    <script src="general/js/particle_filter.js"></script>
+    <script src="general/js/robot.js"></script>
+    <script src='general/js/path_data.js'></script>
 
     <script>
 		var actuationDemo;
@@ -59,6 +63,13 @@
 
 			measurementDemo = new BeamModelDemo('sensor_model_demo', getMap(), 3, 0.3);
 			sensorDemo = new SensorDemo('sensor_demo', 1);
+			motionDemo = new MotionDemo(
+				'motion_canvas', 'motion_minicanvas',
+				getMap(),
+				getValue('motion_nParticles'),
+				getValue('motion_stride'),
+				getValue('a1'), getValue('a2'), getValue('a3'), getValue('a4'), //Noise
+			);
 		}
 
 		function parameterChanged(event)
@@ -101,10 +112,10 @@
 			} else if (target.id === 'shouldColor')
 			{
 				measurementDemo.setColoring(target.checked);
-			}else if(target.id === 'sensor_demo_sensorNoise')
-            {
-            	sensorDemo.setSensorNoise(value);
-            }
+			} else if (target.id === 'sensor_demo_sensorNoise')
+			{
+				sensorDemo.setSensorNoise(value);
+			}
 		}
     </script>
 </head>
@@ -305,6 +316,140 @@
             </fieldset>
         </div>
     </div>
+
+    <div class="row"><h3>Robot Motion Demo</h3></div>
+
+    <div class='row'>
+        <div class="col-lg-8">
+            <canvas id="motion_canvas" width="7" height="4"></canvas>
+        </div>
+        <div class='col-sm-4'>
+            <canvas id="motion_minicanvas" width="7" height="4"></canvas>
+            <fieldset>
+                <legend>Configuration</legend>
+                <table>
+                    <tbody>
+                    <tr>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <label for="path">Movement Path</label>
+                        </td>
+                        <td>
+                            <select id="path" class="selectpicker"
+                                    onchange="selectPath(event);">
+                                <optgroup label="Built-In">
+                                    <option>Vanilla</option>
+                                </optgroup>
+                                <optgroup label="Custom" id="customPathGroup">
+                                    <option data-icon="glyphicon glyphicon-plus"
+                                            id="addPath">Add a path
+                                    </option>
+                                </optgroup>
+                            </select>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <label for="motion_nParticles"># of particles</label>
+                        </td>
+                        <td>
+                            <input type='text' id="motion_nParticles"
+                                   onblur='motionDemo.setParticleCount(Number(event.target.value))'
+                                   onkeypress='return isNumber(event);'
+                                   class="form-control" value="500"
+                                   size="3 ">
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <label for="motion_stride">Step length</label>
+                        </td>
+                        <td>
+                            <input type='text' id="motion_stride"
+                                   onblur='motionDemo.setStride(Number(event.target.value));'
+                                   onkeypress='return isDecimal(event);'
+                                   class="form-control" value="0.04"
+                                   size="3">
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <label for="motion_a1">Rotational error from
+                                rotation</label>
+                        </td>
+                        <td>
+                            <input id='motion_a1' size="3" value="1"
+                                   onblur='motionDemo.setA1(Number(event.target.value)/100)'
+                                   type="text" class="form-control"
+                                   onkeypress='return isDecimal(event);'>
+                        </td>
+                        <td><label>%</label></td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <label for="motion_a2">Rotational error from
+                                translation</label>
+                        </td>
+                        <td>
+                            <input id='motion_a2' size="3" value="1"
+                                   onblur='motionDemo.setA2(Number(event.target.value)/100)'
+                                   type="text" class="form-control"
+                                   onkeypress='return isDecimal(event);'>
+                        </td>
+                        <td><label>%</label></td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <label for="motion_a3">Translational error from
+                                translation</label>
+                        </td>
+                        <td>
+                            <input id='motion_a3' size="3" value="1"
+                                   onblur='motionDemo.setA3(Number(event.target.value)/100)'
+                                   type="text" class="form-control"
+                                   onkeypress='return isDecimal(event);'>
+                        </td>
+                        <td><label>%</label></td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <label for="motion_a4">Translational error from
+                                rotation</label>
+                        </td>
+                        <td>
+                            <input id='motion_a4' size="3" value="1"
+                                   onblur='motionDemo.setA4(Number(event.target.value)/100)'
+                                   type="text" class="form-control"
+                                   onkeypress='return isDecimal(event);'>
+                        </td>
+                        <td><label>%</label></td>
+                    </tr>
+                    </tbody>
+                </table>
+
+                <button onclick="motionDemo.stop()"
+                        class="btn btn-danger">
+                    <span class="glyphicon glyphicon-stop"
+                          aria-hidden="true"></span>
+                </button>
+                <button onclick="setBackward()" class="btn btn-info">
+                    <span class="glyphicon glyphicon-step-backward"
+                          aria-hidden="true"></span>
+                </button>
+                <button onclick="motionDemo.start()" class="btn btn-success">
+                    <span class="glyphicon glyphicon-play"
+                          aria-hidden="true"></span>
+                </button>
+                <button onclick="motionDemo.stepForward()" class="btn btn-info">
+                    <span class="glyphicon glyphicon-step-forward"
+                          aria-hidden="true"></span>
+                </button>
+            </fieldset>
+        </div>
+    </div>
+
     <div class="row">
         <div class="col-sm-4">
             <h4>Sensor Limitations</h4>
@@ -337,13 +482,15 @@
                     <tbody>
                     <tr>
                         <td>
-                            <label for="sensor_demo_sensorNoise">Sensor Noise</label>
+                            <label for="sensor_demo_sensorNoise">Sensor
+                                Noise</label>
                         </td>
                         <td>
                             <input id="sensor_demo_sensorNoise" type="text"
                                    onblur='return parameterChanged(event);'
                                    onkeypress='return isDecimal(event);'
-                                   class="form-control form-control-sm" value="0.7">
+                                   class="form-control form-control-sm"
+                                   value="0.7">
                         </td>
                     </tr>
                     <tr>
@@ -485,8 +632,6 @@
         </div>
     </div>
     <a href="monte_carlo/index.html">Monte Carlo Demo</a>
-    <br/>
-    <a href="measurement/index.html">Robot Measurement Demo</a>
     <br/>
     <a href="motion/index.html">Motion Demo</a>
 </div>
