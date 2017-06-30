@@ -13,6 +13,14 @@
     <script src="https://code.jquery.com/jquery-3.2.1.min.js"
             integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4="
             crossorigin="anonymous"></script>
+
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.12.2/css/bootstrap-select.min.css">
+
+    <!-- Latest compiled and minified JavaScript -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.12.2/js/bootstrap-select.min.js"></script>
+
     <!-- Latest compiled and minified CSS -->
     <link rel="stylesheet"
           href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
@@ -42,7 +50,6 @@
     <script src="general/js/particle_filter.js"></script>
     <script src="general/js/robot.js"></script>
     <script src='general/js/path_data.js'></script>
-    <script src="monte_carlo/js/mcl_sim.js"></script>
     <script src="general/js/robot_demo.js"></script>
 
     <script>
@@ -80,6 +87,31 @@
 			motionDemo = new RobotDemo('motion_canvas', 'motion_minicanvas', getMap(), robot, 10);
 		}
 
+		function initMCLDemo()
+		{
+			const path = vanillaPath;
+			const x = path[0].x;
+			const y = path[0].y;
+			const dir = atan2(path[1].y - path[0].y, path[1].x - path[0].x);
+			const filter = new ParticleFilter(
+				getValue('mcl_nParticles'),
+				new OdometryModel(
+					getValue('mcl_a1') / 100.0,
+					getValue('mcl_a2') / 100.0,
+					getValue('mcl_a3') / 100.0,
+					getValue('mcl_a4') / 100.0),
+				new BeamModel(
+					getValue('mcl_sensorNoise'),
+					getValue('mcl_sensorRadius'),
+					getMap()),
+				new RobotState(x, y, dir),
+				getValue('mcl_pRatio'));
+			smoothenPath(path);
+			robot = new Robot(filter, path, 19, getValue('mcl_sensorRadius'), getValue('mcl_stride'));
+
+			mclDemo = new RobotDemo('mcl_canvas', 'mcl_minicanvas', getMap(), robot, 10);
+		}
+
 		function init()
 		{
 			smoothenPath(vanillaPath);
@@ -96,19 +128,7 @@
 			measurementDemo = new BeamModelDemo('sensor_model_demo', getMap(), 3, 0.3);
 			sensorDemo = new SensorDemo('sensor_demo', 1);
 			initMotionDemo();
-			mclDemo = new MCLDemo('mcl_canvas', //Main Canvas id
-				'mcl_minicanvas', //Mini Canvas id
-				getMap(),
-				getValue('mcl_nParticles'),
-				getValue('mcl_sensorRadius'),
-				getValue('mcl_stride'),
-				getValue('mcl_sensorNoise'),
-				getValue('mcl_a1') / 100.0,
-				getValue('mcl_a2') / 100.0,
-				getValue('mcl_a3') / 100.0,
-				getValue('mcl_a4') / 100.0,
-				getValue('mcl_colorRes'),
-				getValue('mcl_pRatio'))
+			initMCLDemo();
 		}
     </script>
 </head>
@@ -634,7 +654,7 @@
         </div>
         <div class='col-sm-4'>
             <br>
-            <canvas id="mcl_minicanvas" width="7" height="4"></canvas>
+            <canvas id="mcl_minicanvas" width="7" height="3"></canvas>
             <fieldset>
                 <table>
                     <tbody>
@@ -748,8 +768,7 @@
                     </tr>
                     <tr>
                         <td>
-                            <label for="mcl_sensorRadius">Sensor Radius of
-                                Robot</label>
+                            <label for="mcl_sensorRadius">Sensor Radius</label>
                         </td>
                         <td>
                             <input id="mcl_sensorRadius"
@@ -759,8 +778,7 @@
                         </td>
                     </tr>
                     <tr>
-                        <td><label for="mcl_sensorNoise">Sensor Noise of
-                            Robot</label>
+                        <td><label for="mcl_sensorNoise">Sensor Noise</label>
                         </td>
                         <td><input type='text' id="mcl_sensorNoise"
                                    onblur='mclDemo.setSensorNoise(Number(event.target.value));'
