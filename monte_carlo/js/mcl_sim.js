@@ -42,7 +42,7 @@ function MCLDemo(lid, //Main Canvas id
 			particleCount,
 			this.motionModel,
 			this.sensorModel,
-			new RobotState(x, y, dir + TWO_PI / 2),
+			new RobotState(x, y, dir),
 			resampleRatio
 		),
 		this.paths[this.currPathName],
@@ -197,11 +197,11 @@ MCLDemo.prototype.updateRobot = function ()
 			this.particleCount,
 			this.motionModel,
 			this.sensorModel,
-			new RobotState(x, y, dir + TWO_PI / 2),
+			new RobotState(x, y, dir),
 			this.resampleRatio
 		),
 		this.paths[this.currPathName],
-		19
+		this.robot.z.length
 	);
 };
 

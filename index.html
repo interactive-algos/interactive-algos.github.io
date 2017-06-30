@@ -43,11 +43,14 @@
     <script src="general/js/particle_filter.js"></script>
     <script src="general/js/robot.js"></script>
     <script src='general/js/path_data.js'></script>
+    <script src="monte_carlo/js/mcl_sim.js"></script>
 
     <script>
 		var actuationDemo;
 		var measurementDemo;
 		var sensorDemo;
+        var motionDemo;
+        var mclDemo
 
 		function init()
 		{
@@ -68,11 +71,24 @@
 				getMap(),
 				getValue('motion_nParticles'),
 				getValue('motion_stride'),
-				getValue('motion_a1')/100.0,
-                getValue('motion_a2')/100.0,
-                getValue('motion_a3')/100.0,
-                getValue('motion_a4')/100.0
+				getValue('motion_a1') / 100.0,
+				getValue('motion_a2') / 100.0,
+				getValue('motion_a3') / 100.0,
+				getValue('motion_a4') / 100.0
 			);
+			mclDemo = new MCLDemo('mcl_canvas', //Main Canvas id
+				'mcl_minicanvas', //Mini Canvas id
+				getMap(),
+				getValue('mcl_nParticles'),
+                getValue('mcl_sensorRadius'),
+                getValue('mcl_stride'),
+				getValue('mcl_sensorNoise'),
+				getValue('mcl_a1') / 100.0,
+				getValue('mcl_a2') / 100.0,
+				getValue('mcl_a3') / 100.0,
+				getValue('mcl_a4') / 100.0,
+				getValue('mcl_colorRes'),
+                getValue('mcl_pRatio'))
 		}
     </script>
 </head>
@@ -589,7 +605,198 @@
             </p>
         </div>
     </div>
+    <div class="row"><h3>Putting Everything Together</h3></div>
+    <div class='row'>
+        <div class="col-lg-8">
+            <div class="row"><h3>Monte Carlo Localization</h3></div>
+            <canvas id="mcl_canvas" width="7" height="4"></canvas>
+            <span id="probability"></span>
+        </div>
+        <div class='col-sm-4'>
+            <br>
+            <canvas id="mcl_minicanvas" width="7" height="4"></canvas>
+            <fieldset>
+                <table>
+                    <tbody>
+                    <tr>
+                        <td>
+                            <label for="path">Movement Path</label>
+                        </td>
+                        <td>
+                            <select id="mcl_path" class="selectpicker"
+                                    onchange="selectPath(event);" size="3">
+                                <optgroup label="Built-In">
+                                    <option>Vanilla</option>
+                                </optgroup>
+                                <optgroup label="Custom" id="mcl_customPathGroup">
+                                    <option data-icon="glyphicon glyphicon-plus"
+                                            id="mcl_addPath">Add a path
+                                    </option>
+                                </optgroup>
+                            </select>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <label for="mcl_nParticles"># of particles</label>
+                        </td>
+                        <td>
+                            <input type='text' id="mcl_nParticles"
+                                   onblur='mclDemo.setParticleCount(Number(event.target.value));'
+                                   onkeypress='return isNumber(event);'
+                                   class="form-control" value="500"
+                                   size="3 ">
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <label for="mcl_pRatio">% of particles being
+                                resampled</label>
+                        </td>
+                        <td>
+                            <input type='text' id="mcl_pRatio"
+                                   onblur='mclDemo.robot.filter.resampleRatio = Number(event.target.value);'
+                                   onkeypress='return isDecimal(event);'
+                                   class="form-control" value="0.9"
+                                   size="3">
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <label for="mcl_stride">Step length</label>
+                        </td>
+                        <td>
+                            <input type='text' id="mcl_stride"
+                                   onblur='mclDemo.setStride(Number(event.target.value));'
+                                   onkeypress='return isDecimal(event);'
+                                   class="form-control" value="0.04"
+                                   size="3">
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <label for="mcl_a1">Rotational error from
+                                rotation</label>
+                        </td>
+                        <td>
+                            <input id='mcl_a1' size="3" value="1"
+                                   type="text" class="form-control"
+                                   onkeypress='return isDecimal(event);'
+                                   onblur='mclDemo.setA1(Number(event.target.value));'>
+                        </td>
+                        <td><label>%</label></td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <label for="mcl_a2">Rotational error from
+                                translation</label>
+                        </td>
+                        <td>
+                            <input id='mcl_a2' size="3" value="1"
+                                   type="text" class="form-control"
+                                   onkeypress='return isDecimal(event);'
+                                   onblur='mclDemo.setA2(Number(event.target.value));'>
+                        </td>
+                        <td><label>%</label></td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <label for="mcl_a3">Translational error from
+                                translation</label>
+                        </td>
+                        <td>
+                            <input id='mcl_a3' size="3" value="1"
+                                   type="text" class="form-control"
+                                   onkeypress='return isDecimal(event);'
+                                   onblur='mclDemo.setA2(Number(event.target.value));'>
+                        </td>
+                        <td><label>%</label></td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <label for="mcl_a4">Translational error from
+                                rotation</label>
+                        </td>
+                        <td>
+                            <input id='mcl_a4' size="3" value="1"
+                                   type="text" class="form-control"
+                                   onkeypress='return isDecimal(event);'
+                                   onblur='mclDemo.setA3(Number(event.target.value));'>
+                        </td>
+                        <td><label>%</label></td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <label for="mcl_sensorRadius">Sensor Radius of Robot</label>
+                        </td>
+                        <td>
+                            <input id="mcl_sensorRadius"
+                                   onblur='mclDemo.setSensorRadius(Number(event.target.value));'
+                                   onkeypress='return isNumber(event);'
+                                   class="form-control" value="3" size="3">
+                        </td>
+                    </tr>
+                    <tr>
+                        <td><label for="mcl_sensorNoise">Sensor Noise of
+                            Robot</label>
+                        </td>
+                        <td><input type='text' id="mcl_sensorNoise"
+                                   onblur='mclDemo.setSensorNoise(Number(event.target.value));'
+                                   onkeypress='return isDecimal(event);'
+                                   class="form-control form-control-sm"
+                                   value="0.3"
+                                   size="3"></td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <label for="mcl_colorRes">Coloring Resolution</label>
+                        </td>
+                        <td>
+                            <input id="mcl_colorRes"
+                                   onblur='mclDemo.setColoringResolution(Number(event.target.value));'
+                                   class="form-control form-control-sm"
+                                   value="10" size="3">
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <label for="mcl_shouldColor"
+                                   class="custom-control custom-checkbox">Color
+                                the Map</label>
+                        </td>
+                        <td>
+                            <input id="mcl_shouldColor" class="form-check-input"
+                                   onchange='mclDemo.setColoring(event.target.checked);'
+                                   type="checkbox" size="3">
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+
+                <button onclick="mclDemo.stop();" class="btn btn-danger">
+                    <span class="glyphicon glyphicon-stop"
+                          aria-hidden="true"></span>
+                </button>
+                <button class="btn btn-info">
+                    <span class="glyphicon glyphicon-step-backward"
+                          aria-hidden="true"></span>
+                </button>
+                <button onclick="mclDemo.start();" class="btn btn-success">
+                    <span class="glyphicon glyphicon-play"
+                          aria-hidden="true"></span>
+                </button>
+                <button onclick="mclDemo.stepForward();" class="btn btn-info">
+                    <span class="glyphicon glyphicon-step-forward"
+                          aria-hidden="true"></span>
+                </button>
+            </fieldset>
+        </div>
+    </div>
+
+    <div></div>
     <a href="monte_carlo/index.html">Monte Carlo Demo</a>
+    <br/>
+    <a href="measurement/index.html">Measurement Demo</a>
     <br/>
     <a href="motion/index.html">Motion Demo</a>
 </div>

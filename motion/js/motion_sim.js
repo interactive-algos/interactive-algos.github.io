@@ -179,7 +179,7 @@ MotionDemo.prototype.updateRobot = function ()
 			getParticleCount(),
 			new OdometryModel(getValue('a1'), getValue('a2'), getValue('a3'), getValue('a4')),
 			undefined,
-			new RobotState(x, y, dir + TWO_PI / 2),
+			new RobotState(x, y, dir),
 			1
 		),
 		this.paths[this.currPathName],
