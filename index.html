@@ -39,21 +39,50 @@
     <script src="general/js/measurement.js"></script>
     <script src="measurement/js/measurement_beam_demo.js"></script>
     <script src="general/js/particle.js"></script>
-    <script src="motion/js/motion_sim.js"></script>
     <script src="general/js/particle_filter.js"></script>
     <script src="general/js/robot.js"></script>
     <script src='general/js/path_data.js'></script>
     <script src="monte_carlo/js/mcl_sim.js"></script>
+    <script src="general/js/robot_demo.js"></script>
 
     <script>
 		var actuationDemo;
 		var measurementDemo;
 		var sensorDemo;
-        var motionDemo;
-        var mclDemo
+		var motionDemo;
+		var mclDemo;
+
+		function initMotionDemo()
+		{
+			const path = vanillaPath;
+			const x = path[0].x;
+			const y = path[0].y;
+			const dir = atan2(path[1].y - path[0].y, path[1].x - path[0].x);
+			const filter = new ParticleFilter(
+				getValue('motion_nParticles'),
+				new OdometryModel(
+					getValue('motion_a1') / 100.0,
+					getValue('motion_a2') / 100.0,
+					getValue('motion_a3') / 100.0,
+					getValue('motion_a4') / 100.0),
+				undefined,
+				new RobotState(x, y, dir),
+				0);
+			filter.particles.forEach(function (p)
+			{
+				p.x = x;
+				p.y = y;
+				p.dir = dir;
+			});
+			smoothenPath(path);
+			robot = new Robot(filter, path, 19, 0, getValue('motion_stride'));
+
+			motionDemo = new RobotDemo('motion_canvas', 'motion_minicanvas', getMap(), robot, 10);
+		}
 
 		function init()
 		{
+			smoothenPath(vanillaPath);
 			//Noise parameters
 			const a1 = getValue('a1') / 100.0;
 			const a2 = getValue('a2') / 100.0;
@@ -66,29 +95,20 @@
 
 			measurementDemo = new BeamModelDemo('sensor_model_demo', getMap(), 3, 0.3);
 			sensorDemo = new SensorDemo('sensor_demo', 1);
-			motionDemo = new MotionDemo(
-				'motion_canvas', 'motion_minicanvas',
-				getMap(),
-				getValue('motion_nParticles'),
-				getValue('motion_stride'),
-				getValue('motion_a1') / 100.0,
-				getValue('motion_a2') / 100.0,
-				getValue('motion_a3') / 100.0,
-				getValue('motion_a4') / 100.0
-			);
+			initMotionDemo();
 			mclDemo = new MCLDemo('mcl_canvas', //Main Canvas id
 				'mcl_minicanvas', //Mini Canvas id
 				getMap(),
 				getValue('mcl_nParticles'),
-                getValue('mcl_sensorRadius'),
-                getValue('mcl_stride'),
+				getValue('mcl_sensorRadius'),
+				getValue('mcl_stride'),
 				getValue('mcl_sensorNoise'),
 				getValue('mcl_a1') / 100.0,
 				getValue('mcl_a2') / 100.0,
 				getValue('mcl_a3') / 100.0,
 				getValue('mcl_a4') / 100.0,
 				getValue('mcl_colorRes'),
-                getValue('mcl_pRatio'))
+				getValue('mcl_pRatio'))
 		}
     </script>
 </head>
@@ -628,7 +648,8 @@
                                 <optgroup label="Built-In">
                                     <option>Vanilla</option>
                                 </optgroup>
-                                <optgroup label="Custom" id="mcl_customPathGroup">
+                                <optgroup label="Custom"
+                                          id="mcl_customPathGroup">
                                     <option data-icon="glyphicon glyphicon-plus"
                                             id="mcl_addPath">Add a path
                                     </option>
@@ -727,7 +748,8 @@
                     </tr>
                     <tr>
                         <td>
-                            <label for="mcl_sensorRadius">Sensor Radius of Robot</label>
+                            <label for="mcl_sensorRadius">Sensor Radius of
+                                Robot</label>
                         </td>
                         <td>
                             <input id="mcl_sensorRadius"
@@ -749,7 +771,8 @@
                     </tr>
                     <tr>
                         <td>
-                            <label for="mcl_colorRes">Coloring Resolution</label>
+                            <label for="mcl_colorRes">Coloring
+                                Resolution</label>
                         </td>
                         <td>
                             <input id="mcl_colorRes"

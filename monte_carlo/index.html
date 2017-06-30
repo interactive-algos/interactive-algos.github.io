@@ -40,22 +40,33 @@
     <script src='../general/js/particle_filter.js'></script>
     <script src='../general/js/robot.js'></script>
     <script src='../general/js/view.js'></script>
-    <script src='./js/mcl_sim.js'></script>
+    <script src="../general/js/robot_demo.js"></script>
     <script>
 		var mclDemo;
 		function init()
 		{
-			mclDemo = new MCLDemo(
-				'canvas', 'minicanvas',
-				getMap(),
+			const path = vanillaPath;
+			const x = path[0].x;
+			const y = path[0].y;
+			const dir = atan2(path[1].y - path[0].y, path[1].x - path[0].x);
+			const filter = new ParticleFilter(
 				getParticleCount(),
-				getSensorRadius(),
-				getValue('goByOneStep'),
-				getValue('robotSenseNoise'),
-				getValue('a1'), getValue('a2'), getValue('a3'), getValue('a4'), //Noise
-				getValue('colorRes'),
-				getResampleRatio()
-			);
+				new OdometryModel(
+					getValue('a1')/100.0,
+					getValue('a2')/100.0,
+					getValue('a3')/100.0,
+					getValue('a4')/100.0),
+				new BeamModel(
+					getValue('sensorNoise'),
+                    getValue('sensorRadius'),
+                    getMap()),
+				new RobotState(x, y, dir),
+				getValue('pRatio'));
+			filter.particles.forEach(function(p){p.x=x; p.y=y; p.dir=dir;});
+			smoothenPath(path);
+			robot = new Robot(filter, path, 19, getValue('sensorRadius'), getValue('goByOneStep'));
+
+			mclDemo = new RobotDemo('canvas', 'minicanvas', getMap(), robot , 10);
 		}
 
 		function selectPath(event)
@@ -96,7 +107,7 @@
 			} else if (target.id === 'goByOneStep')
 			{
 				mclDemo.setStride(value);
-			} else if (target.id === 'fogOfWar')
+			} else if (target.id === 'sensorRadius')
 			{
 				mclDemo.setSensorRadius(value);
 			} else if (target.id === 'nParticles')
@@ -252,20 +263,19 @@
                     </tr>
                     <tr>
                         <td>
-                            <label for="fogOfWar">Sensor Radius of Robot</label>
+                            <label for="sensorRadius">Sensor Radius</label>
                         </td>
                         <td>
-                            <input id="fogOfWar"
+                            <input id="sensorRadius"
                                    onblur='return parameterChanged(event);'
                                    onkeypress='return isNumber(event);'
                                    class="form-control" value="3" size="3">
                         </td>
                     </tr>
                     <tr>
-                        <td><label for="robotSenseNoise">Sensor Noise of
-                            Robot</label>
+                        <td><label for="sensorNoise">Sensor Noise</label>
                         </td>
-                        <td><input type='text' id="robotSenseNoise"
+                        <td><input type='text' id="sensorNoise"
                                    onblur='return parameterChanged(event);'
                                    onkeypress='return isDecimal(event);'
                                    class="form-control form-control-sm"

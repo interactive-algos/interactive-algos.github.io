@@ -39,21 +39,32 @@
     <script src='../general/js/particle_filter.js'></script>
     <script src='../general/js/robot.js'></script>
     <script src='../general/js/view.js'></script>
-    <script src='js/motion_sim.js'></script>
+    <script src="../general/js/robot_demo.js"></script>
+
     <script>
 		var motionDemo;
+		var robot;
 		function init()
 		{
-			motionDemo = new MotionDemo(
-				'canvas', 'minicanvas',
-				getMap(),
+			const path = vanillaPath;
+			const x = path[0].x;
+			const y = path[0].y;
+			const dir = atan2(path[1].y - path[0].y, path[1].x - path[0].x);
+            const filter = new ParticleFilter(
 				getParticleCount(),
-				getValue('goByOneStep'),
-				getValue('a1')/100.0,
-                getValue('a2')/100.0,
-                getValue('a3')/100.0,
-                getValue('a4')/100.0
-			);
+				new OdometryModel(
+					getValue('a1')/100.0,
+                    getValue('a2')/100.0,
+                    getValue('a3')/100.0,
+                    getValue('a4')/100.0),
+				undefined,
+				new RobotState(x, y, dir),
+				0);
+            filter.particles.forEach(function(p){p.x=x; p.y=y; p.dir=dir;});
+			smoothenPath(path);
+			robot = new Robot(filter, path, 19, 0, getValue('goByOneStep'));
+
+			motionDemo = new RobotDemo('canvas', 'minicanvas', getMap(), robot , 10);
 		}
 
 		function selectPath(event)
@@ -84,6 +95,12 @@
 			} else if (target.id === 'nParticles')
 			{
 				motionDemo.setParticleCount(value);
+				motionDemo.robot.filter.particles.forEach(function(p)
+                {
+                	p.x = motionDemo.robot.x;
+					p.y = motionDemo.robot.y;
+					p.dir = motionDemo.robot.dir;
+				});
 			}else if(target.id === 'a1')
             {
                 motionDemo.setA1(value/100.0);

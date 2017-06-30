@@ -1,8 +1,7 @@
 //Predefined params
 Robot.size = 0.2;
-Robot.sensorRadius = 1.5;
 Robot.scanInterval = 2500;
-Robot.stride = 0.01;
+
 const EPS = 1E-5;
 
 /**
@@ -12,7 +11,7 @@ const EPS = 1E-5;
  * @param {Point[]} path - The predefined map that the robot will follow
  * @param {int} nLasers - The number of rays that the robot have.
  */
-function Robot(filter, path, nLasers)
+function Robot(filter, path, nLasers, sensorRadius, stride)
 {
     if (typeof(nLasers) === 'undefined') nLasers = 19;
 
@@ -39,6 +38,8 @@ function Robot(filter, path, nLasers)
 	this.targetIndex = 1;
 
 	this.z = new Array(nLasers);
+	this.sensorRadius = sensorRadius;
+	this.stride = stride;
 }
 
 Robot.prototype.setA1 = function(noise)
@@ -61,34 +62,10 @@ Robot.prototype.setA4 = function(noise)
 	this.filter.motionModel.a4 = noise;
 };
 
-// Robot.prototype.checkCollision = function()
-// {
-//     var dx = cos(this.dir);
-//     var dy = sin(this.dir);
-//
-//     var collide = false;
-//     if(this.x < Robot.size)
-//     {
-//         dx = abs(dx);
-//         collide = true;
-//     }else if(this.x+Robot.size >= width)
-//     {
-//         dx = -abs(dx);
-//         collide = true;
-//     }else if(this.y < Robot.size)
-//     {
-//         dy = abs(dy);
-//         collide = true;
-//     }else if(this.y+Robot.size >= height)
-//     {
-//         dy = -abs(dy);
-//         collide = true;
-//     }
-//     if(collide)
-//     {
-//         this.dir = atan2(dy, dx);
-//     }
-// };
+Robot.prototype.setSensorRadius = function(r)
+{
+	this.sensorRadius = r;
+};
 
 /**
  * Function that used to update the robot
@@ -113,7 +90,7 @@ Robot.prototype.updateMotion = function()
 {
 	console.assert(typeof this.path !== 'undefined');
 
-	var stride = Robot.stride;
+	var stride = this.stride;
 	var x = this.x;
 	var y = this.y;
 
@@ -155,12 +132,12 @@ Robot.prototype.updateParticles = function()
     if(typeof this.filter.sensorModel !== 'undefined')
     {
         var z = this.z;
-        scan(this.x, this.y, this.dir, Robot.sensorRadius, this.filter.sensorModel.map, z);
+        scan(this.x, this.y, this.dir, this.sensorRadius, this.filter.sensorModel.map, z);
         for(var i = 0; i < z.length; i ++)
 		{
 			z[i] += gaussian() * this.filter.sensorModel.a1;
 			if(z[i] < 0) z[i] = 0;
-			else if(z[i] > Robot.sensorRadius)z[i] = Robot.sensorRadius;
+			else if(z[i] > this.sensorRadius)z[i] = this.sensorRadius;
 		}
         this.filter.update(u, z);
     }else
@@ -168,15 +145,7 @@ Robot.prototype.updateParticles = function()
         this.filter.motionUpdate(u);
     }
 
-
-    // for(var i = 0; i < z.length; i ++)
-    // {
-    // 	z[i] += gaussian() * z[i] * Robot.sensorNoise;
-    // }
-
     //Odometry and Measurement
-
-
     this.lastX = this.x;
     this.lastY = this.y;
     this.lastDir = this.dir;
@@ -184,7 +153,7 @@ Robot.prototype.updateParticles = function()
 
 Robot.prototype.updateSenseCircle = function()
 {
-    if(this.senseCircle > Robot.sensorRadius)
+    if(this.senseCircle > this.sensorRadius)
     {
         if(Date.now() - this.lastScan >= Robot.scanInterval)
         {
@@ -210,9 +179,9 @@ Robot.prototype.draw = function(ctx)
     ctx.drawRobot(x, y, this.dir, Robot.size);
 
     ctx.strokeStyle = 'rgba(0, 0, 0, 0.2)';
-    ctx.strokeSemiCircle(x, y, this.dir, Robot.sensorRadius);
-    ctx.strokeLine(x-sin(this.dir)*Robot.sensorRadius, y+cos(this.dir)*Robot.sensorRadius,
-        x+sin(this.dir)*Robot.sensorRadius, y-cos(this.dir)*Robot.sensorRadius);
+    ctx.strokeSemiCircle(x, y, this.dir, this.sensorRadius);
+    ctx.strokeLine(x-sin(this.dir)*this.sensorRadius, y+cos(this.dir)*this.sensorRadius,
+        x+sin(this.dir)*this.sensorRadius, y-cos(this.dir)*this.sensorRadius);
 
     this.filter.draw(ctx);
 };
