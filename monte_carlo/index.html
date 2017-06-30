@@ -62,7 +62,6 @@
                     getMap()),
 				new RobotState(x, y, dir),
 				getValue('pRatio'));
-			filter.particles.forEach(function(p){p.x=x; p.y=y; p.dir=dir;});
 			smoothenPath(path);
 			robot = new Robot(filter, path, 19, getValue('sensorRadius'), getValue('goByOneStep'));
 
