@@ -12,6 +12,7 @@ function BeamModel(a1, sensorRadius, map)
 {
 	this.a1 = a1;
 	this.map = map;
+	// var size = getMapSize(map);
 	// this.width = width;
 	// this.height = height;
 	this.sensorRadius = sensorRadius;

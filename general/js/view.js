@@ -54,7 +54,7 @@ View.prototype.setScale = function (scale)
 
 View.prototype.setPreviewScale = function (map)
 {
-	var size = this.getMapSize(map);
+	var size = getMapSize(map);
 	var s1 = this.canvas.width / size.x;
 	var s2 = this.canvas.height / size.y;
 	var dspscale = 1;
@@ -93,7 +93,7 @@ View.prototype.adjustToPoint = function (x, y)
 };
 
 
-View.prototype.getMapSize = function (map)
+function getMapSize(map)
 {
 	var w = 0;
 	var h = 0;
