@@ -10,20 +10,29 @@
             height: auto;
         }
     </style>
+
+    <!--jQuery Scripts-->
     <script src="https://code.jquery.com/jquery-3.2.1.min.js"
             integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4="
             crossorigin="anonymous"></script>
 
+    <!--Bootstrap Slider JavaScript-->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-slider/9.8.0/bootstrap-slider.min.js"></script>
+
+    <!--Bootstrap Slider CSS-->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-slider/9.8.0/css/bootstrap-slider.min.css"></script>
+
+    <!--jQuery appear plugin-->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.appear/0.3.3/jquery.appear.min.js"></script>
 
-    <!-- Latest compiled and minified CSS -->
+    <!-- Bootstrap Select CSS -->
     <link rel="stylesheet"
           href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.12.2/css/bootstrap-select.min.css">
 
-    <!-- Latest compiled and minified JavaScript -->
+    <!-- Bootstrap Select JavaScript-->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.12.2/js/bootstrap-select.min.js"></script>
 
-    <!-- Latest compiled and minified CSS -->
+    <!-- Bootstrap CSS -->
     <link rel="stylesheet"
           href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
           integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u"
@@ -35,7 +44,7 @@
           integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp"
           crossorigin="anonymous">
 
-    <!-- Latest compiled and minified JavaScript -->
+    <!-- Bootstrap JavaScript -->
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"
             integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa"
             crossorigin="anonymous"></script>
@@ -74,7 +83,7 @@
 			const y = path[0].y;
 			const dir = atan2(path[1].y - path[0].y, path[1].x - path[0].x);
 			const filter = new ParticleFilter(
-				getValue('motion_nParticles'),
+				500,
 				new OdometryModel(
 					getValue('motion_a1') / 100.0,
 					getValue('motion_a2') / 100.0,
@@ -313,37 +322,6 @@
                     <tbody>
                     <tr>
                         <td></td>
-                    </tr>
-                    <tr>
-                        <td>
-                            <label for="path">Movement Path</label>
-                        </td>
-                        <td>
-                            <select id="path" class="selectpicker"
-                                    onchange="selectPath(event);">
-                                <optgroup label="Built-In">
-                                    <option>Vanilla</option>
-                                </optgroup>
-                                <optgroup label="Custom" id="customPathGroup">
-                                    <option data-icon="glyphicon glyphicon-plus"
-                                            id="addPath">Add a path
-                                    </option>
-                                </optgroup>
-                            </select>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
-                            <label for="motion_nParticles"># of
-                                particles</label>
-                        </td>
-                        <td>
-                            <input type='text' id="motion_nParticles"
-                                   onblur='motionDemo.setParticleCount(Number(event.target.value))'
-                                   onkeypress='return isNumber(event);'
-                                   class="form-control" value="500"
-                                   size="3 ">
-                        </td>
                     </tr>
                     <tr>
                         <td>
