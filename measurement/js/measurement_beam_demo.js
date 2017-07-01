@@ -4,7 +4,7 @@ function BeamModelDemo(id, map, sensorRadius, sensorNoise)
 	const nLasers = 19;
 
 	//the canvas element
-	this.view = new View(document.getElementById(id), 1);
+	this.view = new View(document.getElementById(id), 20);
 	this.view.setPreviewScale(map);
 
 	this.robotSize = 0.2;
@@ -13,6 +13,7 @@ function BeamModelDemo(id, map, sensorRadius, sensorNoise)
 	this.tracker = new ParticleTracker();
 	this.resolution = 10;
 	this.shouldColor = false;
+	this.mouseout = true;
 
 	//Initial robot pose
 	this.x = random() * this.view.width;
@@ -25,11 +26,17 @@ function BeamModelDemo(id, map, sensorRadius, sensorNoise)
 
 	//Event listeners
 	const self = this;
-	this.view.canvas.onmousedown = function (event)
-	{
+	this.view.canvas.onmousedown = function (event){
 		return self.mouseDown(event)
 	};
+	this.view.canvas.onmousemove = function (event) {
+		return self.trackPosition(event)
+	};
+	this.view.canvas.onmouseout = function (event) {
+		return self.mouseOut(event)
+	};
 	this.view.ctx.drawMap(map);
+	this.update();
 }
 
 BeamModelDemo.prototype.mouseDown = function (event)
@@ -69,10 +76,30 @@ BeamModelDemo.prototype.mouseDown = function (event)
 	{
 		return self.mouseUp(event);
 	};
-	this.view.canvas.onmouseout = this.view.canvas.onmouseup;
 
 	this.draw();
 };
+
+BeamModelDemo.prototype.trackPosition = function (event) {
+	this.mouseout = false;
+	const view = this.view;
+	const coor = getClickLoc(event);
+	const x = coor.x;
+	const y = coor.y;
+	view.setScale(50);
+	var mapsize = getMapSize(this.map);
+
+	var ratioX = x / view.canvas.width;
+	var ratioY = y / view.canvas.height;
+
+	var worldX = mapsize.x * ratioX;
+	var worldY = mapsize.y * (1 - ratioY);
+
+	this.view.adjustToPoint(view.toScreenX(worldX), view.toScreenY(worldY));
+	// view.canvas.getContext('2d').fillRect(0,0,view.canvas.width,view.canvas.height);
+	this.draw();
+	this.drawLaserLines();
+}
 
 BeamModelDemo.prototype.trackDirection = function (event)
 {
@@ -87,13 +114,26 @@ BeamModelDemo.prototype.trackDirection = function (event)
 
 BeamModelDemo.prototype.mouseUp = function (event)
 {
-	this.view.canvas.onmousemove = undefined;
-	this.view.canvas.onmouseout = undefined;
+	const self = this;
+	this.view.canvas.onmousemove = function (event) {
+		return self.trackPosition(event)
+	}
 	this.view.canvas.onmouseup = undefined;
 	this.tracker.clear();
 	this.update();
 	this.draw();
 	this.drawLaserLines();
+};
+
+BeamModelDemo.prototype.mouseOut = function (event) {
+	this.mouseout = true;
+	const self = this;
+	clearCanvas(self.view.canvas);
+	self.view.setPreviewScale(self.map);
+	self.view.setOffset(0, self.view.canvas.clientHeight);
+	self.draw();
+	self.drawLaserLines();
+	// self.view.ctx.drawMap(self.map);
 };
 
 BeamModelDemo.prototype.draw = function ()
@@ -110,10 +150,10 @@ BeamModelDemo.prototype.draw = function ()
 			ctx.fillStyle = 'rgba(' + round(w * 255) + ', 0, ' + (255 - round(w * 255)) + ', 0.5)';
 			ctx.fillRect(x - resolution / 2, y - resolution / 2, resolution, resolution);
 		});
-	} else
+	} else if (this.view.canvas.onmouseout)
 	{
 		//If user is moving its mouse, don't color the map, too expensive
-		if (this.view.canvas.onmousemove)
+		if (!this.mouseout)
 			return;
 		this.view.colorMap(this.resolution, this.sensorModel, this.z, this.dir);
 	}
