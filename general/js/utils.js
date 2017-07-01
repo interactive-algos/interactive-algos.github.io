@@ -201,7 +201,10 @@ function RobotState(x, y, dir)
 function clearCanvas(canvas)
 {
 	var ctx = canvas.getContext('2d');
+	ctx.save();
+	ctx.setTransform(1, 0, 0, 1, 0, 0);
 	ctx.clearRect(0, 0, canvas.width, canvas.height);
+	ctx.restore();
 }
 
 function smoothenPath(path, windowSize)

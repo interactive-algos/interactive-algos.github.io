@@ -38,8 +38,9 @@ function BeamModelDemo(id, map, sensorRadius, sensorNoise)
 	{
 		return self.mouseOut(event)
 	};
-	this.view.ctx.drawMap(map);
 	this.update();
+	this.draw();
+	this.drawLaserLines();
 }
 
 BeamModelDemo.prototype.mouseDown = function (event)
@@ -122,7 +123,7 @@ BeamModelDemo.prototype.mouseUp = function (event)
 	this.view.canvas.onmousemove = function (event)
 	{
 		return self.trackPosition(event)
-	}
+	};
 	this.view.canvas.onmouseup = undefined;
 	this.tracker.clear();
 	this.update();
@@ -133,12 +134,10 @@ BeamModelDemo.prototype.mouseUp = function (event)
 BeamModelDemo.prototype.mouseOut = function (event)
 {
 	this.mouseout = true;
-	const self = this;
-	clearCanvas(self.view.canvas);
-	self.view.setPreviewScale(self.map);
-	self.view.setOffset(0, self.view.canvas.clientHeight);
-	self.draw();
-	self.drawLaserLines();
+	this.view.setPreviewScale(this.map);
+	this.view.setOffset(0, this.view.canvas.clientHeight);
+	this.draw();
+	this.drawLaserLines();
 	// self.view.ctx.drawMap(self.map);
 };
 
