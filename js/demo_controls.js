@@ -99,9 +99,6 @@ function initActuationDemo()
 	a4Demo = new ActuationDemo('actuation_a4', 1, Math.PI / 2, 1,
 		0, 0, 0, noise);
 	simulateAllActuations();
-
-	//Ignore future appear events
-	$('#simple_actuation').off('appear');
 }
 
 function init()
@@ -110,12 +107,20 @@ function init()
 	$('#simple_actuation').appear().on('appear', function (event, $all_appeared_elements)
 	{
 		initActuationDemo();
+		//Ignore future appear events
+		$('#simple_actuation').off('appear');
+	});
+
+	$('#motion_canvas').appear().on('appear', function(event, $targets)
+	{
+		initMotionDemo();
+		//Ignore future appear events
+		$('#motion_canvas').off('appear');
 	});
 
 	smoothenPath(vanillaPath);
 
 	measurementDemo = new BeamModelDemo('sensor_model_demo', getMap(), 3, 0.3);
 	sensorDemo = new SensorDemo('sensor_demo', 1);
-	initMotionDemo();
 	initMCLDemo();
 }
