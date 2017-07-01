@@ -27,14 +27,11 @@ function ActuationDemo(id, dist1, turn, dist2, a1, a2, a3, a4)
 	this.height = this.canvas.height/scale;
 
 	//place the robot on a random spot
-	this.x = random()*this.width;
-	this.y = random()*this.height;
-	this.dir = random()*TWO_PI;
+	this.x = this.robotSize;
+	this.y = this.robotSize;
+	this.dir = Math.PI/6;
 
 	this.draw();
-
-	const self = this;
-	this.canvas.onmousedown = function(event){return self.mouseDown(event)};
 }
 
 ActuationDemo.prototype.draw = function()
@@ -68,50 +65,6 @@ ActuationDemo.prototype.draw = function()
 			this.ctx.drawRobot(this.curX, this.curY, this.curDir, this.robotSize);
 		}
 	}
-};
-
-ActuationDemo.prototype.mouseDown = function(event)
-{
-	cancelAnimationFrame(this.frameId);
-	//Shorthand for this.view and this.ctx
-	const view = this.view;
-
-	var coor = getClickLoc(event);
-	const x = view.toWorldX(coor.x);
-	const y = view.toWorldY(coor.y);
-
-	//update robot's location
-	this.x = x;
-	this.y = y;
-
-	//prevent drawing old path
-	this.path = this.curX = this.curY = this.curDir = undefined;
-
-	this.draw();
-	const self = this;
-	this.canvas.onmousemove = function(event){return self.trackDirection(event);};
-	this.canvas.onmouseup = function(event){return self.mouseUp(event);};
-	this.canvas.onmouseout = this.canvas.onmouseup;
-};
-
-ActuationDemo.prototype.trackDirection = function(event)
-{
-	const view = this.view;
-	const coor = getClickLoc(event);
-	const x = view.toWorldX(coor.x);
-	const y = view.toWorldY(coor.y);
-
-	this.dir = atan2(y - this.y, x - this.x);
-	this.draw();
-};
-
-ActuationDemo.prototype.mouseUp = function(event)
-{
-	this.canvas.onmousemove = undefined;
-	this.canvas.onmouseout = undefined;
-	this.canvas.onmouseup = undefined;
-
-	this.simulateActuation();
 };
 
 ActuationDemo.prototype.simulateActuation = function()
