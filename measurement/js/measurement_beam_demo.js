@@ -27,7 +27,7 @@ function BeamModelDemo(id, map, sensorRadius, sensorNoise)
 	const self = this;
 	this.view.canvas.onmousedown = function (event)
 	{
-		return self.mouseDown(event)
+		return self.mouseDown(event);
 	};
 	this.view.ctx.drawMap(map);
 }
