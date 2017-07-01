@@ -101,26 +101,27 @@ function initActuationDemo()
 	simulateAllActuations();
 }
 
+function initMeasurementDemo()
+{
+	measurementDemo = new BeamModelDemo('sensor_model_demo', getMap(), 3, 0.3);
+}
+
+function onFirstAppear(selector, callback)
+{
+	$(selector).appear().on('appear', function(event, $targets)
+	{
+		callback(event, $targets);
+		$(selector).off('appear');
+	});
+}
+
 function init()
 {
-	//Initialize the demo whe it appears on screen
-	$('#simple_actuation').appear().on('appear', function (event, $all_appeared_elements)
-	{
-		initActuationDemo();
-		//Ignore future appear events
-		$('#simple_actuation').off('appear');
-	});
-
-	$('#motion_canvas').appear().on('appear', function(event, $targets)
-	{
-		initMotionDemo();
-		//Ignore future appear events
-		$('#motion_canvas').off('appear');
-	});
-
 	smoothenPath(vanillaPath);
+	onFirstAppear('#simple_actuation', function(e, $t){initActuationDemo();});
+	onFirstAppear('#motion_canvas', function(e, $t){initMotionDemo();});
+	onFirstAppear('#mcl_canvas', function(e, $t){initMCLDemo();});
+	onFirstAppear('#sensor_model_demo', function(e, $t){initMeasurementDemo();});
 
-	measurementDemo = new BeamModelDemo('sensor_model_demo', getMap(), 3, 0.3);
 	sensorDemo = new SensorDemo('sensor_demo', 1);
-	initMCLDemo();
 }
