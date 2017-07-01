@@ -14,6 +14,8 @@
             integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4="
             crossorigin="anonymous"></script>
 
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.appear/0.3.3/jquery.appear.min.js"></script>
+
     <!-- Latest compiled and minified CSS -->
     <link rel="stylesheet"
           href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.12.2/css/bootstrap-select.min.css">
@@ -51,6 +53,7 @@
     <script src="general/js/robot.js"></script>
     <script src='general/js/path_data.js'></script>
     <script src="general/js/robot_demo.js"></script>
+
 
     <script>
 		var actuationDemo;
@@ -112,18 +115,31 @@
 			mclDemo = new RobotDemo('mcl_canvas', 'mcl_minicanvas', getMap(), robot, 10);
 		}
 
-		function init()
-		{
-			smoothenPath(vanillaPath);
+		function initActuationDemo()
+        {
 			//Noise parameters
 			const a1 = 0.02;
 			const a2 = 0.02;
 			const a3 = 0.02;
 			const a4 = 0.02;
-
-			actuationDemo = new ActuationDemo('simple_actuation', 1, Math.PI/2, 1,
-                a1, a2, a3, a4);
+			actuationDemo = new ActuationDemo('simple_actuation', 1, Math.PI / 2, 1,
+				a1, a2, a3, a4);
 			actuationDemo.simulateActuation();
+			$('#simple_actuation').off('appear');
+
+			//Ignore future appear events
+			console.log('Actuation Demo initialized!');
+        }
+
+		function init()
+		{
+			//Initialize the demo whe it appears on screen
+			$('#simple_actuation').appear().on('appear', function (event, $all_appeared_elements)
+			{
+				initActuationDemo();
+			});
+
+			smoothenPath(vanillaPath);
 
 			measurementDemo = new BeamModelDemo('sensor_model_demo', getMap(), 3, 0.3);
 			sensorDemo = new SensorDemo('sensor_demo', 1);
@@ -212,11 +228,49 @@
         </div>
         <div class="col-sm-4">
             <fieldset>
-                <button type="button" class="btn btn-success"
+                <button class="btn btn-success"
                         onclick="actuationDemo.simulateActuation();">
                     Simulate Robot Movement
                 </button>
             </fieldset>
+        </div>
+    </div>
+</div>
+<div class="container">
+    <div class="row"><h3>Different Types of Actuation Noise</h3></div>
+
+    <div class="row">
+        <div class="col-sm-3">
+            <h5>Rotation error from rotation</h5>
+            <canvas id="actuation_a1"></canvas>
+            <button class="btn btn-success"
+                    onclick="actuationDemo.simulateActuation();">
+                Simulate
+            </button>
+        </div>
+        <div class="col-sm-3">
+            <h5>Rotation error from translation</h5>
+            <canvas id="actuation_a2"></canvas>
+            <button class="btn btn-success"
+                    onclick="actuationDemo.simulateActuation();">
+                Simulate
+            </button>
+        </div>
+        <div class="col-sm-3">
+            <h5>Translation error from translation</h5>
+            <canvas id="actuation_a3"></canvas>
+            <button class="btn btn-success"
+                    onclick="actuationDemo.simulateActuation();">
+                Simulate
+            </button>
+        </div>
+        <div class="col-sm-3">
+            <h5>Translation error from rotation</h5>
+            <canvas id="actuation_a4"></canvas>
+            <button class="btn btn-success"
+                    onclick="actuationDemo.simulateActuation();">
+                Simulate
+            </button>
         </div>
     </div>
 
