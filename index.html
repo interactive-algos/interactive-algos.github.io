@@ -122,8 +122,7 @@
 			const a4 = getValue('a4') / 100.0;
 
 			actuationDemo = new ActuationDemo('actuation_demo',
-				getValue('dist1'), getValue('turn') / 180 * Math.PI,
-				getValue('dist2'), a1, a2, a3, a4);
+				1, Math.PI/2, 1, a1, a2, a3, a4);
 
 			measurementDemo = new BeamModelDemo('sensor_model_demo', getMap(), 3, 0.3);
 			sensorDemo = new SensorDemo('sensor_demo', 1);
@@ -209,63 +208,6 @@
     <div class="row">
         <div class="col-sm-4">
             <canvas id="actuation_demo"></canvas>
-        </div>
-        <div class="col-sm-4">
-            <fieldset>
-                <table>
-                    <caption>Movement Configuration</caption>
-                    <tbody>
-                    <tr>
-                        <td>
-                            <label for="planned">Color for Planned
-                                Motion</label>
-                        </td>
-                        <td><input id="planned" class="form-control"
-                                   value="#0000FF" size="4" disabled></td>
-                    </tr>
-                    <tr>
-                        <td>
-                            <label for="actual">Color for Actual Motion</label>
-                        </td>
-                        <td><input id="actual" class="form-control"
-                                   value="#FF0000" size="4" disabled></td>
-                    </tr>
-                    <tr>
-                        <td>
-                            <label for="dist1">Distance of first move</label>
-                        </td>
-                        <td>
-                            <input id='dist1' size="3" value="1"
-                                   type="text" class="form-control"
-                                   onkeypress='return isDecimal(event);'
-                                   onblur='actuationDemo.setDist1(Number(event.target.value));'>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
-                            <label for="turn">Turn Angle</label>
-                        </td>
-                        <td>
-                            <input id='turn' size="3" value="90"
-                                   type="text" class="form-control"
-                                   onkeypress='return isDecimal(event);'
-                                   onblur='actuationDemo.setTurnAngle(Number(event.target.value)/180*Math.PI);'>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
-                            <label for="dist2">Distance of second move</label>
-                        </td>
-                        <td>
-                            <input id='dist2' size="3" value="1"
-                                   type="text" class="form-control"
-                                   onkeypress='return isDecimal(event);'
-                                   onblur='actuationDemo.setDist2(Number(event.target.value));'>
-                        </td>
-                    </tr>
-                    </tbody>
-                </table>
-            </fieldset>
         </div>
         <div class="col-sm-4">
             <fieldset>
@@ -691,7 +633,7 @@
                     </tr>
                     <tr>
                         <td>
-                            <label for="mcl_pRatio">% of particles being
+                            <label for="mcl_pRatio">% of particles
                                 resampled</label>
                         </td>
                         <td>
