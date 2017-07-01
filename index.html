@@ -121,8 +121,9 @@
 			const a3 = 0.02;
 			const a4 = 0.02;
 
-			actuationDemo = new ActuationDemo('actuation_demo', 1, Math.PI/2, 1,
+			actuationDemo = new ActuationDemo('simple_actuation', 1, Math.PI/2, 1,
                 a1, a2, a3, a4);
+			actuationDemo.simulateActuation();
 
 			measurementDemo = new BeamModelDemo('sensor_model_demo', getMap(), 3, 0.3);
 			sensorDemo = new SensorDemo('sensor_demo', 1);
@@ -207,7 +208,7 @@
     </div>
     <div class="row">
         <div class="col-sm-4">
-            <canvas id="actuation_demo"></canvas>
+            <canvas id="simple_actuation"></canvas>
         </div>
         <div class="col-sm-4">
             <fieldset>
