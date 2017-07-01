@@ -20,7 +20,8 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-slider/9.8.0/bootstrap-slider.min.js"></script>
 
     <!--Bootstrap Slider CSS-->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-slider/9.8.0/css/bootstrap-slider.min.css"></script>
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-slider/9.8.0/css/bootstrap-slider.css">
 
     <!--jQuery appear plugin-->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.appear/0.3.3/jquery.appear.min.js"></script>
@@ -98,9 +99,13 @@
 				p.y = y;
 				p.dir = dir;
 			});
-			smoothenPath(path);
-			robot = new Robot(filter, path, 19, 0, getValue('motion_stride'));
+			var slider = new Slider("#motion_stride");
+			slider.on("slide", function (sliderValue)
+			{
+				motionDemo.setStride(sliderValue);
+			});
 
+			var robot = new Robot(filter, path, 19, 0, slider.getValue());
 			motionDemo = new RobotDemo('motion_canvas', 'motion_minicanvas', getMap(), robot, 10);
 		}
 
@@ -130,15 +135,15 @@
 		}
 
 		function simulateAllActuations()
-        {
-        	a1Demo.simulateActuation();
+		{
+			a1Demo.simulateActuation();
 			a2Demo.simulateActuation();
 			a3Demo.simulateActuation();
 			a4Demo.simulateActuation();
-        }
+		}
 
 		function initActuationDemo()
-        {
+		{
 			//Noise parameters
 			const a1 = 0.02;
 			const a2 = 0.02;
@@ -149,19 +154,19 @@
 			simpleActuation.simulateActuation();
 
 			const noise = 0.3;
-			a1Demo = new ActuationDemo('actuation_a1', 1, Math.PI/2, 1,
-                noise, 0, 0, 0);
-			a2Demo = new ActuationDemo('actuation_a2', 1, Math.PI/2, 1,
-                0, noise, 0, 0);
-			a3Demo = new ActuationDemo('actuation_a3', 1, Math.PI/2, 1,
-                0, 0, noise, 0);
-			a4Demo = new ActuationDemo('actuation_a4', 1, Math.PI/2, 1,
-                0, 0, 0, noise);
+			a1Demo = new ActuationDemo('actuation_a1', 1, Math.PI / 2, 1,
+				noise, 0, 0, 0);
+			a2Demo = new ActuationDemo('actuation_a2', 1, Math.PI / 2, 1,
+				0, noise, 0, 0);
+			a3Demo = new ActuationDemo('actuation_a3', 1, Math.PI / 2, 1,
+				0, 0, noise, 0);
+			a4Demo = new ActuationDemo('actuation_a4', 1, Math.PI / 2, 1,
+				0, 0, 0, noise);
 			simulateAllActuations();
 
 			//Ignore future appear events
 			$('#simple_actuation').off('appear');
-        }
+		}
 
 		function init()
 		{
@@ -271,7 +276,9 @@
 <div class="container">
     <div class="row"><h3>Different Types of Actuation Noise</h3></div>
     <div class="row">
-        <button class="btn btn-success" onclick="simulateAllActuations();">Simulate All!</button>
+        <button class="btn btn-success" onclick="simulateAllActuations();">
+            Simulate All!
+        </button>
     </div>
     <div class="row">
         <div class="col-sm-3">
@@ -325,14 +332,15 @@
                     </tr>
                     <tr>
                         <td>
-                            <label for="motion_stride">Step length</label>
+                            <label for="motion_stride">Moving Speed</label>
                         </td>
                         <td>
                             <input type='text' id="motion_stride"
                                    onblur='motionDemo.setStride(Number(event.target.value));'
-                                   onkeypress='return isDecimal(event);'
-                                   class="form-control" value="0.04"
-                                   size="3">
+                                   value="0.04"
+                                   data-slider-min="0.01" data-slider-max="0.1"
+                                   data-slider-step="0.01"
+                                   data-slider-value="0.04">
                         </td>
                     </tr>
                     <tr>

@@ -93,11 +93,10 @@ Robot.prototype.updateMotion = function()
 	var stride = this.stride;
 	var x = this.x;
 	var y = this.y;
+	var targetPoint = this.path[this.targetIndex];
 
 	while(stride > 0)
 	{
-		var targetPoint = this.path[this.targetIndex];
-
 		var dist = distance(x, y, targetPoint.x, targetPoint.y);
 		while(dist <= EPS)
 		{
@@ -106,14 +105,15 @@ Robot.prototype.updateMotion = function()
 			targetPoint = this.path[this.targetIndex];
 			dist = distance(x, y, targetPoint.x, targetPoint.y);
 		}
-
 		var cosx = (targetPoint.x-x)/dist;
+
 		var sinx = (targetPoint.y-y)/dist;
 		dist = min(dist, stride);
-
 		x += cosx * dist;
+
 		y += sinx * dist;
 		stride -= dist;
+		targetPoint = this.path[this.targetIndex];
 	}
 
     //Move the robot
