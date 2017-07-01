@@ -26,13 +26,16 @@ function BeamModelDemo(id, map, sensorRadius, sensorNoise)
 
 	//Event listeners
 	const self = this;
-	this.view.canvas.onmousedown = function (event){
+	this.view.canvas.onmousedown = function (event)
+	{
 		return self.mouseDown(event)
 	};
-	this.view.canvas.onmousemove = function (event) {
+	this.view.canvas.onmousemove = function (event)
+	{
 		return self.trackPosition(event)
 	};
-	this.view.canvas.onmouseout = function (event) {
+	this.view.canvas.onmouseout = function (event)
+	{
 		return self.mouseOut(event)
 	};
 	this.view.ctx.drawMap(map);
@@ -80,7 +83,8 @@ BeamModelDemo.prototype.mouseDown = function (event)
 	this.draw();
 };
 
-BeamModelDemo.prototype.trackPosition = function (event) {
+BeamModelDemo.prototype.trackPosition = function (event)
+{
 	this.mouseout = false;
 	const view = this.view;
 	const coor = getClickLoc(event);
@@ -99,7 +103,7 @@ BeamModelDemo.prototype.trackPosition = function (event) {
 	// view.canvas.getContext('2d').fillRect(0,0,view.canvas.width,view.canvas.height);
 	this.draw();
 	this.drawLaserLines();
-}
+};
 
 BeamModelDemo.prototype.trackDirection = function (event)
 {
@@ -115,7 +119,8 @@ BeamModelDemo.prototype.trackDirection = function (event)
 BeamModelDemo.prototype.mouseUp = function (event)
 {
 	const self = this;
-	this.view.canvas.onmousemove = function (event) {
+	this.view.canvas.onmousemove = function (event)
+	{
 		return self.trackPosition(event)
 	}
 	this.view.canvas.onmouseup = undefined;
@@ -125,7 +130,8 @@ BeamModelDemo.prototype.mouseUp = function (event)
 	this.drawLaserLines();
 };
 
-BeamModelDemo.prototype.mouseOut = function (event) {
+BeamModelDemo.prototype.mouseOut = function (event)
+{
 	this.mouseout = true;
 	const self = this;
 	clearCanvas(self.view.canvas);
