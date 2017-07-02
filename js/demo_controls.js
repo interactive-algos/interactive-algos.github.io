@@ -74,26 +74,6 @@ function initMotionDemo()
 
 function initMCLDemo()
 {
-	const path = vanillaPath;
-	const x = path[0].x;
-	const y = path[0].y;
-	const dir = atan2(path[1].y - path[0].y, path[1].x - path[0].x);
-	const filter = new ParticleFilter(
-		getValue('mcl_nParticles'),
-		new OdometryModel(
-			getValue('mcl_a1') / 100.0,
-			getValue('mcl_a2') / 100.0,
-			getValue('mcl_a3') / 100.0,
-			getValue('mcl_a4') / 100.0),
-		new BeamModel(
-			getValue('mcl_sensorNoise'),
-			getValue('mcl_sensorRadius'),
-			getMap()),
-		new RobotState(x, y, dir),
-		getValue('mcl_pRatio'));
-	smoothenPath(path);
-	robot = new Robot(filter, path, 19, getValue('mcl_sensorRadius'), getValue('mcl_stride'));
-
 	var slider = new Slider("#mcl_stride", {
 		min: 0.01,
 		max: 0.2,
@@ -156,6 +136,36 @@ function initMCLDemo()
 	{
 		measurementDemo.setColoringResolution(value);
 	});
+
+	var pRatioSlider = new Slider('#mcl_pRatio', {
+		min: 0,
+		max: 1,
+		step: 0.01,
+		formatter: function(value){return round(value*100) + "%";}
+	});
+	pRatioSlider.on('slide', function(value)
+	{
+		mclDemo.robot.filter.resampleRatio = value;
+	});
+
+	const path = vanillaPath;
+	const x = path[0].x;
+	const y = path[0].y;
+	const dir = atan2(path[1].y - path[0].y, path[1].x - path[0].x);
+	const filter = new ParticleFilter(
+		getValue('mcl_nParticles'),
+		new OdometryModel(
+			a1Slider.getValue(),
+			a2Slider.getValue(),
+			a3Slider.getValue(),
+			a4Slider.getValue()),
+		new BeamModel(
+			sensorNoiseSlider.getValue(),
+			sensorRadiusSlider.getValue(),
+			getMap()),
+		new RobotState(x, y, dir),
+		pRatioSlider.getValue());
+	robot = new Robot(filter, path, 19, getValue('mcl_sensorRadius'), getValue('mcl_stride'));
 	mclDemo = new RobotDemo('mcl_canvas', 'mcl_minicanvas', getMap(), robot, 10);
 }
 

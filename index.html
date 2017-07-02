@@ -474,11 +474,7 @@
                                 resampled</label>
                         </td>
                         <td>
-                            <input type='text' id="mcl_pRatio"
-                                   onblur='mclDemo.robot.filter.resampleRatio = Number(event.target.value);'
-                                   onkeypress='return isDecimal(event);'
-                                   class="form-control" value="0.9"
-                                   size="3">
+                            <input type='text' id="mcl_pRatio" data-slider-value="0.9">
                         </td>
                     </tr>
                     <tr>
@@ -486,11 +482,7 @@
                             <label for="mcl_stride">Step length</label>
                         </td>
                         <td>
-                            <input type='text' id="mcl_stride"
-                                   onblur='mclDemo.setStride(Number(event.target.value));'
-                                   onkeypress='return isDecimal(event);'
-                                   class="form-control" value="0.04"
-                                   size="3">
+                            <input type='text' id="mcl_stride"value="0.04">
                         </td>
                     </tr>
                     <tr>
@@ -499,10 +491,7 @@
                                 rotation</label>
                         </td>
                         <td>
-                            <input id='mcl_a1' size="3" value="1"
-                                   type="text" class="form-control"
-                                   onkeypress='return isDecimal(event);'
-                                   onblur='mclDemo.setA1(Number(event.target.value)/100.0);'>
+                            <input id='mcl_a1' value="1" type="text">
                         </td>
                         <td><label>%</label></td>
                     </tr>
@@ -512,10 +501,7 @@
                                 translation</label>
                         </td>
                         <td>
-                            <input id='mcl_a2' size="3" value="1"
-                                   type="text" class="form-control"
-                                   onkeypress='return isDecimal(event);'
-                                   onblur='mclDemo.setA2(Number(event.target.value)/100.0);'>
+                            <input id='mcl_a2' value="1" type="text">
                         </td>
                         <td><label>%</label></td>
                     </tr>
@@ -525,10 +511,7 @@
                                 translation</label>
                         </td>
                         <td>
-                            <input id='mcl_a3' size="3" value="1"
-                                   type="text" class="form-control"
-                                   onkeypress='return isDecimal(event);'
-                                   onblur='mclDemo.setA3(Number(event.target.value)/100.0);'>
+                            <input id='mcl_a3' value="1" type="text">
                         </td>
                         <td><label>%</label></td>
                     </tr>
@@ -538,10 +521,7 @@
                                 rotation</label>
                         </td>
                         <td>
-                            <input id='mcl_a4' size="3" value="1"
-                                   type="text" class="form-control"
-                                   onkeypress='return isDecimal(event);'
-                                   onblur='mclDemo.setA4(Number(event.target.value)/100.0);'>
+                            <input id='mcl_a4' value="1" type="text">
                         </td>
                         <td><label>%</label></td>
                     </tr>
@@ -550,21 +530,13 @@
                             <label for="mcl_sensorRadius">Sensor Radius</label>
                         </td>
                         <td>
-                            <input id="mcl_sensorRadius"
-                                   onblur='mclDemo.setSensorRadius(Number(event.target.value));'
-                                   onkeypress='return isNumber(event);'
-                                   class="form-control" value="3" size="3">
+                            <input id="mcl_sensorRadius" type="text" value="3">
                         </td>
                     </tr>
                     <tr>
                         <td><label for="mcl_sensorNoise">Sensor Noise</label>
                         </td>
-                        <td><input type='text' id="mcl_sensorNoise"
-                                   onblur='mclDemo.setSensorNoise(Number(event.target.value));'
-                                   onkeypress='return isDecimal(event);'
-                                   class="form-control form-control-sm"
-                                   value="0.3"
-                                   size="3"></td>
+                        <td><input type='text' id="mcl_sensorNoise" value="0.3"></td>
                     </tr>
                     <tr>
                         <td>
