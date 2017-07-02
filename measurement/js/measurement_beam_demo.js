@@ -167,10 +167,7 @@ BeamModelDemo.prototype.mouseOut = function (event)
 	this.view.setOffset(0, this.view.canvas.clientHeight);
 	this.draw();
 	this.drawLaserLines();
-	if(this.shouldColor && !this.isCalculating)
-	{
-		this.manager.start(this.resolution, this.sensorModel, this.z, this.dir);
-	}
+	this.colorMapIfShould();
 };
 
 BeamModelDemo.prototype.draw = function ()
@@ -206,6 +203,8 @@ BeamModelDemo.prototype.update = function ()
 
 BeamModelDemo.prototype.setNLasers = function (n)
 {
+	if(this.z.length === n+1)
+		return;
 	this.z = new Array(n + 1);
 	this.update();
 	this.draw();
@@ -218,6 +217,7 @@ BeamModelDemo.prototype.setSensorRadius = function (r)
 	this.update();
 	this.draw();
 	this.drawLaserLines();
+	this.colorMapIfShould();
 };
 
 BeamModelDemo.prototype.setSensorNoise = function (p)
@@ -226,6 +226,7 @@ BeamModelDemo.prototype.setSensorNoise = function (p)
 	this.update();
 	this.draw();
 	this.drawLaserLines();
+	this.colorMapIfShould();
 };
 
 BeamModelDemo.prototype.drawLaserLines = function ()
@@ -238,8 +239,7 @@ BeamModelDemo.prototype.setColoring = function (shouldColor)
 	this.shouldColor = shouldColor;
 	this.draw();
 	this.drawLaserLines();
-	if(shouldColor && !this.isCalculating)
-		this.manager.start(this.resolution, this.sensorModel, this.z, this.dir);
+	this.colorMapIfShould();
 };
 
 BeamModelDemo.prototype.setColoringResolution = function (resolution)
@@ -247,6 +247,11 @@ BeamModelDemo.prototype.setColoringResolution = function (resolution)
 	this.resolution = resolution;
 	this.draw();
 	this.drawLaserLines();
+	this.colorMapIfShould();
+};
+
+BeamModelDemo.prototype.colorMapIfShould = function()
+{
 	if(this.shouldColor && !this.isCalculating)
 		this.manager.start(this.resolution, this.sensorModel, this.z, this.dir);
 };

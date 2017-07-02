@@ -13,7 +13,7 @@ var sensorDemo;
 var motionDemo;
 var mclDemo;
 
-const noiseSliderFormat = {
+const actuationNoiseSliderFormat = {
 	min: 0,
 	max: 1,
 	step: 0.05,
@@ -43,10 +43,10 @@ function initMotionDemo()
 		motionDemo.setStride(sliderValue);
 	});
 
-	var a1Slider = new Slider('#motion_a1', noiseSliderFormat);
-	var a2Slider = new Slider('#motion_a2', noiseSliderFormat);
-	var a3Slider = new Slider('#motion_a3', noiseSliderFormat);
-	var a4Slider = new Slider('#motion_a4', noiseSliderFormat);
+	var a1Slider = new Slider('#motion_a1', actuationNoiseSliderFormat);
+	var a2Slider = new Slider('#motion_a2', actuationNoiseSliderFormat);
+	var a3Slider = new Slider('#motion_a3', actuationNoiseSliderFormat);
+	var a4Slider = new Slider('#motion_a4', actuationNoiseSliderFormat);
 
 	a1Slider.on('slide', function(value){motionDemo.setA1(value)});
 	a2Slider.on('slide', function(value){motionDemo.setA2(value)});
@@ -101,7 +101,7 @@ function initActuationDemo()
 		a1, a2, a3, a4);
 	simpleActuation.simulateActuation();
 
-	var noiseSlider = new Slider('#actuation_noise', noiseSliderFormat);
+	var noiseSlider = new Slider('#actuation_noise', actuationNoiseSliderFormat);
 	const noise = noiseSlider.getValue();
 	a1Demo = new ActuationDemo('actuation_a1', 1, Math.PI / 2, 1,
 		noise, 0, 0, 0);
@@ -127,6 +127,15 @@ function initMeasurementDemo()
 	var map = getMap();
 	compactMap(map);
 	measurementDemo = new BeamModelDemo('sensor_model_demo', map, 3, 0.3);
+
+	var nLasersSlider = new Slider('#nLasers', {
+		min: 6,
+		max: 36,
+		step: 1,
+		value: 18
+	});
+	nLasersSlider.on('slide', function(value){measurementDemo.setNLasers(value)});
+	nLasersSlider.on('slideStop', function(){measurementDemo.colorMapIfShould();});
 }
 
 function onFirstAppear(selector, callback)
