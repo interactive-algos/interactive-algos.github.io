@@ -184,19 +184,24 @@ function initActuationDemo()
 	const a2 = 0.02;
 	const a3 = 0.02;
 	const a4 = 0.02;
-	simpleActuation = new ActuationDemo('simple_actuation', 1, Math.PI / 2, 1,
+
+	const firstMove = 2;
+	const turn = Math.PI/6;
+	const secondMove = 2;
+
+	simpleActuation = new ActuationDemo('simple_actuation', firstMove, turn, secondMove,
 		a1, a2, a3, a4);
 	simpleActuation.simulateActuation();
 
 	var noiseSlider = new Slider('#actuation_noise', actuationNoiseSliderFormat);
 	const noise = noiseSlider.getValue();
-	a1Demo = new ActuationDemo('actuation_a1', 1, Math.PI / 2, 1,
+	a1Demo = new ActuationDemo('actuation_a1', firstMove, turn, secondMove,
 		noise, 0, 0, 0);
-	a2Demo = new ActuationDemo('actuation_a2', 1, Math.PI / 2, 1,
+	a2Demo = new ActuationDemo('actuation_a2', firstMove, turn, secondMove,
 		0, noise, 0, 0);
-	a3Demo = new ActuationDemo('actuation_a3', 1, Math.PI / 2, 1,
+	a3Demo = new ActuationDemo('actuation_a3', firstMove, turn, secondMove,
 		0, 0, noise, 0);
-	a4Demo = new ActuationDemo('actuation_a4', 1, Math.PI / 2, 1,
+	a4Demo = new ActuationDemo('actuation_a4', firstMove, turn, secondMove,
 		0, 0, 0, noise);
 	noiseSlider.on('slide', function (sliderValue)
 	{

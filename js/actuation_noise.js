@@ -29,7 +29,7 @@ function ActuationDemo(id, dist1, turn, dist2, a1, a2, a3, a4)
 	//place the robot on a random spot
 	this.x = this.robotSize;
 	this.y = this.robotSize;
-	this.dir = Math.PI/6;
+	this.dir = Math.PI/18;
 
 	this.draw();
 }
