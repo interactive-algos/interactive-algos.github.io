@@ -140,10 +140,9 @@ function getMapSize(map)
 
 View.prototype.colorMap = function (resolution, sensorModel, z, robotDir)
 {
-	// this.manager.start(resolution, sensorModel, z, robotDir);
 	var probabilityGrid = sensorModel.calcProbGrid(resolution, robotDir, z,
 		this.canvas.width, this.canvas.height, this);
-	this.drawProbabilityGrid(probabilityGrid, robotDir);
+	this.drawProbabilityGrid(probabilityGrid, resolution);
 };
 
 View.prototype.drawProbabilityGrid = function(probabilityGrid, resolution)

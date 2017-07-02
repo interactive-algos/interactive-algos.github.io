@@ -94,6 +94,68 @@ function initMCLDemo()
 	smoothenPath(path);
 	robot = new Robot(filter, path, 19, getValue('mcl_sensorRadius'), getValue('mcl_stride'));
 
+	var slider = new Slider("#mcl_stride", {
+		min: 0.01,
+		max: 0.2,
+		step: 0.01,
+		value: 0.04
+	});
+	slider.on("slide", function (sliderValue)
+	{
+		mclDemo.setStride(sliderValue);
+	});
+
+	var a1Slider = new Slider('#mcl_a1', actuationNoiseSliderFormat);
+	var a2Slider = new Slider('#mcl_a2', actuationNoiseSliderFormat);
+	var a3Slider = new Slider('#mcl_a3', actuationNoiseSliderFormat);
+	var a4Slider = new Slider('#mcl_a4', actuationNoiseSliderFormat);
+
+	a1Slider.on('slide', function (value)
+	{
+		mclDemo.setA1(value)
+	});
+	a2Slider.on('slide', function (value)
+	{
+		mclDemo.setA2(value)
+	});
+	a3Slider.on('slide', function (value)
+	{
+		mclDemo.setA3(value)
+	});
+	a4Slider.on('slide', function (value)
+	{
+		mclDemo.setA4(value)
+	});
+
+	var sensorRadiusSlider = new Slider('#mcl_sensorRadius', {
+		min: 1,
+		max: 10,
+		step: 0.5
+	});
+	sensorRadiusSlider.on('slide', function (value)
+	{
+		mclDemo.setSensorRadius(value);
+	});
+
+	var sensorNoiseSlider = new Slider('#mcl_sensorNoise', {
+		min: 0,
+		max: 3,
+		step: 0.1
+	});
+	sensorNoiseSlider.on('slide', function (value)
+	{
+		mclDemo.setSensorNoise(value);
+	});
+
+	var colorResSlider = new Slider('#mcl_colorRes', {
+		min: 1,
+		max: 20,
+		step: 1
+	});
+	colorResSlider.on('slide', function (value)
+	{
+		measurementDemo.setColoringResolution(value);
+	});
 	mclDemo = new RobotDemo('mcl_canvas', 'mcl_minicanvas', getMap(), robot, 10);
 }
 

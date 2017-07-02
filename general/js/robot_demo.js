@@ -128,10 +128,8 @@ RobotDemo.prototype.draw = function ()
 
 RobotDemo.prototype.colorMap = function ()
 {
-	this.manager.start(this.colorRes, this.robot.filter.sensorModel, this.robot.getSensorReading(),
-		this.robot.dir);
-	// this.lview.colorMap(this.colorRes, this.robot.filter.sensorModel,
-	// 	this.robot.getSensorReading(), this.robot.dir);
+	this.lview.colorMap(this.colorRes, this.robot.filter.sensorModel,
+		this.robot.getSensorReading(), this.robot.dir);
 };
 
 RobotDemo.prototype.drawView = function (view)
@@ -162,6 +160,16 @@ RobotDemo.prototype.setA4 = function (noise)
 	this.robot.filter.motionModel.a4 = noise;
 };
 
+RobotDemo.prototype.setColoringResolution = function(res)
+{
+	this.colorRes = res;
+};
+
+RobotDemo.prototype.setColoring = function(bool)
+{
+	this.shouldColorMap = bool;
+};
+
 RobotDemo.prototype.setParticleCount = function (n)
 {
 	this.robot.filter = new ParticleFilter(n,
@@ -179,6 +187,11 @@ RobotDemo.prototype.setStride = function (stride)
 RobotDemo.prototype.setSensorRadius = function(r)
 {
 	this.robot.setSensorRadius(r);
+};
+
+RobotDemo.prototype.setSensorNoise = function(r)
+{
+	this.robot.filter.sensorModel.a1 = r;
 };
 
 RobotDemo.prototype.updateRobot = function ()
