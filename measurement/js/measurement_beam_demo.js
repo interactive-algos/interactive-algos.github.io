@@ -213,20 +213,22 @@ BeamModelDemo.prototype.setNLasers = function (n)
 
 BeamModelDemo.prototype.setSensorRadius = function (r)
 {
+	if(r === this.sensorRadius)
+		return;
 	this.sensorRadius = r;
 	this.update();
 	this.draw();
 	this.drawLaserLines();
-	this.colorMapIfShould();
 };
 
 BeamModelDemo.prototype.setSensorNoise = function (p)
 {
+	if(this.sensorModel.a1 === p)
+		return;
 	this.sensorModel.a1 = p;
 	this.update();
 	this.draw();
 	this.drawLaserLines();
-	this.colorMapIfShould();
 };
 
 BeamModelDemo.prototype.drawLaserLines = function ()

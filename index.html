@@ -372,7 +372,7 @@
                         </td>
                         <td>
                             <input id="nLasers"
-                                   value="18" size="3">
+                                   data-slider-value="18" size="3">
                         </td>
                     </tr>
                     <tr>
@@ -381,10 +381,7 @@
                         </td>
                         <td>
                             <input id="sensorRadius"
-                                   onblur='measurementDemo.setSensorRadius(Number(event.target.value))'
-                                   onkeypress='return isNumber(event);'
-                                   class="form-control form-control-sm"
-                                   value="3" size="3">
+                                   data-slider-value="3">
                         </td>
                         <td>m</td>
                     </tr>
@@ -394,10 +391,7 @@
                         </td>
                         <td>
                             <input id="sensorNoise"
-                                   onblur='measurementDemo.setSensorNoise(Number(event.target.value))'
-                                   onkeypress='return isDecimal(event);'
-                                   class="form-control form-control-sm"
-                                   value="0.3" size="3">
+                                   data-slider-value="0.3">
                         </td>
                         <td>m</td>
                     </tr>

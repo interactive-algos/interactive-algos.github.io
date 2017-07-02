@@ -18,7 +18,10 @@ const actuationNoiseSliderFormat = {
 	max: 1,
 	step: 0.05,
 	value: 0.01,
-	formatter: function(value){return round(value*100) + '%';}
+	formatter: function (value)
+	{
+		return round(value * 100) + '%';
+	}
 };
 
 function initMotionDemo()
@@ -48,10 +51,22 @@ function initMotionDemo()
 	var a3Slider = new Slider('#motion_a3', actuationNoiseSliderFormat);
 	var a4Slider = new Slider('#motion_a4', actuationNoiseSliderFormat);
 
-	a1Slider.on('slide', function(value){motionDemo.setA1(value)});
-	a2Slider.on('slide', function(value){motionDemo.setA2(value)});
-	a3Slider.on('slide', function(value){motionDemo.setA3(value)});
-	a4Slider.on('slide', function(value){motionDemo.setA4(value)});
+	a1Slider.on('slide', function (value)
+	{
+		motionDemo.setA1(value)
+	});
+	a2Slider.on('slide', function (value)
+	{
+		motionDemo.setA2(value)
+	});
+	a3Slider.on('slide', function (value)
+	{
+		motionDemo.setA3(value)
+	});
+	a4Slider.on('slide', function (value)
+	{
+		motionDemo.setA4(value)
+	});
 
 	var robot = new Robot(filter, path, 19, 0, slider.getValue());
 	motionDemo = new RobotDemo('motion_canvas', 'motion_minicanvas', getMap(), robot, 10);
@@ -111,7 +126,7 @@ function initActuationDemo()
 		0, 0, noise, 0);
 	a4Demo = new ActuationDemo('actuation_a4', 1, Math.PI / 2, 1,
 		0, 0, 0, noise);
-	noiseSlider.on('slide', function(sliderValue)
+	noiseSlider.on('slide', function (sliderValue)
 	{
 		a1Demo.setA1(sliderValue);
 		a2Demo.setA2(sliderValue);
@@ -126,21 +141,49 @@ function initMeasurementDemo()
 {
 	var map = getMap();
 	compactMap(map);
-	measurementDemo = new BeamModelDemo('sensor_model_demo', map, 3, 0.3);
-
 	var nLasersSlider = new Slider('#nLasers', {
 		min: 6,
 		max: 36,
-		step: 1,
-		value: 18
+		step: 1
 	});
-	nLasersSlider.on('slide', function(value){measurementDemo.setNLasers(value)});
-	nLasersSlider.on('slideStop', function(){measurementDemo.colorMapIfShould();});
+	nLasersSlider.on('slide', function (value)
+	{
+		measurementDemo.setNLasers(value)
+	});
+	nLasersSlider.on('slideStop', function ()
+	{
+		measurementDemo.colorMapIfShould();
+	});
+
+	var sensorRadiusSlider = new Slider('#sensorRadius', {
+		min: 1,
+		max: 10,
+		step: 0.5
+	});
+	sensorRadiusSlider.on('slide', function (value)
+	{
+		measurementDemo.setSensorRadius(value);
+	});
+	sensorRadiusSlider.on('slideStop', function(){measurementDemo.colorMapIfShould();});
+
+	var sensorNoiseSlider = new Slider('#sensorNoise', {
+		min: 0,
+		max: 3,
+		step: 0.1
+	});
+	sensorNoiseSlider.on('slide', function (value)
+	{
+		measurementDemo.setSensorNoise(value);
+	});
+	sensorNoiseSlider.on('slideStop', function(){measurementDemo.colorMapIfShould();});
+
+	measurementDemo = new BeamModelDemo('sensor_model_demo', map,
+		sensorRadiusSlider.getValue(), sensorNoiseSlider.getValue());
 }
 
 function onFirstAppear(selector, callback)
 {
-	$(selector).appear().on('appear', function(event, $targets)
+	$(selector).appear().on('appear', function (event, $targets)
 	{
 		callback(event, $targets);
 		$(selector).off('appear');
@@ -156,24 +199,44 @@ function initSensorDemo(id)
 		value: 2
 	});
 	sensorDemo = new SensorDemo(id, noiseSlider.getValue());
-	noiseSlider.on("slideStop", function(sliderValue){sensorDemo.setSensorNoise(sliderValue)});
+	noiseSlider.on("slideStop", function (sliderValue)
+	{
+		sensorDemo.setSensorNoise(sliderValue)
+	});
 	var repSlider = new Slider('#nSamples', {
-		min:0,
-		max:5,
-		step:0.2,
+		min: 0,
+		max: 5,
+		step: 0.2,
 		value: 2,
-		formatter: function(value){return round(Math.pow(10, value));}
+		formatter: function (value)
+		{
+			return round(Math.pow(10, value));
+		}
 	});
 }
-
 
 
 function init()
 {
 	smoothenPath(vanillaPath);
-	onFirstAppear('#simple_actuation', function(e, $t){initActuationDemo();});
-	onFirstAppear('#motion_canvas', function(e, $t){initMotionDemo();});
-	onFirstAppear('#mcl_canvas', function(e, $t){initMCLDemo();});
-	onFirstAppear('#sensor_model_demo', function(e, $t){initMeasurementDemo();});
-	onFirstAppear('#sensor_demo', function(e, $t){initSensorDemo(e.target.id);});
+	onFirstAppear('#simple_actuation', function (e, $t)
+	{
+		initActuationDemo();
+	});
+	onFirstAppear('#motion_canvas', function (e, $t)
+	{
+		initMotionDemo();
+	});
+	onFirstAppear('#mcl_canvas', function (e, $t)
+	{
+		initMCLDemo();
+	});
+	onFirstAppear('#sensor_model_demo', function (e, $t)
+	{
+		initMeasurementDemo();
+	});
+	onFirstAppear('#sensor_demo', function (e, $t)
+	{
+		initSensorDemo(e.target.id);
+	});
 }
