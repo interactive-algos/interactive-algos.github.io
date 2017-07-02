@@ -117,17 +117,19 @@ function onFirstAppear(selector, callback)
 
 function initSensorDemo(id)
 {
-	sensorDemo = new SensorDemo(id, 1);
 	var noiseSlider = new Slider("#sensor_demo_sensorNoise", {
 		min: 1,
 		max: 7,
-		step: 1
+		step: 1,
+		value: 2
 	});
+	sensorDemo = new SensorDemo(id, noiseSlider.getValue());
 	noiseSlider.on("slide", function(sliderValue){sensorDemo.setSensorNoise(sliderValue)});
 	var repSlider = new Slider('#nSamples', {
 		min:0,
 		max:5,
-		step:0.5,
+		step:0.2,
+		value: 2,
 		formatter: function(value){return round(Math.pow(10, value));}
 	});
 }
