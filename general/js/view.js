@@ -66,6 +66,7 @@ View.prototype.setPreviewScale = function (map)
 		dspscale = s1;
 	}
 	this.setScale(dspscale);
+	this.setOffset(0, this.canvas.height);
 };
 
 View.prototype.adjustToPoint = function (x, y)
@@ -92,7 +93,6 @@ View.prototype.adjustToPoint = function (x, y)
 	this.addOffset(dx, dy);
 };
 
-
 function getMapSize(map)
 {
 	var w = 0;
@@ -117,7 +117,7 @@ function getMapSize(map)
 		}
 	}
 	return new Point(w, h);
-};
+}
 
 View.prototype.colorMap = function (resolution, sensorModel, z, robotDir)
 {

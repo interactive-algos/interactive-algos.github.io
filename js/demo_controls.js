@@ -13,6 +13,14 @@ var sensorDemo;
 var motionDemo;
 var mclDemo;
 
+const noiseSliderFormat = {
+	min: 0,
+	max: 1,
+	step: 0.05,
+	value: 0.01,
+	formatter: function(value){return round(value*100) + '%';}
+};
+
 function initMotionDemo()
 {
 	const path = vanillaPath;
@@ -40,6 +48,16 @@ function initMotionDemo()
 	{
 		motionDemo.setStride(sliderValue);
 	});
+
+	var a1Slider = new Slider('#motion_a1', noiseSliderFormat);
+	var a2Slider = new Slider('#motion_a2', noiseSliderFormat);
+	var a3Slider = new Slider('#motion_a3', noiseSliderFormat);
+	var a4Slider = new Slider('#motion_a4', noiseSliderFormat);
+
+	a1Slider.on('slide', function(value){motionDemo.setA1(value)});
+	a2Slider.on('slide', function(value){motionDemo.setA2(value)});
+	a3Slider.on('slide', function(value){motionDemo.setA3(value)});
+	a4Slider.on('slide', function(value){motionDemo.setA4(value)});
 
 	var robot = new Robot(filter, path, 19, 0, slider.getValue());
 	motionDemo = new RobotDemo('motion_canvas', 'motion_minicanvas', getMap(), robot, 10);
@@ -89,13 +107,7 @@ function initActuationDemo()
 		a1, a2, a3, a4);
 	simpleActuation.simulateActuation();
 
-	var noiseSlider = new Slider('#actuation_noise', {
-		min: 0,
-		max: 1,
-		step: 0.05,
-		value: 0.01,
-		formatter: function(value){return round(value*100) + '%';}
-	});
+	var noiseSlider = new Slider('#actuation_noise', noiseSliderFormat);
 	const noise = noiseSlider.getValue();
 	a1Demo = new ActuationDemo('actuation_a1', 1, Math.PI / 2, 1,
 		noise, 0, 0, 0);
@@ -132,12 +144,7 @@ function onFirstAppear(selector, callback)
 
 function initSensorDemo(id)
 {
-	var noiseSlider = new Slider("#sensor_demo_sensorNoise", {
-		min: 1,
-		max: 7,
-		step: 1,
-		value: 2
-	});
+	var noiseSlider = new Slider("#sensor_demo_sensorNoise", noiseSliderFormat);
 	sensorDemo = new SensorDemo(id, noiseSlider.getValue());
 	noiseSlider.on("slideStop", function(sliderValue){sensorDemo.setSensorNoise(sliderValue)});
 	var repSlider = new Slider('#nSamples', {

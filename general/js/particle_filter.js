@@ -18,23 +18,21 @@ function ParticleFilter(particleCount, motionModel, sensorModel, robotState, res
 	this.sensorModel = sensorModel;
 	this.resampleRatio = resampleRatio;
 
-	if (typeof robotState !== 'undefined')
+	if (typeof sensorModel !== 'undefined')
 	{
 		// If current robot state is already defined
 		// generate initial particles around the robot
 		// being used for motion demo
 		for (var i = particleCount - 1; i >= 0; i--)
 		{
-			this.particles[i] = new Particle(robotState.x + gaussian() * 2, robotState.y + gaussian() * 2, robotState.dir + Math.PI * gaussian(), undefined);
+			this.particles[i] = new Particle(robotState.x + gaussian() * 2, robotState.y + gaussian() * 2, robotState.dir + Math.PI * gaussian(), 0);
 		}
 	} else
 	{
 		// generate random particles within the map
-		// being used for mcl
-		var weight = 1.0 / particleCount;
 		for (var i = particleCount - 1; i >= 0; i--)
 		{
-			this.particles[i] = this.newParticle();
+			this.particles[i] = new Particle(robotState.x, robotState.y, robotState.dir, 0);
 		}
 	}
 }

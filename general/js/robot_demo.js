@@ -17,9 +17,6 @@ function RobotDemo(lid, //Main Canvas id
 	this.sview = new View(document.getElementById(sid), 1);
 	this.sview.setPreviewScale(map);
 
-	this.paths = {};
-	this.pathSelect = document.getElementById('path');
-
 	this.map = map;
 	this.colorRes = colorRes;
 
@@ -86,7 +83,9 @@ RobotDemo.prototype.stop = function ()
 	} else
 	{ //stop
 		this.largeCanvas.onmousedown = undefined;
-		init();
+		this.lview.setPreviewScale(this.map);
+		this.robot.reset();
+		this.draw();
 	}
 };
 

@@ -15,32 +15,39 @@ function Robot(filter, path, nLasers, sensorRadius, stride)
 {
     if (typeof(nLasers) === 'undefined') nLasers = 19;
 
-    this.x = path[0].x;		//x coordinate
-    this.y = path[0].y;		//y coordinate
-    this.dir = atan2(path[1].y-path[0].y, path[1].x-path[0].x);	//orientation in radians
-
-    this.lastScan = Date.now();	//time of last sense in millis
-
-    this.senseCircle = Robot.size;
-
-    //For odometry records
-    this.lastX = this.x;
-    this.lastY = this.y;
-    this.lastDir = this.dir;
-
     this.filter = filter;
 
     //Array of points for the robot to follow
     this.path = path;
-
-    //Index to the path array, the point the robot is currently approaching
-	//The robot starts at 0th point so this is set to 1
-	this.targetIndex = 1;
+	this.reset();
 
 	this.z = new Array(nLasers);
 	this.sensorRadius = sensorRadius;
 	this.stride = stride;
 }
+
+Robot.prototype.reset = function()
+{
+	const path = this.path;
+	this.x = path[0].x;		//x coordinate
+	this.y = path[0].y;		//y coordinate
+	this.dir = atan2(path[1].y-path[0].y, path[1].x-path[0].x);	//orientation in radians
+
+	//For odometry records
+	this.lastX = this.x;
+	this.lastY = this.y;
+	this.lastDir = this.dir;
+
+	//Index to the path array, the point the robot is currently approaching
+	//The robot starts at 0th point so this is set to 1
+	this.targetIndex = 1;
+	this.filter = new ParticleFilter(this.filter.count, this.filter.motionModel, this.filter.sensorModel, this.getState(), this.filter.resampleRatio);
+};
+
+Robot.prototype.pinAllParticles = function()
+{
+
+};
 
 Robot.prototype.setA1 = function(noise)
 {
@@ -76,8 +83,6 @@ Robot.prototype.update = function()
     this.updateMotion();
 
     this.updateParticles();
-
-    this.updateSenseCircle();
 };
 
 /**
@@ -151,30 +156,12 @@ Robot.prototype.updateParticles = function()
     this.lastDir = this.dir;
 };
 
-Robot.prototype.updateSenseCircle = function()
-{
-    if(this.senseCircle > this.sensorRadius)
-    {
-        if(Date.now() - this.lastScan >= Robot.scanInterval)
-        {
-            this.senseCircle = Robot.size;
-            this.lastScan = Date.now();
-        }
-    }
-    this.senseCircle += 0.02;
-};
-
 Robot.prototype.draw = function(ctx)
 {
     ctx.strokeStyle = 'black';
 
     var x = this.x;
     var y = this.y;
-
-    if (typeof(robotHistory) !== 'undefined')
-    {
-        robotHistory.push(new Point(x,y));
-    }
 
     ctx.drawRobot(x, y, this.dir, Robot.size);
 
