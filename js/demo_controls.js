@@ -2,6 +2,29 @@
  * Created by kelvinzhang on 7/1/17.
  */
 
+window.onerror = function (msg, url, lineNo, columnNo, error)
+{
+	var string = msg.toLowerCase();
+	var substring = "script error";
+	if (string.indexOf(substring) > -1)
+	{
+		alert('Script Error: See Browser Console for Detail');
+	} else
+	{
+		var message = [
+			'Message: ' + msg,
+			'URL: ' + url,
+			'Line: ' + lineNo,
+			'Column: ' + columnNo,
+			'Error object: ' + JSON.stringify(error)
+		].join(' - ');
+
+		alert(message);
+	}
+
+	return false;
+};
+
 var simpleActuation;
 var a1Demo;
 var a2Demo;
@@ -141,9 +164,12 @@ function initMCLDemo()
 		min: 0,
 		max: 1,
 		step: 0.01,
-		formatter: function(value){return round(value*100) + "%";}
+		formatter: function (value)
+		{
+			return round(value * 100) + "%";
+		}
 	});
-	pRatioSlider.on('slide', function(value)
+	pRatioSlider.on('slide', function (value)
 	{
 		mclDemo.robot.filter.resampleRatio = value;
 	});
@@ -186,7 +212,7 @@ function initActuationDemo()
 	const a4 = 0.02;
 
 	const firstMove = 2;
-	const turn = Math.PI/6;
+	const turn = Math.PI / 6;
 	const secondMove = 2;
 
 	simpleActuation = new ActuationDemo('simple_actuation', firstMove, turn, secondMove,

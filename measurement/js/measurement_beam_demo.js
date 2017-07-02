@@ -197,7 +197,10 @@ BeamModelDemo.prototype.update = function ()
 	scan(this.x, this.y, this.dir, this.sensorRadius, this.map, this.z);
 	for (var i = 0; i < this.z.length; i++)
 	{
-		this.z[i] += gaussian() * this.sensorModel.a1;
+		if(this.z[i] < this.sensorRadius)
+		{
+			this.z[i] += gaussian() * this.sensorModel.a1;
+		}
 	}
 };
 
