@@ -16,6 +16,9 @@ function BeamModel(a1, sensorRadius, map)
 	// this.width = width;
 	// this.height = height;
 	this.sensorRadius = sensorRadius;
+
+	// For calculating visualization
+	this.progress = -1;
 }
 
 /**
@@ -69,6 +72,7 @@ BeamModel.prototype.prob_log = function (z, state)
 
 BeamModel.prototype.calcProbGrid = function (resolution, robotDir, z, width, height, view)
 {
+	this.view = view;
 	var probs = new Array(Math.ceil(height / resolution));
 	// var sum = 0;
 	var max = 0;
@@ -84,6 +88,20 @@ BeamModel.prototype.calcProbGrid = function (resolution, robotDir, z, width, hei
 			max = Math.max(p, max);
 			min = Math.min(p, min);
 			probs[i][j] = p;
+
+			if (round((i+1)/probs.length*100) != this.progress){
+				this.setProgress(round((i+1)/probs.length*100));
+				if (this.progress >= 0) {
+					for (var k = 1; k < this.progress; k++){
+						view.ctx.strokeTextWithColorFont("-", 'black', '12 Menlo Regular', 10+k, 30);
+					}
+					var p = document.getElementById("probability");
+					if (p != null) {
+						p.textContent = this.progress;
+						console.log(p.textContent);
+					}
+				}
+			}
 		}
 	}
 
@@ -95,8 +113,19 @@ BeamModel.prototype.calcProbGrid = function (resolution, robotDir, z, width, hei
 			probs[i][j] /= (max - min);
 		}
 	}
+
+	this.setProgress(-1);
 	return probs;
 };
+
+BeamModel.prototype.setProgress = function (progress) {
+	this.progress = progress;
+	console.log(progress);
+}
+
+BeamModel.prototype.drawProgress = function () {
+
+}
 
 /**
  * Scans the map in (x,y); with direction of dir0;
