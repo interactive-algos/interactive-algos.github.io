@@ -231,8 +231,7 @@
                         </td>
                         <td>
                             <input id='motion_a1' size="3" value="1"
-                                   type="text" class="form-control"
-                                   onkeypress='return isDecimal(event);'>
+                                   type="text" class="form-control">
                         </td>
                     </tr>
                     <tr>
@@ -242,8 +241,7 @@
                         </td>
                         <td>
                             <input id='motion_a2' size="3" value="1"
-                                   type="text" class="form-control"
-                                   onkeypress='return isDecimal(event);'>
+                                   type="text" class="form-control">
                         </td>
                     </tr>
                     <tr>
@@ -253,8 +251,7 @@
                         </td>
                         <td>
                             <input id='motion_a3' size="3" value="1"
-                                   type="text" class="form-control"
-                                   onkeypress='return isDecimal(event);'>
+                                   type="text" class="form-control">
                         </td>
                     </tr>
                     <tr>
@@ -264,8 +261,7 @@
                         </td>
                         <td>
                             <input id='motion_a4' size="3" value="1"
-                                   type="text" class="form-control"
-                                   onkeypress='return isDecimal(event);'>
+                                   type="text" class="form-control">
                         </td>
                     </tr>
                     </tbody>
@@ -510,7 +506,7 @@
                             <input id='mcl_a1' size="3" value="1"
                                    type="text" class="form-control"
                                    onkeypress='return isDecimal(event);'
-                                   onblur='mclDemo.setA1(Number(event.target.value));'>
+                                   onblur='mclDemo.setA1(Number(event.target.value)/100.0);'>
                         </td>
                         <td><label>%</label></td>
                     </tr>
@@ -523,7 +519,7 @@
                             <input id='mcl_a2' size="3" value="1"
                                    type="text" class="form-control"
                                    onkeypress='return isDecimal(event);'
-                                   onblur='mclDemo.setA2(Number(event.target.value));'>
+                                   onblur='mclDemo.setA2(Number(event.target.value)/100.0);'>
                         </td>
                         <td><label>%</label></td>
                     </tr>
@@ -536,7 +532,7 @@
                             <input id='mcl_a3' size="3" value="1"
                                    type="text" class="form-control"
                                    onkeypress='return isDecimal(event);'
-                                   onblur='mclDemo.setA2(Number(event.target.value));'>
+                                   onblur='mclDemo.setA3(Number(event.target.value)/100.0);'>
                         </td>
                         <td><label>%</label></td>
                     </tr>
@@ -549,7 +545,7 @@
                             <input id='mcl_a4' size="3" value="1"
                                    type="text" class="form-control"
                                    onkeypress='return isDecimal(event);'
-                                   onblur='mclDemo.setA3(Number(event.target.value));'>
+                                   onblur='mclDemo.setA4(Number(event.target.value)/100.0);'>
                         </td>
                         <td><label>%</label></td>
                     </tr>
