@@ -187,9 +187,26 @@ function getMap()
 		new Line(71.4502, 22.3416, 71.4687, 22.8028),
 		new Line(67.4467, 22.3231, 67.4467, 27.8211)
 	];
-
-
-	// convertToWorld(map);
 	return map;
 }
 
+function compactMap(map)
+{
+	var minx = map[0].s.x;
+	var miny = map[0].s.y;
+
+	map.forEach(function(l)
+	{
+		minx = min(minx, l.s.x, l.t.x);
+		miny = min(miny, l.s.y, l.t.y);
+	});
+
+	console.log(minx + ', ' + miny);
+	map.forEach(function(l)
+	{
+		l.s.x -= minx;
+		l.s.y -= miny;
+		l.t.x -= minx;
+		l.t.y -= miny;
+	});
+}

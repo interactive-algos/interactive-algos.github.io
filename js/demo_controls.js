@@ -124,7 +124,9 @@ function initActuationDemo()
 
 function initMeasurementDemo()
 {
-	measurementDemo = new BeamModelDemo('sensor_model_demo', getMap(), 3, 0.3);
+	var map = getMap();
+	compactMap(map);
+	measurementDemo = new BeamModelDemo('sensor_model_demo', map, 3, 0.3);
 }
 
 function onFirstAppear(selector, callback)
@@ -154,6 +156,8 @@ function initSensorDemo(id)
 		formatter: function(value){return round(Math.pow(10, value));}
 	});
 }
+
+
 
 function init()
 {
