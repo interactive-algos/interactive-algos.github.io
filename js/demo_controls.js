@@ -37,12 +37,6 @@ function initMotionDemo()
 		undefined,
 		new RobotState(x, y, dir),
 		0);
-	filter.particles.forEach(function (p)
-	{
-		p.x = x;
-		p.y = y;
-		p.dir = dir;
-	});
 	var slider = new Slider("#motion_stride");
 	slider.on("slide", function (sliderValue)
 	{

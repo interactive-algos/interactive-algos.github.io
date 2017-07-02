@@ -44,11 +44,6 @@ Robot.prototype.reset = function()
 	this.filter = new ParticleFilter(this.filter.count, this.filter.motionModel, this.filter.sensorModel, this.getState(), this.filter.resampleRatio);
 };
 
-Robot.prototype.pinAllParticles = function()
-{
-
-};
-
 Robot.prototype.setA1 = function(noise)
 {
     this.filter.motionModel.a1 = noise;
