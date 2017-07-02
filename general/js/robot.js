@@ -86,8 +86,8 @@ Robot.prototype.updateMotion = function()
 			dist = distance(x, y, targetPoint.x, targetPoint.y);
 		}
 		var cosx = (targetPoint.x-x)/dist;
-
 		var sinx = (targetPoint.y-y)/dist;
+
 		dist = min(dist, stride);
 		x += cosx * dist;
 
