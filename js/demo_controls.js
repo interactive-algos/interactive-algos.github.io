@@ -115,6 +115,23 @@ function onFirstAppear(selector, callback)
 	});
 }
 
+function initSensorDemo(id)
+{
+	sensorDemo = new SensorDemo(id, 1);
+	var noiseSlider = new Slider("#sensor_demo_sensorNoise", {
+		min: 1,
+		max: 7,
+		step: 1
+	});
+	noiseSlider.on("slide", function(sliderValue){sensorDemo.setSensorNoise(sliderValue)});
+	var repSlider = new Slider('#nSamples', {
+		min:0,
+		max:5,
+		step:0.5,
+		formatter: function(value){return round(Math.pow(10, value));}
+	});
+}
+
 function init()
 {
 	smoothenPath(vanillaPath);
@@ -122,6 +139,5 @@ function init()
 	onFirstAppear('#motion_canvas', function(e, $t){initMotionDemo();});
 	onFirstAppear('#mcl_canvas', function(e, $t){initMCLDemo();});
 	onFirstAppear('#sensor_model_demo', function(e, $t){initMeasurementDemo();});
-
-	sensorDemo = new SensorDemo('sensor_demo', 1);
+	onFirstAppear('#sensor_demo', function(e, $t){initSensorDemo(e.target.id);});
 }

@@ -327,7 +327,6 @@
         <div class="col-sm-4">
             <fieldset>
                 <table>
-                    <caption>Configuration</caption>
                     <tbody>
                     <tr>
                         <td>
@@ -336,16 +335,15 @@
                         </td>
                         <td>
                             <input id="sensor_demo_sensorNoise" type="text"
-                                   onblur='sensorDemo.setSensorNoise(Number(event.target.value));'
-                                   onkeypress='return isDecimal(event);'
-                                   class="form-control form-control-sm"
+                                   onblur="sensorDemo.setSensorNoise(Number(event.target.value));"
+                                   onkeypress="return isNumber(event);"
                                    value="0.7">
                         </td>
                     </tr>
                     <tr>
                         <td>
                             <button type="button" class="btn btn-success"
-                                    onclick="sensorDemo.sample(Number(document.getElementById('nSamples').value));">
+                                    onclick="sensorDemo.sample(Math.pow(10, Number(document.getElementById('nSamples').value)));">
                                 Sense
                             </button>
                         </td>
@@ -493,25 +491,6 @@
             <fieldset>
                 <table>
                     <tbody>
-                    <tr>
-                        <td>
-                            <label for="path">Movement Path</label>
-                        </td>
-                        <td>
-                            <select id="mcl_path" class="selectpicker"
-                                    onchange="selectPath(event);" size="3">
-                                <optgroup label="Built-In">
-                                    <option>Vanilla</option>
-                                </optgroup>
-                                <optgroup label="Custom"
-                                          id="mcl_customPathGroup">
-                                    <option data-icon="glyphicon glyphicon-plus"
-                                            id="mcl_addPath">Add a path
-                                    </option>
-                                </optgroup>
-                            </select>
-                        </td>
-                    </tr>
                     <tr>
                         <td>
                             <label for="mcl_nParticles"># of particles</label>
