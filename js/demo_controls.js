@@ -164,7 +164,10 @@ function initMeasurementDemo()
 	{
 		measurementDemo.setSensorRadius(value);
 	});
-	sensorRadiusSlider.on('slideStop', function(){measurementDemo.colorMapIfShould();});
+	sensorRadiusSlider.on('slideStop', function ()
+	{
+		measurementDemo.colorMapIfShould();
+	});
 
 	var sensorNoiseSlider = new Slider('#sensorNoise', {
 		min: 0,
@@ -175,7 +178,24 @@ function initMeasurementDemo()
 	{
 		measurementDemo.setSensorNoise(value);
 	});
-	sensorNoiseSlider.on('slideStop', function(){measurementDemo.colorMapIfShould();});
+	sensorNoiseSlider.on('slideStop', function ()
+	{
+		measurementDemo.colorMapIfShould();
+	});
+
+	var colorResSlider = new Slider('#colorRes', {
+		min: 1,
+		max: 20,
+		step: 1
+	});
+	colorResSlider.on('slide', function (value)
+	{
+		measurementDemo.setColoringResolution(value);
+	});
+	colorResSlider.on('slideStop', function ()
+	{
+		measurementDemo.colorMapIfShould();
+	});
 
 	measurementDemo = new BeamModelDemo('sensor_model_demo', map,
 		sensorRadiusSlider.getValue(), sensorNoiseSlider.getValue());

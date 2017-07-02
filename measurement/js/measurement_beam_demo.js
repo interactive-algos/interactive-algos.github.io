@@ -247,9 +247,6 @@ BeamModelDemo.prototype.setColoring = function (shouldColor)
 BeamModelDemo.prototype.setColoringResolution = function (resolution)
 {
 	this.resolution = resolution;
-	this.draw();
-	this.drawLaserLines();
-	this.colorMapIfShould();
 };
 
 BeamModelDemo.prototype.colorMapIfShould = function()
