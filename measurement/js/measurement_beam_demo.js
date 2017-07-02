@@ -124,7 +124,7 @@ BeamModelDemo.prototype.trackPosition = function (event)
 	var worldX = mapsize.x * ratioX;
 	var worldY = mapsize.y * (1 - ratioY);
 
-	this.view.adjustToPoint(view.toScreenX(worldX), view.toScreenY(worldY));
+	this.view.adjustToPoint(worldX, worldY);
 	// view.canvas.getContext('2d').fillRect(0,0,view.canvas.width,view.canvas.height);
 	this.draw();
 	this.drawLaserLines();

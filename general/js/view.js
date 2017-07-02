@@ -90,6 +90,8 @@ View.prototype.setPreviewScale = function (map)
 
 View.prototype.adjustToPoint = function (x, y)
 {
+	x = this.toScreenX(x);
+	y = this.toScreenY(y);
 	const canvas = this.canvas;
 	const lockRatio = this.lockRatio;
 
@@ -110,6 +112,11 @@ View.prototype.adjustToPoint = function (x, y)
 		dy = canvas.height * (1 - lockRatio) - y;
 	}
 	this.addOffset(dx, dy);
+};
+
+View.prototype.recenter = function(x, y)
+{
+
 };
 
 function getMapSize(map)

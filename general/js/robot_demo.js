@@ -78,9 +78,7 @@ RobotDemo.prototype.frame = function (timestamp)
 
 	this.robot.update();
 
-	var x = this.lview.toScreenX(this.robot.x);
-	var y = this.lview.toScreenY(this.robot.y);
-	this.lview.adjustToPoint(x, y);
+	this.lview.adjustToPoint(this.robot.x, this.robot.y);
 
 	this.draw();
 
