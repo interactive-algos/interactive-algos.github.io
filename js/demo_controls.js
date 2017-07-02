@@ -89,7 +89,14 @@ function initActuationDemo()
 		a1, a2, a3, a4);
 	simpleActuation.simulateActuation();
 
-	const noise = 0.3;
+	var noiseSlider = new Slider('#actuation_noise', {
+		min: 0,
+		max: 1,
+		step: 0.05,
+		value: 0.01,
+		formatter: function(value){return round(value*100) + '%';}
+	});
+	const noise = noiseSlider.getValue();
 	a1Demo = new ActuationDemo('actuation_a1', 1, Math.PI / 2, 1,
 		noise, 0, 0, 0);
 	a2Demo = new ActuationDemo('actuation_a2', 1, Math.PI / 2, 1,
@@ -98,6 +105,14 @@ function initActuationDemo()
 		0, 0, noise, 0);
 	a4Demo = new ActuationDemo('actuation_a4', 1, Math.PI / 2, 1,
 		0, 0, 0, noise);
+	noiseSlider.on('slide', function(sliderValue)
+	{
+		a1Demo.setA1(sliderValue);
+		a2Demo.setA2(sliderValue);
+		a3Demo.setA3(sliderValue);
+		a4Demo.setA4(sliderValue);
+	});
+	noiseSlider.on('slideStop', simulateAllActuations);
 	simulateAllActuations();
 }
 
@@ -124,7 +139,7 @@ function initSensorDemo(id)
 		value: 2
 	});
 	sensorDemo = new SensorDemo(id, noiseSlider.getValue());
-	noiseSlider.on("slide", function(sliderValue){sensorDemo.setSensorNoise(sliderValue)});
+	noiseSlider.on("slideStop", function(sliderValue){sensorDemo.setSensorNoise(sliderValue)});
 	var repSlider = new Slider('#nSamples', {
 		min:0,
 		max:5,
