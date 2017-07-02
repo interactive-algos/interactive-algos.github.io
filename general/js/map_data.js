@@ -201,7 +201,6 @@ function compactMap(map)
 		miny = min(miny, l.s.y, l.t.y);
 	});
 
-	console.log(minx + ', ' + miny);
 	map.forEach(function(l)
 	{
 		l.s.x -= minx;

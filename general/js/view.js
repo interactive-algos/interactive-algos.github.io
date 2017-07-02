@@ -24,6 +24,25 @@ function View(canvas, scale)
 	this.updateTransform();
 	this.ctx.lineWidth = 1 / scale;
 	this.lockRatio = 0.4;
+
+	const self = this;
+	this.manager = new ColorizeManager(this, function(p)
+	{
+		const ctx = self.ctx;
+		const barWidth = 100;
+		const barHeight = 20;
+		const width = self.canvas.width;
+		const height = self.canvas.height;
+
+		ctx.save();
+		ctx.setTransform(1, 0, 0, 1, 0, 0);
+		ctx.strokeRect(width/2 - barWidth-2, height/2 - barHeight/2, barWidth, barHeight);
+		ctx.fillRect(width/2 - barWidth-2, height/2 - barHeight/2, barWidth*p, barHeight);
+		ctx.restore();
+	}, function(probs, resolution)
+	{
+		self.drawProbabilityGrid(probs, resolution);
+	});
 }
 
 View.prototype.updateTransform = function ()
@@ -121,12 +140,17 @@ function getMapSize(map)
 
 View.prototype.colorMap = function (resolution, sensorModel, z, robotDir)
 {
+	// this.manager.start(resolution, sensorModel, z, robotDir);
+	var probabilityGrid = sensorModel.calcProbGrid(resolution, robotDir, z,
+		this.canvas.width, this.canvas.height, this);
+	this.drawProbabilityGrid(probabilityGrid, robotDir);
+};
+
+View.prototype.drawProbabilityGrid = function(probabilityGrid, resolution)
+{
 	const ctx = this.ctx;
 	ctx.save();
 	ctx.setTransform(1, 0, 0, 1, 0, 0);
-
-	var probabilityGrid = sensorModel.calcProbGrid(resolution, robotDir, z,
-		this.canvas.width, this.canvas.height, this);
 
 	for (var i = 0; i < probabilityGrid.length; i++)
 	{
@@ -138,6 +162,80 @@ View.prototype.colorMap = function (resolution, sensorModel, z, robotDir)
 		}
 	}
 	ctx.restore();
+};
+
+function ColorizeManager(view, progressCallback, finishCallback)
+{
+	this.view = view;
+	this.progressCallback = progressCallback;
+	this.finishCallback = finishCallback;
+}
+
+ColorizeManager.prototype.start = function(resolution, sensorModel, z, dir)
+{
+	this.i = 0;
+	this.j = 0;
+	this.max = 0;
+	this.min = 1;
+
+	this.sensorModel = sensorModel;
+	this.resolution = resolution;
+	this.z = z;
+	this.dir = dir;
+	this.probs = new Array(Math.ceil(this.view.canvas.height / resolution));
+	for(var i = 0; i < this.probs.length; i ++)
+	{
+		this.probs[i] = new Array(Math.ceil(this.view.canvas.width / resolution));
+	}
+	const self = this;
+	requestAnimationFrame(function(timestamp){self.tick(timestamp)});
+};
+
+ColorizeManager.prototype.tick = function(timestamp)
+{
+	const view = this.view;
+	const probs = this.probs;
+	const resolution = this.resolution;
+	const z = this.z;
+
+	for (var i = this.i; i < probs.length; i++)
+	{
+		for (var j = this.j; j < probs[i].length; j++)
+		{
+			if(Date.now() - timestamp > 1000.0/60.0)
+			{
+				this.i = i;
+				this.j = j;
+
+				var total = probs.length*probs[0].length;
+				this.progressCallback((i*j)/total);
+
+				const self = this;
+				requestAnimationFrame(function(timestamp){self.tick(timestamp)});
+				return;
+			}
+			var p = this.sensorModel.probability(z, new RobotState(view.toWorldX(j * resolution + resolution / 2),
+				view.toWorldY(i * resolution + resolution / 2), this.dir));
+
+			this.max = Math.max(p, this.max);
+			this.min = Math.min(p, this.min);
+			probs[i][j] = p;
+			// console.assert(!isNaN(p));
+		}
+		this.j = 0;
+	}
+
+	for (i = 0; i < probs.length; i++)
+	{
+		for (j = 0; j < probs[i].length; j++)
+		{
+			probs[i][j] -= this.min;
+			probs[i][j] /= (this.max - this.min);
+			// console.assert(!isNaN(probs[i][j]));
+		}
+	}
+	this.progressCallback(1);
+	this.finishCallback(probs, resolution);
 };
 
 CanvasRenderingContext2D.prototype.drawRobot = function (wx, wy, dir, wsize)

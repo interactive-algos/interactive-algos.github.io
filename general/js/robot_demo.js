@@ -20,6 +20,26 @@ function RobotDemo(lid, //Main Canvas id
 	this.map = map;
 	this.colorRes = colorRes;
 
+	const self = this;
+	this.manager = new ColorizeManager(this, function(p)
+	{
+		const ctx = self.lview.ctx;
+		const barWidth = 100;
+		const barHeight = 20;
+		const width = self.canvas.width;
+		const height = self.canvas.height;
+
+		ctx.save();
+		ctx.setTransform(1, 0, 0, 1, 0, 0);
+		ctx.strokeRect(width/2 - barWidth-2, height/2 - barHeight/2, barWidth, barHeight);
+		ctx.fillRect(width/2 - barWidth-2, height/2 - barHeight/2, barWidth*p, barHeight);
+		ctx.restore();
+	}, function(probs, resolution)
+	{
+		self.draw();
+		self.lview.drawProbabilityGrid(probs, resolution);
+	});
+
 	//Robot
 	this.robot = robot;
 
@@ -108,8 +128,10 @@ RobotDemo.prototype.draw = function ()
 
 RobotDemo.prototype.colorMap = function ()
 {
-	this.lview.colorMap(this.colorRes, this.robot.filter.sensorModel,
-		this.robot.getSensorReading(), this.robot.dir);
+	this.manager.start(this.colorRes, this.robot.filter.sensorModel, this.robot.getSensorReading(),
+		this.robot.dir);
+	// this.lview.colorMap(this.colorRes, this.robot.filter.sensorModel,
+	// 	this.robot.getSensorReading(), this.robot.dir);
 };
 
 RobotDemo.prototype.drawView = function (view)

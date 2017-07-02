@@ -13,7 +13,7 @@ function BeamModelDemo(id, map, sensorRadius, sensorNoise)
 	this.tracker = new ParticleTracker();
 	this.resolution = 10;
 	this.shouldColor = false;
-	this.mouseout = true;
+	this.isCalculating = false;
 
 	//Initial robot pose
 	this.x = random() * this.view.width;
@@ -38,6 +38,27 @@ function BeamModelDemo(id, map, sensorRadius, sensorNoise)
 	{
 		return self.mouseOut(event)
 	};
+	this.manager = new ColorizeManager(this.view, function(p)
+	{
+		const ctx = self.view.ctx;
+		const barWidth = 100;
+		const barHeight = 20;
+		const width = self.view.canvas.width;
+		const height = self.view.canvas.height;
+		self.isCalculating = true;
+
+		ctx.save();
+		ctx.setTransform(1, 0, 0, 1, 0, 0);
+		ctx.strokeRect(width/2 - barWidth-2, height/2 - barHeight/2, barWidth, barHeight);
+		ctx.fillRect(width/2 - barWidth-2, height/2 - barHeight/2, barWidth*p, barHeight);
+		ctx.restore();
+	}, function(probs, resolution)
+	{
+		self.isCalculating = false;
+		self.draw();
+		self.drawLaserLines();
+		self.view.drawProbabilityGrid(probs, resolution);
+	});
 	this.update();
 	this.draw();
 	this.drawLaserLines();
@@ -45,6 +66,8 @@ function BeamModelDemo(id, map, sensorRadius, sensorNoise)
 
 BeamModelDemo.prototype.mouseDown = function (event)
 {
+	if(this.isCalculating)
+		return;
 	//Shorthand for this.view and this.ctx
 	const view = this.view;
 	var coor = getClickLoc(event);
@@ -86,7 +109,8 @@ BeamModelDemo.prototype.mouseDown = function (event)
 
 BeamModelDemo.prototype.trackPosition = function (event)
 {
-	this.mouseout = false;
+	if(this.isCalculating)
+		return;
 	const view = this.view;
 	const coor = getClickLoc(event);
 	const x = coor.x;
@@ -108,6 +132,8 @@ BeamModelDemo.prototype.trackPosition = function (event)
 
 BeamModelDemo.prototype.trackDirection = function (event)
 {
+	if(this.isCalculating)
+		return;
 	const view = this.view;
 	const coor = getClickLoc(event);
 	const x = view.toWorldX(coor.x);
@@ -119,6 +145,8 @@ BeamModelDemo.prototype.trackDirection = function (event)
 
 BeamModelDemo.prototype.mouseUp = function (event)
 {
+	if(this.isCalculating)
+		return;
 	const self = this;
 	this.view.canvas.onmousemove = function (event)
 	{
@@ -133,12 +161,16 @@ BeamModelDemo.prototype.mouseUp = function (event)
 
 BeamModelDemo.prototype.mouseOut = function (event)
 {
-	this.mouseout = true;
+	if(this.isCalculating)
+		return;
 	this.view.setPreviewScale(this.map);
 	this.view.setOffset(0, this.view.canvas.clientHeight);
 	this.draw();
 	this.drawLaserLines();
-	// self.view.ctx.drawMap(self.map);
+	if(this.shouldColor && !this.isCalculating)
+	{
+		this.manager.start(this.resolution, this.sensorModel, this.z, this.dir);
+	}
 };
 
 BeamModelDemo.prototype.draw = function ()
@@ -158,9 +190,7 @@ BeamModelDemo.prototype.draw = function ()
 	} else if (this.view.canvas.onmouseout)
 	{
 		//If user is moving its mouse, don't color the map, too expensive
-		if (!this.mouseout)
-			return;
-		this.view.colorMap(this.resolution, this.sensorModel, this.z, this.dir);
+		// this.view.colorMap(this.resolution, this.sensorModel, this.z, this.dir);
 	}
 };
 
@@ -208,6 +238,8 @@ BeamModelDemo.prototype.setColoring = function (shouldColor)
 	this.shouldColor = shouldColor;
 	this.draw();
 	this.drawLaserLines();
+	if(shouldColor && !this.isCalculating)
+		this.manager.start(this.resolution, this.sensorModel, this.z, this.dir);
 };
 
 BeamModelDemo.prototype.setColoringResolution = function (resolution)
@@ -215,6 +247,8 @@ BeamModelDemo.prototype.setColoringResolution = function (resolution)
 	this.resolution = resolution;
 	this.draw();
 	this.drawLaserLines();
+	if(this.shouldColor && !this.isCalculating)
+		this.manager.start(this.resolution, this.sensorModel, this.z, this.dir);
 };
 
 function ParticleTracker()
