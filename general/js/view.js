@@ -72,7 +72,7 @@ View.prototype.setPreviewScale = function (map)
 
 View.prototype.adjustToPoint = function (x, y, lockRatio)
 {
-	if(typeof lockRatio === 'undefined')
+	if (typeof lockRatio === 'undefined')
 		lockRatio = 0.4;
 	x = this.toScreenX(x);
 	y = this.toScreenY(y);
@@ -97,12 +97,12 @@ View.prototype.adjustToPoint = function (x, y, lockRatio)
 	this.addOffset(dx, dy);
 };
 
-View.prototype.recenter = function(x, y)
+View.prototype.recenter = function (x, y)
 {
 	this.setOffset(0, 0);
 	var screenX = this.toScreenX(x);
 	var screenY = this.toScreenY(y);
-	this.setOffset(-screenX + this.canvas.width/2, -screenY + this.canvas.height/2);
+	this.setOffset(-screenX + this.canvas.width / 2, -screenY + this.canvas.height / 2);
 };
 
 function getMapSize(map)
@@ -138,7 +138,7 @@ View.prototype.colorMap = function (resolution, sensorModel, z, robotDir)
 	this.drawProbabilityGrid(probabilityGrid, resolution);
 };
 
-View.prototype.drawProbabilityGrid = function(probabilityGrid, resolution)
+View.prototype.drawProbabilityGrid = function (probabilityGrid, resolution)
 {
 	const ctx = this.ctx;
 	ctx.save();
@@ -163,7 +163,7 @@ function ColorizeManager(view, progressCallback, finishCallback)
 	this.finishCallback = finishCallback;
 }
 
-ColorizeManager.prototype.start = function(resolution, sensorModel, z, dir)
+ColorizeManager.prototype.start = function (resolution, sensorModel, z, dir)
 {
 	this.i = 0;
 	this.j = 0;
@@ -175,15 +175,18 @@ ColorizeManager.prototype.start = function(resolution, sensorModel, z, dir)
 	this.z = z;
 	this.dir = dir;
 	this.probs = new Array(Math.ceil(this.view.canvas.height / resolution));
-	for(var i = 0; i < this.probs.length; i ++)
+	for (var i = 0; i < this.probs.length; i++)
 	{
 		this.probs[i] = new Array(Math.ceil(this.view.canvas.width / resolution));
 	}
 	const self = this;
-	requestAnimationFrame(function(timestamp){self.tick(timestamp)});
+	requestAnimationFrame(function (timestamp)
+	{
+		self.tick(timestamp)
+	});
 };
 
-ColorizeManager.prototype.tick = function(timestamp)
+ColorizeManager.prototype.tick = function (timestamp)
 {
 	const view = this.view;
 	const probs = this.probs;
@@ -194,24 +197,27 @@ ColorizeManager.prototype.tick = function(timestamp)
 	{
 		for (var j = this.j; j < probs[i].length; j++)
 		{
+			if (j % 2 == 1 && Date.now() - timestamp > 1000.0 / 60.0)
+			{
+				this.i = i;
+				this.j = j;
+
+				var total = probs.length * probs[0].length;
+				this.progressCallback((i * j) / total);
+
+				const self = this;
+				requestAnimationFrame(function (timestamp)
+				{
+					self.tick(timestamp)
+				});
+				return;
+			}
 			var p = this.sensorModel.probability(z, new RobotState(view.toWorldX(j * resolution + resolution / 2),
 				view.toWorldY(i * resolution + resolution / 2), this.dir));
 
 			this.max = Math.max(p, this.max);
 			this.min = Math.min(p, this.min);
 			probs[i][j] = p;
-			if(Date.now() - timestamp > 1000.0/60.0)
-			{
-				this.i = i+1;
-				this.j = j+1;
-
-				var total = probs.length*probs[0].length;
-				this.progressCallback((i*j)/total);
-
-				const self = this;
-				requestAnimationFrame(function(timestamp){self.tick(timestamp)});
-				return;
-			}
 		}
 		this.j = 0;
 	}
