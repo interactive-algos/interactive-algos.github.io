@@ -211,10 +211,16 @@ ColorizeManager.prototype.tick = function(timestamp)
 	{
 		for (var j = this.j; j < probs[i].length; j++)
 		{
+			var p = this.sensorModel.probability(z, new RobotState(view.toWorldX(j * resolution + resolution / 2),
+				view.toWorldY(i * resolution + resolution / 2), this.dir));
+
+			this.max = Math.max(p, this.max);
+			this.min = Math.min(p, this.min);
+			probs[i][j] = p;
 			if(Date.now() - timestamp > 1000.0/60.0)
 			{
-				this.i = i;
-				this.j = j;
+				this.i = i+1;
+				this.j = j+1;
 
 				var total = probs.length*probs[0].length;
 				this.progressCallback((i*j)/total);
@@ -223,13 +229,6 @@ ColorizeManager.prototype.tick = function(timestamp)
 				requestAnimationFrame(function(timestamp){self.tick(timestamp)});
 				return;
 			}
-			var p = this.sensorModel.probability(z, new RobotState(view.toWorldX(j * resolution + resolution / 2),
-				view.toWorldY(i * resolution + resolution / 2), this.dir));
-
-			this.max = Math.max(p, this.max);
-			this.min = Math.min(p, this.min);
-			probs[i][j] = p;
-			// console.assert(!isNaN(p));
 		}
 		this.j = 0;
 	}
