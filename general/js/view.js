@@ -25,23 +25,6 @@ function View(canvas, scale)
 	this.ctx.lineWidth = 1 / scale;
 
 	const self = this;
-	this.manager = new ColorizeManager(this, function(p)
-	{
-		const ctx = self.ctx;
-		const barWidth = 100;
-		const barHeight = 20;
-		const width = self.canvas.width;
-		const height = self.canvas.height;
-
-		ctx.save();
-		ctx.setTransform(1, 0, 0, 1, 0, 0);
-		ctx.strokeRect(width/2 - barWidth-2, height/2 - barHeight/2, barWidth, barHeight);
-		ctx.fillRect(width/2 - barWidth-2, height/2 - barHeight/2, barWidth*p, barHeight);
-		ctx.restore();
-	}, function(probs, resolution)
-	{
-		self.drawProbabilityGrid(probs, resolution);
-	});
 }
 
 View.prototype.updateTransform = function ()
