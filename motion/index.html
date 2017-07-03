@@ -51,7 +51,7 @@
 			const y = path[0].y;
 			const dir = atan2(path[1].y - path[0].y, path[1].x - path[0].x);
             const filter = new ParticleFilter(
-				getParticleCount(),
+				getValue('nParticles'),
 				new OdometryModel(
 					getValue('a1')/100.0,
                     getValue('a2')/100.0,

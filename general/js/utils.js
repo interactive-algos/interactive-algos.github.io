@@ -252,11 +252,6 @@ function getValue(id)
 	return Number(document.getElementById(id).value);
 }
 
-function getParticleCount()
-{
-	return getValue('nParticles');
-}
-
 function getClickLoc(event)
 {
 	var element = event.target;
@@ -274,16 +269,6 @@ function getClickLoc(event)
 	x = event.pageX - offsetX;
 	y = event.pageY - offsetY;
 	return {x: x, y: y};
-}
-
-function getSensorNoise()
-{
-	return getValue('sensorNoise');
-}
-
-function getColoringResolution()
-{
-	return getValue('colorRes');
 }
 
 function refreshSelect()

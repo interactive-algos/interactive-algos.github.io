@@ -44,10 +44,7 @@ function ParticleFilter(particleCount, motionModel, sensorModel, robotState, res
  */
 ParticleFilter.prototype.draw = function (ctx)
 {
-	for (var i = this.particles.length - 1; i >= 0; i--)
-	{
-		this.particles[i].draw(ctx);
-	}
+	this.particles.forEach(function(p){p.draw(ctx);});
 };
 
 /**
@@ -187,11 +184,10 @@ ParticleFilter.prototype.normalizeWeights = function ()
 {
 	var sum = 0;
 	// Convert logs back to weights
-	for (var i = this.particles.length - 1; i >= 0; i--)
+	this.particles.forEach(function (p)
 	{
-		var p = this.particles[i];
 		sum += p.w;
-	}
+	});
 
 	if (sum === 0)
 	{
