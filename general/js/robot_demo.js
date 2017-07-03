@@ -47,7 +47,6 @@ function RobotDemo(lid, //Main Canvas id
 	this.animating = false;
 	this.shouldColorMap = false;
 
-	this.tempPath = undefined;
 	this.draw();
 }
 
@@ -190,130 +189,6 @@ RobotDemo.prototype.setSensorRadius = function(r)
 RobotDemo.prototype.setSensorNoise = function(r)
 {
 	this.robot.filter.sensorModel.a1 = r;
-};
-
-RobotDemo.prototype.updateRobot = function ()
-{
-	var path = this.paths[this.currPathName];
-	var x = path[0].x;		//x coordinate
-	var y = path[0].y;		//y coordinate
-	var dir = atan2(path[1].y - path[0].y, path[1].x - path[0].x);	//orientation in radians
-
-	//Robot
-	this.robot = new Robot(
-		new ParticleFilter(
-			this.robot.filter.particles.len,
-			this.robot.filter.motionModel,
-			this.robot.filter.sensorModel,
-			new RobotState(x, y, dir),
-			this.robot.filter.resampleRatio
-		),
-		this.paths[this.currPathName],
-		this.robot.z.length,
-		this.robot.sensorRadius,
-		this.robot.stride
-	);
-};
-
-//Add Path
-RobotDemo.prototype.startRecordingPath = function ()
-{
-	animating = false;
-
-	clearCanvas(this.largeCanvas);
-	this.lview.setPreviewScale(this.map);
-	this.lctx.drawMap(this.map);
-
-	const self = this;
-	this.largeCanvas.onmousedown = function (event)
-	{
-		self.mouseDown(event);
-	};
-	this.tempPath = [];
-};
-
-RobotDemo.prototype.mouseDown = function (event)
-{
-	var coor = getClickLoc(event);
-	this.lview.toWorldCoor(coor);
-
-	this.tempPath.push(coor);
-	const self = this;
-	this.largeCanvas.onmousemove = function (event)
-	{
-		self.mouseMotion(event);
-	};
-	this.largeCanvas.onmouseup = function (event)
-	{
-		self.mouseUp(event);
-	};
-	this.largeCanvas.onmouseout = function (event)
-	{
-		self.mouseUp(event);
-	}
-};
-
-RobotDemo.prototype.mouseMotion = function (event)
-{
-	var coor = getClickLoc(event);
-	this.lview.toWorldCoor(coor);
-	var lastPoint = this.tempPath[this.tempPath.length - 1];
-
-	var curStep = new Line(lastPoint.x, lastPoint.y, coor.x, coor.y);
-	for (var i = 0; i < this.map.length; i++)
-	{
-		if (doIntersect(this.map[i].s, this.map[i].t, curStep.s, curStep.t))
-			return;
-	}
-
-	this.lctx.strokeStyle = 'red';
-	this.lctx.strokeLine(lastPoint.x, lastPoint.y, coor.x, coor.y);
-	this.tempPath.push(coor);
-};
-
-RobotDemo.prototype.mouseUp = function (event)
-{
-	this.largeCanvas.onmousemove = undefined;
-	this.largeCanvas.onmouseup = undefined;
-	this.largeCanvas.onmouseout = undefined;
-	this.largeCanvas.onmousedown = undefined;
-
-	var msg = "Enter a unique name for this path, alphanumeric please:";
-
-	while (true)
-	{
-		pathName = prompt(msg, "Harry Potter");
-
-		if (pathName === null)
-		{
-			this.selectedIndex = 0;
-			refreshSelect();
-			return;
-		}
-
-		//No duplicate name!
-		if (pathName in this.paths)
-		{
-			msg = 'Name must be unique!';
-			continue;
-		}
-
-		//Must be alphanumeric
-		if (pathName.match(new RegExp('^[a-zA-Z0-9]+$')))
-			break;
-		msg = 'Name must be alphanumeric!';
-	}
-	smoothenPath(this.tempPath);
-	this.paths[pathName] = this.tempPath;
-	printPath(this.tempPath);
-	var option = document.createElement("option");
-	option.text = pathName;
-	customPathGroup.append(pathName, option);
-	this.pathSelect.selectedIndex = this.pathSelect.length - 1;
-	refreshSelect();
-
-	this.currPathName = pathName;
-	this.updateRobot();
 };
 
 function printPath(path)

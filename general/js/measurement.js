@@ -35,7 +35,7 @@ BeamModel.prototype.probability = function (z, state)
  * The log of probability for the robot to get a sensor reading "z"
  * when it has a state "state"
  * @function
- * @param {float[]} z - The given reading of measurement sensor
+ * @param {Number[]} z - The given reading of measurement sensor
  * @param {RobotState} state - The actual robot state
  * @returns {number} q - The log of probability of getting z
  */
@@ -108,7 +108,7 @@ BeamModel.prototype.calcProbGrid = function (resolution, robotDir, z, width, hei
  * @param {float} dir0 - The facing direction
  * @param {float} r - The sensor radius
  * @param {Line[]} map - An array of Lines that represents the world
- * @param {float[]} z - The array to store the sensor reading
+ * @param {Number[]} z - The array to store the sensor reading
  */
 function scan(x, y, dir0, r, map, z)
 {
