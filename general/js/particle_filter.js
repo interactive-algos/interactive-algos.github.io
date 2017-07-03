@@ -29,6 +29,7 @@ function ParticleFilter(particleCount, motionModel, sensorModel, robotState, res
 		}
 	} else
 	{
+		// generate random particles within the map
 		for (var i = particleCount - 1; i >= 0; i--)
 		{
 			this.particles[i] = new Particle(robotState.x, robotState.y, robotState.dir, 0);
@@ -68,6 +69,20 @@ ParticleFilter.prototype.regenrateAll = function ()
 	for (var i = this.count - 1; i >= 0; i--)
 	{
 		this.particles[i] = this.newParticle();
+	}
+};
+
+/**
+ * Refill all particles of the Particle filter
+ * @function
+ */
+ParticleFilter.prototype.refillAll = function ()
+{
+	// generate random particles within the map
+	var weight = 1.0 / this.count;
+	while (this.particles.length < this.count)
+	{
+		this.particles.push(this.newParticle());
 	}
 };
 
