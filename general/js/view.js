@@ -192,12 +192,13 @@ ColorizeManager.prototype.tick = function (timestamp)
 	const probs = this.probs;
 	const resolution = this.resolution;
 	const z = this.z;
+	var shouldSave = false;
 
 	for (var i = this.i; i < probs.length; i++)
 	{
 		for (var j = this.j; j < probs[i].length; j++)
 		{
-			if (j % 2 == 1 && Date.now() - timestamp > 1000.0 / 60.0)
+			if (shouldSave)
 			{
 				this.i = i;
 				this.j = j;
@@ -218,6 +219,7 @@ ColorizeManager.prototype.tick = function (timestamp)
 			this.max = Math.max(p, this.max);
 			this.min = Math.min(p, this.min);
 			probs[i][j] = p;
+			shouldSave = Date.now() - timestamp > 1000.0 / 60.0;
 		}
 		this.j = 0;
 	}
