@@ -252,29 +252,9 @@ function getValue(id)
 	return Number(document.getElementById(id).value);
 }
 
-function getSensorRadius()
-{
-	return getValue('fogOfWar');
-}
-
 function getParticleCount()
 {
 	return getValue('nParticles');
-}
-
-function getStrideNoise()
-{
-	return getValue('robotForwardNoise') / 100.0;
-}
-
-function getTurnNoise()
-{
-	return getValue('robotTurnNoise') / 100.0;
-}
-
-function getResampleRatio()
-{
-	return getValue('pRatio');
 }
 
 function getClickLoc(event)
