@@ -219,7 +219,7 @@ ColorizeManager.prototype.tick = function (timestamp)
 			this.max = Math.max(p, this.max);
 			this.min = Math.min(p, this.min);
 			probs[i][j] = p;
-			shouldSave = Date.now() - timestamp > 1000.0 / 60.0;
+			shouldSave = Date.now() - timestamp > 1000.0 / 30.0;
 		}
 		this.j = 0;
 	}
