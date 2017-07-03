@@ -23,7 +23,6 @@ function View(canvas, scale)
 
 	this.updateTransform();
 	this.ctx.lineWidth = 1 / scale;
-	this.lockRatio = 0.4;
 
 	const self = this;
 	this.manager = new ColorizeManager(this, function(p)
@@ -88,12 +87,13 @@ View.prototype.setPreviewScale = function (map)
 	this.setOffset(0, this.canvas.height);
 };
 
-View.prototype.adjustToPoint = function (x, y)
+View.prototype.adjustToPoint = function (x, y, lockRatio)
 {
+	if(typeof lockRatio === 'undefined')
+		lockRatio = 0.4;
 	x = this.toScreenX(x);
 	y = this.toScreenY(y);
 	const canvas = this.canvas;
-	const lockRatio = this.lockRatio;
 
 	var dx = 0;
 	var dy = 0;
@@ -116,7 +116,10 @@ View.prototype.adjustToPoint = function (x, y)
 
 View.prototype.recenter = function(x, y)
 {
-
+	this.setOffset(0, 0);
+	var screenX = this.toScreenX(x);
+	var screenY = this.toScreenY(y);
+	this.setOffset(-screenX + this.canvas.width/2, -screenY + this.canvas.height/2);
 };
 
 function getMapSize(map)

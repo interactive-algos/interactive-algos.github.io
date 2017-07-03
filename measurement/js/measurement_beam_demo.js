@@ -6,6 +6,9 @@ function BeamModelDemo(id, map, sensorRadius, sensorNoise)
 	//the canvas element
 	this.view = new View(document.getElementById(id), 20);
 	this.view.setPreviewScale(map);
+	this.worldHeight = this.view.toWorldY(0);
+	this.worldWidth = this.view.toWorldX(this.view.canvas.width);
+
 
 	this.robotSize = 0.2;
 	this.map = map;
@@ -114,17 +117,12 @@ BeamModelDemo.prototype.trackPosition = function (event)
 	const view = this.view;
 	const coor = getClickLoc(event);
 	const x = coor.x;
-	const y = coor.y;
+	const y = this.view.canvas.height-coor.y;
+	var worldX = x/this.view.canvas.width * this.worldWidth;
+	var worldY = y/this.view.canvas.height * this.worldHeight;
+
 	view.setScale(50);
-	var mapsize = getMapSize(this.map);
-
-	var ratioX = x / view.canvas.width;
-	var ratioY = y / view.canvas.height;
-
-	var worldX = mapsize.x * ratioX;
-	var worldY = mapsize.y * (1 - ratioY);
-
-	this.view.adjustToPoint(worldX, worldY);
+	this.view.recenter(worldX, worldY);
 	// view.canvas.getContext('2d').fillRect(0,0,view.canvas.width,view.canvas.height);
 	this.draw();
 	this.drawLaserLines();
