@@ -63,6 +63,10 @@ SensorDemo.prototype.takeSingleReading = function (redraw)
 		redraw = true;
 
 	var reading = this.actualDistance + gaussian() * this.sensorNoise;
+
+	//Skip readings that are out of screen
+	if (reading < 0 || reading > this.view.width)return;
+
 	var index = round(reading / this.view.width * this.nBuckets);
 	this.buckets[index]++;
 	this.maxCount = max(this.maxCount, this.buckets[index]);
@@ -85,11 +89,6 @@ SensorDemo.prototype.draw = function ()
 	const ctx = this.ctx;
 
 	clearCanvas(this.view.canvas);
-
-	//Draw the actual distance
-	ctx.strokeStyle = 'red';
-	ctx.strokeLine(this.actualDistance, 0, this.actualDistance, this.view.height);
-
 	//Draw sensor readings
 	ctx.strokeStyle = 'grey';
 	var x = 0;
@@ -102,6 +101,11 @@ SensorDemo.prototype.draw = function ()
 			ctx.strokeLine(x + step / 2, 0, x + step / 2, count * 1.0 / this.maxCount * this.view.height);
 		}
 	}
+
+	//Draw the actual distance
+	ctx.strokeStyle = 'red';
+	ctx.strokeLine(this.actualDistance, 0, this.actualDistance, this.view.height);
+
 	ctx.strokeTextWithColorFont('Actual Distance: ' + this.actualDistance,
 		'black', '12 Menlo Regular',
 		10, 20);
