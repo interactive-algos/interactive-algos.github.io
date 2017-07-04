@@ -113,7 +113,7 @@ RobotDemo.prototype.stop = function ()
 
 RobotDemo.prototype.simulate = function () {
 	this.animating = !this.animating;
-
+	this.lview.setScale(40);
 	const self = this;
 	if (this.animating) {
 		this.lastFrame = Date.now();
