@@ -33,7 +33,13 @@ var a4Demo;
 
 var measurementDemo;
 var sensorDemo;
+
 var motionDemo;
+var a1MDemo;
+var a2MDemo;
+var a3MDemo;
+var a4MDemo;
+
 var mclDemo;
 
 const actuationNoiseSliderFormat = {
@@ -64,9 +70,66 @@ function initMotionDemo()
 		new RobotState(x, y, dir),
 		0);
 	var slider = new Slider("#motion_stride");
+
+
+	//Individual Simulations
+	const s_path = simPath;
+	const s_x = s_path[0].x;
+	const s_y = s_path[0].y;
+	const s_dir = atan2(s_path[1].y - s_path[0].y, s_path[1].x - s_path[0].x);
+	const filtera1 = new ParticleFilter(
+		500,
+		new OdometryModel(
+			getValue('motion_a1') / 100.0,
+			0,
+			0,
+			0
+		),
+		undefined,
+		new RobotState(s_x, s_y, s_dir),
+		0);
+	const filtera2 = new ParticleFilter(
+		500,
+		new OdometryModel(
+			0,
+			getValue('motion_a2') / 100.0,
+			0,
+			0
+		),
+		undefined,
+		new RobotState(s_x, s_y, s_dir),
+		0);
+	const filtera3 = new ParticleFilter(
+		500,
+		new OdometryModel(
+			0,
+			0,
+			getValue('motion_a3') / 100.0,
+			0
+		),
+		undefined,
+		new RobotState(s_x, s_y, s_dir),
+		0);
+	const filtera4 = new ParticleFilter(
+		500,
+		new OdometryModel(
+			0,
+			0,
+			0,
+			getValue('motion_a4') / 100.0
+		),
+		undefined,
+		new RobotState(s_x, s_y, s_dir),
+		0);
+
+
 	slider.on("slide", function (sliderValue)
 	{
 		motionDemo.setStride(sliderValue);
+		a1MDemo.setStride(sliderValue);
+		a2MDemo.setStride(sliderValue);
+		a3MDemo.setStride(sliderValue);
+		a4MDemo.setStride(sliderValue);
 	});
 
 	var a1Slider = new Slider('#motion_a1', actuationNoiseSliderFormat);
@@ -76,23 +139,35 @@ function initMotionDemo()
 
 	a1Slider.on('slide', function (value)
 	{
-		motionDemo.setA1(value)
+		motionDemo.setA1(value);
+		a1MDemo.setA1(value);
 	});
 	a2Slider.on('slide', function (value)
 	{
-		motionDemo.setA2(value)
+		motionDemo.setA2(value);
+		a2MDemo.setA2(value);
 	});
 	a3Slider.on('slide', function (value)
 	{
-		motionDemo.setA3(value)
+		motionDemo.setA3(value);
+		a3MDemo.setA3(value);
 	});
 	a4Slider.on('slide', function (value)
 	{
-		motionDemo.setA4(value)
+		motionDemo.setA4(value);
+		a4MDemo.setA4(value);
 	});
 
 	var robot = new Robot(filter, path, 19, 0, slider.getValue());
+	var robota1 = new Robot(filtera1, s_path, 19, 0, slider.getValue());
+	var robota2 = new Robot(filtera2, s_path, 19, 0, slider.getValue());
+	var robota3 = new Robot(filtera3, s_path, 19, 0, slider.getValue());
+	var robota4 = new Robot(filtera4, s_path, 19, 0, slider.getValue());
 	motionDemo = new RobotDemo('motion_canvas', 'motion_minicanvas', getMap(), robot, 10);
+	a1MDemo = new RobotDemo('motion_a1_demo', ' ', getSimMap(), robota1, 10);
+	a2MDemo = new RobotDemo('motion_a2_demo', ' ', getSimMap(), robota2, 10);
+	a3MDemo = new RobotDemo('motion_a3_demo', ' ', getSimMap(), robota3, 10);
+	a4MDemo = new RobotDemo('motion_a4_demo', ' ', getSimMap(), robota4, 10);
 }
 
 function initMCLDemo()

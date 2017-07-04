@@ -14,8 +14,12 @@ function RobotDemo(lid, //Main Canvas id
 	this.lview.setPreviewScale(map);
 
 	//The Small canvas elements
-	this.sview = new View(document.getElementById(sid), 1);
-	this.sview.setPreviewScale(map);
+	if (sid != ' ') {
+		this.sview = new View(document.getElementById(sid), 1);
+		this.sview.setPreviewScale(map);
+	} else {
+		this.sview = 0;
+	}
 
 	this.map = map;
 	this.colorRes = colorRes;
@@ -107,6 +111,19 @@ RobotDemo.prototype.stop = function ()
 	}
 };
 
+RobotDemo.prototype.simulate = function () {
+	this.animating = !this.animating;
+
+	const self = this;
+	if (this.animating) {
+		this.lastFrame = Date.now();
+		requestAnimationFrame(function (timestamp) {
+			self.frame(timestamp);
+		});
+	}
+}
+
+
 RobotDemo.prototype.stepForward = function ()
 {
 	this.animating = false;
@@ -120,7 +137,9 @@ RobotDemo.prototype.stepForward = function ()
 RobotDemo.prototype.draw = function ()
 {
 	this.drawView(this.lview);
-	this.drawView(this.sview);
+	if (this.sview != 0) {
+		this.drawView(this.sview);
+	}
 	if (this.shouldColorMap) this.colorMap();
 };
 
