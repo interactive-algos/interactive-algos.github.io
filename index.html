@@ -12,20 +12,18 @@
             height: auto;
         }
     </style>
-    <style type="text/css">
-        fieldset {
-            /*display: block;*/
-            margin-left: 2px;
-            margin-right: 2px;
-            padding-top: 0.35em;
-            padding-bottom: 0.625em;
-            padding-left: 0.75em;
-            padding-right: 0.75em;
-            border-left: 5px;
-        }
-    </style>
-
-    <!--jQuery Scripts-->
+    <!--<style type="text/css">-->
+        <!--fieldset {-->
+            <!--/*display: block;*/-->
+            <!--margin-left: 2px;-->
+            <!--margin-right: 2px;-->
+            <!--padding-top: 0.35em;-->
+            <!--padding-bottom: 0.625em;-->
+            <!--padding-left: 0.75em;-->
+            <!--padding-right: 0.75em;-->
+            <!--border-left: 5px;-->
+        <!--}-->
+    <!--</style>-->
 
     <!--  Scripts-->
 
@@ -91,7 +89,6 @@
     <script src="demo/js/robot_demo.js"></script>
 
     <link href="css/style.css" type="text/css" rel="stylesheet" media="screen,projection"/>
-    <script src="js/materialize.js"></script>
     <script src="js/init.js"></script>
 
 </head>
@@ -226,7 +223,7 @@
     <div class="row"><h3>Different Types of Actuation Noise</h3></div>
     <div class="row">
         <div class="col-sm-3">
-            <button class="btn-large waves-effect waves-light" onclick="simulateAllActuations();">
+            <button class="btn waves-effect waves-light" onclick="simulateAllActuations();">
                 Simulate All!
             </button>
         </div>
@@ -518,7 +515,7 @@
                             <div class="switch">
                                 <label>
                                     Off
-                                    <input type="checkbox" id=" shouldColor"
+                                    <input type="checkbox" id="shouldColor"
                                            onchange='measurementDemo.setColoring(event.target.checked);'>
                                     <span class="lever blue"></span>
                                     On
