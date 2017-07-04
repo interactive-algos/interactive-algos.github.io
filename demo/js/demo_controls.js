@@ -80,10 +80,11 @@ function initMotionDemo()
 	const st_x = st_path[0].x;
 	const st_y = st_path[0].y;
 	const st_dir = atan2(st_path[1].y - st_path[0].y, st_path[1].x - st_path[0].x);
+	const exaggerateFilterNoise = 0.3;
 	const filtera1 = new ParticleFilter(
 		500,
 		new OdometryModel(
-			getValue('motion_a1') / 100.0,
+			exaggerateFilterNoise,
 			0,
 			0,
 			0
@@ -95,7 +96,7 @@ function initMotionDemo()
 		500,
 		new OdometryModel(
 			0,
-			getValue('motion_a2') / 100.0,
+			exaggerateFilterNoise,
 			0,
 			0
 		),
@@ -107,7 +108,7 @@ function initMotionDemo()
 		new OdometryModel(
 			0,
 			0,
-			getValue('motion_a3') / 100.0,
+			exaggerateFilterNoise,
 			0
 		),
 		undefined,
@@ -119,7 +120,7 @@ function initMotionDemo()
 			0,
 			0,
 			0,
-			getValue('motion_a4') / 100.0
+			exaggerateFilterNoise
 		),
 		undefined,
 		new RobotState(s_x, s_y, s_dir),
