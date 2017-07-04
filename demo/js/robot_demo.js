@@ -126,7 +126,7 @@ RobotDemo.prototype.simulate = function ()
 			self.frame(timestamp);
 		});
 	}
-}
+};
 
 
 RobotDemo.prototype.stepForward = function ()
@@ -142,7 +142,7 @@ RobotDemo.prototype.stepForward = function ()
 RobotDemo.prototype.draw = function ()
 {
 	this.drawView(this.lview);
-	if (this.sview != 0)
+	if (typeof this.sview !== 'undefined')
 	{
 		this.drawView(this.sview);
 	}
