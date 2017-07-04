@@ -112,7 +112,7 @@ BeamModel.prototype.calcProbGrid = function (resolution, robotDir, z, width, hei
  */
 function scan(x, y, dir0, r, map, z)
 {
-	var nLasers = (z.length-1)*2;
+	var nLasers = (z.length - 1) * 2;
 	const dirOffset = Math.round(dir0 / TWO_PI * nLasers);
 	var i = (dirOffset - nLasers / 4);
 	i += nLasers + nLasers;

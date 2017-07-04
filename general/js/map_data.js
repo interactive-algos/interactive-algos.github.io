@@ -195,13 +195,13 @@ function compactMap(map)
 	var minx = map[0].s.x;
 	var miny = map[0].s.y;
 
-	map.forEach(function(l)
+	map.forEach(function (l)
 	{
 		minx = min(minx, l.s.x, l.t.x);
 		miny = min(miny, l.s.y, l.t.y);
 	});
 
-	map.forEach(function(l)
+	map.forEach(function (l)
 	{
 		l.s.x -= minx;
 		l.s.y -= miny;
@@ -210,11 +210,12 @@ function compactMap(map)
 	});
 }
 
-function getSimMap () {
+function getSimMap()
+{
 	m = [
-		new Line(0,0,10,0),
-		new Line(0,0,0,10),
-		new Line(0,10,10,10)
+		new Line(0, 0, 10, 0),
+		new Line(0, 0, 0, 10),
+		new Line(0, 10, 10, 10)
 	];
 	return m;
 }

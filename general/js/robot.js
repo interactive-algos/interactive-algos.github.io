@@ -13,12 +13,12 @@ const EPS = 1E-5;
  */
 function Robot(filter, path, nLasers, sensorRadius, stride)
 {
-    if (typeof(nLasers) === 'undefined') nLasers = 19;
+	if (typeof(nLasers) === 'undefined') nLasers = 19;
 
-    this.filter = filter;
+	this.filter = filter;
 
-    //Array of points for the robot to follow
-    this.path = path;
+	//Array of points for the robot to follow
+	this.path = path;
 	this.reset();
 
 	this.z = new Array(nLasers);
@@ -26,12 +26,12 @@ function Robot(filter, path, nLasers, sensorRadius, stride)
 	this.stride = stride;
 }
 
-Robot.prototype.reset = function()
+Robot.prototype.reset = function ()
 {
 	const path = this.path;
 	this.x = path[0].x;		//x coordinate
 	this.y = path[0].y;		//y coordinate
-	this.dir = atan2(path[1].y-path[0].y, path[1].x-path[0].x);	//orientation in radians
+	this.dir = atan2(path[1].y - path[0].y, path[1].x - path[0].x);	//orientation in radians
 
 	//For odometry records
 	this.lastX = this.x;
@@ -44,7 +44,7 @@ Robot.prototype.reset = function()
 	this.filter = new ParticleFilter(this.filter.count, this.filter.motionModel, this.filter.sensorModel, this.getState(), this.filter.resampleRatio);
 };
 
-Robot.prototype.setSensorRadius = function(r)
+Robot.prototype.setSensorRadius = function (r)
 {
 	this.sensorRadius = r;
 };
@@ -53,11 +53,11 @@ Robot.prototype.setSensorRadius = function(r)
  * Function that used to update the robot
  * @function
  */
-Robot.prototype.update = function()
+Robot.prototype.update = function ()
 {
-    this.updateMotion();
+	this.updateMotion();
 
-    this.updateParticles();
+	this.updateParticles();
 };
 
 /**
@@ -66,7 +66,7 @@ Robot.prototype.update = function()
  * @function
  * @param {float} noise - The stride noise for motion model
  */
-Robot.prototype.updateMotion = function()
+Robot.prototype.updateMotion = function ()
 {
 	console.assert(typeof this.path !== 'undefined');
 
@@ -75,18 +75,18 @@ Robot.prototype.updateMotion = function()
 	var y = this.y;
 	var targetPoint = this.path[this.targetIndex];
 
-	while(stride > 0)
+	while (stride > 0)
 	{
 		var dist = distance(x, y, targetPoint.x, targetPoint.y);
-		while(dist <= EPS)
+		while (dist <= EPS)
 		{
 			this.targetIndex++;
 			this.targetIndex %= this.path.length;
 			targetPoint = this.path[this.targetIndex];
 			dist = distance(x, y, targetPoint.x, targetPoint.y);
 		}
-		var cosx = (targetPoint.x-x)/dist;
-		var sinx = (targetPoint.y-y)/dist;
+		var cosx = (targetPoint.x - x) / dist;
+		var sinx = (targetPoint.y - y) / dist;
 
 		dist = min(dist, stride);
 		x += cosx * dist;
@@ -96,67 +96,67 @@ Robot.prototype.updateMotion = function()
 		targetPoint = this.path[this.targetIndex];
 	}
 
-    //Move the robot
-    this.x = x;
+	//Move the robot
+	this.x = x;
 	this.y = y;
-	this.dir = atan2(targetPoint.y-y, targetPoint.x-x);
+	this.dir = atan2(targetPoint.y - y, targetPoint.x - x);
 };
 
-Robot.prototype.updateParticles = function()
+Robot.prototype.updateParticles = function ()
 {
-    if(typeof this.filter === 'undefined')
-        return;
+	if (typeof this.filter === 'undefined')
+		return;
 
-    var u = new Odometry(new RobotState(this.lastX, this.lastY, this.lastDir), new RobotState(this.x, this.y, this.dir));
+	var u = new Odometry(new RobotState(this.lastX, this.lastY, this.lastDir), new RobotState(this.x, this.y, this.dir));
 
-    if(typeof this.filter.sensorModel !== 'undefined')
-    {
-        var z = this.z;
-        scan(this.x, this.y, this.dir, this.sensorRadius, this.filter.sensorModel.map, z);
-        for(var i = 0; i < z.length; i ++)
+	if (typeof this.filter.sensorModel !== 'undefined')
+	{
+		var z = this.z;
+		scan(this.x, this.y, this.dir, this.sensorRadius, this.filter.sensorModel.map, z);
+		for (var i = 0; i < z.length; i++)
 		{
-			if(this.z[i] < this.sensorRadius)
+			if (this.z[i] < this.sensorRadius)
 			{
 				z[i] += gaussian() * this.filter.sensorModel.a1;
 				if (z[i] < 0) z[i] = 0;
 				else if (z[i] > this.sensorRadius) z[i] = this.sensorRadius;
 			}
 		}
-        this.filter.update(u, z);
-    }else
-    {
-        this.filter.motionUpdate(u);
-    }
+		this.filter.update(u, z);
+	} else
+	{
+		this.filter.motionUpdate(u);
+	}
 
-    //Odometry and Measurement
-    this.lastX = this.x;
-    this.lastY = this.y;
-    this.lastDir = this.dir;
+	//Odometry and Measurement
+	this.lastX = this.x;
+	this.lastY = this.y;
+	this.lastDir = this.dir;
 };
 
-Robot.prototype.draw = function(ctx)
+Robot.prototype.draw = function (ctx)
 {
-    ctx.strokeStyle = 'black';
+	ctx.strokeStyle = 'black';
 
-    var x = this.x;
-    var y = this.y;
+	var x = this.x;
+	var y = this.y;
 
-    ctx.drawRobot(x, y, this.dir, Robot.size);
+	ctx.drawRobot(x, y, this.dir, Robot.size);
 
-    ctx.strokeStyle = 'rgba(0, 0, 0, 0.2)';
-    ctx.strokeSemiCircle(x, y, this.dir, this.sensorRadius);
-    ctx.strokeLine(x-sin(this.dir)*this.sensorRadius, y+cos(this.dir)*this.sensorRadius,
-        x+sin(this.dir)*this.sensorRadius, y-cos(this.dir)*this.sensorRadius);
+	ctx.strokeStyle = 'rgba(0, 0, 0, 0.2)';
+	ctx.strokeSemiCircle(x, y, this.dir, this.sensorRadius);
+	ctx.strokeLine(x - sin(this.dir) * this.sensorRadius, y + cos(this.dir) * this.sensorRadius,
+		x + sin(this.dir) * this.sensorRadius, y - cos(this.dir) * this.sensorRadius);
 
-    this.filter.draw(ctx);
+	this.filter.draw(ctx);
 };
 
-Robot.prototype.getSensorReading = function()
+Robot.prototype.getSensorReading = function ()
 {
 	return this.z;
 };
 
-Robot.prototype.getState = function()
+Robot.prototype.getState = function ()
 {
 	return new RobotState(this.x, this.y, this.dir);
 };

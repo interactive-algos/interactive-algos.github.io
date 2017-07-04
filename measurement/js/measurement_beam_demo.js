@@ -41,7 +41,7 @@ function BeamModelDemo(id, map, sensorRadius, sensorNoise)
 	{
 		return self.mouseOut(event)
 	};
-	this.manager = new ColorizeManager(this.view, function(p)
+	this.manager = new ColorizeManager(this.view, function (p)
 	{
 		const ctx = self.view.ctx;
 		const barWidth = 100;
@@ -52,10 +52,10 @@ function BeamModelDemo(id, map, sensorRadius, sensorNoise)
 
 		ctx.save();
 		ctx.setTransform(1, 0, 0, 1, 0, 0);
-		ctx.strokeRect(width/2 - barWidth-2, height/2 - barHeight/2, barWidth, barHeight);
-		ctx.fillRect(width/2 - barWidth-2, height/2 - barHeight/2, barWidth*p, barHeight);
+		ctx.strokeRect(width / 2 - barWidth - 2, height / 2 - barHeight / 2, barWidth, barHeight);
+		ctx.fillRect(width / 2 - barWidth - 2, height / 2 - barHeight / 2, barWidth * p, barHeight);
 		ctx.restore();
-	}, function(probs, resolution)
+	}, function (probs, resolution)
 	{
 		self.isCalculating = false;
 		self.draw();
@@ -69,7 +69,7 @@ function BeamModelDemo(id, map, sensorRadius, sensorNoise)
 
 BeamModelDemo.prototype.mouseDown = function (event)
 {
-	if(this.isCalculating)
+	if (this.isCalculating)
 		return;
 	//Shorthand for this.view and this.ctx
 	const view = this.view;
@@ -112,14 +112,14 @@ BeamModelDemo.prototype.mouseDown = function (event)
 
 BeamModelDemo.prototype.trackPosition = function (event)
 {
-	if(this.isCalculating)
+	if (this.isCalculating)
 		return;
 	const view = this.view;
 	const coor = getClickLoc(event);
 	const x = coor.x;
-	const y = this.view.canvas.height-coor.y;
-	var worldX = x/this.view.canvas.width * this.worldWidth;
-	var worldY = y/this.view.canvas.height * this.worldHeight;
+	const y = this.view.canvas.height - coor.y;
+	var worldX = x / this.view.canvas.width * this.worldWidth;
+	var worldY = y / this.view.canvas.height * this.worldHeight;
 
 	view.setScale(50);
 	this.view.recenter(worldX, worldY);
@@ -130,7 +130,7 @@ BeamModelDemo.prototype.trackPosition = function (event)
 
 BeamModelDemo.prototype.trackDirection = function (event)
 {
-	if(this.isCalculating)
+	if (this.isCalculating)
 		return;
 	const view = this.view;
 	const coor = getClickLoc(event);
@@ -143,7 +143,7 @@ BeamModelDemo.prototype.trackDirection = function (event)
 
 BeamModelDemo.prototype.mouseUp = function (event)
 {
-	if(this.isCalculating)
+	if (this.isCalculating)
 		return;
 	const self = this;
 	this.view.canvas.onmousemove = function (event)
@@ -159,7 +159,7 @@ BeamModelDemo.prototype.mouseUp = function (event)
 
 BeamModelDemo.prototype.mouseOut = function (event)
 {
-	if(this.isCalculating)
+	if (this.isCalculating)
 		return;
 	this.view.setPreviewScale(this.map);
 	this.view.setOffset(0, this.view.canvas.clientHeight);
@@ -195,7 +195,7 @@ BeamModelDemo.prototype.update = function ()
 	scan(this.x, this.y, this.dir, this.sensorRadius, this.map, this.z);
 	for (var i = 0; i < this.z.length; i++)
 	{
-		if(this.z[i] < this.sensorRadius)
+		if (this.z[i] < this.sensorRadius)
 		{
 			this.z[i] += gaussian() * this.sensorModel.a1;
 		}
@@ -204,7 +204,7 @@ BeamModelDemo.prototype.update = function ()
 
 BeamModelDemo.prototype.setNLasers = function (n)
 {
-	if(this.z.length === n+1)
+	if (this.z.length === n + 1)
 		return;
 	this.z = new Array(n + 1);
 	this.update();
@@ -214,7 +214,7 @@ BeamModelDemo.prototype.setNLasers = function (n)
 
 BeamModelDemo.prototype.setSensorRadius = function (r)
 {
-	if(r === this.sensorRadius)
+	if (r === this.sensorRadius)
 		return;
 	this.sensorRadius = r;
 	this.update();
@@ -224,7 +224,7 @@ BeamModelDemo.prototype.setSensorRadius = function (r)
 
 BeamModelDemo.prototype.setSensorNoise = function (p)
 {
-	if(this.sensorModel.a1 === p)
+	if (this.sensorModel.a1 === p)
 		return;
 	this.sensorModel.a1 = p;
 	this.update();
@@ -250,9 +250,9 @@ BeamModelDemo.prototype.setColoringResolution = function (resolution)
 	this.resolution = resolution;
 };
 
-BeamModelDemo.prototype.colorMapIfShould = function()
+BeamModelDemo.prototype.colorMapIfShould = function ()
 {
-	if(this.shouldColor && !this.isCalculating)
+	if (this.shouldColor && !this.isCalculating)
 		this.manager.start(this.resolution, this.sensorModel, this.z, this.dir);
 };
 

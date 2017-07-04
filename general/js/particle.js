@@ -53,7 +53,7 @@ Particle.prototype.setState = function (robotState)
  * clone an instance of this particle
  * @function
  */
-Particle.prototype.clone = function()
+Particle.prototype.clone = function ()
 {
 	return new Particle(this.x, this.y, this.dir, this.w);
 };

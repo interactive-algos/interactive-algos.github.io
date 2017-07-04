@@ -21,7 +21,6 @@ window.onerror = function (msg, url, lineNo, columnNo, error)
 
 		alert(message);
 	}
-
 	return false;
 };
 

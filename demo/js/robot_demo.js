@@ -14,10 +14,12 @@ function RobotDemo(lid, //Main Canvas id
 	this.lview.setPreviewScale(map);
 
 	//The Small canvas elements
-	if (sid != ' ') {
+	if (sid != ' ')
+	{
 		this.sview = new View(document.getElementById(sid), 1);
 		this.sview.setPreviewScale(map);
-	} else {
+	} else
+	{
 		this.sview = 0;
 	}
 
@@ -25,7 +27,7 @@ function RobotDemo(lid, //Main Canvas id
 	this.colorRes = colorRes;
 
 	const self = this;
-	this.manager = new ColorizeManager(this, function(p)
+	this.manager = new ColorizeManager(this, function (p)
 	{
 		const ctx = self.lview.ctx;
 		const barWidth = 100;
@@ -35,10 +37,10 @@ function RobotDemo(lid, //Main Canvas id
 
 		ctx.save();
 		ctx.setTransform(1, 0, 0, 1, 0, 0);
-		ctx.strokeRect(width/2 - barWidth-2, height/2 - barHeight/2, barWidth, barHeight);
-		ctx.fillRect(width/2 - barWidth-2, height/2 - barHeight/2, barWidth*p, barHeight);
+		ctx.strokeRect(width / 2 - barWidth - 2, height / 2 - barHeight / 2, barWidth, barHeight);
+		ctx.fillRect(width / 2 - barWidth - 2, height / 2 - barHeight / 2, barWidth * p, barHeight);
 		ctx.restore();
-	}, function(probs, resolution)
+	}, function (probs, resolution)
 	{
 		self.draw();
 		self.lview.drawProbabilityGrid(probs, resolution);
@@ -111,13 +113,16 @@ RobotDemo.prototype.stop = function ()
 	}
 };
 
-RobotDemo.prototype.simulate = function () {
+RobotDemo.prototype.simulate = function ()
+{
 	this.animating = !this.animating;
 	// this.lview.setScale(40);
 	const self = this;
-	if (this.animating) {
+	if (this.animating)
+	{
 		this.lastFrame = Date.now();
-		requestAnimationFrame(function (timestamp) {
+		requestAnimationFrame(function (timestamp)
+		{
 			self.frame(timestamp);
 		});
 	}
@@ -137,7 +142,8 @@ RobotDemo.prototype.stepForward = function ()
 RobotDemo.prototype.draw = function ()
 {
 	this.drawView(this.lview);
-	if (this.sview != 0) {
+	if (this.sview != 0)
+	{
 		this.drawView(this.sview);
 	}
 	if (this.shouldColorMap) this.colorMap();
@@ -177,12 +183,12 @@ RobotDemo.prototype.setA4 = function (noise)
 	this.robot.filter.motionModel.a4 = noise;
 };
 
-RobotDemo.prototype.setColoringResolution = function(res)
+RobotDemo.prototype.setColoringResolution = function (res)
 {
 	this.colorRes = res;
 };
 
-RobotDemo.prototype.setColoring = function(bool)
+RobotDemo.prototype.setColoring = function (bool)
 {
 	this.shouldColorMap = bool;
 };
@@ -201,12 +207,12 @@ RobotDemo.prototype.setStride = function (stride)
 	this.robot.stride = stride;
 };
 
-RobotDemo.prototype.setSensorRadius = function(r)
+RobotDemo.prototype.setSensorRadius = function (r)
 {
 	this.robot.setSensorRadius(r);
 };
 
-RobotDemo.prototype.setSensorNoise = function(r)
+RobotDemo.prototype.setSensorNoise = function (r)
 {
 	this.robot.filter.sensorModel.a1 = r;
 };

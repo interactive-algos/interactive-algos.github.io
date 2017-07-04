@@ -11,8 +11,9 @@ const round = Math.round;
 const TWO_PI = Math.PI * 2;
 const ROOT_TWO_PI = sqrt(TWO_PI);
 
-window.onerror = function (msg, url, line) {
-	alert(msg + '==>' + url+':'+line);
+window.onerror = function (msg, url, line)
+{
+	alert(msg + '==>' + url + ':' + line);
 };
 
 function randint(min, max)

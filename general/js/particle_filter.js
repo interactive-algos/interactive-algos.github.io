@@ -44,7 +44,10 @@ function ParticleFilter(particleCount, motionModel, sensorModel, robotState, res
  */
 ParticleFilter.prototype.draw = function (ctx)
 {
-	this.particles.forEach(function(p){p.draw(ctx);});
+	this.particles.forEach(function (p)
+	{
+		p.draw(ctx);
+	});
 };
 
 /**

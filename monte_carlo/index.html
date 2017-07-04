@@ -52,20 +52,20 @@
 			const filter = new ParticleFilter(
 				getValue('nParticles'),
 				new OdometryModel(
-					getValue('a1')/100.0,
-					getValue('a2')/100.0,
-					getValue('a3')/100.0,
-					getValue('a4')/100.0),
+					getValue('a1') / 100.0,
+					getValue('a2') / 100.0,
+					getValue('a3') / 100.0,
+					getValue('a4') / 100.0),
 				new BeamModel(
 					getValue('sensorNoise'),
-                    getValue('sensorRadius'),
-                    getMap()),
+					getValue('sensorRadius'),
+					getMap()),
 				new RobotState(x, y, dir),
 				getValue('pRatio'));
 			smoothenPath(path);
 			robot = new Robot(filter, path, 19, getValue('sensorRadius'), getValue('goByOneStep'));
 
-			mclDemo = new RobotDemo('canvas', 'minicanvas', getMap(), robot , 10);
+			mclDemo = new RobotDemo('canvas', 'minicanvas', getMap(), robot, 10);
 		}
 
 		function selectPath(event)
@@ -93,16 +93,16 @@
 			var value = Number(event.target.value);
 			if (target.id === 'a1')
 			{
-				mclDemo.setA1(value/100);
+				mclDemo.setA1(value / 100);
 			} else if (target.id === 'a2')
 			{
-				mclDemo.setA2(value/100);
+				mclDemo.setA2(value / 100);
 			} else if (target.id === 'a3')
 			{
-				mclDemo.setA3(value/100);
+				mclDemo.setA3(value / 100);
 			} else if (target.id === 'a4')
 			{
-				mclDemo.setA4(value/100);
+				mclDemo.setA4(value / 100);
 			} else if (target.id === 'goByOneStep')
 			{
 				mclDemo.setStride(value);

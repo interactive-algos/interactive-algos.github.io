@@ -1,265 +1,270 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <meta charset="utf-8"/>
+    <meta charset="utf-8"/>
 
-  <script src="https://code.jquery.com/jquery-3.2.1.min.js"
-  integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4="
-  crossorigin="anonymous"></script>
+    <script src="https://code.jquery.com/jquery-3.2.1.min.js"
+            integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4="
+            crossorigin="anonymous"></script>
 
-  <!-- Latest compiled and minified CSS -->
-  <link rel="stylesheet"
-  href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.12.2/css/bootstrap-select.min.css">
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.12.2/css/bootstrap-select.min.css">
 
-  <!-- Latest compiled and minified JavaScript -->
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.12.2/js/bootstrap-select.min.js"></script>
+    <!-- Latest compiled and minified JavaScript -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.12.2/js/bootstrap-select.min.js"></script>
 
-  <!-- Latest compiled and minified CSS -->
-  <link rel="stylesheet"
-  href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
-  integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u"
-  crossorigin="anonymous">
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet"
+          href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
+          integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u"
+          crossorigin="anonymous">
 
-  <!-- Optional theme -->
-  <link rel="stylesheet"
-  href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css"
-  integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp"
-  crossorigin="anonymous">
+    <!-- Optional theme -->
+    <link rel="stylesheet"
+          href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css"
+          integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp"
+          crossorigin="anonymous">
 
-  <!-- Latest compiled and minified JavaScript -->
-  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"
-  integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa"
-  crossorigin="anonymous"></script>
+    <!-- Latest compiled and minified JavaScript -->
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"
+            integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa"
+            crossorigin="anonymous"></script>
 
-  <script src='../general/js/utils.js'></script>
-  <script src='../general/js/path_data.js'></script>
-  <script src='../general/js/map_data.js'></script>
-  <script src='../general/js/odometry.js'></script>
-  <script src='../general/js/particle.js'></script>
-  <script src='../general/js/particle_filter.js'></script>
-  <script src='../general/js/robot.js'></script>
-  <script src='../general/js/view.js'></script>
-  <script src="../demo/js/robot_demo.js"></script>
+    <script src='../general/js/utils.js'></script>
+    <script src='../general/js/path_data.js'></script>
+    <script src='../general/js/map_data.js'></script>
+    <script src='../general/js/odometry.js'></script>
+    <script src='../general/js/particle.js'></script>
+    <script src='../general/js/particle_filter.js'></script>
+    <script src='../general/js/robot.js'></script>
+    <script src='../general/js/view.js'></script>
+    <script src="../demo/js/robot_demo.js"></script>
 
-  <script>
-  var motionDemo;
-  var robot;
-  function init()
-  {
-    const path = vanillaPath;
-    const x = path[0].x;
-    const y = path[0].y;
-    const dir = atan2(path[1].y - path[0].y, path[1].x - path[0].x);
-    const filter = new ParticleFilter(
-      getValue('nParticles'),
-      new OdometryModel(
-        getValue('a1')/100.0,
-        getValue('a2')/100.0,
-        getValue('a3')/100.0,
-        getValue('a4')/100.0),
-        undefined,
-        new RobotState(x, y, dir),
-        0);
-        filter.particles.forEach(function(p){p.x=x; p.y=y; p.dir=dir;});
-        smoothenPath(path);
-        robot = new Robot(filter, path, 19, 0, getValue('goByOneStep'));
+    <script>
+		var motionDemo;
+		var robot;
+		function init()
+		{
+			const path = vanillaPath;
+			const x = path[0].x;
+			const y = path[0].y;
+			const dir = atan2(path[1].y - path[0].y, path[1].x - path[0].x);
+			const filter = new ParticleFilter(
+				getValue('nParticles'),
+				new OdometryModel(
+					getValue('a1') / 100.0,
+					getValue('a2') / 100.0,
+					getValue('a3') / 100.0,
+					getValue('a4') / 100.0),
+				undefined,
+				new RobotState(x, y, dir),
+				0);
+			filter.particles.forEach(function (p)
+			{
+				p.x = x;
+				p.y = y;
+				p.dir = dir;
+			});
+			smoothenPath(path);
+			robot = new Robot(filter, path, 19, 0, getValue('goByOneStep'));
 
-        motionDemo = new RobotDemo('canvas', 'minicanvas', getMap(), robot , 10);
-      }
+			motionDemo = new RobotDemo('canvas', 'minicanvas', getMap(), robot, 10);
+		}
 
-      function selectPath(event)
-      {
-        var selectedOption = event.target.selectedOptions[0];
-        if (selectedOption.id === 'addPath')
-        {
-          motionDemo.startRecordingPath();
-        } else
-        {
-          var selectedPath = selectedOption.value;
-          clearCanvas(canvas);
-          var ctx = canvas.getContext('2d');
-          ctx.strokeStyle = 'green';
-          ctx.strokePath(knownPath[selectedPath]);
+		function selectPath(event)
+		{
+			var selectedOption = event.target.selectedOptions[0];
+			if (selectedOption.id === 'addPath')
+			{
+				motionDemo.startRecordingPath();
+			} else
+			{
+				var selectedPath = selectedOption.value;
+				clearCanvas(canvas);
+				var ctx = canvas.getContext('2d');
+				ctx.strokeStyle = 'green';
+				ctx.strokePath(knownPath[selectedPath]);
+			}
+		}
+		function parameterChanged(event)
+		{
+			var target = event.target;
+			var value = Number(event.target.value);
+			if (target.id === 'goByOneStep')
+			{
+				motionDemo.setStride(value);
+			} else if (target.id === 'fogOfWar')
+			{
+				motionDemo.setSensorRadius(value);
+			} else if (target.id === 'nParticles')
+			{
+				motionDemo.setParticleCount(value);
+				motionDemo.robot.filter.particles.forEach(function (p)
+				{
+					p.x = motionDemo.robot.x;
+					p.y = motionDemo.robot.y;
+					p.dir = motionDemo.robot.dir;
+				});
+			} else if (target.id === 'a1')
+			{
+				motionDemo.setA1(value / 100.0);
+			} else if (target.id === 'a2')
+			{
+				motionDemo.setA2(value / 100.0);
+			} else if (target.id === 'a3')
+			{
+				motionDemo.setA3(value / 100.0);
+			} else if (target.id === 'a4')
+			{
+				motionDemo.setA4(value / 100.0);
+			}
+		}
+    </script>
+    <title>Robot Motion Demo</title>
+
+    <style type="text/css">
+        canvas {
+            border: 1px solid black;
+            width: 100%;
+            height: auto;
         }
-      }
-      function parameterChanged(event)
-      {
-        var target = event.target;
-        var value = Number(event.target.value);
-        if (target.id === 'goByOneStep')
-        {
-          motionDemo.setStride(value);
-        } else if (target.id === 'fogOfWar')
-        {
-          motionDemo.setSensorRadius(value);
-        } else if (target.id === 'nParticles')
-        {
-          motionDemo.setParticleCount(value);
-          motionDemo.robot.filter.particles.forEach(function(p)
-          {
-            p.x = motionDemo.robot.x;
-            p.y = motionDemo.robot.y;
-            p.dir = motionDemo.robot.dir;
-          });
-        }else if(target.id === 'a1')
-        {
-          motionDemo.setA1(value/100.0);
-        }else if(target.id === 'a2')
-        {
-          motionDemo.setA2(value/100.0);
-        }else if(target.id === 'a3')
-        {
-          motionDemo.setA3(value/100.0);
-        }else if(target.id === 'a4')
-        {
-          motionDemo.setA4(value/100.0);
-        }
-      }
-      </script>
-      <title>Robot Motion Demo</title>
+    </style>
+</head>
+<body onload="init();">
+<div class="container">
+    <div class="row"><h3>Robot Motion Demo</h3></div>
 
-      <style type="text/css">
-      canvas {
-        border: 1px solid black;
-        width: 100%;
-        height: auto;
-      }
-      </style>
-    </head>
-    <body onload="init();">
-      <div class="container">
-        <div class="row"><h3>Robot Motion Demo</h3></div>
-
-        <div class='row'>
-          <div class="col-lg-8">
+    <div class='row'>
+        <div class="col-lg-8">
             <canvas id="canvas" width="7" height="4"></canvas>
-          </div>
-          <div class='col-sm-4'>
+        </div>
+        <div class='col-sm-4'>
             <canvas id="minicanvas" width="7" height="4"></canvas>
             <fieldset>
-              <legend>Configuration</legend>
-              <table>
-                <tbody>
-                  <tr>
-                    <td></td>
-                  </tr>
-                  <tr>
-                    <td>
-                      <label for="path">Movement Path</label>
-                    </td>
-                    <td>
-                      <select id="path" class="selectpicker"
-                      onchange="selectPath(event);">
-                      <optgroup label="Built-In">
-                        <option>Vanilla</option>
-                      </optgroup>
-                      <optgroup label="Custom" id="customPathGroup">
-                        <option data-icon="glyphicon glyphicon-plus"
-                        id="addPath">Add a path
-                      </option>
-                    </optgroup>
-                  </select>
-                </td>
-              </tr>
-              <tr>
-                <td>
-                  <label for="nParticles"># of particles</label>
-                </td>
-                <td>
-                  <input type='text' id="nParticles"
-                  onblur='return parameterChanged(event);'
-                  onkeypress='return isNumber(event);'
-                  class="form-control" value="500"
-                  size="3 ">
-                </td>
-              </tr>
-              <tr>
-                <td>
-                  <label for="goByOneStep">Step length</label>
-                </td>
-                <td>
-                  <input type='text' id="goByOneStep"
-                  onblur='return parameterChanged(event);'
-                  onkeypress='return isDecimal(event);'
-                  class="form-control" value="0.04"
-                  size="3">
-                </td>
-              </tr>
-              <tr>
-                <td>
-                  <label for="a1">Rotational error from
-                    rotation</label>
-                  </td>
-                  <td>
-                    <input id='a1' size="3" value="1"
-                    onblur='return parameterChanged(event);'
-                    type="text" class="form-control"
-                    onkeypress='return isDecimal(event);'/>
-                  </td>
-                  <td><label>%</label></td>
-                </tr>
-                <tr>
-                  <td>
-                    <label for="a2">Rotational error from
-                      translation</label>
-                    </td>
-                    <td>
-                      <input id='a2' size="3" value="1"
-                      onblur='return parameterChanged(event);'
-                      type="text" class="form-control"
-                      onkeypress='return isDecimal(event);'/>
-                    </td>
-                    <td><label>%</label></td>
-                  </tr>
-                  <tr>
-                    <td>
-                      <label for="a3">Translational error from
-                        translation</label>
-                      </td>
-                      <td>
-                        <input id='a3' size="3" value="1"
-                        onblur='return parameterChanged(event);'
-                        type="text" class="form-control"
-                        onkeypress='return isDecimal(event);'/>
-                      </td>
-                      <td><label>%</label></td>
+                <legend>Configuration</legend>
+                <table>
+                    <tbody>
+                    <tr>
+                        <td></td>
                     </tr>
                     <tr>
-                      <td>
-                        <label for="a4">Translational error from
-                          rotation</label>
+                        <td>
+                            <label for="path">Movement Path</label>
                         </td>
                         <td>
-                          <input id='a4' size="3" value="1"
-                          onblur='return parameterChanged(event);'
-                          type="text" class="form-control"
-                          onkeypress='return isDecimal(event);'/>
+                            <select id="path" class="selectpicker"
+                                    onchange="selectPath(event);">
+                                <optgroup label="Built-In">
+                                    <option>Vanilla</option>
+                                </optgroup>
+                                <optgroup label="Custom" id="customPathGroup">
+                                    <option data-icon="glyphicon glyphicon-plus"
+                                            id="addPath">Add a path
+                                    </option>
+                                </optgroup>
+                            </select>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <label for="nParticles"># of particles</label>
+                        </td>
+                        <td>
+                            <input type='text' id="nParticles"
+                                   onblur='return parameterChanged(event);'
+                                   onkeypress='return isNumber(event);'
+                                   class="form-control" value="500"
+                                   size="3 ">
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <label for="goByOneStep">Step length</label>
+                        </td>
+                        <td>
+                            <input type='text' id="goByOneStep"
+                                   onblur='return parameterChanged(event);'
+                                   onkeypress='return isDecimal(event);'
+                                   class="form-control" value="0.04"
+                                   size="3">
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <label for="a1">Rotational error from
+                                rotation</label>
+                        </td>
+                        <td>
+                            <input id='a1' size="3" value="1"
+                                   onblur='return parameterChanged(event);'
+                                   type="text" class="form-control"
+                                   onkeypress='return isDecimal(event);'/>
                         </td>
                         <td><label>%</label></td>
-                      </tr>
+                    </tr>
+                    <tr>
+                        <td>
+                            <label for="a2">Rotational error from
+                                translation</label>
+                        </td>
+                        <td>
+                            <input id='a2' size="3" value="1"
+                                   onblur='return parameterChanged(event);'
+                                   type="text" class="form-control"
+                                   onkeypress='return isDecimal(event);'/>
+                        </td>
+                        <td><label>%</label></td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <label for="a3">Translational error from
+                                translation</label>
+                        </td>
+                        <td>
+                            <input id='a3' size="3" value="1"
+                                   onblur='return parameterChanged(event);'
+                                   type="text" class="form-control"
+                                   onkeypress='return isDecimal(event);'/>
+                        </td>
+                        <td><label>%</label></td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <label for="a4">Translational error from
+                                rotation</label>
+                        </td>
+                        <td>
+                            <input id='a4' size="3" value="1"
+                                   onblur='return parameterChanged(event);'
+                                   type="text" class="form-control"
+                                   onkeypress='return isDecimal(event);'/>
+                        </td>
+                        <td><label>%</label></td>
+                    </tr>
                     </tbody>
-                  </table>
+                </table>
 
-                  <button onclick="motionDemo.stop()"
-                  class="btn btn-danger">
+                <button onclick="motionDemo.stop()"
+                        class="btn btn-danger">
                   <span class="glyphicon glyphicon-stop"
-                  aria-hidden="true"></span>
+                        aria-hidden="true"></span>
                 </button>
                 <button onclick="setBackward()" class="btn btn-info">
                   <span class="glyphicon glyphicon-step-backward"
-                  aria-hidden="true"></span>
+                        aria-hidden="true"></span>
                 </button>
                 <button onclick="motionDemo.start()" class="btn btn-success">
                   <span class="glyphicon glyphicon-play"
-                  aria-hidden="true"></span>
+                        aria-hidden="true"></span>
                 </button>
                 <button onclick="motionDemo.stepForward()" class="btn btn-info">
                   <span class="glyphicon glyphicon-step-forward"
-                  aria-hidden="true"></span>
+                        aria-hidden="true"></span>
                 </button>
-              </fieldset>
-            </div>
-          </div>
+            </fieldset>
         </div>
-      </body>
-      </html>
+    </div>
+</div>
+</body>
+</html>
