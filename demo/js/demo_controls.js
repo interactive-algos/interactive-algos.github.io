@@ -163,16 +163,16 @@ function initMotionDemo()
 		a4MDemo.setA4(value);
 	});
 
-	var robot = new Robot(filter, path, 19, 0, slider.getValue());
-	var robota1 = new Robot(filtera1, s_path, 19, 0, slider.getValue());
-	var robota2 = new Robot(filtera2, st_path, 19, 0, slider.getValue());
-	var robota3 = new Robot(filtera3, st_path, 19, 0, slider.getValue());
-	var robota4 = new Robot(filtera4, s_path, 19, 0, slider.getValue());
+	var robot = new Robot(filter, path, 0, 0, slider.getValue());
+	var robotA1 = new Robot(filtera1, s_path, 0, 0, slider.getValue());
+	var robotA2 = new Robot(filtera2, st_path, 0, 0, slider.getValue());
+	var robotA3 = new Robot(filtera3, st_path, 0, 0, slider.getValue());
+	var robotA4 = new Robot(filtera4, s_path, 0, 0, slider.getValue());
 	motionDemo = new RobotDemo('motion_canvas', 'motion_minicanvas', getMap(), robot, 10);
-	a1MDemo = new RobotDemo('motion_a1_demo', ' ', getSimMap(), robota1, 10);
-	a2MDemo = new RobotDemo('motion_a2_demo', ' ', getSimMap(), robota2, 10);
-	a3MDemo = new RobotDemo('motion_a3_demo', ' ', getSimMap(), robota3, 10);
-	a4MDemo = new RobotDemo('motion_a4_demo', ' ', getSimMap(), robota4, 10);
+	a1MDemo = new RobotDemo('motion_a1_demo', ' ', getSimMap(), robotA1, 10);
+	a2MDemo = new RobotDemo('motion_a2_demo', ' ', getSimMap(), robotA2, 10);
+	a3MDemo = new RobotDemo('motion_a3_demo', ' ', getSimMap(), robotA3, 10);
+	a4MDemo = new RobotDemo('motion_a4_demo', ' ', getSimMap(), robotA4, 10);
 }
 
 function initMCLDemo()
