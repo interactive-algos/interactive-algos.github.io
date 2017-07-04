@@ -81,7 +81,7 @@ function initMotionDemo()
 	const st_y = st_path[0].y;
 	const st_dir = atan2(st_path[1].y - st_path[0].y, st_path[1].x - st_path[0].x);
 	const exaggerateFilterNoise = 0.3;
-	const smallParticleCount = 20;
+	const smallParticleCount = 100;
 	const filtera1 = new ParticleFilter(
 		smallParticleCount,
 		new OdometryModel(
