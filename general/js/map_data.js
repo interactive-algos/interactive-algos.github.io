@@ -213,7 +213,6 @@ function compactMap(map)
 function getSimMap () {
 	m = [
 		new Line(0,0,10,0),
-		new Line(10,0,10,10),
 		new Line(0,0,0,10),
 		new Line(0,10,10,10)
 	];

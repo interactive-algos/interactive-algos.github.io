@@ -74,9 +74,13 @@ function initMotionDemo()
 
 	//Individual Simulations
 	const s_path = simPath;
+	const st_path = straightPath;
 	const s_x = s_path[0].x;
 	const s_y = s_path[0].y;
 	const s_dir = atan2(s_path[1].y - s_path[0].y, s_path[1].x - s_path[0].x);
+	const st_x = st_path[0].x;
+	const st_y = st_path[0].y;
+	const st_dir = atan2(st_path[1].y - st_path[0].y, st_path[1].x - st_path[0].x);
 	const filtera1 = new ParticleFilter(
 		500,
 		new OdometryModel(
@@ -97,7 +101,7 @@ function initMotionDemo()
 			0
 		),
 		undefined,
-		new RobotState(s_x, s_y, s_dir),
+		new RobotState(st_x, st_y, st_dir),
 		0);
 	const filtera3 = new ParticleFilter(
 		500,
@@ -108,7 +112,7 @@ function initMotionDemo()
 			0
 		),
 		undefined,
-		new RobotState(s_x, s_y, s_dir),
+		new RobotState(st_x, st_y, st_dir),
 		0);
 	const filtera4 = new ParticleFilter(
 		500,
@@ -160,8 +164,8 @@ function initMotionDemo()
 
 	var robot = new Robot(filter, path, 19, 0, slider.getValue());
 	var robota1 = new Robot(filtera1, s_path, 19, 0, slider.getValue());
-	var robota2 = new Robot(filtera2, s_path, 19, 0, slider.getValue());
-	var robota3 = new Robot(filtera3, s_path, 19, 0, slider.getValue());
+	var robota2 = new Robot(filtera2, st_path, 19, 0, slider.getValue());
+	var robota3 = new Robot(filtera3, st_path, 19, 0, slider.getValue());
 	var robota4 = new Robot(filtera4, s_path, 19, 0, slider.getValue());
 	motionDemo = new RobotDemo('motion_canvas', 'motion_minicanvas', getMap(), robot, 10);
 	a1MDemo = new RobotDemo('motion_a1_demo', ' ', getSimMap(), robota1, 10);

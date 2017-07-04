@@ -561,4 +561,9 @@ var simPath = [
 		{x:8.93,y:5.75},
 		{x:8.97,y:5.50},
 		{x:8.99,y:5.25}
-]
+];
+
+straightPath = [
+	{x:5,y:5},
+	{x:Number.MAX_SAFE_INTEGER,y:5}
+];
