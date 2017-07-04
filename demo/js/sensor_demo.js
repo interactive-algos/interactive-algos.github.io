@@ -65,9 +65,9 @@ SensorDemo.prototype.takeSingleReading = function (redraw)
 	var reading = this.actualDistance + gaussian() * this.sensorNoise;
 
 	//Skip readings that are out of screen
-	if (reading < 0 || reading > this.view.width)return;
+	if (reading < 0 || reading >= this.view.width)return;
 
-	var index = round(reading / this.view.width * this.nBuckets);
+	var index = Math.floor(reading / this.view.width * this.nBuckets);
 	this.buckets[index]++;
 	this.maxCount = max(this.maxCount, this.buckets[index]);
 	this.readingSum += reading;
