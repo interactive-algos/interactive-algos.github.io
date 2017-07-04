@@ -33,7 +33,7 @@ Particle.prototype.draw = function (ctx)
 	var x = this.x;//round(this.x);
 	var y = this.y;//round(this.y);
 
-	ctx.strokeStyle = 'rgba(0, 0, 255, 0.1)';
+	ctx.strokeStyle = 'rgba(0, 0, 255, 0.3)';
 	ctx.drawRobot(x, y, this.dir, Particle.size);
 };
 
