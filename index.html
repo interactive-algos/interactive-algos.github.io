@@ -577,9 +577,11 @@ Stop
 
 <div class="container">
     <div class='row'>
-        <div class="col-lg-8 center">
+        <div class="col-lg-7 center">
             <div class="row left"><h3>Monte Carlo Localization</h3></div>
-            <canvas id="mcl_canvas" width="7" height="6"></canvas>
+            <canvas class="col-lg-8" id="mcl_minicanvas" width="7" height="4"></canvas>
+            <p class="row"></p>
+            <canvas id="mcl_canvas" width="7" height="5"></canvas>
             <p>
                 <button onclick="mclDemo.stop();" class="btn waves-effect waves-light red">
                     <span class="glyphicon glyphicon-stop"
@@ -600,9 +602,8 @@ Stop
             </p>
             <span id="probability"></span>
         </div>
-        <div class='col-sm-4 center'>
-            <br>
-            <canvas id="mcl_minicanvas" width="7" height="4"></canvas>
+        <div class='col-sm-5 center'>
+            <br><br><br>
             <fieldset>
                 <table>
                     <tbody>
