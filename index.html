@@ -69,6 +69,12 @@
             crossorigin="anonymous">
     </script>
 
+    <!-- Compiled and Materialized minified CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.99.0/css/materialize.min.css">
+
+    <!-- Compiled and Materialized minified JavaScript -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.99.0/js/materialize.min.js"></script>
+
     <script src="demo/js/demo_controls.js"></script>
     <script src="demo/js/actuation_demo.js"></script>
     <script src="demo/js/sensor_demo.js"></script>
@@ -84,7 +90,6 @@
     <script src='general/js/path_data.js'></script>
     <script src="demo/js/robot_demo.js"></script>
 
-    <link href="css/materialize.css" type="text/css" rel="stylesheet" media="screen,projection"/>
     <link href="css/style.css" type="text/css" rel="stylesheet" media="screen,projection"/>
     <script src="js/materialize.js"></script>
     <script src="js/init.js"></script>
@@ -294,7 +299,7 @@
                             <input type='text' id="motion_stride"
                                    onblur='motionDemo.setStride(Number(event.target.value));'
                                    value="0.04"
-                                   data-slider-min="0.01" data-slider-max="1"
+                                   data-slider-min="0.01" data-slider-max="0.5"
                                    data-slider-step="0.01"
                                    data-slider-value="0.04">
                         </td>

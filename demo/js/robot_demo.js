@@ -14,13 +14,10 @@ function RobotDemo(lid, //Main Canvas id
 	this.lview.setPreviewScale(map);
 
 	//The Small canvas elements
-	if (sid != ' ')
+	if (document.getElementById(sid) !== null)
 	{
 		this.sview = new View(document.getElementById(sid), 1);
 		this.sview.setPreviewScale(map);
-	} else
-	{
-		this.sview = 0;
 	}
 
 	this.map = map;
