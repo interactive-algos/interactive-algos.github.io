@@ -18,6 +18,8 @@ function Particle(x, y, dir, weight)
 
 	//weight of this particle
 	this.w = weight;
+
+	this.opacity = 0.5;
 }
 
 //Constants
@@ -26,14 +28,14 @@ Particle.size = 0.1;
 /**
  * Draws the particle on the context
  * @function
- * @param {Context} ctx - The context that the particle will be drawn on
+ * @param {CanvasRenderingContext2D} ctx - The context that the particle will be drawn on
  */
 Particle.prototype.draw = function (ctx)
 {
 	var x = this.x;//round(this.x);
 	var y = this.y;//round(this.y);
 
-	ctx.strokeStyle = 'rgba(0, 0, 255, 0.1)';
+	ctx.strokeStyle = 'rgba(0, 0, 255, ' + this.opacity + ')';
 	ctx.drawRobot(x, y, this.dir, Particle.size);
 };
 
