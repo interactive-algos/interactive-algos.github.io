@@ -62,10 +62,10 @@ RobotDemo.prototype.start = function ()
 	this.lview.setScale(50);
 	const self = this;
 
-	this.largeCanvas.onmousedown = function (event)
-	{
-		self.queryProbability(event);
-	};
+	// this.largeCanvas.onmousedown = function (event)
+	// {
+	// 	self.queryProbability(event);
+	// };
 
 	this.lastFrame = Date.now();
 	requestAnimationFrame(function (timestamp)
@@ -109,22 +109,6 @@ RobotDemo.prototype.stop = function ()
 		this.draw();
 	}
 };
-
-RobotDemo.prototype.simulate = function ()
-{
-	this.animating = !this.animating;
-	// this.lview.setScale(40);
-	const self = this;
-	if (this.animating)
-	{
-		this.lastFrame = Date.now();
-		requestAnimationFrame(function (timestamp)
-		{
-			self.frame(timestamp);
-		});
-	}
-};
-
 
 RobotDemo.prototype.stepForward = function ()
 {

@@ -169,10 +169,10 @@ function initMotionDemo()
 	var robotA3 = new Robot(filterA3, st_path, 0, 0, slider.getValue());
 	var robotA4 = new Robot(filterA4, s_path, 0, 0, slider.getValue());
 	motionDemo = new RobotDemo('motion_canvas', 'motion_minicanvas', getMap(), robot, 10);
-	a1MDemo = new RobotDemo('motion_a1_demo', ' ', getSimMap(), robotA1, 10);
-	a2MDemo = new RobotDemo('motion_a2_demo', ' ', getSimMap(), robotA2, 10);
-	a3MDemo = new RobotDemo('motion_a3_demo', ' ', getSimMap(), robotA3, 10);
-	a4MDemo = new RobotDemo('motion_a4_demo', ' ', getSimMap(), robotA4, 10);
+	a1MDemo = new RobotDemo('motion_a1_demo', '', getSimMap(), robotA1, 10);
+	a2MDemo = new RobotDemo('motion_a2_demo', '', getSimMap(), robotA2, 10);
+	a3MDemo = new RobotDemo('motion_a3_demo', '', getSimMap(), robotA3, 10);
+	a4MDemo = new RobotDemo('motion_a4_demo', '', getSimMap(), robotA4, 10);
 }
 
 function initMCLDemo()
