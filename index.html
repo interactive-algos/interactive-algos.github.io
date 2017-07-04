@@ -2,19 +2,36 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
     <title>Interactive Robotics Algorithms</title>
+
     <style type="text/css">
-        canvas {
-            border: 1px solid black;
-            width: 100%;
-            height: auto;
-        }
+    canvas {
+        border: 1px solid black;
+        width: 100%;
+        height: auto;
+    }
+    </style>
+    <style type="text/css">
+    fieldset {
+        /*display: block;*/
+        margin-left: 2px;
+        margin-right: 2px;
+        padding-top: 0.35em;
+        padding-bottom: 0.625em;
+        padding-left: 0.75em;
+        padding-right: 0.75em;
+        border-left: 5px;
+    }
     </style>
 
     <!--jQuery Scripts-->
+
+    <!--  Scripts-->
+
     <script src="https://code.jquery.com/jquery-3.2.1.min.js"
-            integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4="
-            crossorigin="anonymous">
+    integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4="
+    crossorigin="anonymous">
     </script>
 
     <!--Bootstrap Slider JavaScript-->
@@ -22,34 +39,34 @@
 
     <!--Bootstrap Slider CSS-->
     <link rel="stylesheet"
-          href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-slider/9.8.0/css/bootstrap-slider.css">
+    href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-slider/9.8.0/css/bootstrap-slider.css">
 
     <!--jQuery appear plugin-->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.appear/0.3.3/jquery.appear.min.js"></script>
 
     <!-- Bootstrap Select CSS -->
     <link rel="stylesheet"
-          href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.12.2/css/bootstrap-select.min.css">
+    href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.12.2/css/bootstrap-select.min.css">
 
     <!-- Bootstrap Select JavaScript-->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.12.2/js/bootstrap-select.min.js"></script>
 
     <!-- Bootstrap CSS -->
     <link rel="stylesheet"
-          href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
-          integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u"
-          crossorigin="anonymous">
+    href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
+    integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u"
+    crossorigin="anonymous">
 
     <!-- Optional theme -->
     <link rel="stylesheet"
-          href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css"
-          integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp"
-          crossorigin="anonymous">
+    href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css"
+    integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp"
+    crossorigin="anonymous">
 
     <!-- Bootstrap JavaScript -->
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"
-            integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa"
-            crossorigin="anonymous">
+    integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa"
+    crossorigin="anonymous">
     </script>
 
     <script src="demo/js/demo_controls.js"></script>
@@ -66,132 +83,176 @@
     <script src="general/js/robot.js"></script>
     <script src='general/js/path_data.js'></script>
     <script src="demo/js/robot_demo.js"></script>
+
+    <link href="css/materialize.css" type="text/css" rel="stylesheet" media="screen,projection"/>
+    <link href="css/style.css" type="text/css" rel="stylesheet" media="screen,projection"/>
+    <script src="js/materialize.js"></script>
+    <script src="js/init.js"></script>
+
 </head>
 <body onload="init();">
+    <nav class="black" role="navigation">
+        <div class="nav-wrapper container">
+            <a id="title-container" href="#" class="brand-logo left">Home</a>
+            <ul class="right hide-on-med-and-down">
+                <li><a href="monte_carlo/index.html">Monte Carlo Demo</a></li>
+                <li><a href="measurement/index.html">Measurement Demo</a></li>
+                <li><a href="motion/index.html">Motion Demo</a></li>
+            </ul>
 
-<div class="container">
-    <div class="row">
-        <div class="col-lg-8">
-            <h1>Explaining Robotics Interactively</h1>
+            <ul id="nav-mobile" class="side-nav">
+                <li><a href="monte_carlo/index.html">Monte Carlo Demo</a></li>
+                <li><a href="measurement/index.html">Measurement Demo</a></li>
+                <li><a href="motion/index.html">Motion Demo</a></li>
+            </ul>
+
+            <a href="#" data-activates="nav-mobile" class="button-collapse"><i class="material-icons">menu</i></a>
         </div>
+    </nav>
+
+    <div id="index-banner" class="parallax-container">
+        <div class="section no-pad-bot">
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-12">
+                        <h1>Interactive Robotics Illustration</h1>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-lg-8">
+                        <blockquote class="blockquote">
+                            <p>
+                                Robotics is the science of perceiving and manipulating the
+                                physical world through computer-controlled devices.
+                            </p>
+                            <p>
+                                Robotics systems are situated in the physical world,
+                                perceive information on their environments through sensors,
+                                and manipulate through physical forces.
+                            </p>
+                            <footer class="blockquote-footer">
+                                <cite title="Source Title">Probabilistic
+                                    Robotics
+                                </cite>
+                            </footer>
+                        </blockquote>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="parallax"><img src="background1.jpg" alt="Unsplashed background img 1"></div>
     </div>
-    <div class="row">
-        <div class="col-lg-8">
-            <blockquote class="blockquote">
+
+    <div class="container">
+
+        <div class="row">
+            <div class="col-lg-8">
+                <h2>Potentials of Robotics</h2>
                 <p>
-                    Robotics is the science of perceiving and manipulating the
-                    physical world through computer-controlled devices.
+                    Examples of successful robotic systems include mobile platforms
+                    for planetary exploration, industrial robotics arms in assembly
+                    lines, self-driving cars, and manipulators that assist surgeons.
                 </p>
                 <p>
-                    Robotics systems are situated in the physical world,
-                    perceive information on their environments through sensors,
-                    and manipulate through physical forces.
+                    While much of robotics is still in its infancy, the idea of
+                    “intelligent” manipulating devices has an enormous potential
+                    to change society. Wouldn’t it be great if all our cars were
+                    able to safely steer themselves and avoid all car accidents?
+                    Wouldn’t it be great if robots can clean up nuclear disaster and
+                    take care of all domestic repair and maintenance tasks?
                 </p>
-                <footer class="blockquote-footer">
-                    <cite title="Source Title">Probabilistic
-                        Robotics
-                    </cite>
-                </footer>
-            </blockquote>
-        </div>
-    </div>
-    <div class="row">
-        <div class="col-lg-8">
-            <h2>Potentials of Robotics</h2>
-            <p>
-                Examples of successful robotic systems include mobile platforms
-                for planetary exploration, industrial robotics arms in assembly
-                lines, self-driving cars, and manipulators that assist surgeons.
-            </p>
-            <p>
-                While much of robotics is still in its infancy, the idea of
-                “intelligent” manipulating devices has an enormous potential
-                to change society. Wouldn’t it be great if all our cars were
-                able to safely steer themselves and avoid all car accidents?
-                Wouldn’t it be great if robots can clean up nuclear disaster and
-                take care of all domestic repair and maintenance tasks?
-            </p>
-        </div>
-    </div>
-    <div class="row">
-        <div class="col-lg-8">
-            <h2>Uncertainties in Robotics</h2>
-            <p>
-                To do these tasks, robots have to be able to accommodate the
-                enormous uncertainty that exists in the physical world. There is
-                a number of factors that contribute to a robot’s uncertainty.
-            </p>
-        </div>
-    </div>
-    <div class="row">
-        <div class="col-sm-4">
-            <h4>Robot Actuation Noise</h4>
-            <p>
-                Robot actuation involves motors that are, at least to some
-                extent, unpredictable. Uncertainty arises from effects like
-                control noise, wear-and-tear, and mechanical failure.
-            </p>
+            </div>
         </div>
 
-        <div class="col-sm-4">
-            <h4>Try the demo</h4>
-            <p>
-                The blue line represents planned motion while the red line
-                represents actual motion. <b>Click</b> anywhere on the canvas to
-                place
-                the robot. <b>Press and hold</b> to change the direction of
-                robot.
-            </p>
-        </div>
     </div>
-    <div class="row">
-        <div class="col-sm-4">
-            <canvas id="simple_actuation"></canvas>
+
+    <div class="parallax-container valign-wrapper">
+        <div class="section no-pad-bot">
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-8 s12 light">
+                        <h2 style="color:black">Uncertainties in Robotics</h2>
+                        <p style="color:black">
+                            To do these tasks, robots have to be able to accommodate the
+                            enormous uncertainty that exists in the physical world. There is
+                            a number of factors that contribute to a robot’s uncertainty.
+                        </p>
+                    </div>
+                </div>
+            </div>
         </div>
-        <div class="col-sm-4">
-            <fieldset>
-                <button class="btn btn-success"
-                        onclick="simpleActuation.simulateActuation();">
+        <div class="parallax"><img src="background2.jpg" alt="Unsplashed background img 2"></div>
+    </div>
+
+    <div class="container">
+
+        <div class="row">
+            <div class="col-sm-5">
+                <h4>Robot Actuation Noise</h4>
+                <p>
+                    Robot actuation involves motors that are, at least to some
+                    extent, unpredictable. Uncertainty arises from effects like
+                    control noise, wear-and-tear, and mechanical failure.
+                </p>
+            </div>
+
+            <div class="col-sm-3">
+                <h4>Try the demo</h4>
+                <p>
+                    The blue line represents planned motion while the red line
+                    represents actual motion. <b>Click</b> anywhere on the canvas to
+                    place
+                    the robot. <b>Press and hold</b> to change the direction of
+                    robot.
+                </p>
+            </div>
+
+            <div class="col-sm-4 center">
+                <br>
+                    <canvas id="simple_actuation"></canvas>
+                    <button class="waves-effect waves-light btn-large"
+                    onclick="simpleActuation.simulateActuation();">
                     Simulate Robot Movement
                 </button>
-            </fieldset>
+            </div>
         </div>
-    </div>
 </div>
 <div class="container">
     <div class="row"><h3>Different Types of Actuation Noise</h3></div>
     <div class="row">
-        <button class="btn btn-success" onclick="simulateAllActuations();">
-            Simulate All!
-        </button>
+        <div class="col-sm-3">
+            <button class="btn-large waves-effect waves-light" onclick="simulateAllActuations();">
+                Simulate All!
+            </button>
+        </div>
         <input id='actuation_noise' type="text">
     </div>
     <div class="row">
-        <div class="col-sm-3">
+        <div class="col-sm-3 center">
             <h5>Rotation error from rotation</h5>
             <canvas id="actuation_a1"></canvas>
-            <button class="btn btn-success" onclick="a1Demo.simulateActuation();">
+            <button class="btn waves-effect waves-light" onclick="a1Demo.simulateActuation();">
                 Simulate
             </button>
         </div>
-        <div class="col-sm-3">
+        <div class="col-sm-3 center">
             <h5>Rotation error from translation</h5>
             <canvas id="actuation_a2"></canvas>
-            <button class="btn btn-success" onclick="a2Demo.simulateActuation();">
+            <button class="btn waves-effect waves-light" onclick="a2Demo.simulateActuation();">
                 Simulate
             </button>
         </div>
-        <div class="col-sm-3">
+        <div class="col-sm-3 center">
             <h5>Translation error from translation</h5>
             <canvas id="actuation_a3"></canvas>
-            <button class="btn btn-success" onclick="a3Demo.simulateActuation();">
+            <button class="btn waves-effect waves-light" onclick="a3Demo.simulateActuation();">
                 Simulate
             </button>
         </div>
-        <div class="col-sm-3">
+        <div class="col-sm-3 center">
             <h5>Translation error from rotation</h5>
             <canvas id="actuation_a4"></canvas>
-            <button class="btn btn-success" onclick="a4Demo.simulateActuation();">
+            <button class="btn waves-effect waves-light" onclick="a4Demo.simulateActuation();">
                 Simulate
             </button>
         </div>
@@ -200,8 +261,24 @@
     <div class="row"><h3>Robot Motion Demo</h3></div>
 
     <div class='row'>
-        <div class="col-lg-8">
-            <canvas id="motion_canvas" width="7" height="4"></canvas>
+        <div class="col-lg-8 center">
+            <canvas id="motion_canvas" width="7" height="6"></canvas>
+            <button onclick="motionDemo.stop()" class="btn waves-effect waves-light red">
+                <span class="glyphicon glyphicon-stop"
+                aria-hidden="true"></span>
+            </button>
+            <button onclick="setBackward()" class="btn waves-effect waves-light blue">
+                <span class="glyphicon glyphicon-step-backward"
+                aria-hidden="true"></span>
+            </button>
+            <button onclick="motionDemo.start()" class="btn waves-effect waves-light">
+                <span class="glyphicon glyphicon-play"
+                aria-hidden="true"></span>
+            </button>
+            <button onclick="motionDemo.stepForward()" class="btn waves-effect waves-light blue">
+                <span class="glyphicon glyphicon-step-forward"
+                aria-hidden="true"></span>
+            </button>
         </div>
         <div class='col-sm-4'>
             <canvas id="motion_minicanvas" width="7" height="4"></canvas>
@@ -209,81 +286,61 @@
                 <legend>Configuration</legend>
                 <table>
                     <tbody>
-                    <tr>
-                        <td></td>
-                    </tr>
-                    <tr>
-                        <td>
-                            <label for="motion_stride">Moving Speed</label>
-                        </td>
-                        <td>
-                            <input type='text' id="motion_stride"
-                                   onblur='motionDemo.setStride(Number(event.target.value));'
-                                   value="0.04"
-                                   data-slider-min="0.01" data-slider-max="1"
-                                   data-slider-step="0.01"
-                                   data-slider-value="0.04"></input>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
-                            <label for="motion_a1">Rotational error from
-                                rotation
-                            </label>
-                        </td>
-                        <td>
-                            <input id='motion_a1' value="1" type="text">
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
-                            <label for="motion_a2">Rotational error from
-                                translation
-                            </label>
-                        </td>
-                        <td>
-                            <input id='motion_a2' value="1" type="text">
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
-                            <label for="motion_a3">Translational error from
-                                translation
-                            </label>
-                        </td>
-                        <td>
-                            <input id='motion_a3' value="1" type="text">
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
-                            <label for="motion_a4">Translational error from
-                                rotation
-                            </label>
-                        </td>
-                        <td>
-                            <input id='motion_a4' value="1" type="text">
-                        </td>
-                    </tr>
+                        <tr>
+                            <td>
+                                <label for="motion_stride">Moving Speed</label>
+                            </td>
+                            <td>
+                                <input type='text' id="motion_stride"
+                                onblur='motionDemo.setStride(Number(event.target.value));'
+                                value="0.04"
+                                data-slider-min="0.01" data-slider-max="1"
+                                data-slider-step="0.01"
+                                data-slider-value="0.04"></input>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <label for="motion_a1">Rotational error from
+                                    rotation
+                                </label>
+                            </td>
+                            <td>
+                                <input id='motion_a1' value="1" type="text">
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <label for="motion_a2">Rotational error from
+                                    translation
+                                </label>
+                            </td>
+                            <td>
+                                <input id='motion_a2' value="1" type="text">
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <label for="motion_a3">Translational error from
+                                    translation
+                                </label>
+                            </td>
+                            <td>
+                                <input id='motion_a3' value="1" type="text">
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <label for="motion_a4">Translational error from
+                                    rotation
+                                </label>
+                            </td>
+                            <td>
+                                <input id='motion_a4' value="1" type="text">
+                            </td>
+                        </tr>
                     </tbody>
                 </table>
-
-                <button onclick="motionDemo.stop()" class="btn btn-danger">
-            <span class="glyphicon glyphicon-stop"
-                  aria-hidden="true"></span>
-                </button>
-                <button onclick="setBackward()" class="btn btn-info">
-            <span class="glyphicon glyphicon-step-backward"
-                  aria-hidden="true"></span>
-                </button>
-                <button onclick="motionDemo.start()" class="btn btn-success">
-            <span class="glyphicon glyphicon-play"
-                  aria-hidden="true"></span>
-                </button>
-                <button onclick="motionDemo.stepForward()" class="btn btn-info">
-            <span class="glyphicon glyphicon-step-forward"
-                  aria-hidden="true"></span>
-                </button>
             </fieldset>
         </div>
     </div>
@@ -292,127 +349,127 @@
         <div class="col-sm-6">
             <h5>Rotation error from rotation</h5>
             <canvas id="motion_a1_demo" width="1" height="1"></canvas>
-            <button class="btn btn-success"
-                    onclick="a1MDemo.simulate();">
-                Simulate
-            </button>
-            <button class="btn btn-success"
-                    onclick="a1MDemo.stop();">
-                Stop
-            </button>
-        </div>
-        <div class="col-sm-6">
-            <h5>Rotation error from translation</h5>
-            <canvas id="motion_a2_demo" width="1" height="1"></canvas>
-            <button class="btn btn-success"
-                    onclick="a2MDemo.simulate();">
-                Simulate
-            </button>
-            <button class="btn btn-success"
-                    onclick="a2MDemo.stop();">
-                Stop
-            </button>
-        </div>
-    </div>
-    <div class="row">
-        <div class="col-sm-6">
-            <h5>Translation error from translation</h5>
-            <canvas id="motion_a3_demo" width="1" height="1"></canvas>
-            <button class="btn btn-success"
-                    onclick="a3MDemo.simulate();">
-                Simulate
-            </button>
-            <button class="btn btn-success"
-                    onclick="a3MDemo.stop();">
-                Stop
-            </button>
-        </div>
-        <div class="col-sm-6">
-            <h5>Translation error from rotation</h5>
-            <canvas id="motion_a4_demo" width="1" height="1"></canvas>
-            <button class="btn btn-success"
-                    onclick="a4MDemo.simulate();">
-                Simulate
-            </button>
-            <button class="btn btn-success"
-                    onclick="a4MDemo.stop();">
-                Stop
-            </button>
-        </div>
-    </div>
+            <button class="btn waves-effect waves-light"
+            onclick="a1MDemo.simulate();">
+            Simulate
+        </button>
+        <button class="btn waves-effect waves-light"
+        onclick="a1MDemo.stop();">
+        Stop
+    </button>
+</div>
+<div class="col-sm-6">
+    <h5>Rotation error from translation</h5>
+    <canvas id="motion_a2_demo" width="1" height="1"></canvas>
+    <button class="btn waves-effect waves-light"
+    onclick="a2MDemo.simulate();">
+    Simulate
+</button>
+<button class="btn waves-effect waves-light"
+onclick="a2MDemo.stop();">
+Stop
+</button>
+</div>
+</div>
+<div class="row">
+    <div class="col-sm-6">
+        <h5>Translation error from translation</h5>
+        <canvas id="motion_a3_demo" width="1" height="1"></canvas>
+        <button class="btn waves-effect waves-light"
+        onclick="a3MDemo.simulate();">
+        Simulate
+    </button>
+    <button class="btn waves-effect waves-light"
+    onclick="a3MDemo.stop();">
+    Stop
+</button>
+</div>
+<div class="col-sm-6">
+    <h5>Translation error from rotation</h5>
+    <canvas id="motion_a4_demo" width="1" height="1"></canvas>
+    <button class="btn waves-effect waves-light"
+    onclick="a4MDemo.simulate();">
+    Simulate
+</button>
+<button class="btn waves-effect waves-light"
+onclick="a4MDemo.stop();">
+Stop
+</button>
+</div>
+</div>
 
-    <div class="row">
-        <div class="col-sm-4">
-            <h4>Sensor Limitations</h4>
-            <p>
-                Sensors are limited in what they can perceive. Cameras cannot
-                see through walls, and the resolution of a camera is limited.
-                Sensors are also subject to noise. And finally, sensors can
-                break. Detecting a faulty sensor can be extremely difficult.
-                Robots take these into accounts and use a sensor model to deal
-                with these uncertainties.
-            </p>
-        </div>
-        <div class="col-sm-4">
-            <h4>Robot Sensor Noise</h4>
-            <p>
-                There is always a noise when sensing. Whether the sensor is a
-                laser range finder, a sonic sensor or a camera does not matter.
-                Click on the button to take sensor readings.
-            </p>
-        </div>
+<div class="row">
+    <div class="col-sm-4">
+        <h4>Sensor Limitations</h4>
+        <p>
+            Sensors are limited in what they can perceive. Cameras cannot
+            see through walls, and the resolution of a camera is limited.
+            Sensors are also subject to noise. And finally, sensors can
+            break. Detecting a faulty sensor can be extremely difficult.
+            Robots take these into accounts and use a sensor model to deal
+            with these uncertainties.
+        </p>
     </div>
-    <div class="row">
-        <div class="col-sm-8">
-            <canvas id="sensor_demo"></canvas>
-        </div>
-        <div class="col-sm-4">
-            <fieldset>
-                <table>
-                    <tbody>
+    <div class="col-sm-4">
+        <h4>Robot Sensor Noise</h4>
+        <p>
+            There is always a noise when sensing. Whether the sensor is a
+            laser range finder, a sonic sensor or a camera does not matter.
+            Click on the button to take sensor readings.
+        </p>
+    </div>
+</div>
+<div class="row">
+    <div class="col-sm-7">
+        <canvas id="sensor_demo"></canvas>
+    </div>
+    <div class="col-sm-5">
+        <fieldset>
+            <table>
+                <tbody>
                     <tr>
                         <td>
                             <label for="sensor_demo_sensorNoise">
-                                Sensor Noise
-                            </label>
-                        </td>
-                        <td>
+                                Sensor Noise : </label>
                             <input id="sensor_demo_sensorNoise" type="text"
-                                   value="2">
+                            value="2">
                         </td>
                     </tr>
                     <tr>
-                        <td>
-                            <button type="button" class="btn btn-success"
-                                    onclick="sensorDemo.sample(Math.pow(10, Number(document.getElementById('nSamples').value)));">
-                                Sense
-                            </button>
-                        </td>
-                        <td><input id="nSamples" type="text"
-                                   value="100">
-                        </td>
-                        <td>times</td>
-                    </tr>
-                    </tbody>
-                </table>
-            </fieldset>
-        </div>
+                    <td><input id="nSamples" type="text"
+                        value="100">
+                        <label for="nSamples">
+                            .  Times </label>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="center">
+                        <button type="button" class="btn-large waves-effect waves-light center"
+                        onclick="sensorDemo.sample(Math.pow(10, Number(document.getElementById('nSamples').value)));">
+                        Sense
+                    </button>
+                </td>
+                </tr>
+            </tbody>
+        </table>
+    </fieldset>
+</div>
+</div>
+<div class="row">
+    <div class="col-sm-5">
+        <h4>Simulating Robot Sensor Model</h4>
+        <p>This demo is about robot's internal sensor model</p>
+        <p>
+            Robot's sensors have noises, meaning that measurements are not
+            exactly accurate. The robot's internal model must be aware of
+            this when estimating its location. <b>Click</b> to place the
+            robot, <b>hold and move</b> to change direction of robot.
+        </p>
     </div>
-    <div class="row">
-        <div class="col-sm-6">
-            <h4>Simulating Robot Sensor Model</h4>
-            <p>This demo is about robot's internal sensor model</p>
-            <p>
-                Robot's sensors have noises, meaning that measurements are not
-                exactly accurate. The robot's internal model must be aware of
-                this when estimating its location. <b>Click</b> to place the
-                robot, <b>hold and move</b> to change direction of robot.
-            </p>
-        </div>
-        <div class="col-sm-6">
-            <fieldset>
-                <table>
-                    <tbody>
+    <div class="col-sm-7">
+        <fieldset>
+            <table>
+                <tbody>
                     <tr>
                         <td>
                             <label for="nLasers">Number of Lasers</label>:
@@ -453,207 +510,236 @@
                             <label for="shouldColor">Color the Map</label>
                         </td>
                         <td>
-                            <input size="3" id="shouldColor"
-                                   onchange='measurementDemo.setColoring(event.target.checked);'
-                                   type="checkbox">
+                            <div class="switch">
+                                <label>
+                                    Off
+                                    <input type="checkbox" id=" shouldColor"
+                                    onchange='measurementDemo.setColoring(event.target.checked);'>
+                                    <span class="lever blue"></span>
+                                    On
+                                </label>
+                            </div>
                         </td>
                     </tr>
-                    </tbody>
-                </table>
-            </fieldset>
-        </div>
+                </tbody>
+            </table>
+        </fieldset>
     </div>
-    <div class="row">
-        <div class="col-lg-12">
-            <canvas id="sensor_model_demo" width="6" height="2.5"></canvas>
-        </div>
+</div>
+<div class="row">
+    <div class="col-lg-12">
+        <canvas id="sensor_model_demo" width="6" height="2.5"></canvas>
     </div>
-    <div class="row">
-        <div class="col-sm-4">
-            <h4>Inherently Unpredictable Environment</h4>
-            <p>
-                Let's take self driving car as an example. When driving, it
-                is impossible to predict the weather conditions, motion
-                dynamics of pedestrians and other cars, traffic lights, or
-                car accidents.
-            </p>
-        </div>
-        <div class="col-sm-4">
-            <h4>Model Limitations</h4>
-            <p>
-                Some uncertainty is caused by the robot’s software. All internal
-                models of the world are approximate. Models are abstractions of
-                the real world. As such, they only partially model the
-                underlying physical processes of the robot and its environment.
-            </p>
-        </div>
+</div>
+<div class="row">
+    <div class="col-sm-4">
+        <h4>Inherently Unpredictable Environment</h4>
+        <p>
+            Let's take self driving car as an example. When driving, it
+            is impossible to predict the weather conditions, motion
+            dynamics of pedestrians and other cars, traffic lights, or
+            car accidents.
+        </p>
     </div>
+    <div class="col-sm-4">
+        <h4>Model Limitations</h4>
+        <p>
+            Some uncertainty is caused by the robot’s software. All internal
+            models of the world are approximate. Models are abstractions of
+            the real world. As such, they only partially model the
+            underlying physical processes of the robot and its environment.
+        </p>
+    </div>
+</div>
+</div>
 
-    <div class="row">
-        <div class="col-lg-8">
-            <h2>Probabilistic Robotics</h2>
-            <p>
-                Probabilistic robotics is a relatively new approach to robotics
-                that pays tribute to the uncertainty in robot perception and
-                action. The key idea in probabilistic robotics is to represent
-                information by probability distributions over a whole space of
-                guesses instead of a single best guess. By doing so, they can
-                represent ambiguity and degree of belief in a mathematically
-                sound way.
-            </p>
+<div class="parallax-container valign-wrapper">
+    <div class="section no-pad-bot">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-8">
+                    <h2>Probabilistic Robotics</h2>
+                    <p>
+                        Probabilistic robotics is a relatively new approach to robotics
+                        that pays tribute to the uncertainty in robot perception and
+                        action. The key idea in probabilistic robotics is to represent
+                        information by probability distributions over a whole space of
+                        guesses instead of a single best guess. By doing so, they can
+                        represent ambiguity and degree of belief in a mathematically
+                        sound way.
+                    </p>
+                </div>
+            </div>
         </div>
-    </div>
-    <div class="row"><h3>Putting Everything Together</h3></div>
+    </div>o
+    <div class="parallax"><img src="background3.jpg" alt="Unsplashed background img 3"></div>
+</div>
+
+<div class="container">
     <div class='row'>
-        <div class="col-lg-8">
-            <div class="row"><h3>Monte Carlo Localization</h3></div>
-            <canvas id="mcl_canvas" width="7" height="4"></canvas>
+        <div class="col-lg-8 center">
+            <div class="row left"><h3>Monte Carlo Localization</h3></div>
+            <canvas id="mcl_canvas" width="7" height="6"></canvas>
+            <p>
+                <button onclick="mclDemo.stop();" class="btn waves-effect waves-light red">
+                    <span class="glyphicon glyphicon-stop"
+                    aria-hidden="true"></span>
+                </button>
+                <button class="btn waves-effect waves-light blue">
+                    <span class="glyphicon glyphicon-step-backward"
+                    aria-hidden="true"></span>
+                </button>
+                <button onclick="mclDemo.start();" class="btn waves-effect waves-light">
+                    <span class="glyphicon glyphicon-play"
+                    aria-hidden="true"></span>
+                </button>
+                <button onclick="mclDemo.stepForward();" class="btn waves-effect waves-light blue">
+                    <span class="glyphicon glyphicon-step-forward"
+                    aria-hidden="true"></span>
+                </button>
+            </p>
             <span id="probability"></span>
         </div>
-        <div class='col-sm-4'>
+        <div class='col-sm-4 center'>
             <br>
             <canvas id="mcl_minicanvas" width="7" height="4"></canvas>
             <fieldset>
                 <table>
                     <tbody>
-                    <tr>
-                        <td>
-                            <label for="mcl_nParticles"># of particles</label>
-                        </td>
-                        <td>
-                            <input type='text' id="mcl_nParticles"
-                                   onblur='mclDemo.setParticleCount(Number(event.target.value));'
-                                   onkeypress='return isNumber(event);'
-                                   class="form-control" value="500"
-                                   size="3 ">
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
-                            <label for="mcl_pRatio">% of particles
-                                resampled
-                            </label>
-                        </td>
-                        <td>
-                            <input type='text' id="mcl_pRatio" data-slider-value="0.9">
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
-                            <label for="mcl_stride">Speed</label>
-                        </td>
-                        <td>
-                            <input type='text' id="mcl_stride" value="0.04">
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
-                            <label for="mcl_a1">Rotational error from
-                                rotation
-                            </label>
-                        </td>
-                        <td>
-                            <input id='mcl_a1' value="1" type="text">
-                        </td>
-                        <td><label>%</label></td>
-                    </tr>
-                    <tr>
-                        <td>
-                            <label for="mcl_a2">Rotational error from
-                                translation
-                            </label>
-                        </td>
-                        <td>
-                            <input id='mcl_a2' value="1" type="text">
-                        </td>
-                        <td><label>%</label></td>
-                    </tr>
-                    <tr>
-                        <td>
-                            <label for="mcl_a3">Translational error from
-                                translation
-                            </label>
-                        </td>
-                        <td>
-                            <input id='mcl_a3' value="1" type="text">
-                        </td>
-                        <td><label>%</label></td>
-                    </tr>
-                    <tr>
-                        <td>
-                            <label for="mcl_a4">Translational error from
-                                rotation
-                            </label>
-                        </td>
-                        <td>
-                            <input id='mcl_a4' value="1" type="text">
-                        </td>
-                        <td><label>%</label></td>
-                    </tr>
-                    <tr>
-                        <td>
-                            <label for="mcl_sensorRadius">Sensor Radius</label>
-                        </td>
-                        <td>
-                            <input id="mcl_sensorRadius" type="text" data-slider-value="3">
-                        </td>
-                    </tr>
-                    <tr>
-                        <td><label for="mcl_sensorNoise">Sensor Noise</label>
-                        </td>
-                        <td><input type='text' id="mcl_sensorNoise" data-slider-value="0.3"></td>
-                    </tr>
-                    <tr>
-                        <td>
-                            <label for="mcl_colorRes">Coloring
-                                Resolution
-                            </label>
-                        </td>
-                        <td>
-                            <input type="text" id="mcl_colorRes" data-slider-value="10">
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
-                            <label for="mcl_shouldColor"
-                                   class="custom-control custom-checkbox">Color
+                        <tr>
+                            <td>
+                                <label for="mcl_nParticles"># of particles</label>
+                            </td>
+                            <td>
+                                <input type='text' id="mcl_nParticles"
+                                onblur='mclDemo.setParticleCount(Number(event.target.value));'
+                                onkeypress='return isNumber(event);'
+                                class="form-control" value="500"
+                                size="3 ">
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <label for="mcl_pRatio">% of particles
+                                    resampled
+                                </label>
+                            </td>
+                            <td>
+                                <input type='text' id="mcl_pRatio" data-slider-value="0.9">
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <label for="mcl_stride">Speed</label>
+                            </td>
+                            <td>
+                                <input type='text' id="mcl_stride" value="0.04">
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <label for="mcl_a1">Rotational error from
+                                    rotation
+                                </label>
+                            </td>
+                            <td>
+                                <input id='mcl_a1' value="1" type="text">
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <label for="mcl_a2">Rotational error from
+                                    translation
+                                </label>
+                            </td>
+                            <td>
+                                <input id='mcl_a2' value="1" type="text">
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <label for="mcl_a3">Translational error from
+                                    translation
+                                </label>
+                            </td>
+                            <td>
+                                <input id='mcl_a3' value="1" type="text">
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <label for="mcl_a4">Translational error from
+                                    rotation
+                                </label>
+                            </td>
+                            <td>
+                                <input id='mcl_a4' value="1" type="text">
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <label for="mcl_sensorRadius">Sensor Radius</label>
+                            </td>
+                            <td>
+                                <input id="mcl_sensorRadius" type="text" data-slider-value="3">
+                            </td>
+                        </tr>
+                        <tr>
+                            <td><label for="mcl_sensorNoise">Sensor Noise</label>
+                            </td>
+                            <td><input type='text' id="mcl_sensorNoise" data-slider-value="0.3"></td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <label for="mcl_colorRes">Coloring
+                                    Resolution
+                                </label>
+                            </td>
+                            <td>
+                                <input type="text" id="mcl_colorRes" data-slider-value="10">
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <label for="mcl_shouldColor"
+                                class="custom-control custom-checkbox">Color
                                 the Map</label>
-                        </td>
-                        <td>
-                            <input id="mcl_shouldColor" class="form-check-input"
-                                   onchange='mclDemo.setColoring(event.target.checked);'
-                                   type="checkbox" size="3">
-                        </td>
-                    </tr>
+                            </td>
+                            <td>
+
+                                <div class="switch">
+                                    <label>
+                                        Off
+                                        <input id="mcl_shouldColor"
+                                        onchange='mclDemo.setColoring(event.target.checked);'
+                                        type="checkbox">
+                                        <span class="lever blue"></span>
+                                        On
+                                    </label>
+                                </div>
+                            </td>
+                        </tr>
                     </tbody>
                 </table>
 
-                <button onclick="mclDemo.stop();" class="btn btn-danger">
-            <span class="glyphicon glyphicon-stop"
-                  aria-hidden="true"></span>
-                </button>
-                <button class="btn btn-info">
-            <span class="glyphicon glyphicon-step-backward"
-                  aria-hidden="true"></span>
-                </button>
-                <button onclick="mclDemo.start();" class="btn btn-success">
-            <span class="glyphicon glyphicon-play"
-                  aria-hidden="true"></span>
-                </button>
-                <button onclick="mclDemo.stepForward();" class="btn btn-info">
-            <span class="glyphicon glyphicon-step-forward"
-                  aria-hidden="true"></span>
-                </button>
+
             </fieldset>
         </div>
     </div>
-
-    <div></div>
-    <a href="monte_carlo/index.html">Monte Carlo Demo</a>
-    <br/>
-    <a href="measurement/index.html">Measurement Demo</a>
-    <br/>
-    <a href="motion/index.html">Motion Demo</a>
 </div>
+<footer class="page-footer teal">
+  <div class="container">
+    <div class="row">
+      <div class="col l6 s12">
+        <h5 class="white-text">Questions and Comments?</h5>
+        <p class="grey-text text-lighten-4">Contact UMass CICS<p>
+        </div>
+      </div>
+      <div class="footer-copyright center">
+        <div class="container">
+          <a class="grey-text text-lighten-3">Probablistic Robotics Interactive Algorithm Team 2017 All Rights Reserved</a>
+        </div>
+      </div>
+    </footer>
 </body>
 </html>
