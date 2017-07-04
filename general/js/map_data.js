@@ -210,6 +210,7 @@ function compactMap(map)
 	});
 }
 
+
 function getSimMap()
 {
 	m = [

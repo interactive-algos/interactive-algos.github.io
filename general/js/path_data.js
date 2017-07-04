@@ -563,6 +563,7 @@ var simPath = [
 	{x: 8.99, y: 5.25}
 ];
 
+
 straightPath = [
 	{x: 5, y: 5},
 	{x: Number.MAX_SAFE_INTEGER, y: 5}

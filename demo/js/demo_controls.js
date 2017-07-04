@@ -252,6 +252,7 @@ function initMCLDemo()
 		mclDemo.robot.filter.resampleRatio = value;
 	});
 
+
 	const path = vanillaPath;
 	const x = path[0].x;
 	const y = path[0].y;
