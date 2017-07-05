@@ -273,7 +273,7 @@ function getClickLoc(event)
 
 	x = event.pageX - offsetX;
 	y = event.pageY - offsetY;
-	return {x: x, y: y};
+	return {x: x*window.devicePixelRatio, y: y*window.devicePixelRatio};
 }
 
 function refreshSelect()

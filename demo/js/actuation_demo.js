@@ -5,7 +5,7 @@
 
 function ActuationDemo(id, dist1, turn, dist2, a1, a2, a3, a4)
 {
-	const scale = 50;
+	const scale = 50*pixelRatio;
 	//the canvas element
 	this.canvas = document.getElementById(id);
 	this.view = new View(this.canvas, scale);

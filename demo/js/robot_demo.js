@@ -59,7 +59,7 @@ RobotDemo.prototype.start = function ()
 	if (this.animating) return;
 
 	this.animating = true;
-	this.lview.setScale(50);
+	this.lview.setScale(50*pixelRatio);
 	const self = this;
 
 	// this.largeCanvas.onmousedown = function (event)
@@ -85,7 +85,7 @@ RobotDemo.prototype.frame = function (timestamp)
 
 	this.draw();
 
-	this.lctx.strokeTextWithColorFont(fps + "\tFPS", 'black', '10px Menlo', 10, 20);
+	this.lctx.strokeTextWithColorFont(fps + "\tFPS", 'black', '20px Menlo', 10, 20);
 	if (this.animating)
 	{
 		const self = this;

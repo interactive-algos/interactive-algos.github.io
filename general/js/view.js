@@ -4,25 +4,29 @@ const requestAnimationFrame = window.msRequestAnimationFrame || window.webkitReq
 
 const cancelAnimationFrame = window.cancelAnimationFrame || window.mozCancelAnimationFrame;
 
+const pixelRatio = window.devicePixelRatio;
+
 function View(canvas, scale)
 {
 	this.canvas = canvas;
-	const actualWidth = this.canvas.clientWidth;
-	const actualHeight = this.canvas.clientHeight;
+	const actualWidth = this.canvas.clientWidth*pixelRatio;
+	const actualHeight = this.canvas.clientHeight*pixelRatio;
 
 	this.canvas.width = actualWidth;
 	this.canvas.height = actualHeight;
-	this.width = canvas.clientWidth / scale;
-	this.height = canvas.clientHeight / scale;
+	this.canvas.style.width = actualWidth/pixelRatio;
+	this.canvas.style.height = actualHeight/pixelRatio;
+	this.width = canvas.width / scale;
+	this.height = canvas.height / scale;
 
 	this.ctx = canvas.getContext('2d');
 
 	this.scale = scale;
 	this.offsetX = 0;
-	this.offsetY = canvas.clientHeight;
+	this.offsetY = this.canvas.height;
 
 	this.updateTransform();
-	this.ctx.lineWidth = 1 / scale;
+	this.ctx.lineWidth = pixelRatio / scale;
 
 	const self = this;
 }
@@ -50,7 +54,7 @@ View.prototype.setScale = function (scale)
 {
 	this.scale = scale;
 	this.updateTransform();
-	this.ctx.lineWidth = 1 / scale;
+	this.ctx.lineWidth = pixelRatio / scale;
 };
 
 View.prototype.setPreviewScale = function (map)
