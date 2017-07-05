@@ -87,7 +87,7 @@ BeamModelDemo.prototype.mouseDown = function (event)
 		this.tracker.addParticle(new Particle(x, y, this.dir, w));
 		this.draw();
 		this.drawLaserLines();
-		this.view.ctx.strokeTextWithColorFont('probability: ' + w, 'black', '12 Menlo Regular', 10, 20);
+		this.view.ctx.fillTextWithColorFont('probability: ' + w, 'black', '20px Menlo Regular', 10, 20);
 		return;
 	}
 
@@ -162,7 +162,7 @@ BeamModelDemo.prototype.mouseOut = function (event)
 	if (this.isCalculating)
 		return;
 	this.view.setPreviewScale(this.map);
-	this.view.setOffset(0, this.view.canvas.clientHeight);
+	this.view.setOffset(0, this.view.canvas.height);
 	this.draw();
 	this.drawLaserLines();
 	this.colorMapIfShould();

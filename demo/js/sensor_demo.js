@@ -106,10 +106,10 @@ SensorDemo.prototype.draw = function ()
 	ctx.strokeStyle = 'red';
 	ctx.strokeLine(this.actualDistance, 0, this.actualDistance, this.view.height);
 
-	ctx.strokeTextWithColorFont('Actual Distance: ' + this.actualDistance,
+	ctx.fillTextWithColorFont('Actual Distance: ' + this.actualDistance,
 		'black', '20px Menlo Regular',
 		10, 20);
-	ctx.strokeTextWithColorFont('Average Sensor Readings: ' +
+	ctx.fillTextWithColorFont('Average Sensor Readings: ' +
 		this.readingSum / this.nReadings, 'black', '20px Menlo Regular', 10, 40);
 };
 

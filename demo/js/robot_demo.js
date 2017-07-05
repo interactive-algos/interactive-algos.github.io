@@ -85,7 +85,7 @@ RobotDemo.prototype.frame = function (timestamp)
 
 	this.draw();
 
-	this.lctx.strokeTextWithColorFont(fps + "\tFPS", 'black', '20px Menlo', 10, 20);
+	this.lctx.fillTextWithColorFont(fps + "\tFPS", 'black', '20px Menlo', 10, 20);
 	if (this.animating)
 	{
 		const self = this;
