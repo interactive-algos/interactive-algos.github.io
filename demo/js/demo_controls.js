@@ -300,8 +300,8 @@ function initActuationDemo()
 		a1, a2, a3, a4);
 	simpleActuation.simulateActuation();
 
-	var noiseSlider = new Slider('#actuation_noise', actuationNoiseSliderFormat);
-	const noise = noiseSlider.getValue();
+	var noiseSlider = document.getElementById('actuation_noise');
+	const noise = Number(noiseSlider.value);
 	a1Demo = new ActuationDemo('actuation_a1', firstMove, turn, secondMove,
 		noise, 0, 0, 0);
 	a2Demo = new ActuationDemo('actuation_a2', firstMove, turn, secondMove,
@@ -310,14 +310,16 @@ function initActuationDemo()
 		0, 0, noise, 0);
 	a4Demo = new ActuationDemo('actuation_a4', firstMove, turn, secondMove,
 		0, 0, 0, noise);
-	noiseSlider.on('slide', function (sliderValue)
+	noiseSlider.addEventListener('input', function(event)
 	{
+		const sliderValue = Number(event.target.value);
+		console.log(sliderValue);
 		a1Demo.setA1(sliderValue);
 		a2Demo.setA2(sliderValue);
 		a3Demo.setA3(sliderValue);
 		a4Demo.setA4(sliderValue);
 	});
-	noiseSlider.on('slideStop', simulateAllActuations);
+	noiseSlider.addEventListener('change', simulateAllActuations);
 	simulateAllActuations();
 }
 
