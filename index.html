@@ -148,7 +148,7 @@
 <div class="container">
 
     <div class="row">
-        <div class="col l8">
+        <div class="col l12 s4">
             <h2>Potentials of Robotics</h2>
             <p>
                 Examples of successful robotic systems include mobile platforms
@@ -172,7 +172,7 @@
     <div class="section no-pad-bot">
         <div class="container">
             <div class="row">
-                <div class="col s12 light">
+                <div class="col l12 light">
                     <h2 style="color:black">Uncertainties in Robotics</h2>
                     <p style="color:black">
                         To do these tasks, robots have to be able to accommodate the
@@ -189,7 +189,7 @@
 <div class="container">
 
     <div class="row">
-        <div class="col s4">
+        <div class="col l4 s12">
             <h4>Robot Actuation Noise</h4>
             <p>
                 Robot actuation involves motors that are, at least to some
@@ -198,7 +198,7 @@
             </p>
         </div>
 
-        <div class="col s4">
+        <div class="col l4 s12">
             <h4>Try the demo</h4>
             <p>
                 The blue line represents planned motion while the red line
@@ -209,7 +209,7 @@
             </p>
         </div>
 
-        <div class="col s4 center">
+        <div class="col l4 s12 center">
             <br>
             <canvas id="simple_actuation"></canvas>
             <button class="waves-effect waves-light btn-large"
@@ -222,38 +222,38 @@
 <div class="container">
     <div class="row"><h3>Different Types of Actuation Noise</h3></div>
     <div class="row">
-        <div class="col s4">
+        <div class="col l4 s12">
             <button class="btn waves-effect waves-light" onclick="simulateAllActuations();">
                 Simulate All!
             </button>
         </div>
-        <div class="col s4">
+        <div class="col l4 s12">
             <input id='actuation_noise' type="text">
         </div>
     </div>
     <div class="row">
-        <div class="col s3 center">
+        <div class="col l3 s12 center">
             <h5>Rotation error from rotation</h5>
             <canvas id="actuation_a1"></canvas>
             <button class="btn waves-effect waves-light" onclick="a1Demo.simulateActuation();">
                 Simulate
             </button>
         </div>
-        <div class="col s3 center">
+        <div class="col l3 s12 center">
             <h5>Rotation error from translation</h5>
             <canvas id="actuation_a2"></canvas>
             <button class="btn waves-effect waves-light" onclick="a2Demo.simulateActuation();">
                 Simulate
             </button>
         </div>
-        <div class="col s3 center">
+        <div class="col l3 s12 center">
             <h5>Translation error from translation</h5>
             <canvas id="actuation_a3"></canvas>
             <button class="btn waves-effect waves-light" onclick="a3Demo.simulateActuation();">
                 Simulate
             </button>
         </div>
-        <div class="col s3 center">
+        <div class="col l3 s12 center">
             <h5>Translation error from rotation</h5>
             <canvas id="actuation_a4"></canvas>
             <button class="btn waves-effect waves-light" onclick="a4Demo.simulateActuation();">
@@ -265,7 +265,7 @@
     <div class="row"><h3>Robot Motion Demo</h3></div>
 
     <div class='row'>
-        <div class="col l7 center">
+        <div class="col l7 s12 center">
             <canvas id="motion_canvas" width="6" height="6"></canvas>
             <button onclick="motionDemo.stop()" class="btn waves-effect waves-light red">
 			<span class="glyphicon glyphicon-stop"
@@ -284,7 +284,7 @@
                   aria-hidden="true"></span>
             </button>
         </div>
-        <div class='col s5'>
+        <div class='col l5 s12'>
             <canvas id="motion_minicanvas" width="7" height="4"></canvas>
             <fieldset>
                 <legend>Configuration</legend>
@@ -350,7 +350,7 @@
     </div>
 
     <div class="row">
-        <div class="col s6">
+        <div class="col l6 s12">
             <h5>Rotation error from rotation</h5>
             <canvas id="motion_a1_demo" width="1" height="1"></canvas>
             <button class="btn waves-effect waves-light"
@@ -362,7 +362,7 @@
                 Stop
             </button>
         </div>
-        <div class="col s6">
+        <div class="col l6 s12">
             <h5>Rotation error from translation</h5>
             <canvas id="motion_a2_demo" width="1" height="1"></canvas>
             <button class="btn waves-effect waves-light"
@@ -376,7 +376,7 @@
         </div>
     </div>
     <div class="row">
-        <div class="col s6">
+        <div class="col l6 s12">
             <h5>Translation error from translation</h5>
             <canvas id="motion_a3_demo" width="1" height="1"></canvas>
             <button class="btn waves-effect waves-light"
@@ -388,7 +388,7 @@
                 Stop
             </button>
         </div>
-        <div class="col s6">
+        <div class="col l6 s12">
             <h5>Translation error from rotation</h5>
             <canvas id="motion_a4_demo" width="1" height="1"></canvas>
             <button class="btn waves-effect waves-light"
@@ -403,7 +403,7 @@
     </div>
 
     <div class="row">
-        <div class="col s6">
+        <div class="col l6 s12">
             <h4>Sensor Limitations</h4>
             <p>
                 Sensors are limited in what they can perceive. Cameras cannot
@@ -414,7 +414,7 @@
                 with these uncertainties.
             </p>
         </div>
-        <div class="col s6">
+        <div class="col l6 s12">
             <h4>Robot Sensor Noise</h4>
             <p>
                 There is always a noise when sensing. Whether the sensor is a
@@ -424,10 +424,10 @@
         </div>
     </div>
     <div class="row">
-        <div class="col s8">
+        <div class="col l8 s12">
             <canvas id="sensor_demo"></canvas>
         </div>
-        <div class="col s4">
+        <div class="col l4 s12">
             <fieldset>
                 <table>
                     <tbody>
@@ -460,7 +460,7 @@
         </div>
     </div>
     <div class="row">
-        <div class="col s5">
+        <div class="col l5 s12">
             <h4>Simulating Robot Sensor Model</h4>
             <p>This demo is about robot's internal sensor model</p>
             <p>
@@ -470,7 +470,7 @@
                 robot, <b>hold and move</b> to change direction of robot.
             </p>
         </div>
-        <div class="col s7">
+        <div class="col l7 s12">
             <fieldset>
                 <table>
                     <tbody>
@@ -536,7 +536,7 @@
         </div>
     </div>
     <div class="row">
-        <div class="col s6">
+        <div class="col s12 l6">
             <h4>Inherently Unpredictable Environment</h4>
             <p>
                 Let's take self driving car as an example. When driving, it
@@ -545,7 +545,7 @@
                 car accidents.
             </p>
         </div>
-        <div class="col s6">
+        <div class="col s12 l6">
             <h4>Model Limitations</h4>
             <p>
                 Some uncertainty is caused by the robot’s software. All internal
@@ -561,7 +561,7 @@
     <div class="section no-pad-bot">
         <div class="container">
             <div class="row">
-                <div class="col l8">
+                <div class="col l8 s12">
                     <h2>Probabilistic Robotics</h2>
                     <p>
                         Probabilistic robotics is a relatively new approach to robotics
@@ -582,7 +582,7 @@
 
 <div class="container">
     <div class='row'>
-        <div class="col l7 center">
+        <div class="col l7 s12 center">
             <div class="row left"><h3>Monte Carlo Localization</h3></div>
             <canvas id="mcl_minicanvas" width="7" height="3"></canvas>
             <p class="row"></p>
@@ -607,7 +607,7 @@
             </p>
             <span id="probability"></span>
         </div>
-        <div class='col s5 center'>
+        <div class='col l5 s12 center'>
             <br><br><br>
             <fieldset>
                 <table>
