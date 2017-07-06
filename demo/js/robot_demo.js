@@ -59,7 +59,7 @@ RobotDemo.prototype.start = function ()
 	if (this.animating) return;
 
 	this.animating = true;
-	this.lview.setScale(50*pixelRatio);
+	this.lview.setScale(50);
 	const self = this;
 
 	// this.largeCanvas.onmousedown = function (event)

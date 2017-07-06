@@ -52,16 +52,16 @@ View.prototype.addOffset = function (dx, dy)
 
 View.prototype.setScale = function (scale)
 {
-	this.scale = scale;
+	this.scale = scale * pixelRatio;
 	this.updateTransform();
-	this.ctx.lineWidth = pixelRatio / scale;
+	this.ctx.lineWidth = pixelRatio / this.scale;
 };
 
 View.prototype.setPreviewScale = function (map)
 {
 	var size = getMapSize(map);
-	var s1 = this.canvas.width / size.x;
-	var s2 = this.canvas.height / size.y;
+	var s1 = this.canvas.clientWidth / size.x;
+	var s2 = this.canvas.clientHeight / size.y;
 	var dspscale = 1;
 	if (s1 > s2)
 	{
