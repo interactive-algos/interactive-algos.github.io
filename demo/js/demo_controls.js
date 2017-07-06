@@ -313,7 +313,6 @@ function initActuationDemo()
 	noiseSlider.addEventListener('input', function(event)
 	{
 		const sliderValue = Number(event.target.value);
-		console.log(sliderValue);
 		a1Demo.setA1(sliderValue);
 		a2Demo.setA2(sliderValue);
 		a3Demo.setA3(sliderValue);
