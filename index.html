@@ -64,7 +64,7 @@
   <body onload="init();">
 	<nav class="black" role="navigation">
 	  <div class="nav-wrapper container">
-        <a id="title-container" href="#" class="brand-logo left">Home</a>
+        <a id="title-container" href="#" data-activates="nav-mobile" class="brand-logo left">Home</a>
         <ul class="right hide-on-med-and-down">
 		  <li><a href="monte_carlo/index.html">Monte Carlo Demo</a></li>
 		  <li><a href="measurement/index.html">Measurement Demo</a></li>
@@ -77,7 +77,6 @@
 		  <li><a href="motion/index.html">Motion Demo</a></li>
         </ul>
 
-        <a href="#" data-activates="nav-mobile" class="button-collapse"><i class="material-icons">menu</i></a>
 	  </div>
 	</nav>
 
@@ -191,13 +190,14 @@
 	<div class="container">
 	  <div class="row"><h3>Different Types of Actuation Noise</h3></div>
 	  <div class="row">
-        <div class="col l4 s12">
-		  <button class="btn waves-effect waves-light" onclick="simulateAllActuations();">
+        <div class="col l3 s12 center">
+		  <button class="btn-large waves-effect waves-light" onclick="simulateAllActuations();">
 			Simulate All!
 		  </button>
         </div>
-        <div class="col l4 s12">
+        <div class="col l9 s12">
 		  <div class="range-field">
+        <br>
 			<input id='actuation_noise' type="range" min="0" max="1" step="0.01" title="Noise">
 		  </div>
         </div>
@@ -547,7 +547,6 @@
 		  </div>
         </div>
 	  </div>
-	  o
 	  <div class="parallax"><img src="images/background3.jpg" alt="Unsplashed background img 3"></div>
 	</div>
 
