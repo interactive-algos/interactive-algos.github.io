@@ -169,7 +169,7 @@ View.prototype.drawGrid = function ()
 	const ctx = this.canvas.getContext('2d');
 	const w = ceil(this.toWorldX(this.canvas.width));
 	const h = ceil(this.toWorldY(0));
-	ctx.fillStyle = 'grey';
+	ctx.fillStyle = 'rgba(128, 128, 128, 0.5)';
 	for(var j = floor(this.toWorldX(0)); j < w; j ++)
 	{
 		for(var i = floor(this.toWorldY(this.canvas.height)); i < h; i ++)
