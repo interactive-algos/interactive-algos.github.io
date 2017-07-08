@@ -59,6 +59,7 @@ RobotDemo.prototype.start = function ()
 	if (this.animating) return;
 
 	this.animating = true;
+	this.lview.adjustToPoint(this.robot.x, this.robot.y);
 	this.lview.setScale(50);
 	const self = this;
 
