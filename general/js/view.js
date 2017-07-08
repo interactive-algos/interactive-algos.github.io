@@ -173,7 +173,7 @@ View.prototype.drawBG = function(){
 		for (var j = -10; j < h+10; j+=1){
 			var x = this.toWorldX(i);
 			var y = this.toWorldY(j);
-			if (floor(x*10) % 10 == 0 && floor(y*10) % 10 == 0){
+			if (Math.round(x*10) % 10 == 0 && Math.round(y*10) % 10 == 0){
 				// console.log(actCoor);
 				ctx.fillStyle = 'rgba(180,180,180,1)';
 				ctx.fillRect(i,j,2,2);
