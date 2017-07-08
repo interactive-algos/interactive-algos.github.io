@@ -9,13 +9,13 @@ const pixelRatio = window.devicePixelRatio;
 function View(canvas, scale)
 {
 	this.canvas = canvas;
-	const actualWidth = this.canvas.clientWidth*pixelRatio;
-	const actualHeight = this.canvas.clientHeight*pixelRatio;
+	const actualWidth = this.canvas.clientWidth * pixelRatio;
+	const actualHeight = this.canvas.clientHeight * pixelRatio;
 
 	this.canvas.width = actualWidth;
 	this.canvas.height = actualHeight;
-	this.canvas.style.width = actualWidth/pixelRatio;
-	this.canvas.style.height = actualHeight/pixelRatio;
+	this.canvas.style.width = actualWidth / pixelRatio;
+	this.canvas.style.height = actualHeight / pixelRatio;
 	this.width = canvas.width / scale;
 	this.height = canvas.height / scale;
 
@@ -55,7 +55,7 @@ View.prototype.setScale = function (scale)
 {
 	this.scale = scale * pixelRatio;
 	this.updateTransform();
-	this.ctx.lineWidth = pixelRatio / this.scale;
+	this.ctx.lineWidth = 1 / scale;
 	this.isPreview = false;
 };
 
@@ -164,29 +164,31 @@ View.prototype.drawProbabilityGrid = function (probabilityGrid, resolution)
 	ctx.restore();
 };
 
-View.prototype.drawBG = function(){
+View.prototype.drawBG = function ()
+{
 	if (this.scale <= this.pScale) return;
 	if (this.isPreview) return;
 	// console.log("drawing bg");
 	var ctx = this.canvas.getContext('2d');
 	var w = this.canvas.width;
- 	var h = this.canvas.height;
+	var h = this.canvas.height;
 	ctx.save();
 	ctx.setTransform(1, 0, 0, 1, 0, 0);
-	for (var i = -10; i < w+10; i+=1) {
-		for (var j = -10; j < h+10; j+=1){
+	for (var i = -10; i < w + 10; i ++)
+	{
+		for (var j = -10; j < h + 10; j ++)
+		{
 			var x = this.toWorldX(i);
 			var y = this.toWorldY(j);
-			if (Math.round(x*10) % 10 == 0 && Math.round(y*10) % 10 == 0){
-				// console.log(actCoor);
-				ctx.fillStyle = 'rgba(180,180,180,1)';
-				ctx.fillRect(i,j,2,2);
-				// console.log(i+" "+j+" grey");
+			if (Math.round(x * 10) % 10 === 0 && Math.round(y * 10) % 10 === 0)
+			{
+				ctx.fillStyle = 'rgb(180, 180, 180)';
+				ctx.fillRect(i, j, 2, 2);
 			}
 		}
 	}
 	ctx.restore();
-}
+};
 
 function ColorizeManager(view, progressCallback, finishCallback)
 {
@@ -277,7 +279,7 @@ CanvasRenderingContext2D.prototype.drawRobot = function (wx, wy, dir, wsize)
 	this.beginPath();
 	//draw a line to show Robot's orientation
 	this.moveTo(wx, wy);
-	this.lineTo(wx + cos(dir) * wsize*2, wy + sin(dir) * wsize*2);
+	this.lineTo(wx + cos(dir) * wsize * 2, wy + sin(dir) * wsize * 2);
 	this.stroke();
 };
 
