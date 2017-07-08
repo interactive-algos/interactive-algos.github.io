@@ -45,11 +45,7 @@ const actuationNoiseSliderFormat = {
 	min: 0,
 	max: 1,
 	step: 0.05,
-	value: 0.01,
-	formatter: function (value)
-	{
-		return round(value * 100) + '%';
-	}
+	value: 0.01
 };
 
 function initMotionDemo()
