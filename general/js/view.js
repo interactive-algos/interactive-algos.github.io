@@ -162,7 +162,7 @@ View.prototype.drawProbabilityGrid = function (probabilityGrid, resolution)
 };
 
 View.prototype.drawBG = function(){
-	if (this.scale == this.pScale) return;
+	if (this.scale <= this.pScale) return;
 	// console.log("drawing bg");
 	var ctx = this.canvas.getContext('2d');
 	var w = this.canvas.width;
