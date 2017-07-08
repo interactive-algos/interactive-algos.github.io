@@ -29,6 +29,7 @@ function View(canvas, scale)
 	this.ctx.lineWidth = pixelRatio / scale;
 
 	const self = this;
+	this.isPreview = false;
 }
 
 View.prototype.updateTransform = function ()
@@ -55,6 +56,7 @@ View.prototype.setScale = function (scale)
 	this.scale = scale * pixelRatio;
 	this.updateTransform();
 	this.ctx.lineWidth = pixelRatio / this.scale;
+	this.isPreview = false;
 };
 
 View.prototype.setPreviewScale = function (map)
@@ -73,6 +75,7 @@ View.prototype.setPreviewScale = function (map)
 	this.setScale(dspscale);
 	this.setOffset(0, this.canvas.height);
 	this.pScale = dspscale;
+	this.isPreview = true;
 };
 
 View.prototype.adjustToPoint = function (x, y, lockRatio)
@@ -163,6 +166,7 @@ View.prototype.drawProbabilityGrid = function (probabilityGrid, resolution)
 
 View.prototype.drawBG = function(){
 	if (this.scale <= this.pScale) return;
+	if (this.isPreview) return;
 	// console.log("drawing bg");
 	var ctx = this.canvas.getContext('2d');
 	var w = this.canvas.width;
