@@ -3,6 +3,7 @@ const sin = Math.sin;
 const abs = Math.abs;
 const atan2 = Math.atan2;
 const floor = Math.floor;
+const ceil = Math.ceil;
 const sqrt = Math.sqrt;
 const random = Math.random;
 const max = Math.max;

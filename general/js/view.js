@@ -74,7 +74,6 @@ View.prototype.setPreviewScale = function (map)
 	}
 	this.setScale(dspscale);
 	this.setOffset(0, this.canvas.height);
-	this.pScale = dspscale;
 	this.isPreview = true;
 };
 
@@ -164,30 +163,20 @@ View.prototype.drawProbabilityGrid = function (probabilityGrid, resolution)
 	ctx.restore();
 };
 
-View.prototype.drawBG = function ()
+View.prototype.drawGrid = function ()
 {
-	if (this.scale <= this.pScale) return;
 	if (this.isPreview) return;
-	// console.log("drawing bg");
-	var ctx = this.canvas.getContext('2d');
-	var w = this.canvas.width;
-	var h = this.canvas.height;
-	ctx.save();
-	ctx.setTransform(1, 0, 0, 1, 0, 0);
-	for (var i = -10; i < w + 10; i ++)
+	const ctx = this.canvas.getContext('2d');
+	const w = ceil(this.toWorldX(this.canvas.width));
+	const h = ceil(this.toWorldY(0));
+	ctx.fillStyle = 'grey';
+	for(var j = floor(this.toWorldX(0)); j < w; j ++)
 	{
-		for (var j = -10; j < h + 10; j ++)
+		for(var i = floor(this.toWorldY(this.canvas.height)); i < h; i ++)
 		{
-			var x = this.toWorldX(i);
-			var y = this.toWorldY(j);
-			if (Math.round(x * 10) % 10 === 0 && Math.round(y * 10) % 10 === 0)
-			{
-				ctx.fillStyle = 'rgb(180, 180, 180)';
-				ctx.fillRect(i, j, 2, 2);
-			}
+			ctx.fillCircle(j, i, 0.05);
 		}
 	}
-	ctx.restore();
 };
 
 function ColorizeManager(view, progressCallback, finishCallback)
@@ -293,6 +282,13 @@ CanvasRenderingContext2D.prototype.semicircle = function (wx, wy, dir, wsize)
 	return this.arc(wx, wy, wsize, dir - Math.PI / 2, dir + Math.PI / 2);
 };
 
+CanvasRenderingContext2D.prototype.fillCircle = function (wx, wy, wsize)
+{
+	this.beginPath();
+	this.circle(wx, wy, wsize);
+	this.fill();
+};
+
 CanvasRenderingContext2D.prototype.strokeCircle = function (wx, wy, wsize)
 {
 	this.beginPath();
@@ -330,7 +326,7 @@ CanvasRenderingContext2D.prototype.fillTextWithColorFont = function (text, color
 	this.save();
 	this.setTransform(1, 0, 0, 1, 0, 0);
 	this.lineWidth = 1;
-	this.strokeStyle = color;
+	this.fillStyle = color;
 	this.font = font;
 	this.textAlign = 'start';
 	this.fillText(text, x, y);
