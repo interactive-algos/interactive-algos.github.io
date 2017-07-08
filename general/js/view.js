@@ -29,7 +29,7 @@ function View(canvas, scale)
 	this.ctx.lineWidth = pixelRatio / scale;
 
 	const self = this;
-	this.isPreview = false;
+	this.isPreview = true;
 }
 
 View.prototype.updateTransform = function ()
