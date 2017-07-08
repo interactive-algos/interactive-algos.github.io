@@ -158,6 +158,10 @@
 
 <div class="container">
 
+    <div class="row"><h3>[Uncertainties in Robot Motions]</h3></div>
+
+    <br>
+
     <div class="row">
         <div class="col l4 s12">
             <h4>Robot Actuation Noise</h4>
@@ -190,7 +194,7 @@
     </div>
 </div>
 <div class="container">
-    <div class="row"><h3>Different Types of Actuation Noise</h3></div>
+    <div class="row"><h4>Different Types of Actuation Noise</h4></div>
     <div class="row">
         <div class="col l3 s12 center">
             <button class="btn-large waves-effect waves-light" onclick="simulateAllActuations();">
@@ -235,7 +239,9 @@
         </div>
     </div>
 
-    <div class="row"><h3>Robot Motion Demo</h3></div>
+    <br>
+
+    <div class='row'><h4>Robot Motion Uncertainties Demo</h4></div>
 
     <div class='row'>
         <div class="col l7 s12 center">
@@ -323,7 +329,7 @@
     </div>
 
     <div class="row">
-        <div class="col l6 s12">
+        <div class="col l3 s12">
             <h5>Rotation error from rotation</h5>
             <canvas id="motion_a1_demo" width="1" height="1"></canvas>
             <button class="btn waves-effect waves-light"
@@ -335,7 +341,7 @@
                 Stop
             </button>
         </div>
-        <div class="col l6 s12">
+        <div class="col l3 s12">
             <h5>Rotation error from translation</h5>
             <canvas id="motion_a2_demo" width="1" height="1"></canvas>
             <button class="btn waves-effect waves-light"
@@ -347,9 +353,7 @@
                 Stop
             </button>
         </div>
-    </div>
-    <div class="row">
-        <div class="col l6 s12">
+        <div class="col l3 s12">
             <h5>Translation error from translation</h5>
             <canvas id="motion_a3_demo" width="1" height="1"></canvas>
             <button class="btn waves-effect waves-light"
@@ -361,7 +365,7 @@
                 Stop
             </button>
         </div>
-        <div class="col l6 s12">
+        <div class="col l3 s12">
             <h5>Translation error from rotation</h5>
             <canvas id="motion_a4_demo" width="1" height="1"></canvas>
             <button class="btn waves-effect waves-light"
@@ -374,6 +378,10 @@
             </button>
         </div>
     </div>
+
+    <br><br>
+
+    <div class="row"><h3>[Uncertainties in Robot Sensor readings]</h3></div>
 
     <div class="row">
         <div class="col l6 s12">
@@ -554,12 +562,25 @@
 
 <div class="container">
     <div class='row'>
-        <div class="col l7 s12 center">
+        <div class="col l7 s12">
             <div class="row left"><h3>Monte Carlo Localization</h3></div>
-            <canvas id="mcl_minicanvas" width="7" height="3"></canvas>
-            <p class="row"></p>
+            <div class="row left">
+                <div class="col l10 s12">
+                  <p>
+                    Also known as particle filter
+                    localization, <br>is an algorithm for robots to localize using a
+                    particle filter.
+                  </p>
+                  <p>
+                    Given a map of the environment, the algorithm
+                    estimates the position and orientation of a robot as it moves
+                    and senses the environment.
+                  </p>
+                </div>
+            </div>
+            <br>
             <canvas id="mcl_canvas" width="7" height="5"></canvas>
-            <p>
+            <p class="center">
                 <button onclick="mclDemo.stop();" class="btn waves-effect waves-light red">
 			  <span class="glyphicon glyphicon-stop"
                     aria-hidden="true"></span>
@@ -580,7 +601,9 @@
             <span id="probability"></span>
         </div>
         <div class='col l5 s12 center'>
-            <br><br><br>
+            <br>
+            <br>
+            <canvas id="mcl_minicanvas" width="70" height="27"></canvas>
             <fieldset>
                 <table>
                     <tbody>
