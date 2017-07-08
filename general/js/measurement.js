@@ -18,6 +18,16 @@ function BeamModel(a1, sensorRadius, map)
 	this.sensorRadius = sensorRadius;
 }
 
+BeamModel.prototype.getMapWidth = function()
+{
+	return this.width;
+};
+
+BeamModel.prototype.getMapHeight = function()
+{
+	return this.height;
+};
+
 /**
  * The probability for the robot to get a sensor reading "z"
  * when it has a state "state"
@@ -28,6 +38,8 @@ function BeamModel(a1, sensorRadius, map)
  */
 BeamModel.prototype.probability = function (z, state)
 {
+	if(state.x < 0 || state.x > this.width || state.y < 0 || state.y > this.height)
+		return 0;
 	return Math.exp(this.prob_log(z, state));
 };
 
@@ -41,6 +53,8 @@ BeamModel.prototype.probability = function (z, state)
  */
 BeamModel.prototype.prob_log = function (z, state)
 {
+	if(state.x < 0 || state.x > this.width || state.y < 0 || state.y > this.height)
+		return Number.NEGATIVE_INFINITY;
 	const m = this.map;
 
 	//Actual sensor data
