@@ -239,7 +239,65 @@
         </div>
     </div>
 
-    <br>
+    <div class="row">
+        <div class="col l3 s6">
+          <h5>Rotation error from rotation</h5>
+          <canvas id="motion_a1_demo" width="1" height="1"></canvas>
+          <div class="center">
+            <button class="btn waves-effect waves-light"
+                    onclick="a1MDemo.start();">
+                Simulate
+            </button>
+            <button class="btn waves-effect waves-light"
+                    onclick="a1MDemo.stop();">
+                Stop
+            </button>
+          </div>
+        </div>
+        <div class="col l3 s6">
+          <h5>Rotation error from translation</h5>
+          <canvas id="motion_a2_demo" width="1" height="1"></canvas>
+          <div class="center">
+            <button class="btn waves-effect waves-light"
+                    onclick="a2MDemo.start();">
+                Simulate
+            </button>
+            <button class="btn waves-effect waves-light"
+                    onclick="a2MDemo.stop();">
+                Stop
+            </button>
+          </div>
+        </div>
+        <div class="col l3 s6">
+            <h5>Translation error from translation</h5>
+            <canvas id="motion_a3_demo" width="1" height="1"></canvas>
+            <div class="center">
+            <button class="btn waves-effect waves-light"
+                    onclick="a3MDemo.start();">
+                Simulate
+            </button>
+            <button class="btn waves-effect waves-light"
+                    onclick="a3MDemo.stop();">
+                Stop
+            </button>
+          </div>
+        </div>
+        <div class="col l3 s6">
+          <h5>Translation error from rotation</h5>
+          <canvas id="motion_a4_demo" width="1" height="1"></canvas>
+          <div class="center">
+            <button class="btn waves-effect waves-light"
+                    onclick="a4MDemo.start();">
+                Simulate
+            </button>
+            <button class="btn waves-effect waves-light"
+                    onclick="a4MDemo.stop();">
+                Stop
+            </button>
+          </div>
+        </div>
+    </div>
+
 
     <div class='row'><h4>Robot Motion Uncertainties Demo</h4></div>
 
@@ -327,68 +385,6 @@
             </fieldset>
         </div>
     </div>
-
-    <div class="row">
-        <div class="col l3 s6">
-          <h5>Rotation error from rotation</h5>
-          <canvas id="motion_a1_demo" width="1" height="1"></canvas>
-          <div class="center">
-            <button class="btn waves-effect waves-light"
-                    onclick="a1MDemo.start();">
-                Simulate
-            </button>
-            <button class="btn waves-effect waves-light"
-                    onclick="a1MDemo.stop();">
-                Stop
-            </button>
-          </div>
-        </div>
-        <div class="col l3 s6">
-          <h5>Rotation error from translation</h5>
-          <canvas id="motion_a2_demo" width="1" height="1"></canvas>
-          <div class="center">
-            <button class="btn waves-effect waves-light"
-                    onclick="a2MDemo.start();">
-                Simulate
-            </button>
-            <button class="btn waves-effect waves-light"
-                    onclick="a2MDemo.stop();">
-                Stop
-            </button>
-          </div>
-        </div>
-        <div class="col l3 s6">
-            <h5>Translation error from translation</h5>
-            <canvas id="motion_a3_demo" width="1" height="1"></canvas>
-            <div class="center">
-            <button class="btn waves-effect waves-light"
-                    onclick="a3MDemo.start();">
-                Simulate
-            </button>
-            <button class="btn waves-effect waves-light"
-                    onclick="a3MDemo.stop();">
-                Stop
-            </button>
-          </div>
-        </div>
-        <div class="col l3 s6">
-          <h5>Translation error from rotation</h5>
-          <canvas id="motion_a4_demo" width="1" height="1"></canvas>
-          <div class="center">
-            <button class="btn waves-effect waves-light"
-                    onclick="a4MDemo.start();">
-                Simulate
-            </button>
-            <button class="btn waves-effect waves-light"
-                    onclick="a4MDemo.stop();">
-                Stop
-            </button>
-          </div>
-        </div>
-    </div>
-
-    <br><br>
-
     <div class="row"><h3>[Uncertainties in Robot Sensor readings]</h3></div>
 
     <div class="row">
