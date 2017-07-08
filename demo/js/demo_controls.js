@@ -177,7 +177,7 @@ function initMCLDemo()
 		min: 0.01,
 		max: 0.2,
 		step: 0.01,
-		value: 0.04,
+		value: 0.04
 	});
 	slider.on("slide", function (sliderValue)
 	{
@@ -434,7 +434,7 @@ function init()
 	{
 		initActuationDemo();
 	});
-	onFirstAppear('#motion_canvas', function (e, $t)
+	onFirstAppear('#motion_a1_demo', function (e, $t)
 	{
 		initMotionDemo();
 	});
