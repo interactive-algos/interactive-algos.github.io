@@ -139,6 +139,7 @@ RobotDemo.prototype.colorMap = function ()
 RobotDemo.prototype.drawView = function (view)
 {
 	clearCanvas(view.canvas);
+	view.drawBG();
 	const ctx = view.ctx;
 	ctx.drawMap(this.map);
 	ctx.strokeStyle = 'green';

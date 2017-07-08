@@ -72,6 +72,7 @@ View.prototype.setPreviewScale = function (map)
 	}
 	this.setScale(dspscale);
 	this.setOffset(0, this.canvas.height);
+	this.pScale = dspscale;
 };
 
 View.prototype.adjustToPoint = function (x, y, lockRatio)
@@ -159,6 +160,29 @@ View.prototype.drawProbabilityGrid = function (probabilityGrid, resolution)
 	}
 	ctx.restore();
 };
+
+View.prototype.drawBG = function(){
+	if (this.scale == this.pScale) return;
+	console.log("drawing bg");
+	var ctx = this.canvas.getContext('2d');
+	var w = this.canvas.width;
+ 	var h = this.canvas.height;
+	ctx.save();
+	ctx.setTransform(1, 0, 0, 1, 0, 0);
+	for (var i = -10; i < w+10; i+=1) {
+		for (var j = -10; j < h+10; j+=1){
+			var x = this.toWorldX(i);
+			var y = this.toWorldY(j);
+			if (floor(x*10) % 10 == 0 && floor(y*10) % 10 == 0){
+				// console.log(actCoor);
+				ctx.fillStyle = 'rgba(180,180,180,1)';
+				ctx.fillRect(i,j,2,2);
+				// console.log(i+" "+j+" grey");
+			}
+		}
+	}
+	ctx.restore();
+}
 
 function ColorizeManager(view, progressCallback, finishCallback)
 {
