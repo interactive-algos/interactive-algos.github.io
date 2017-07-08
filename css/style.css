@@ -54,6 +54,7 @@ only screen and (max-width: 1230px)  {
 	/* Force table to not be like tables anymore */
 	table, thead, tbody, th, td, tr {
 		display: block;
+    border: 0px;
 	}
 
 	/* Hide table headers (but not display: none;, for accessibility) */
@@ -63,18 +64,18 @@ only screen and (max-width: 1230px)  {
 		left: -9999px;
 	}
 
-	tr { border: 1px solid #ccc; }
+	tr { border-bottom: 1px solid #ccc; }
 
 	td {
 		/* Behave  like a "row" */
 		border: none;
-		border-bottom: 1px solid #eee;
+		/*border-bottom: 1px solid #eee;*/
 		position: relative;
 		padding-left: 3%;
 	}
 
   .slider {
-    width: 100% !important;
+    width: 96% !important;
   }
 }
 
@@ -109,5 +110,5 @@ fieldset {
     padding-bottom: 0.625em;
     padding-left: 0.75em;
     padding-right: 0.75em;
-    border-left: 5px;
+    border: none;
 }
