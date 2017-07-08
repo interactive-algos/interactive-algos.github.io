@@ -569,24 +569,9 @@
 </div>
 
 <div class="container">
+    <div class="row"><h3>Monte Carlo Localization</h3></div>
     <div class='row'>
         <div class="col l7 s12">
-            <div class="row left"><h3>Monte Carlo Localization</h3></div>
-            <div class="row left">
-                <div class="col l10 s12">
-                  <p>
-                    Also known as particle filter
-                    localization, <br>is an algorithm for robots to localize using a
-                    particle filter.
-                  </p>
-                  <p>
-                    Given a map of the environment, the algorithm
-                    estimates the position and orientation of a robot as it moves
-                    and senses the environment.
-                  </p>
-                </div>
-            </div>
-            <br>
             <canvas id="mcl_canvas" width="7" height="5"></canvas>
             <p class="center">
                 <button onclick="mclDemo.stop();" class="btn waves-effect waves-light red">
@@ -608,9 +593,7 @@
             </p>
             <span id="probability"></span>
         </div>
-        <div class='col l5 s12 center'>
-            <br>
-            <br>
+        <div class='col l5 s12'>
             <canvas id="mcl_minicanvas" width="70" height="27"></canvas>
             <fieldset>
                 <table>
