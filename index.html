@@ -346,7 +346,7 @@
     <div class='row'><h4>Robot Motion Uncertainties Demo</h4></div>
 
     <div class='row'>
-        <div class="col l7 s12 center">
+        <div class="col l8 s12 center">
             <canvas id="motion_canvas" width="6" height="6"></canvas>
             <button onclick="motionDemo.stop()" class="btn waves-effect waves-light red">
 			<span class="glyphicon glyphicon-stop"
@@ -365,7 +365,7 @@
                   aria-hidden="true"></span>
             </button>
         </div>
-        <div class='col l5 s12'>
+        <div class='col l4 s12'>
             <canvas id="motion_minicanvas" width="7" height="4"></canvas>
             <fieldset>
                 <legend>Configuration</legend>
@@ -490,7 +490,7 @@
         </div>
     </div>
     <div class="row">
-        <div class="col l5 s12">
+        <div class="col l4 s12">
             <h4>Simulating Robot Sensor Model</h4>
             <p>This demo is about robot's internal sensor model</p>
             <p>
@@ -500,13 +500,17 @@
                 robot, <b>hold and move</b> to change direction of robot.
             </p>
         </div>
-        <div class="col l7 s12">
+    <div class="row">
+        <div class="col l8 s12">
+            <canvas id="sensor_model_demo"></canvas>
+        </div>
+        <div class="col l4 s12">
             <fieldset>
                 <table>
                     <tbody>
                     <tr>
                         <td>
-                            <label for="nLasers">Number of Lasers</label>:
+                            <label for="nLasers">Number of Lasers</label>
                         </td>
                         <td>
                             <input id="nLasers" data-slider-value="18">
@@ -514,7 +518,7 @@
                     </tr>
                     <tr>
                         <td>
-                            <label for="sensorRadius">Sensor Radius</label>:
+                            <label for="sensorRadius">Sensor Radius</label>
                         </td>
                         <td>
                             <input id="sensorRadius" data-slider-value="3">
@@ -523,7 +527,7 @@
                     </tr>
                     <tr>
                         <td>
-                            <label for="sensorNoise">Sensor Noise</label>:
+                            <label for="sensorNoise">Sensor Noise</label>
                         </td>
                         <td>
                             <input id="sensorNoise" data-slider-value="0.3">
@@ -532,7 +536,7 @@
                     </tr>
                     <tr>
                         <td>
-                            <label for="colorRes">Coloring Resolution</label>:
+                            <label for="colorRes">Coloring Resolution</label>
                         </td>
                         <td>
                             <input id="colorRes" data-slider-value="10">
@@ -560,10 +564,6 @@
             </fieldset>
         </div>
     </div>
-    <div class="row">
-        <div class="col l12 s12">
-            <canvas id="sensor_model_demo"></canvas>
-        </div>
     </div>
     <div class="row">
         <div class="col s12 l6">
@@ -612,8 +612,8 @@
 <div class="container">
     <div class="row"><h3>Monte Carlo Localization</h3></div>
     <div class='row'>
-        <div class="col l7 s12">
-            <canvas id="mcl_canvas" width="7" height="5"></canvas>
+        <div class="col l8 s12">
+            <canvas id="mcl_canvas" width="6" height="6"></canvas>
             <p class="center">
                 <button onclick="mclDemo.stop();" class="btn waves-effect waves-light red">
 			  <span class="glyphicon glyphicon-stop"
@@ -634,7 +634,7 @@
             </p>
             <span id="probability"></span>
         </div>
-        <div class='col l5 s12'>
+        <div class='col l4 s12'>
             <canvas id="mcl_minicanvas" width="70" height="27"></canvas>
             <fieldset>
                 <table>
