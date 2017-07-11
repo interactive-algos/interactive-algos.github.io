@@ -43,7 +43,7 @@ var mclDemo;
 
 const actuationNoiseSliderFormat = {
 	min: 0,
-	max: 1,
+	max: 0.5,
 	step: 0.05,
 	value: 0.01
 };
