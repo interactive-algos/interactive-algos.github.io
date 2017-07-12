@@ -107,8 +107,9 @@ RobotDemo.prototype.stop = function ()
 	} else
 	{ //stop
 		this.largeCanvas.onmousedown = undefined;
-		this.lview.setPreviewScale(this.map);
+		// this.lview.setPreviewScale(this.map);
 		this.robot.reset();
+		this.lview.adjustToPoint(this.robot.x, this.robot.y);
 		this.draw();
 	}
 };
