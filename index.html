@@ -347,7 +347,7 @@
 
     <div class='row'>
         <div class="col l8 s12 center">
-            <canvas id="motion_canvas" width="6" height="6"></canvas>
+            <canvas id="motion_canvas" width="7" height="4"></canvas>
             <button onclick="motionDemo.stop()" class="btn waves-effect waves-light red">
 			<span class="glyphicon glyphicon-stop"
                   aria-hidden="true"></span>
@@ -612,7 +612,7 @@
     <div class="row"><h3>Monte Carlo Localization</h3></div>
     <div class='row'>
         <div class="col l8 s12">
-            <canvas id="mcl_canvas" width="6" height="6"></canvas>
+            <canvas id="mcl_canvas" width="7" height="4"></canvas>
             <p class="center">
                 <button onclick="mclDemo.stop();" class="btn waves-effect waves-light red">
 			  <span class="glyphicon glyphicon-stop"
@@ -647,7 +647,7 @@
                                    onblur='mclDemo.setParticleCount(Number(event.target.value));'
                                    onkeypress='return isNumber(event);'
                                    class="form-control" value="500"
-                                   size="3 ">
+                                   size="3" style="padding: 0px">
                         </td>
                     </tr>
                     <tr>

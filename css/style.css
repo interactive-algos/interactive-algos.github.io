@@ -15,6 +15,10 @@ p {
   line-height: 2rem;
 }
 
+td {
+    padding: 0px;
+}
+
 .button-collapse {
   color: #26a69a;
 }
@@ -54,7 +58,7 @@ only screen and (max-width: 1230px)  {
 	/* Force table to not be like tables anymore */
 	table, thead, tbody, th, td, tr {
 		display: block;
-    border: 0px;
+        border: 0px;
 	}
 
 	/* Hide table headers (but not display: none;, for accessibility) */
@@ -64,14 +68,12 @@ only screen and (max-width: 1230px)  {
 		left: -9999px;
 	}
 
-	tr { border-bottom: 1px solid #ccc; }
-
 	td {
 		/* Behave  like a "row" */
 		border: none;
 		/*border-bottom: 1px solid #eee;*/
 		position: relative;
-		padding-left: 3%;
+        padding: 0%;
 	}
 
   .slider {
@@ -111,4 +113,9 @@ fieldset {
     padding-left: 0.75em;
     padding-right: 0.75em;
     border: none;
+}
+
+form-control {
+    height: 25px;
+    
 }
