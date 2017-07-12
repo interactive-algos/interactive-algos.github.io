@@ -11,7 +11,8 @@ function RobotDemo(lid, //Main Canvas id
 	this.largeCanvas = document.getElementById(lid);
 	this.lctx = this.largeCanvas.getContext('2d');
 	this.lview = new View(this.largeCanvas, 1);
-	this.lview.setPreviewScale(map);
+	// this.lview.setPreviewScale(map);
+	this.lview.setScale(50);
 
 	//The Small canvas elements
 	if (document.getElementById(sid) !== null)
@@ -45,6 +46,7 @@ function RobotDemo(lid, //Main Canvas id
 
 	//Robot
 	this.robot = robot;
+	this.lview.adjustToPoint(this.robot.x, this.robot.y);
 
 	//Other Properties
 	this.animating = false;
