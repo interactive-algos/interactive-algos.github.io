@@ -422,22 +422,22 @@ function initSensorDemo(id)
 function init()
 {
 	smoothenPath(vanillaPath);
-	onFirstAppear('#simple_actuation', function (e, $t)
-	{
+	// onFirstAppear('#simple_actuation', function (e, $t)
+	// {
 		initActuationDemo();
-	});
-	onFirstAppear('#motion_a1_demo', function (e, $t)
-	{
+	// });
+	// onFirstAppear('#motion_a1_demo', function (e, $t)
+	// {
 		initMotionDemo();
-	});
-	onFirstAppear('#mcl_canvas', function (e, $t)
-	{
+	// });
+	// onFirstAppear('#mcl_canvas', function (e, $t)
+	// {
 		initMCLDemo();
-	});
-	onFirstAppear('#sensor_model_demo', function (e, $t)
-	{
+	// });
+	// onFirstAppear('#sensor_model_demo', function (e, $t)
+	// {
 		initMeasurementDemo();
-	});
+	// });
 	onFirstAppear('#sensor_demo', function (e, $t)
 	{
 		initSensorDemo(e.target.id);
