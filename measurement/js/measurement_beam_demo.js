@@ -19,6 +19,7 @@ function BeamModelDemo(id, map, sensorRadius, sensorNoise, miniId)
 	this.resolution = 10;
 	this.shouldColor = false;
 	this.isCalculating = false;
+	this.interactive = true;
 
 	//Initial robot pose
 	this.x = random() * this.view.width;
@@ -75,6 +76,8 @@ function BeamModelDemo(id, map, sensorRadius, sensorNoise, miniId)
 		self.drawLaserLines();
 		self.view.drawProbabilityGrid(probs, resolution);
 	});
+
+	this.miniView.ctx.drawMap(self.map);
 	this.update();
 	this.draw();
 	this.drawLaserLines();
@@ -92,7 +95,7 @@ BeamModelDemo.prototype.trackZoomInArea = function (event){
 
 	clearCanvas(view.canvas);
 	view.ctx.drawMap(self.map);
-	view.ctx.strokeStyle= 'rgba(0,0,0,1)';
+	view.ctx.strokeStyle= 'rgba(0,255,0,0.8)';
 	view.ctx.strokeLine(x-w, y-h, x+w, y-h);
 	view.ctx.strokeLine(x-w, y-h, x-w, y+h);
 	view.ctx.strokeLine(x+w, y+h, x+w, y-h);
@@ -111,13 +114,14 @@ BeamModelDemo.prototype.zoomInArea = function (event){
 
 	clearCanvas(view.canvas);
 	view.ctx.drawMap(self.map);
-	view.ctx.strokeStyle= 'rgba(255,0,0,0.8)';
+	view.ctx.strokeStyle= 'rgba(255,0,0,1)';
 	view.ctx.strokeLine(x-w, y-h, x+w, y-h);
 	view.ctx.strokeLine(x-w, y-h, x-w, y+h);
 	view.ctx.strokeLine(x+w, y+h, x+w, y-h);
 	view.ctx.strokeLine(x+w, y+h, x-w, y+h);
 
 	if (view.canvas.onmousemove == undefined) {
+		self.interactive = true;
 		view.canvas.onmousemove = function (event)
 		{
 			return self.trackZoomInArea(event)
@@ -126,6 +130,11 @@ BeamModelDemo.prototype.zoomInArea = function (event){
 		view.ctx.fillStyle = 'rgba(180,180,180,0.3)'
 		view.ctx.fillRect(x-w, y-h, 2*w, 2*h);
 		view.canvas.onmousemove = undefined;
+
+		self.interactive = false;
+		self.view.setScale(20);
+		self.view.recenter(x,y);
+		self.draw();
 	}
 }
 
@@ -175,7 +184,7 @@ BeamModelDemo.prototype.mouseDown = function (event)
 
 BeamModelDemo.prototype.trackPosition = function (event)
 {
-	if (this.isCalculating)
+	if (this.isCalculating || !this.interactive)
 		return;
 	const view = this.view;
 	const coor = getClickLoc(event);
@@ -184,7 +193,7 @@ BeamModelDemo.prototype.trackPosition = function (event)
 	var worldX = x / this.view.canvas.width * this.worldWidth;
 	var worldY = y / this.view.canvas.height * this.worldHeight;
 
-	view.setScale(50);
+	view.setScale(30);
 	this.view.recenter(worldX, worldY);
 	// view.canvas.getContext('2d').fillRect(0,0,view.canvas.width,view.canvas.height);
 	this.draw();
@@ -222,7 +231,7 @@ BeamModelDemo.prototype.mouseUp = function (event)
 
 BeamModelDemo.prototype.mouseOut = function (event)
 {
-	if (this.isCalculating)
+	if (this.isCalculating || !this.interactive)
 		return;
 	this.view.setPreviewScale(this.map);
 	this.view.setOffset(0, this.view.canvas.height);
