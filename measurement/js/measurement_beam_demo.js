@@ -1,4 +1,4 @@
-function BeamModelDemo(id, map, sensorRadius, sensorNoise)
+function BeamModelDemo(id, map, sensorRadius, sensorNoise, miniId)
 {
 	//Visualization stuff
 	const nLasers = 19;
@@ -8,6 +8,8 @@ function BeamModelDemo(id, map, sensorRadius, sensorNoise)
 	this.view.setPreviewScale(map);
 	this.worldHeight = this.view.toWorldY(0);
 	this.worldWidth = this.view.toWorldX(this.view.canvas.width);
+	this.miniView = new View(document.getElementById(miniId), 20);
+	this.miniView.setPreviewScale(map);
 
 
 	this.robotSize = 0.2;
@@ -41,6 +43,17 @@ function BeamModelDemo(id, map, sensorRadius, sensorNoise)
 	{
 		return self.mouseOut(event)
 	};
+
+	this.miniView.canvas.onmousedown = function (event)
+	{
+		return self.zoomInArea(event)
+	};
+
+	this.miniView.canvas.onmousemove = function (event)
+	{
+		return self.trackZoomInArea(event)
+	};
+
 	this.manager = new ColorizeManager(this.view, function (p)
 	{
 		const ctx = self.view.ctx;
@@ -66,6 +79,56 @@ function BeamModelDemo(id, map, sensorRadius, sensorNoise)
 	this.draw();
 	this.drawLaserLines();
 }
+
+BeamModelDemo.prototype.trackZoomInArea = function (event){
+	const h = 8;
+	const w = 14;
+	const self = this;
+	const view = this.miniView;
+	var coor = getClickLoc(event);
+
+	const x = view.toWorldX(coor.x);
+	const y = view.toWorldY(coor.y);
+
+	clearCanvas(view.canvas);
+	view.ctx.drawMap(self.map);
+	view.ctx.strokeStyle= 'rgba(0,0,0,1)';
+	view.ctx.strokeLine(x-w, y-h, x+w, y-h);
+	view.ctx.strokeLine(x-w, y-h, x-w, y+h);
+	view.ctx.strokeLine(x+w, y+h, x+w, y-h);
+	view.ctx.strokeLine(x+w, y+h, x-w, y+h);
+}
+
+BeamModelDemo.prototype.zoomInArea = function (event){
+	const h = 8;
+	const w = 14;
+	const self = this;
+	const view = this.miniView;
+	var coor = getClickLoc(event);
+
+	const x = view.toWorldX(coor.x);
+	const y = view.toWorldY(coor.y);
+
+	clearCanvas(view.canvas);
+	view.ctx.drawMap(self.map);
+	view.ctx.strokeStyle= 'rgba(255,0,0,0.8)';
+	view.ctx.strokeLine(x-w, y-h, x+w, y-h);
+	view.ctx.strokeLine(x-w, y-h, x-w, y+h);
+	view.ctx.strokeLine(x+w, y+h, x+w, y-h);
+	view.ctx.strokeLine(x+w, y+h, x-w, y+h);
+
+	if (view.canvas.onmousemove == undefined) {
+		view.canvas.onmousemove = function (event)
+		{
+			return self.trackZoomInArea(event)
+		};
+	} else {
+		view.ctx.fillStyle = 'rgba(180,180,180,0.3)'
+		view.ctx.fillRect(x-w, y-h, 2*w, 2*h);
+		view.canvas.onmousemove = undefined;
+	}
+}
+
 
 BeamModelDemo.prototype.mouseDown = function (event)
 {

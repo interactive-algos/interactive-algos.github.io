@@ -371,7 +371,7 @@ function initMeasurementDemo()
 	});
 
 	measurementDemo = new BeamModelDemo('sensor_model_demo', map,
-		sensorRadiusSlider.getValue(), sensorNoiseSlider.getValue());
+		sensorRadiusSlider.getValue(), sensorNoiseSlider.getValue(), 'sensor_model_mini');
 }
 
 function onFirstAppear(selector, callback)
