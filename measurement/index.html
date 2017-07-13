@@ -10,8 +10,8 @@
     <script src='../general/js/particle_filter.js'></script>
     <script src='../general/js/robot.js'></script>
     <script src='../general/js/particle.js'></script>
-    <script src='js/measurement_beam_demo.js'></script>
     <script src='../general/js/map_data.js'></script>
+    <script src='../demo/js/measurement_beam_demo.js'></script>
     <style type="text/css">
         canvas {
             border: 1px solid black;
@@ -22,7 +22,7 @@
 		var measurementDemo;
 		function init()
 		{
-			measurementDemo = new BeamModelDemo('canvas', getMap(), 3, 0.3);
+			measurementDemo = new BeamModelDemo('canvas', getMap(), 3, 0.3, "sensor_model_mini");
 		}
 
 		function toggleColoring(event)
@@ -60,6 +60,7 @@
 				<canvas id="canvas" width="700" height="400"></canvas>
 			</span>
         <div style="float:right;">
+            <canvas id="sensor_model_mini" width="175" height="100"></canvas>
             <fieldset>
                 <legend>Configuration</legend>
                 <table>
