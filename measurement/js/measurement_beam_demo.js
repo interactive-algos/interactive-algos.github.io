@@ -245,6 +245,10 @@ BeamModelDemo.prototype.draw = function () {
 	this.drawLarge();
 };
 
+BeamModelDemo.prototype.drawSmall = function () {
+	clearCanvas(this.miniView);
+};
+
 BeamModelDemo.prototype.drawLarge = function ()
 {
 	clearCanvas(this.view.canvas);
