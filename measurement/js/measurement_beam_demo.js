@@ -89,6 +89,7 @@ function BeamModelDemo(id, map, sensorRadius, sensorNoise, miniId)
 
 BeamModelDemo.prototype.clearRect = function (event) {
 	const self = this;
+	if (self.interactive == false) return;
 	clearCanvas(self.miniView.canvas);
 	self.miniView.ctx.drawMap(self.map);
 }
