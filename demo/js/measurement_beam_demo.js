@@ -8,6 +8,7 @@ function BeamModelDemo(id, map, sensorRadius, sensorNoise, miniId)
 	this.view.setPreviewScale(map);
 	this.worldHeight = this.view.toWorldY(0);
 	this.worldWidth = this.view.toWorldX(this.view.canvas.width);
+
 	this.miniView = new View(document.getElementById(miniId), 20);
 	this.miniView.setPreviewScale(map);
 
@@ -19,7 +20,7 @@ function BeamModelDemo(id, map, sensorRadius, sensorNoise, miniId)
 	this.resolution = 10;
 	this.shouldColor = false;
 	this.isCalculating = false;
-	this.interactive = true;
+	this.viewLocked = true;
 
 	//Initial robot pose
 	this.x = random() * this.view.width;
@@ -56,7 +57,7 @@ function BeamModelDemo(id, map, sensorRadius, sensorNoise, miniId)
 	};
 	this.miniView.canvas.onmouseout = function (event)
 	{
-		return self.clearRect(event)
+		return self.mouseOutMini(event)
 	};
 
 	this.manager = new ColorizeManager(this.view, function (p)
@@ -87,9 +88,9 @@ function BeamModelDemo(id, map, sensorRadius, sensorNoise, miniId)
 	this.drawLaserLines();
 }
 
-BeamModelDemo.prototype.clearRect = function (event) {
+BeamModelDemo.prototype.mouseOutMini = function (event) {
 	const self = this;
-	if (self.interactive == false) return;
+	if (self.viewLocked == false) return;
 	clearCanvas(self.miniView.canvas);
 	self.miniView.ctx.drawMap(self.map);
 }
@@ -105,9 +106,7 @@ BeamModelDemo.prototype.trackZoomInArea = function (event){
 	const y = view.toWorldY(coor.y);
 
 	clearCanvas(view.canvas);
-	view.ctx.drawMap(self.map);
-	view.ctx.strokeStyle= 'rgba(0,255,0,0.8)';
-	view.ctx.drawRect(x-w, y-h, x+w, y+h);
+	self.drawSmall(x, y, 'rgba(0,255,0,0.8)');
 };
 
 BeamModelDemo.prototype.zoomInArea = function (event){
@@ -121,12 +120,10 @@ BeamModelDemo.prototype.zoomInArea = function (event){
 	const y = view.toWorldY(coor.y);
 
 	clearCanvas(view.canvas);
-	view.ctx.drawMap(self.map);
-	view.ctx.strokeStyle= 'rgba(255,0,0,1)';
-	view.ctx.drawRect(x-w, y-h, x+w, y+h);
+	self.drawSmall(x, y, 'rgba(255,0,0,1)');
 
 	if (view.canvas.onmousemove == undefined) {
-		self.interactive = true;
+		self.viewLocked = true;
 		view.canvas.onmousemove = function (event)
 		{
 			return self.trackZoomInArea(event);
@@ -136,7 +133,7 @@ BeamModelDemo.prototype.zoomInArea = function (event){
 		view.ctx.fillRect(x-w, y-h, 2*w, 2*h);
 		view.canvas.onmousemove = undefined;
 
-		self.interactive = false;
+		self.viewLocked = false;
 		self.view.setScale(20);
 		self.view.recenter(x,y);
 		self.draw();
@@ -189,7 +186,7 @@ BeamModelDemo.prototype.mouseDown = function (event)
 
 BeamModelDemo.prototype.trackPosition = function (event)
 {
-	if (this.isCalculating || !this.interactive)
+	if (this.isCalculating || !this.viewLocked)
 		return;
 	const view = this.view;
 	const coor = getClickLoc(event);
@@ -237,7 +234,7 @@ BeamModelDemo.prototype.mouseUp = function (event)
 
 BeamModelDemo.prototype.mouseOut = function (event)
 {
-	if (this.isCalculating || !this.interactive)
+	if (this.isCalculating || !this.viewLocked)
 		return;
 	this.view.setPreviewScale(this.map);
 	this.view.setOffset(0, this.view.canvas.height);
@@ -250,10 +247,13 @@ BeamModelDemo.prototype.draw = function () {
 	this.drawLarge();
 };
 
-BeamModelDemo.prototype.drawSmall = function (x, y) {
+BeamModelDemo.prototype.drawSmall = function (x, y, style) {
 	clearCanvas(this.miniView.canvas);
 	const ctx = this.miniView.ctx;
+
+
 	ctx.drawMap(this.map);
+	ctx.strokeStyle = style;
 	if (x != undefined && y != undefined){
 		const h = 8;
 		const w = 14;
