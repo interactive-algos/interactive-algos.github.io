@@ -272,6 +272,13 @@ CanvasRenderingContext2D.prototype.drawRobot = function (wx, wy, dir, wsize)
 	this.stroke();
 };
 
+CanvasRenderingContext2D.prototype.drawRect = function (x1, y1, x2, y2) {
+	this.strokeLine(x1, y1, x2, y1);
+	this.strokeLine(x1, y1, x1, y2);
+	this.strokeLine(x2, y2, x2, y1);
+	this.strokeLine(x2, y2, x1, y2);
+}
+
 CanvasRenderingContext2D.prototype.circle = function (wx, wy, wsize)
 {
 	return this.arc(wx, wy, wsize, 0, Math.PI * 2);
