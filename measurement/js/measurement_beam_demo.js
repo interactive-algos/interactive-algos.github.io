@@ -100,7 +100,7 @@ BeamModelDemo.prototype.trackZoomInArea = function (event){
 	view.ctx.strokeLine(x-w, y-h, x-w, y+h);
 	view.ctx.strokeLine(x+w, y+h, x+w, y-h);
 	view.ctx.strokeLine(x+w, y+h, x-w, y+h);
-}
+};
 
 BeamModelDemo.prototype.zoomInArea = function (event){
 	const h = 8;
@@ -124,10 +124,10 @@ BeamModelDemo.prototype.zoomInArea = function (event){
 		self.interactive = true;
 		view.canvas.onmousemove = function (event)
 		{
-			return self.trackZoomInArea(event)
+			return self.trackZoomInArea(event);
 		};
 	} else {
-		view.ctx.fillStyle = 'rgba(180,180,180,0.3)'
+		view.ctx.fillStyle = 'rgba(180,180,180,0.3)';
 		view.ctx.fillRect(x-w, y-h, 2*w, 2*h);
 		view.canvas.onmousemove = undefined;
 
@@ -136,7 +136,7 @@ BeamModelDemo.prototype.zoomInArea = function (event){
 		self.view.recenter(x,y);
 		self.draw();
 	}
-}
+};
 
 
 BeamModelDemo.prototype.mouseDown = function (event)
@@ -211,6 +211,7 @@ BeamModelDemo.prototype.trackDirection = function (event)
 
 	this.dir = atan2(y - this.y, x - this.x);
 	this.draw();
+	this.drawLaserLines();
 };
 
 BeamModelDemo.prototype.mouseUp = function (event)
@@ -220,7 +221,7 @@ BeamModelDemo.prototype.mouseUp = function (event)
 	const self = this;
 	this.view.canvas.onmousemove = function (event)
 	{
-		return self.trackPosition(event)
+		return self.trackPosition(event);
 	};
 	this.view.canvas.onmouseup = undefined;
 	this.tracker.clear();
@@ -240,7 +241,11 @@ BeamModelDemo.prototype.mouseOut = function (event)
 	this.colorMapIfShould();
 };
 
-BeamModelDemo.prototype.draw = function ()
+BeamModelDemo.prototype.draw = function () {
+	this.drawLarge();
+};
+
+BeamModelDemo.prototype.drawLarge = function ()
 {
 	clearCanvas(this.view.canvas);
 	const ctx = this.view.ctx;
