@@ -2,14 +2,15 @@ function BeamModelDemo(id, map, sensorRadius, sensorNoise, miniId)
 {
 	//Visualization stuff
 	const nLasers = 19;
+	const scale = 20;
 
 	//the canvas element
-	this.view = new View(document.getElementById(id), 20);
+	this.view = new View(document.getElementById(id), scale);
 	this.view.setPreviewScale(map);
 	this.worldHeight = this.view.toWorldY(0);
 	this.worldWidth = this.view.toWorldX(this.view.canvas.width);
 
-	this.miniView = new View(document.getElementById(miniId), 20);
+	this.miniView = new View(document.getElementById(miniId), scale);
 	this.miniView.setPreviewScale(map);
 
 
@@ -20,12 +21,15 @@ function BeamModelDemo(id, map, sensorRadius, sensorNoise, miniId)
 	this.resolution = 10;
 	this.shouldColor = false;
 	this.isCalculating = false;
-	this.viewLocked = true;
+	this.viewUnlocked = true;
 
 	//Initial robot pose
 	this.x = random() * this.view.width;
 	this.y = random() * this.view.height;
 	this.dir = random() * TWO_PI;
+	//cursor position in world
+	this.curX = this.view.width/2;
+	this.curY = this.view.height/2;
 
 	//Math model used for likelihood calculation
 	this.sensorModel = new BeamModel(sensorNoise, sensorRadius, map);
@@ -71,8 +75,11 @@ function BeamModelDemo(id, map, sensorRadius, sensorNoise, miniId)
 
 		ctx.save();
 		ctx.setTransform(1, 0, 0, 1, 0, 0);
-		ctx.strokeRect(width / 2 - barWidth - 2, height / 2 - barHeight / 2, barWidth, barHeight);
-		ctx.fillRect(width / 2 - barWidth - 2, height / 2 - barHeight / 2, barWidth * p, barHeight);
+		// ctx.strokeRect(width / 2 - barWidth - 2, height / 2 - barHeight / 2, barWidth, barHeight);
+		// ctx.fillRect(width / 2 - barWidth - 2, height / 2 - barHeight / 2, barWidth * p, barHeight);
+		ctx.strokeStyle = 'rgba(0,0,255,0.5)';
+		ctx.strokeRect(0,height-barHeight,width,barHeight);
+		ctx.fillRect(0,height-barHeight,width*p,barHeight);
 		ctx.restore();
 	}, function (probs, resolution)
 	{
@@ -86,13 +93,11 @@ function BeamModelDemo(id, map, sensorRadius, sensorNoise, miniId)
 	this.update();
 	this.draw();
 	this.drawLaserLines();
+	this.drawSmall();
 }
 
 BeamModelDemo.prototype.mouseOutMini = function (event) {
-	const self = this;
-	if (self.viewLocked == false) return;
-	clearCanvas(self.miniView.canvas);
-	self.miniView.ctx.drawMap(self.map);
+	this.drawSmall();
 }
 
 BeamModelDemo.prototype.trackZoomInArea = function (event){
@@ -102,11 +107,15 @@ BeamModelDemo.prototype.trackZoomInArea = function (event){
 	const view = this.miniView;
 	var coor = getClickLoc(event);
 
-	const x = view.toWorldX(coor.x);
-	const y = view.toWorldY(coor.y);
+	// const x = view.toWorldX(coor.x);
+	// const y = view.toWorldY(coor.y);
+	var x = view.toWorldX(coor.x);
+	var y = view.toWorldY(coor.y);
 
-	clearCanvas(view.canvas);
-	self.drawSmall(x, y, 'rgba(0,255,0,0.8)');
+	this.drawSmall();
+	view.ctx.drawRect(x-w, y-h, x+w, y+h);
+
+
 };
 
 BeamModelDemo.prototype.zoomInArea = function (event){
@@ -116,28 +125,18 @@ BeamModelDemo.prototype.zoomInArea = function (event){
 	const view = this.miniView;
 	var coor = getClickLoc(event);
 
-	const x = view.toWorldX(coor.x);
-	const y = view.toWorldY(coor.y);
+	// const x = view.toWorldX(coor.x);
+	// const y = view.toWorldY(coor.y);
+	self.curX = view.toWorldX(coor.x);
+	self.curY = view.toWorldY(coor.y);
 
-	clearCanvas(view.canvas);
-	self.drawSmall(x, y, 'rgba(255,0,0,1)');
-
-	if (view.canvas.onmousemove == undefined) {
-		self.viewLocked = true;
-		view.canvas.onmousemove = function (event)
-		{
-			return self.trackZoomInArea(event);
-		};
-	} else {
-		view.ctx.fillStyle = 'rgba(180,180,180,0.3)';
-		view.ctx.fillRect(x-w, y-h, 2*w, 2*h);
-		view.canvas.onmousemove = undefined;
-
-		self.viewLocked = false;
-		self.view.setScale(20);
-		self.view.recenter(x,y);
-		self.draw();
-	}
+	self.viewUnlocked = false;
+	self.view.setScale(20);
+	self.view.recenter(self.curX, self.curY);
+	self.drawSmall();
+	self.draw();
+	self.drawLaserLines();
+	self.colorMapIfShould();
 };
 
 
@@ -149,8 +148,11 @@ BeamModelDemo.prototype.mouseDown = function (event)
 	const view = this.view;
 	var coor = getClickLoc(event);
 
-	const x = view.toWorldX(coor.x);
-	const y = view.toWorldY(coor.y);
+	// const x = view.toWorldX(coor.x);
+	// const y = view.toWorldY(coor.y);
+	var x = view.toWorldX(coor.x);
+	var y = view.toWorldY(coor.y);
+
 	if (event.altKey)
 	{
 		if (this.shouldColor)
@@ -186,21 +188,23 @@ BeamModelDemo.prototype.mouseDown = function (event)
 
 BeamModelDemo.prototype.trackPosition = function (event)
 {
-	if (this.isCalculating || !this.viewLocked)
-		return;
-	const view = this.view;
-	const coor = getClickLoc(event);
-	const x = coor.x;
-	const y = this.view.canvas.height - coor.y;
-	var worldX = x / this.view.canvas.width * this.worldWidth;
-	var worldY = y / this.view.canvas.height * this.worldHeight;
-
-	view.setScale(30);
-	this.view.recenter(worldX, worldY);
-	// view.canvas.getContext('2d').fillRect(0,0,view.canvas.width,view.canvas.height);
-	this.drawSmall(worldX, worldY);
-	this.draw();
-	this.drawLaserLines();
+	return;
+	// if (this.isCalculating || !this.viewUnlocked)
+	// 	return;
+	// const view = this.view;
+	// const self = this;
+	// const coor = getClickLoc(event);
+	// const x = coor.x;
+	// const y = this.view.canvas.height - coor.y;
+	// self.curX = x / this.view.canvas.width * this.worldWidth;
+	// self.curY = y / this.view.canvas.height * this.worldHeight;
+	//
+	// view.setScale(30);
+	// this.view.recenter(self.curX, self.curY);
+	// // view.canvas.getContext('2d').fillRect(0,0,view.canvas.width,view.canvas.height);
+	// this.drawSmall();
+	// this.draw();
+	// this.drawLaserLines();
 };
 
 BeamModelDemo.prototype.trackDirection = function (event)
@@ -230,12 +234,15 @@ BeamModelDemo.prototype.mouseUp = function (event)
 	this.update();
 	this.draw();
 	this.drawLaserLines();
+	this.colorMapIfShould();
 };
 
 BeamModelDemo.prototype.mouseOut = function (event)
 {
-	if (this.isCalculating || !this.viewLocked)
+	if (this.isCalculating || !this.viewUnlocked)
 		return;
+
+	const self = this;
 	this.view.setPreviewScale(this.map);
 	this.view.setOffset(0, this.view.canvas.height);
 	this.draw();
@@ -247,18 +254,21 @@ BeamModelDemo.prototype.draw = function () {
 	this.drawLarge();
 };
 
-BeamModelDemo.prototype.drawSmall = function (x, y, style) {
+BeamModelDemo.prototype.drawSmall = function () {
 	clearCanvas(this.miniView.canvas);
 	const ctx = this.miniView.ctx;
 
-
 	ctx.drawMap(this.map);
-	ctx.strokeStyle = style;
-	if (x != undefined && y != undefined){
+	if (this.curX != undefined && this.curY != undefined){
 		const h = 8;
 		const w = 14;
 
-		ctx.drawRect(x-w, y-h, x+w, y+h);
+		if (this.curX != undefined && this.curY != undefined) {
+			ctx.fillStyle = 'rgba(180,180,180,0.5)';
+			ctx.fillRect(this.curX-w, this.curY-h, 2*w, 2*h);
+		}
+
+		// ctx.drawRect(this.curX-w, this.curY-h, this.curX+w, this.curY+h);
 	}
 };
 
