@@ -119,10 +119,10 @@ function initMotionDemo()
 	slider.on("slide", function (sliderValue)
 	{
 		motionDemo.setStride(sliderValue);
-		a1MDemo.setStride(sliderValue);
+		a1MDemo.setStride(sliderValue/10000.0);
 		a2MDemo.setStride(sliderValue);
 		a3MDemo.setStride(sliderValue);
-		a4MDemo.setStride(sliderValue);
+		a4MDemo.setStride(sliderValue/10000.0);
 	});
 
 	var a1Slider = new Slider('#motion_a1', actuationNoiseSliderFormat);
@@ -152,10 +152,10 @@ function initMotionDemo()
 	});
 
 	var robot = new Robot(filter, path, 0, 0, slider.getValue());
-	var robotA1 = new Robot(filterA1, s_path, 0, 0, slider.getValue());
+	var robotA1 = new Robot(filterA1, s_path, 0, 0, slider.getValue()/10000.0);
 	var robotA2 = new Robot(filterA2, st_path, 0, 0, slider.getValue());
 	var robotA3 = new Robot(filterA3, st_path, 0, 0, slider.getValue());
-	var robotA4 = new Robot(filterA4, s_path, 0, 0, slider.getValue());
+	var robotA4 = new Robot(filterA4, s_path, 0, 0, slider.getValue()/10000.0);
 	motionDemo = new RobotDemo('motion_canvas', 'motion_minicanvas', getMap(), robot, 10);
 	a1MDemo = new RobotDemo('motion_a1_demo', '', getSimMap(), robotA1, 10);
 	a2MDemo = new RobotDemo('motion_a2_demo', '', getSimMap(), robotA2, 10);
