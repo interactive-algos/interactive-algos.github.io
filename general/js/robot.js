@@ -134,8 +134,11 @@ Robot.prototype.updateParticles = function ()
 	this.lastDir = this.dir;
 };
 
-Robot.prototype.draw = function (ctx)
+Robot.prototype.draw = function (ctx, showParticles)
 {
+	if(typeof(showParticles) === 'undefined')
+		showParticles = true;
+
 	ctx.strokeStyle = 'black';
 
 	var x = this.x;
@@ -148,7 +151,7 @@ Robot.prototype.draw = function (ctx)
 	ctx.strokeLine(x - sin(this.dir) * this.sensorRadius, y + cos(this.dir) * this.sensorRadius,
 		x + sin(this.dir) * this.sensorRadius, y - cos(this.dir) * this.sensorRadius);
 
-	this.filter.draw(ctx);
+	if(showParticles) this.filter.draw(ctx);
 };
 
 Robot.prototype.getSensorReading = function ()

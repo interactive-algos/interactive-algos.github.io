@@ -126,10 +126,10 @@ RobotDemo.prototype.stepForward = function ()
 
 RobotDemo.prototype.draw = function ()
 {
-	this.drawView(this.lview);
+	this.drawView(this.lview, true);
 	if (typeof this.sview !== 'undefined')
 	{
-		this.drawView(this.sview);
+		this.drawView(this.sview, false);
 	}
 	if (this.shouldColorMap) this.colorMap();
 };
@@ -140,7 +140,7 @@ RobotDemo.prototype.colorMap = function ()
 		this.robot.getSensorReading(), this.robot.dir);
 };
 
-RobotDemo.prototype.drawView = function (view)
+RobotDemo.prototype.drawView = function (view, showParticles)
 {
 	clearCanvas(view.canvas);
 	view.drawGrid();
@@ -148,7 +148,7 @@ RobotDemo.prototype.drawView = function (view)
 	ctx.drawMap(this.map);
 	ctx.strokeStyle = 'green';
 	ctx.strokePath(this.robot.path);
-	this.robot.draw(ctx);
+	this.robot.draw(ctx, showParticles);
 };
 
 //Setters
@@ -273,7 +273,7 @@ RobotDemo.prototype.mouseMotion = function (event)
 	var curStep = new Line(lastPoint.x, lastPoint.y, coor.x, coor.y);
 	for (var i = 0; i < this.map.length; i++)
 	{
-		if (doIntersect(this.map[i].s, this.map[i].t, curStep.s, curStep.t))
+		if (doIntersect(this.map[i], curStep))
 			return;
 	}
 

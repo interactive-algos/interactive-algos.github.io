@@ -68,17 +68,23 @@ function orientation(p, q, r)
 
 // The main function that returns true if line segment 'p1q1'
 // and 'p2q2' intersect.
-function doIntersect(p1, q1, p2, q2)
+function doIntersect(l1, l2)
 {
+	var p1 = l1.s;
+	var q1 = l1.t;
+
+	var p2 = l2.s;
+	var q2 = l2.t;
+
 	//Broad phase check
-	if (p1.x > max(p2.x, q2.x) && q1.x > max(p2.x, q2.x))
+	if (p1.x > l2.maxX && q1.x > l2.maxX)
 		return false;
-	if (p1.x < min(p2.x, q2.x) && q1.x < min(p2.x, q2.x))
+	if (p1.x < l2.minX && q1.x < l2.minX)
 		return false;
 
-	if (p1.y > max(p2.y, q2.y) && q1.y > max(p2.y, q2.y))
+	if (p1.y > l2.maxY && q1.y > l2.maxY)
 		return false;
-	if (p1.y < min(p2.y, q2.y) && q1.y < min(p2.y, q2.y))
+	if (p1.y < l2.minY && q1.y < l2.minY)
 		return false;
 
 	// Find the four orientations needed for general and
@@ -128,7 +134,6 @@ function intersectionPoint(p1, q1, p2, q2)
 	return new Point(x, y);
 }
 
-
 //We are sort of treating this as a vector...
 function Point(x, y)
 {
@@ -175,6 +180,12 @@ function Line(sx, sy, tx, ty)
 	this.s = new Point(sx, sy);
 	//Ending point
 	this.t = new Point(tx, ty);
+
+	this.minX = min(sx, tx);
+	this.maxX = max(sx, tx);
+
+	this.minY = min(sy, ty);
+	this.maxY = max(sy, ty);
 }
 
 

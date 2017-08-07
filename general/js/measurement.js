@@ -150,9 +150,12 @@ function scan(x, y, dir0, r, map, z)
 			t1.y = y;
 
 		z[index] = r;
+
+		//The laser line
+		var laser = new Line(s1.x, s1.y, t1.x, t1.y);
 		for (var j = 0; j < map.length; j++)
 		{
-			if (doIntersect(s1, t1, map[j].s, map[j].t))
+			if (doIntersect(laser, map[j]))
 			{
 				var p = intersectionPoint(s1, t1, map[j].s, map[j].t);
 				var dist = p.distanceTo(new Point(x, y));

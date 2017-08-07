@@ -28,8 +28,8 @@ function BeamModelDemo(id, map, sensorRadius, sensorNoise, miniId)
 	this.y = random() * this.view.height;
 	this.dir = random() * TWO_PI;
 	//cursor position in world
-	this.curX = this.view.width/2;
-	this.curY = this.view.height/2;
+	this.curX = this.view.width / 2;
+	this.curY = this.view.height / 2;
 
 	//Math model used for likelihood calculation
 	this.sensorModel = new BeamModel(sensorNoise, sensorRadius, map);
@@ -78,8 +78,8 @@ function BeamModelDemo(id, map, sensorRadius, sensorNoise, miniId)
 		// ctx.strokeRect(width / 2 - barWidth - 2, height / 2 - barHeight / 2, barWidth, barHeight);
 		// ctx.fillRect(width / 2 - barWidth - 2, height / 2 - barHeight / 2, barWidth * p, barHeight);
 		ctx.strokeStyle = 'rgba(0,0,255,0.5)';
-		ctx.strokeRect(0,height-barHeight,width,barHeight);
-		ctx.fillRect(0,height-barHeight,width*p,barHeight);
+		ctx.strokeRect(0, height - barHeight, width, barHeight);
+		ctx.fillRect(0, height - barHeight, width * p, barHeight);
 		ctx.restore();
 	}, function (probs, resolution)
 	{
@@ -96,11 +96,13 @@ function BeamModelDemo(id, map, sensorRadius, sensorNoise, miniId)
 	this.drawSmall();
 }
 
-BeamModelDemo.prototype.mouseOutMini = function (event) {
+BeamModelDemo.prototype.mouseOutMini = function (event)
+{
 	this.drawSmall();
-}
+};
 
-BeamModelDemo.prototype.trackZoomInArea = function (event){
+BeamModelDemo.prototype.trackZoomInArea = function (event)
+{
 	const h = 8;
 	const w = 14;
 	const self = this;
@@ -113,12 +115,13 @@ BeamModelDemo.prototype.trackZoomInArea = function (event){
 	var y = view.toWorldY(coor.y);
 
 	this.drawSmall();
-	view.ctx.drawRect(x-w, y-h, x+w, y+h);
+	view.ctx.drawRect(x - w, y - h, x + w, y + h);
 
 
 };
 
-BeamModelDemo.prototype.zoomInArea = function (event){
+BeamModelDemo.prototype.zoomInArea = function (event)
+{
 	const h = 8;
 	const w = 14;
 	const self = this;
@@ -250,22 +253,26 @@ BeamModelDemo.prototype.mouseOut = function (event)
 	this.colorMapIfShould();
 };
 
-BeamModelDemo.prototype.draw = function () {
+BeamModelDemo.prototype.draw = function ()
+{
 	this.drawLarge();
 };
 
-BeamModelDemo.prototype.drawSmall = function () {
+BeamModelDemo.prototype.drawSmall = function ()
+{
 	clearCanvas(this.miniView.canvas);
 	const ctx = this.miniView.ctx;
 
 	ctx.drawMap(this.map);
-	if (this.curX != undefined && this.curY != undefined){
+	if (this.curX != undefined && this.curY != undefined)
+	{
 		const h = 8;
 		const w = 14;
 
-		if (this.curX != undefined && this.curY != undefined) {
+		if (this.curX != undefined && this.curY != undefined)
+		{
 			ctx.fillStyle = 'rgba(180,180,180,0.5)';
-			ctx.fillRect(this.curX-w, this.curY-h, 2*w, 2*h);
+			ctx.fillRect(this.curX - w, this.curY - h, 2 * w, 2 * h);
 		}
 
 		// ctx.drawRect(this.curX-w, this.curY-h, this.curX+w, this.curY+h);
