@@ -36,7 +36,7 @@ SensorDemo.prototype.sample = function (n)
 	}
 
 	this.readingsLeft = n;
-	if (n < 10000)
+	if (n < 500)
 	{
 		const self = this;
 		this.intervalId = window.setInterval(function ()
