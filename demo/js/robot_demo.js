@@ -60,7 +60,6 @@ function RobotDemo(lid, //Main Canvas id
 
 RobotDemo.prototype.start = function (event)
 {
-	console.log(event);
 	if (this.animating)
 	{
 		//If the animation is running... pause it

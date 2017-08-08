@@ -41,12 +41,12 @@ function OdometryModel(a1, a2, a3, a4)
 OdometryModel.prototype.sample = function (u, state)
 {
 	var dx = u.x - u.lastX;
-	var dy = u.y - u.lastY;
+	const dy = u.y - u.lastY;
 
-	var a1 = this.a1;
-	var a2 = this.a2;
-	var a3 = this.a3;
-	var a4 = this.a4;
+	const a1 = this.a1;
+	const a2 = this.a2;
+	const a3 = this.a3;
+	const a4 = this.a4;
 
 	//first rotation
 	var rot1 = atan2(dy, dx) - u.lastDir;
@@ -59,14 +59,14 @@ OdometryModel.prototype.sample = function (u, state)
 	rot1 = boundRadian(rot1);
 	rot2 = boundRadian(rot2);
 
-	var rot1_squared = rot1 * rot1;
-	var trans_squared = trans * trans;
-	var rot2_squared = rot2 * rot2;
+	const rot1_squared = rot1 * rot1;
+	const trans_squared = trans * trans;
+	const rot2_squared = rot2 * rot2;
 
 	//actual sampling
-	rot1 += gaussian() * sqrt(a1 * rot1_squared + a2 * trans_squared);
-	trans += gaussian() * sqrt(a3 * trans_squared + a4 * rot1_squared + a4 * rot2_squared);
-	rot2 += gaussian() * sqrt(a1 * rot2_squared + a2 * trans_squared);
+	rot1 += gaussian() * sqrt(a1*rot1_squared + a2*trans_squared);
+	trans += gaussian() * sqrt(a3*trans_squared + a4*rot1_squared + a4*rot2_squared);
+	rot2 += gaussian() * sqrt(a1*rot2_squared + a2*trans_squared);
 
 	var x = state.x + trans * cos(state.dir + rot1);
 	var y = state.y + trans * sin(state.dir + rot1);

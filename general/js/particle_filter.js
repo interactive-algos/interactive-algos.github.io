@@ -115,9 +115,9 @@ ParticleFilter.prototype.motionUpdate = function (u)
 	for (var i = this.particles.length - 1; i >= 0; i--)
 	{
 		var p = this.particles[i];
-		var state = new RobotState(p.x, p.y, p.dir);
+		// var state = new RobotState(p.x, p.y, p.dir);
 		// Draw sample from p(x_t, u, x_t-1)
-		var newState = this.motionModel.sample(u, state);
+		var newState = this.motionModel.sample(u, p);
 		p.setState(newState);
 	}
 };

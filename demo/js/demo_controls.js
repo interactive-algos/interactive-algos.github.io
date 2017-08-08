@@ -68,7 +68,7 @@ function initMotionDemo()
 	const st_x = st_path[0].x;
 	const st_y = st_path[0].y;
 	const st_dir = atan2(st_path[1].y - st_path[0].y, st_path[1].x - st_path[0].x);
-	const exaggerateFilterNoise = 0.3;
+	const exaggerateFilterNoise = Number(document.getElementById("actuation_noise").value);
 	const smallParticleCount = 100;
 	const filterA1 = new ParticleFilter(
 		smallParticleCount,
@@ -133,22 +133,22 @@ function initMotionDemo()
 	a1Slider.on('slide', function (value)
 	{
 		motionDemo.setA1(value);
-		a1MDemo.setA1(value);
+		// a1MDemo.setA1(value);
 	});
 	a2Slider.on('slide', function (value)
 	{
 		motionDemo.setA2(value);
-		a2MDemo.setA2(value);
+		// a2MDemo.setA2(value);
 	});
 	a3Slider.on('slide', function (value)
 	{
 		motionDemo.setA3(value);
-		a3MDemo.setA3(value);
+		// a3MDemo.setA3(value);
 	});
 	a4Slider.on('slide', function (value)
 	{
 		motionDemo.setA4(value);
-		a4MDemo.setA4(value);
+		// a4MDemo.setA4(value);
 	});
 
 	var robot = new Robot(filter, path, 0, 0, slider.getValue());
@@ -305,6 +305,11 @@ function initActuationDemo()
 		a2Demo.setA2(sliderValue);
 		a3Demo.setA3(sliderValue);
 		a4Demo.setA4(sliderValue);
+
+		a1MDemo.setA1(sliderValue);
+		a2MDemo.setA2(sliderValue);
+		a3MDemo.setA3(sliderValue);
+		a4MDemo.setA4(sliderValue);
 	});
 	noiseSlider.addEventListener('change', simulateAllActuations);
 	simulateAllActuations();
