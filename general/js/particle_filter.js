@@ -133,7 +133,7 @@ ParticleFilter.prototype.sensorUpdate = function (z)
 	for (var i = this.particles.length - 1; i >= 0; i--)
 	{
 		var p = this.particles[i];
-		p.w = this.sensorModel.probability(z, new RobotState(p.x, p.y, p.dir));
+		p.w = this.sensorModel.probability(z, p);
 	}
 
 	// To ensure the probability is in the range of (0,1)

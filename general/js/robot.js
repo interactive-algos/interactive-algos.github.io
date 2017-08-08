@@ -107,7 +107,7 @@ Robot.prototype.updateParticles = function ()
 	if (typeof this.filter === 'undefined')
 		return;
 
-	var u = new Odometry(new RobotState(this.lastX, this.lastY, this.lastDir), new RobotState(this.x, this.y, this.dir));
+	var u = new Odometry(new RobotState(this.lastX, this.lastY, this.lastDir), this);
 
 	if (typeof this.filter.sensorModel !== 'undefined')
 	{

@@ -71,9 +71,6 @@ OdometryModel.prototype.sample = function (u, state)
 	var x = state.x + trans * cos(state.dir + rot1);
 	var y = state.y + trans * sin(state.dir + rot1);
 
-	console.log("dev: " + sqrt(a3*trans_squared + a4*rot1_squared + a4*rot2_squared));
-	console.log("noise: " + (trans - sqrt(dx * dx + dy * dy)));
-
 	var dir = state.dir + rot1 + rot2;
 
 	return new RobotState(x, y, dir);

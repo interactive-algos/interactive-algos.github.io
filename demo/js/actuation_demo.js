@@ -81,13 +81,13 @@ ActuationDemo.prototype.simulateActuation = function ()
 	const x2 = x1 + cos(dir) * this.secondMove;
 	const y2 = y1 + sin(dir) * this.secondMove;
 
-	const u1 = new Odometry(new RobotState(this.x, this.y, this.dir),
+	const u1 = new Odometry(this,
 		new RobotState(x1, y1, dir));
 	const u2 = new Odometry(new RobotState(x1, y1, dir),
 		new RobotState(x2, y2, dir));
 
 	//actual location after first move
-	const p1 = this.motionModel.sample(u1, new RobotState(this.x, this.y, this.dir));
+	const p1 = this.motionModel.sample(u1, this);
 	//actual location after the second move
 	const p2 = this.motionModel.sample(u2, p1);
 
