@@ -153,10 +153,15 @@ RobotDemo.prototype.stop = function (event)
 	}
 };
 
-RobotDemo.prototype.stepForward = function ()
+RobotDemo.prototype.stepForward = function (event)
 {
 	this.animating = false;
 	const self = this;
+	var buttons = event.target.parentElement.parentElement.getElementsByClassName("glyphicon-pause");
+	for(var i = 0; i < buttons.length; i ++)
+	{
+		buttons[i].classList.replace("glyphicon-pause", "glyphicon-play");
+	}
 	requestAnimationFrame(function (timestamp)
 	{
 		self.frame(timestamp);
