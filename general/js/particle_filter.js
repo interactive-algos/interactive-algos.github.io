@@ -6,7 +6,7 @@
  * @param {OdometryModel} motionModel - The motion model that is used to calculate its motion over time.
  * @param {BeamModel} sensorModel - The sensor model that is used to measure environment over time.
  * @param {RobotState} robotState - The state of the robot while creating the particle filter
- * @param {float} resampleRatio - The percentage of the particles that will be resampled
+ * @param {number} resampleRatio - The percentage of the particles that will be resampled
  */
 function ParticleFilter(particleCount, motionModel, sensorModel, robotState, resampleRatio)
 {

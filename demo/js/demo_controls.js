@@ -210,8 +210,8 @@ function initMCLDemo()
 
 	var sensorNoiseSlider = new Slider('#mcl_sensorNoise', {
 		min: 0,
-		max: 3,
-		step: 0.1
+		max: 0.5,
+		step: 0.02
 	});
 	sensorNoiseSlider.on('slide', function (value)
 	{
@@ -228,19 +228,19 @@ function initMCLDemo()
 		measurementDemo.setColoringResolution(value);
 	});
 
-	var pRatioSlider = new Slider('#mcl_pRatio', {
-		min: 0,
-		max: 1,
-		step: 0.01,
-		formatter: function (value)
-		{
-			return round(value * 100) + "%";
-		}
-	});
-	pRatioSlider.on('slide', function (value)
-	{
-		mclDemo.robot.filter.resampleRatio = value;
-	});
+	// var pRatioSlider = new Slider('#mcl_pRatio', {
+	// 	min: 0,
+	// 	max: 1,
+	// 	step: 0.01,
+	// 	formatter: function (value)
+	// 	{
+	// 		return round(value * 100) + "%";
+	// 	}
+	// });
+	// pRatioSlider.on('slide', function (value)
+	// {
+	// 	mclDemo.robot.filter.resampleRatio = value;
+	// });
 
 
 	const path = vanillaPath;
@@ -259,7 +259,7 @@ function initMCLDemo()
 			sensorRadiusSlider.getValue(),
 			getMap()),
 		new RobotState(x, y, dir),
-		pRatioSlider.getValue());
+		1.0);
 	robot = new Robot(filter, path, 19, getValue('mcl_sensorRadius'), getValue('mcl_stride'));
 	mclDemo = new RobotDemo('mcl_canvas', 'mcl_minicanvas', getMap(), robot, 10);
 }
@@ -349,8 +349,8 @@ function initMeasurementDemo()
 
 	var sensorNoiseSlider = new Slider('#sensorNoise', {
 		min: 0,
-		max: 3,
-		step: 0.1
+		max: 0.5,
+		step: 0.02
 	});
 	sensorNoiseSlider.on('slide', function (value)
 	{
