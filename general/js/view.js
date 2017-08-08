@@ -392,10 +392,6 @@ CanvasRenderingContext2D.prototype.drawLaserLines = function (z, wx, wy, dir, se
 
 			//red for a hit
 			this.strokeStyle = 'red';
-			this.fillStyle = 'red';
-			this.beginPath();
-			this.circle(wx + cos(dir) * dist, wy + sin(dir) * dist, 0.02);
-			this.fill();
 		}
 		this.strokeLine(wx, wy, wx + cos(dir) * laserLen, wy + sin(dir) * laserLen)
 	}
