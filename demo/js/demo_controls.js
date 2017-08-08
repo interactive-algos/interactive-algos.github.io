@@ -313,7 +313,7 @@ function initActuationDemo()
 function initMeasurementDemo()
 {
 	var map = getMap();
-	compactMap(map);
+	// compactMap(map);
 	var nLasersSlider = new Slider('#nLasers', {
 		min: 6,
 		max: 36,

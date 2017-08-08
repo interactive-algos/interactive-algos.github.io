@@ -33,6 +33,7 @@ function gaussian()
 //Bound radian a to interval [-pi, pi]
 function boundRadian(a)
 {
+	// return  a -= TWO_PI * Math.round(a / TWO_PI);
 	a %= TWO_PI;
 	if (a > Math.PI)
 		a -= TWO_PI;

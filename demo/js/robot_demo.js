@@ -77,8 +77,6 @@ RobotDemo.prototype.start = function (event)
 			buttons[i].classList.remove("glyphicon-pause");
 			buttons[i].classList.add("glyphicon-play");
 		}
-		console.log("pause hit");
-		console.log(buttons);
 		return;
 	}
 	//Other wise resume/start the animation
@@ -95,8 +93,6 @@ RobotDemo.prototype.start = function (event)
 		buttons[i].classList.remove("glyphicon-play");
 		buttons[i].classList.add("glyphicon-pause");
 	}
-	console.log("play hit");
-	console.log(buttons);
 
 	const self = this;
 

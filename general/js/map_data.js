@@ -203,6 +203,11 @@ function compactMap(map)
 
 	map.forEach(function (l)
 	{
+		l.minX -= minx;
+		l.maxX -= minx;
+		l.minY -= miny;
+		l.maxY -= miny;
+
 		l.s.x -= minx;
 		l.s.y -= miny;
 		l.t.x -= minx;
