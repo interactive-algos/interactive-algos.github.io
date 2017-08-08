@@ -24,6 +24,30 @@ function randint(min, max)
 	return floor(Math.random() * (max - min)) + min;
 }
 
+const epsilon = 2.22507e-308;
+generateGaussianNoise.z1 = 0;
+generateGaussianNoise.generate = false;
+
+function generateGaussianNoise(mu, sigma)
+{
+	generateGaussianNoise.generate = !generateGaussianNoise.generate;
+
+	if (!generateGaussianNoise.generate)
+		return generateGaussianNoise.z1 * sigma + mu;
+
+	var u1, u2;
+	do
+	{
+		u1 = random();
+		u2 = random();
+	} while ( u1 <= epsilon );
+
+	var z0;
+	z0 = sqrt(-2.0 * Math.log(u1)) * cos(TWO_PI * u2);
+	generateGaussianNoise.z1 = sqrt(-2.0 * Math.log(u1)) * sin(TWO_PI * u2);
+	return z0 * sigma + mu;
+}
+
 //return a gaussian distributed random number
 function gaussian()
 {

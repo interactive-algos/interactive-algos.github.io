@@ -62,7 +62,7 @@ SensorDemo.prototype.takeSingleReading = function (redraw)
 	if (typeof redraw === 'undefined')
 		redraw = true;
 
-	var reading = this.actualDistance + gaussian() * this.sensorNoise;
+	var reading = generateGaussianNoise(this.actualDistance, this.sensorNoise);
 
 	//Skip readings that are out of screen
 	if (reading < 0 || reading >= this.view.width)return;

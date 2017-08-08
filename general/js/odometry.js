@@ -64,12 +64,15 @@ OdometryModel.prototype.sample = function (u, state)
 	const rot2_squared = rot2 * rot2;
 
 	//actual sampling
-	rot1 += gaussian() * sqrt(a1*rot1_squared + a2*trans_squared);
-	trans += gaussian() * sqrt(a3*trans_squared + a4*rot1_squared + a4*rot2_squared);
-	rot2 += gaussian() * sqrt(a1*rot2_squared + a2*trans_squared);
+	rot1 = generateGaussianNoise(rot1, sqrt(a1*rot1_squared + a2*trans_squared));
+	trans = generateGaussianNoise(trans, sqrt(a3*trans_squared + a4*rot1_squared + a4*rot2_squared));
+	rot2 = generateGaussianNoise(rot2, sqrt(a1*rot2_squared + a2*trans_squared));
 
 	var x = state.x + trans * cos(state.dir + rot1);
 	var y = state.y + trans * sin(state.dir + rot1);
+
+	console.log("dev: " + sqrt(a3*trans_squared + a4*rot1_squared + a4*rot2_squared));
+	console.log("noise: " + (trans - sqrt(dx * dx + dy * dy)));
 
 	var dir = state.dir + rot1 + rot2;
 
