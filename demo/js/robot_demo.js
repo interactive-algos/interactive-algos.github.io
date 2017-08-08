@@ -1,6 +1,17 @@
 /**
  * Created by kelvinzhang on 6/29/17.
  */
+
+//Compatibility fix...
+if(typeof(DOMTokenList.prototype.replace) === 'undefined')
+{
+	DOMTokenList.prototype.replace = function(oldToken, newToken)
+	{
+		this.remove(oldToken);
+		this.add(newToken);
+	}
+}
+
 function RobotDemo(lid, //Main Canvas id
 				   sid, //Mini Canvas id
 				   map,
