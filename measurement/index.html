@@ -12,6 +12,22 @@
     <script src='../general/js/particle.js'></script>
     <script src='../general/js/map_data.js'></script>
     <script src='../demo/js/measurement_beam_demo.js'></script>
+
+    <!-- JQuery -->
+    <script src="https://code.jquery.com/jquery-3.2.1.min.js"
+            integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4="
+            crossorigin="anonymous"></script>
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet"
+          href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
+          integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u"
+          crossorigin="anonymous">
+    <!-- Bootstrap JavaScript -->
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"
+            integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa"
+            crossorigin="anonymous"></script>
+
     <style type="text/css">
         canvas {
             border: 1px solid black;
@@ -20,6 +36,7 @@
 
     <script>
 		var measurementDemo;
+
 		function init()
 		{
 			measurementDemo = new BeamModelDemo('canvas', getMap(), 3, 0.3, "sensor_model_mini");
@@ -56,10 +73,10 @@
     <div class="row"><h3>Robot Measurement Beam Model</h3></div>
 
     <div class='row'>
-			<span>
-				<canvas id="canvas" width="700" height="400"></canvas>
-			</span>
-        <div style="float:right;">
+        <div class="col-sm-8">
+            <canvas id="canvas" width="700" height="400"></canvas>
+        </div>
+        <div class="col-sm-4">
             <canvas id="sensor_model_mini" width="175" height="100"></canvas>
             <fieldset>
                 <legend>Configuration</legend>

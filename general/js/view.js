@@ -381,7 +381,7 @@ CanvasRenderingContext2D.prototype.drawLaserLines = function (z, wx, wy, dir, se
 		var laserLen = sensorRadius;
 
 		//Grey color for a miss
-		if (z[index] >= sensorRadius)
+		if (z[index] === sensorRadius)
 		{
 			this.strokeStyle = 'grey';
 		} else

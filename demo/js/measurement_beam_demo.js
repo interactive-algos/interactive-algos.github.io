@@ -264,12 +264,12 @@ BeamModelDemo.prototype.drawSmall = function ()
 	const ctx = this.miniView.ctx;
 
 	ctx.drawMap(this.map);
-	if (this.curX != undefined && this.curY != undefined)
+	if (this.curX !== undefined && this.curY !== undefined)
 	{
 		const h = 8;
 		const w = 14;
 
-		if (this.curX != undefined && this.curY != undefined)
+		if (this.curX !== undefined && this.curY !== undefined)
 		{
 			ctx.fillStyle = 'rgba(180,180,180,0.5)';
 			ctx.fillRect(this.curX - w, this.curY - h, 2 * w, 2 * h);
