@@ -73,8 +73,7 @@ RobotDemo.prototype.start = function (event)
 		if(buttons.length === 0) buttons = [event.target];
 		for(var i = 0; i < buttons.length; i ++)
 		{
-			buttons[i].classList.remove("glyphicon-pause");
-			buttons[i].classList.add("glyphicon-play");
+			buttons[i].classList.replace("glyphicon-pause", "glyphicon-play");
 		}
 		return;
 	}
@@ -89,8 +88,7 @@ RobotDemo.prototype.start = function (event)
 	if(buttons.length === 0) buttons = [event.target];
 	for(var i = 0; i < buttons.length; i ++)
 	{
-		buttons[i].classList.remove("glyphicon-play");
-		buttons[i].classList.add("glyphicon-pause");
+		buttons[i].classList.replace("glyphicon-play", "glyphicon-pause");
 	}
 
 	const self = this;
@@ -129,13 +127,19 @@ RobotDemo.prototype.frame = function (timestamp)
 	}
 };
 
-RobotDemo.prototype.stop = function ()
+RobotDemo.prototype.stop = function (event)
 {
 	this.animating = false;
 	this.largeCanvas.onmousedown = undefined;
 	this.robot.reset();
 	this.lview.adjustToPoint(this.robot.x, this.robot.y);
 	this.draw();
+
+	var buttons = event.target.parentElement.parentElement.getElementsByClassName("glyphicon-pause");
+	for(var i = 0; i < buttons.length; i ++)
+	{
+		buttons[i].classList.replace("glyphicon-pause", "glyphicon-play");
+	}
 };
 
 RobotDemo.prototype.stepForward = function ()
