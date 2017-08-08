@@ -58,12 +58,24 @@ function RobotDemo(lid, //Main Canvas id
 	this.draw();
 }
 
-RobotDemo.prototype.start = function ()
+RobotDemo.prototype.start = function (event)
 {
+	console.log(event);
 	if (this.animating)
 	{
 		//If the animation is running... pause it
 		this.animating = false;
+
+		//set the button to play
+		var buttons = event.target.getElementsByClassName("glyphicon");
+		if(buttons.length === 0) buttons = [event.target];
+		for(var i = 0; i < buttons.length; i ++)
+		{
+			buttons[i].classList.remove("glyphicon-pause");
+			buttons[i].classList.add("glyphicon-play");
+		}
+		console.log("pause hit");
+		console.log(buttons);
 		return;
 	}
 	//Other wise resume/start the animation
@@ -71,6 +83,18 @@ RobotDemo.prototype.start = function ()
 	this.animating = true;
 	this.lview.adjustToPoint(this.robot.x, this.robot.y);
 	this.lview.setScale(50);
+
+	//set the button to pause
+	var buttons = event.target.getElementsByClassName("glyphicon");
+	if(buttons.length === 0) buttons = [event.target];
+	for(var i = 0; i < buttons.length; i ++)
+	{
+		buttons[i].classList.remove("glyphicon-play");
+		buttons[i].classList.add("glyphicon-pause");
+	}
+	console.log("play hit");
+	console.log(buttons);
+
 	const self = this;
 
 	// this.largeCanvas.onmousedown = function (event)

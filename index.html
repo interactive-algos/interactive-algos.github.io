@@ -249,7 +249,8 @@
         <div class="col l9 s12">
             <div class="range-field">
                 <br>
-                <input id='actuation_noise' type="range" min="0" max="0.5" step="0.01" title="Noise">
+                <input id='actuation_noise' type="range" min="0" max="0.5" step="0.01"
+                       title="Noise">
             </div>
         </div>
     </div>
@@ -349,7 +350,7 @@
     <div class='row'>
         <div class="col l8 s12 center">
             <canvas id="motion_canvas" width="7" height="5"></canvas>
-            <button onclick="motionDemo.stop()" class="btn waves-effect waves-light red">
+            <button onclick="motionDemo.stop(event)" class="btn waves-effect waves-light red">
 			<span class="glyphicon glyphicon-stop"
                   aria-hidden="true"></span>
             </button>
@@ -357,11 +358,12 @@
 			<span class="glyphicon glyphicon-step-backward"
                   aria-hidden="true"></span>
             </button>
-            <button onclick="motionDemo.start()" class="btn waves-effect waves-light">
+            <button onclick="motionDemo.start(event)" class="btn waves-effect waves-light">
 			<span class="glyphicon glyphicon-play"
                   aria-hidden="true"></span>
             </button>
-            <button onclick="motionDemo.stepForward()" class="btn waves-effect waves-light blue">
+            <button onclick="motionDemo.stepForward(event)"
+                    class="btn waves-effect waves-light blue">
 			<span class="glyphicon glyphicon-step-forward"
                   aria-hidden="true"></span>
             </button>
@@ -616,7 +618,7 @@
         <div class="col l8 s12">
             <canvas id="mcl_canvas" width="7" height="4"></canvas>
             <p class="center">
-                <button onclick="mclDemo.stop();" class="btn waves-effect waves-light red">
+                <button onclick="mclDemo.stop(event);" class="btn waves-effect waves-light red">
 			  <span class="glyphicon glyphicon-stop"
                     aria-hidden="true"></span>
                 </button>
@@ -624,11 +626,12 @@
 			  <span class="glyphicon glyphicon-step-backward"
                     aria-hidden="true"></span>
                 </button>
-                <button onclick="mclDemo.start();" class="btn waves-effect waves-light">
+                <button onclick="mclDemo.start(event);" class="btn waves-effect waves-light">
 			  <span class="glyphicon glyphicon-play"
                     aria-hidden="true"></span>
                 </button>
-                <button onclick="mclDemo.stepForward();" class="btn waves-effect waves-light blue">
+                <button onclick="mclDemo.stepForward(event);"
+                        class="btn waves-effect waves-light blue">
 			  <span class="glyphicon glyphicon-step-forward"
                     aria-hidden="true"></span>
                 </button>
