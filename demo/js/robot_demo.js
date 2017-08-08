@@ -27,6 +27,7 @@ function RobotDemo(lid, //Main Canvas id
 	const self = this;
 	this.manager = new ColorizeManager(this, function (p)
 	{
+		//Progress callback, 0% <= p < 100%
 		const ctx = self.lview.ctx;
 		const barWidth = 100;
 		const barHeight = 20;
@@ -40,6 +41,7 @@ function RobotDemo(lid, //Main Canvas id
 		ctx.restore();
 	}, function (probs, resolution)
 	{
+		//Completion callback
 		self.draw();
 		self.lview.drawProbabilityGrid(probs, resolution);
 	});
