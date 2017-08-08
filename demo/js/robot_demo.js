@@ -67,7 +67,10 @@ RobotDemo.prototype.start = function (event)
 		this.animating = false;
 
 		//set the button to play
+		//icon is a child element of the button
 		var buttons = event.target.getElementsByClassName("glyphicon");
+
+		//No child element means the user clicked on icon directly
 		if(buttons.length === 0) buttons = [event.target];
 		for(var i = 0; i < buttons.length; i ++)
 		{
