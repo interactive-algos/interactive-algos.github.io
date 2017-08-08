@@ -60,7 +60,13 @@ function RobotDemo(lid, //Main Canvas id
 
 RobotDemo.prototype.start = function ()
 {
-	if (this.animating) return;
+	if (this.animating)
+	{
+		//If the animation is running... pause it
+		this.animating = false;
+		return;
+	}
+	//Other wise resume/start the animation
 
 	this.animating = true;
 	this.lview.adjustToPoint(this.robot.x, this.robot.y);
@@ -103,17 +109,11 @@ RobotDemo.prototype.frame = function (timestamp)
 
 RobotDemo.prototype.stop = function ()
 {
-	if (this.animating)
-	{ //Pause
-		this.animating = false;
-	} else
-	{ //stop
-		this.largeCanvas.onmousedown = undefined;
-		// this.lview.setPreviewScale(this.map);
-		this.robot.reset();
-		this.lview.adjustToPoint(this.robot.x, this.robot.y);
-		this.draw();
-	}
+	this.animating = false;
+	this.largeCanvas.onmousedown = undefined;
+	this.robot.reset();
+	this.lview.adjustToPoint(this.robot.x, this.robot.y);
+	this.draw();
 };
 
 RobotDemo.prototype.stepForward = function ()

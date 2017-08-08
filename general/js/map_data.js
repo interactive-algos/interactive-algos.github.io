@@ -215,7 +215,7 @@ function getSimMap()
 {
 	m = [
 		new Line(0, 5, 10, 5),
-		new Line(5, 0, 5, 10),
+		new Line(5, 0, 5, 10)
 	];
 	return m;
 }
