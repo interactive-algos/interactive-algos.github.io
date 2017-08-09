@@ -38,14 +38,11 @@ SensorDemo.prototype.sample = function (n)
 	this.readingsLeft = n;
 	if (n < 500)
 	{
-		const self = this;
-		this.intervalId = window.setInterval(function ()
-		{
-			self.takeSingleReading();
-		}, 1000 / n);
+		this.intervalId = window.setInterval(() => this.takeSingleReading(),
+			1000 / n);
 	} else
 	{
-		for (var i = 0; i < n; i++)
+		for (let i = 0; i < n; i++)
 		{
 			this.takeSingleReading(false);
 		}
@@ -59,12 +56,12 @@ SensorDemo.prototype.takeSingleReading = function (redraw = true)
 	if (this.readingsLeft-- <= 0)
 		window.clearInterval(this.intervalId);
 
-	var reading = gaussian(this.actualDistance, this.sensorNoise);
+	let reading = gaussian(this.actualDistance, this.sensorNoise);
 
 	//Skip readings that are out of screen
 	if (reading < 0 || reading >= this.view.width)return;
 
-	var index = Math.floor(reading / this.view.width * this.nBuckets);
+	let index = Math.floor(reading / this.view.width * this.nBuckets);
 	this.buckets[index]++;
 	this.maxCount = max(this.maxCount, this.buckets[index]);
 	this.readingSum += reading;
@@ -88,14 +85,14 @@ SensorDemo.prototype.draw = function ()
 	clearCanvas(this.view.canvas);
 	//Draw sensor readings
 	ctx.strokeStyle = 'grey';
-	var x = 0;
+	let x = 0;
 	const step = 1.0 / this.buckets.length * this.view.width;
-	for (var i = 0; i < this.buckets.length; i++, x += step)
+	for (let i = 0; i < this.buckets.length; i++, x += step)
 	{
-		var count = this.buckets[i];
+		let count = this.buckets[i];
 		if (count > 0)
 		{
-			ctx.strokeLine(x + step / 2, 0, x + step / 2, count * 1.0 / this.maxCount * this.view.height);
+			ctx.strokeLine(x + step/2, 0, x + step/2, count / this.maxCount * this.view.height);
 		}
 	}
 
