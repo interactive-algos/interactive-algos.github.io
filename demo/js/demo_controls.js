@@ -179,8 +179,8 @@ function initMCLDemo()
 
 	let sensorNoiseSlider = new Slider('#mcl_sensorNoise', {
 		min: 0,
-		max: 0.5,
-		step: 0.02
+		max: 0.3,
+		step: 0.01
 	});
 	sensorNoiseSlider.on('slide', (value) => mclDemo.setSensorNoise(value));
 
