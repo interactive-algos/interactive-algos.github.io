@@ -71,18 +71,6 @@
     <div class="nav-wrapper container">
         <a id="title-container" href="#" data-activates="nav-mobile"
            class="brand-logo left">Home</a>
-        <ul class="right hide-on-med-and-down">
-            <li><a href="monte_carlo/index.html">Monte Carlo Demo</a></li>
-            <li><a href="measurement/index.html">Measurement Demo</a></li>
-            <li><a href="motion/index.html">Motion Demo</a></li>
-        </ul>
-
-        <ul id="nav-mobile" class="side-nav">
-            <li><a href="monte_carlo/index.html">Monte Carlo Demo</a></li>
-            <li><a href="measurement/index.html">Measurement Demo</a></li>
-            <li><a href="motion/index.html">Motion Demo</a></li>
-        </ul>
-
     </div>
 </nav>
 
@@ -682,9 +670,18 @@
                 good choice because most civilian GPS devices are only accurate to about 16 ft under
                 open sky. Their accuracy is even worse inside a building due to signal blockage.
             </p>
-            <p>
+            <blockquote style="font-size: 0.9em;">
                 Trivia: Amazon uses such robots. Check out <a
                     href="https://www.youtube.com/watch?v=cLVCGEmkJs0">this</a>.
+            </blockquote>
+            <p>
+                The MCL algorithms works by maintaining many guesses of the robot's location. As the
+                robot moves and senses, MCL incorporates additional information gathered and updates
+                its guesses. Guesses that seem to be consistent with the robot's motion and
+                measurement are kept while contradictory guesses are dropped.
+            </p>
+            <p>Each guess(also called hypothesis) is represented by a "particle" consists of
+                location(such as x, y coordinates) of the robot and direction it's facing.
             </p>
         </div>
     </div>

@@ -365,13 +365,7 @@ function init()
 	// {
 		initMotionDemo();
 	// });
-	// onFirstAppear('#mcl_canvas', function (e, $t)
-	// {
-		initMCLDemo();
-	// });
-	// onFirstAppear('#sensor_model_demo', function (e, $t)
-	// {
-		initMeasurementDemo();
-	// });
+	onFirstAppear('#mcl_canvas', initMCLDemo);
+	onFirstAppear('#sensor_model_demo', initMeasurementDemo);
 	onFirstAppear('#sensor_demo', (e) => initSensorDemo(e.target.id));
 }
