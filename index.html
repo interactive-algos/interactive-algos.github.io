@@ -14,7 +14,7 @@
           integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u"
           crossorigin="anonymous">
 
-    <!-- Compiled and Materialized minified CSS -->
+    <!-- Materialized CSS -->
     <link rel="stylesheet"
           href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.99.0/css/materialize.min.css">
 
@@ -57,7 +57,12 @@
     <script src="demo/js/actuation_demo.js"></script>
     <script src="demo/js/measurement_beam_demo.js"></script>
 
-
+    <script>
+		$(document).ready(function ()
+		{
+			$('.tooltipped').tooltip({delay: 50, position: "top"});
+		});
+    </script>
 </head>
 <body onload="init();">
 <nav class="black" role="navigation">
@@ -156,7 +161,6 @@
 <div class="container">
 
     <div class="row"><h3>Uncertainties in Robot Motions</h3></div>
-
     <br>
 
     <div class="row">
@@ -198,9 +202,11 @@
             <div class="card">
                 <div class="card-content">
                     <span class="card-title">E1</span>
-                    <p>When we command the robot to move forward by a certain distance, the robot
-                        might not be able to move forward by the exact amount. But it is likely to
-                        be close thought. If</p>
+                    <p>
+                        When we command the robot to Make a turn, the robot will tell its
+                        actuators to "rotate by this much". As mentioned above, actuators are
+                        inherently unpredictable.
+                    </p>
                 </div>
                 <div class="card-action">
                     <a>Rotational error from rotational movement</a>
@@ -211,8 +217,10 @@
             <div class="card">
                 <div class="card-content">
                     <span class="card-title">E2</span>
-                    <p>Sometimes, when you command the robot to move forward, it fails to move
-                        straight and proceeds off an angle.</p>
+                    <p>
+                        Sometimes, when you command the robot to move forward, it fails to move
+                        straight and proceeds off an angle.
+                    </p>
                 </div>
                 <div class="card-action">
                     <a>Rotational error from translational movement</a>
@@ -223,7 +231,11 @@
             <div class="card">
                 <div class="card-content">
                     <span class="card-title">E3</span>
-
+                    <p>
+                        Of course, even if the robot was able to move in a straight line, it may not
+                        be able to move the exact distance you commanded. But it is likely to
+                        be close though.
+                    </p>
                 </div>
                 <div class="card-action">
                     <a>Translational error from translational movement</a>
@@ -234,6 +246,11 @@
             <div class="card">
                 <div class="card-content">
                     <span class="card-title">E4</span>
+                    <p>
+                        For some robots, such as an automobile,rotation is done by turning its wheel
+                        and move "forward" after. For these robots, rotation will often cause them
+                        to move off side slightly.
+                    </p>
                 </div>
                 <div class="card-action">
                     <a>Translational error from rotational movement</a>
@@ -258,7 +275,7 @@
     </div>
     <div class="row">
         <div class="col l3 s6 center">
-            <h6>E1</h6>
+            <h6 class="tooltipped" data-tooltip="Rotational error from Rotation">E1</h6>
             <canvas id="actuation_a1"></canvas>
             <button class="btn waves-effect waves-light" onclick="a1Demo.simulateActuation();">
                 <span class="glyphicon glyphicon-play"
@@ -266,7 +283,7 @@
             </button>
         </div>
         <div class="col l3 s6 center">
-            <h6>E2</h6>
+            <h6 class="tooltipped" data-tooltip="Rotational error from Translation">E2</h6>
             <canvas id="actuation_a2"></canvas>
             <button class="btn waves-effect waves-light" onclick="a2Demo.simulateActuation();">
                 <span class="glyphicon glyphicon-play"
@@ -274,7 +291,7 @@
             </button>
         </div>
         <div class="col l3 s6 center">
-            <h6>E3</h6>
+            <h6 class="tooltipped" data-tooltip="Translational error from Translation">E3</h6>
             <canvas id="actuation_a3"></canvas>
             <button class="btn waves-effect waves-light" onclick="a3Demo.simulateActuation();">
                 <span class="glyphicon glyphicon-play"
@@ -282,7 +299,7 @@
             </button>
         </div>
         <div class="col l3 s6 center">
-            <h6>E4</h6>
+            <h6 class="tooltipped" data-tooltip="Translational error from Rotation">E4</h6>
             <canvas id="actuation_a4"></canvas>
             <button class="btn waves-effect waves-light" onclick="a4Demo.simulateActuation();">
                 <span class="glyphicon glyphicon-play"

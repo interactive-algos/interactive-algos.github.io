@@ -115,7 +115,7 @@ fieldset {
 
 div.col div.card div.card-action a{
     text-transform: none;
-    font-family: "Sans Serif";
+    font-family: "Sans Serif", monospace;
 }
 
 div.card-action a:hover {
