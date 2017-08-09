@@ -361,39 +361,24 @@ CanvasRenderingContext2D.prototype.drawLaserLines = function (z, wx, wy, dir, se
 {
 	const n = z.length;
 
-	//number of lasers for 360 degrees
-	const nLasers = (n - 1) * 2;
-
 	//Angle between each laser, in radians
-	const rad = Math.PI * 2 / nLasers;
+	const rad = Math.PI / (n-1);
 
-	var dirOffset = round(dir / Math.PI / 2 * nLasers);
+	//First laser is 90 degrees before
+	dir -= Math.PI/2;
 
-	//index of corresponding entry in z
-	var i = (dirOffset + nLasers / 4 + nLasers / 2);
-	i = (i + nLasers + nLasers);
-
-	for (var index = 0; index < n; index++, i++)
+	for (var i = 0; i < n; i++, dir += rad)
 	{
-		//dirOffset is the direction the user's mouse
-		//is point at, -n/4 to offset it by 90 degrees,
-		//so that laser scan is centered at where the user
-		//points to
-
-		//get i stay in bound
-		i %= nLasers;
-
-		var dir = i * rad;
 		var laserLen = sensorRadius;
 
 		//Grey color for a miss
-		if (z[index] === sensorRadius)
+		if (z[i] === sensorRadius)
 		{
 			this.strokeStyle = 'grey';
 		} else
 		{
 			//distance reported by the laser sensor
-			var dist = z[index];
+			var dist = z[i];
 			laserLen = min(laserLen, dist);
 
 			//red for a hit
