@@ -61,6 +61,14 @@ View.prototype.setScale = function (scale)
 
 View.prototype.setPreviewScale = function (map)
 {
+	dspscale = this.getPreviewScale(map)
+	this.setScale(dspscale);
+	this.setOffset(0, this.canvas.height);
+	this.isPreview = true;
+};
+
+View.prototype.getPreviewScale = function (map)
+{
 	var size = getMapSize(map);
 	var s1 = this.canvas.clientWidth / size.x;
 	var s2 = this.canvas.clientHeight / size.y;
@@ -72,10 +80,8 @@ View.prototype.setPreviewScale = function (map)
 	{
 		dspscale = s1;
 	}
-	this.setScale(dspscale);
-	this.setOffset(0, this.canvas.height);
-	this.isPreview = true;
-};
+	return dspscale;
+}
 
 View.prototype.adjustToPoint = function (x, y, lockRatio)
 {
