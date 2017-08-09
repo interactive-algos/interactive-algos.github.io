@@ -132,22 +132,22 @@ function initMotionDemo()
 
 	a1Slider.on('slide', function (value)
 	{
-		motionDemo.setA1(value);
+		motionDemo.a1 = value;
 		// a1MDemo.setA1(value);
 	});
 	a2Slider.on('slide', function (value)
 	{
-		motionDemo.setA2(value);
+		motionDemo.a2 = value;
 		// a2MDemo.setA2(value);
 	});
 	a3Slider.on('slide', function (value)
 	{
-		motionDemo.setA3(value);
+		motionDemo.a3 = value;
 		// a3MDemo.setA3(value);
 	});
 	a4Slider.on('slide', function (value)
 	{
-		motionDemo.setA4(value);
+		motionDemo.a4 = value;
 		// a4MDemo.setA4(value);
 	});
 
@@ -181,52 +181,31 @@ function initMCLDemo()
 	var a3Slider = new Slider('#mcl_a3', actuationNoiseSliderFormat);
 	var a4Slider = new Slider('#mcl_a4', actuationNoiseSliderFormat);
 
-	a1Slider.on('slide', function (value)
-	{
-		mclDemo.setA1(value)
-	});
-	a2Slider.on('slide', function (value)
-	{
-		mclDemo.setA2(value)
-	});
-	a3Slider.on('slide', function (value)
-	{
-		mclDemo.setA3(value)
-	});
-	a4Slider.on('slide', function (value)
-	{
-		mclDemo.setA4(value)
-	});
+	a1Slider.on('slide', (value) => mclDemo.a1 = value);
+	a2Slider.on('slide', (value) => mclDemo.a2 = value);
+	a3Slider.on('slide', (value) => mclDemo.a3 = value);
+	a4Slider.on('slide', (value) => mclDemo.a4 = value);
 
 	var sensorRadiusSlider = new Slider('#mcl_sensorRadius', {
 		min: 1,
 		max: 10,
 		step: 0.5
 	});
-	sensorRadiusSlider.on('slide', function (value)
-	{
-		mclDemo.setSensorRadius(value);
-	});
+	sensorRadiusSlider.on('slide', (value) => mclDemo.setSensorRadius(value));
 
 	var sensorNoiseSlider = new Slider('#mcl_sensorNoise', {
 		min: 0,
 		max: 0.5,
 		step: 0.02
 	});
-	sensorNoiseSlider.on('slide', function (value)
-	{
-		mclDemo.setSensorNoise(value);
-	});
+	sensorNoiseSlider.on('slide', (value) => mclDemo.setSensorNoise(value));
 
 	var colorResSlider = new Slider('#mcl_colorRes', {
 		min: 1,
 		max: 20,
 		step: 1
 	});
-	colorResSlider.on('slide', function (value)
-	{
-		measurementDemo.setColoringResolution(value);
-	});
+	colorResSlider.on('slide', (value) => measurementDemo.setColoringResolution(value));
 
 	// var pRatioSlider = new Slider('#mcl_pRatio', {
 	// 	min: 0,
@@ -301,15 +280,15 @@ function initActuationDemo()
 	noiseSlider.addEventListener('input', function(event)
 	{
 		const sliderValue = Number(event.target.value);
-		a1Demo.setA1(sliderValue);
-		a2Demo.setA2(sliderValue);
-		a3Demo.setA3(sliderValue);
-		a4Demo.setA4(sliderValue);
+		a1Demo.a1 = sliderValue;
+		a2Demo.a2 = sliderValue;
+		a3Demo.a3 = sliderValue;
+		a4Demo.a4 = sliderValue;
 
-		a1MDemo.setA1(sliderValue);
-		a2MDemo.setA2(sliderValue);
-		a3MDemo.setA3(sliderValue);
-		a4MDemo.setA4(sliderValue);
+		a1MDemo.a1 = sliderValue;
+		a2MDemo.a2 = sliderValue;
+		a3MDemo.a3 = sliderValue;
+		a4MDemo.a4 = sliderValue;
 	});
 	noiseSlider.addEventListener('change', simulateAllActuations);
 	simulateAllActuations();

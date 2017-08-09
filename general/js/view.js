@@ -205,11 +205,7 @@ ColorizeManager.prototype.start = function (resolution, sensorModel, z, dir)
 	{
 		this.probs[i] = new Array(Math.ceil(this.view.canvas.width / resolution));
 	}
-	const self = this;
-	requestAnimationFrame(function (timestamp)
-	{
-		self.tick(timestamp)
-	});
+	requestAnimationFrame((timestamp) => this.tick(timestamp));
 };
 
 ColorizeManager.prototype.tick = function (timestamp)
@@ -232,11 +228,7 @@ ColorizeManager.prototype.tick = function (timestamp)
 				let total = probs.length * probs[0].length;
 				this.progressCallback((i * j) / total);
 
-				const self = this;
-				requestAnimationFrame(function (timestamp)
-				{
-					self.tick(timestamp)
-				});
+				requestAnimationFrame((timestamp) => this.tick(timestamp));
 				return;
 			}
 			let p = this.sensorModel.probability(z, new RobotState(view.toWorldX(j * resolution + resolution / 2),

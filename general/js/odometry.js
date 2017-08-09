@@ -46,7 +46,7 @@ OdometryModel.prototype.sample = function (u, state)
 	const a1 = this.a1;
 	const a2 = this.a2/25;
 	const a3 = this.a3;
-	const a4 = this.a4*5;
+	const a4 = this.a4;
 
 	//first rotation
 	var rot1 = atan2(dy, dx) - u.lastDir;
@@ -67,6 +67,8 @@ OdometryModel.prototype.sample = function (u, state)
 	rot1 = generateGaussianNoise(rot1, sqrt(a1*rot1_squared + a2*trans_squared));
 	trans = generateGaussianNoise(trans, sqrt(a3*trans_squared + a4*rot1_squared + a4*rot2_squared));
 	rot2 = generateGaussianNoise(rot2, sqrt(a1*rot2_squared + a2*trans_squared));
+
+	// if(trans < 0)trans = 0;
 
 	var x = state.x + trans * cos(state.dir + rot1);
 	var y = state.y + trans * sin(state.dir + rot1);

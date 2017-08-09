@@ -102,18 +102,13 @@ RobotDemo.prototype.start = function (event)
 		buttons[i].classList.replace("glyphicon-play", "glyphicon-pause");
 	}
 
-	const self = this;
-
 	// this.largeCanvas.onmousedown = function (event)
 	// {
 	// 	self.queryProbability(event);
 	// };
 
 	this.lastFrame = Date.now();
-	requestAnimationFrame(function (timestamp)
-	{
-		self.frame(timestamp);
-	});
+	requestAnimationFrame((timestamp) => this.frame(timestamp));
 };
 
 RobotDemo.prototype.frame = function (timestamp)
@@ -130,11 +125,7 @@ RobotDemo.prototype.frame = function (timestamp)
 	this.lctx.fillTextWithColorFont(fps + "\tFPS", 'black', '20px Menlo', 10, 20);
 	if (this.animating)
 	{
-		const self = this;
-		requestAnimationFrame(function (timestamp)
-		{
-			self.frame(timestamp);
-		});
+		requestAnimationFrame((timestamp) => this.frame(timestamp));
 	}
 };
 
@@ -156,16 +147,12 @@ RobotDemo.prototype.stop = function (event)
 RobotDemo.prototype.stepForward = function (event)
 {
 	this.animating = false;
-	const self = this;
 	let buttons = event.target.parentElement.parentElement.getElementsByClassName("glyphicon-pause");
 	for(let i = 0; i < buttons.length; i ++)
 	{
 		buttons[i].classList.replace("glyphicon-pause", "glyphicon-play");
 	}
-	requestAnimationFrame(function (timestamp)
-	{
-		self.frame(timestamp);
-	});
+	requestAnimationFrame((timestamp) => this.frame(timestamp));
 };
 
 RobotDemo.prototype.draw = function ()
@@ -202,23 +189,42 @@ RobotDemo.prototype.drawView = function (view, showParticles)
 	this.robot.draw(ctx, showParticles);
 };
 
+Object.defineProperties(RobotDemo.prototype, {
+	'a1': {
+		get: function() {return this.robot.filter.motionModel.a1;},
+		set: function(noise) {this.robot.filter.motionModel.a1 = noise;}
+	},
+	'a2': {
+		get: function() {return this.robot.filter.motionModel.a2;},
+		set: function(noise) {this.robot.filter.motionModel.a2 = noise;}
+	},
+	'a3': {
+		get: function() {return this.robot.filter.motionModel.a3;},
+		set: function(noise) {this.robot.filter.motionModel.a3 = noise;}
+	},
+	'a4': {
+		get: function() {return this.robot.filter.motionModel.a4;},
+		set: function(noise) {this.robot.filter.motionModel.a4 = noise;}
+	}
+});
+
 //Setters
-RobotDemo.prototype.setA1 = function (noise)
-{
-	this.robot.filter.motionModel.a1 = noise;
-};
-RobotDemo.prototype.setA2 = function (noise)
-{
-	this.robot.filter.motionModel.a2 = noise;
-};
-RobotDemo.prototype.setA3 = function (noise)
-{
-	this.robot.filter.motionModel.a3 = noise;
-};
-RobotDemo.prototype.setA4 = function (noise)
-{
-	this.robot.filter.motionModel.a4 = noise;
-};
+// RobotDemo.prototype.setA1 = function (noise)
+// {
+// 	this.robot.filter.motionModel.a1 = noise;
+// };
+// RobotDemo.prototype.setA2 = function (noise)
+// {
+// 	this.robot.filter.motionModel.a2 = noise;
+// };
+// RobotDemo.prototype.setA3 = function (noise)
+// {
+// 	this.robot.filter.motionModel.a3 = noise;
+// };
+// RobotDemo.prototype.setA4 = function (noise)
+// {
+// 	this.robot.filter.motionModel.a4 = noise;
+// };
 
 RobotDemo.prototype.setColoringResolution = function (res)
 {
