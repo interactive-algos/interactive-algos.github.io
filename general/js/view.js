@@ -255,7 +255,7 @@ ColorizeManager.prototype.tick = function (timestamp)
 	this.finishCallback(probs, resolution);
 };
 
-CanvasRenderingContext2D.prototype.drawRobot = function (wx, wy, dir, wsize)
+CanvasRenderingContext2D.prototype.drawRobot = function (wx, wy, dir, wsize, lineLength = 1)
 {
 	//The robot's main circle
 	this.strokeCircle(wx, wy, wsize);
@@ -263,7 +263,7 @@ CanvasRenderingContext2D.prototype.drawRobot = function (wx, wy, dir, wsize)
 	this.beginPath();
 	//draw a line to show Robot's orientation
 	this.moveTo(wx, wy);
-	this.lineTo(wx + cos(dir) * wsize * 2, wy + sin(dir) * wsize * 2);
+	this.lineTo(wx + cos(dir) * wsize * 2, wy + sin(dir) * wsize * lineLength);
 	this.stroke();
 };
 
