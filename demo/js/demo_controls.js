@@ -155,10 +155,7 @@ function initMCLDemo()
 		step: 0.01,
 		value: 0.04
 	});
-	slider.on("slide", function (sliderValue)
-	{
-		mclDemo.setStride(sliderValue);
-	});
+	slider.on("slide", (sliderValue) => mclDemo.setStride(sliderValue));
 
 	let a1Slider = new Slider('#mcl_a1', actuationNoiseSliderFormat);
 	let a2Slider = new Slider('#mcl_a2', actuationNoiseSliderFormat);
@@ -311,10 +308,7 @@ function initMeasurementDemo()
 		max: 20,
 		step: 1
 	});
-	colorResSlider.on('slide', function (value)
-	{
-		measurementDemo.setColoringResolution(value);
-	});
+	colorResSlider.on('slide', (value) => measurementDemo.setColoringResolution(value));
 	colorResSlider.on('slideStop', () => measurementDemo.colorMapIfShould());
 
 	measurementDemo = new BeamModelDemo('sensor_model_demo', map,
