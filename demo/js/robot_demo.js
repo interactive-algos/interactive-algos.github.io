@@ -108,7 +108,7 @@ RobotDemo.prototype.start = function (event)
 	// };
 
 	this.lastFrame = Date.now();
-	requestAnimationFrame((timestamp) => this.frame(timestamp));
+	this.frameId = requestAnimationFrame((timestamp) => this.frame(timestamp));
 };
 
 RobotDemo.prototype.frame = function (timestamp)
@@ -125,12 +125,13 @@ RobotDemo.prototype.frame = function (timestamp)
 	this.lctx.fillTextWithColorFont(fps + "\tFPS", 'black', '20px Menlo', 10, 20);
 	if (this.animating)
 	{
-		requestAnimationFrame((timestamp) => this.frame(timestamp));
+		this.frameId = requestAnimationFrame((timestamp) => this.frame(timestamp));
 	}
 };
 
 RobotDemo.prototype.stop = function (event)
 {
+	cancelAnimationFrame(this.frameId);
 	this.animating = false;
 	this.largeCanvas.onmousedown = undefined;
 	this.robot.reset();
@@ -152,7 +153,7 @@ RobotDemo.prototype.stepForward = function (event)
 	{
 		buttons[i].classList.replace("glyphicon-pause", "glyphicon-play");
 	}
-	requestAnimationFrame((timestamp) => this.frame(timestamp));
+	this.frameId = requestAnimationFrame((timestamp) => this.frame(timestamp));
 };
 
 RobotDemo.prototype.draw = function ()
