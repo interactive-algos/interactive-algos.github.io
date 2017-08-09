@@ -166,18 +166,3 @@ Object.defineProperties(ActuationDemo.prototype, {
 		set: function(noise) {this.motionModel.a4 = noise;}
 	}
 });
-
-// ActuationDemo.prototype.setDist1 = function (dist1)
-// {
-// 	this.firstMove = dist1;
-// };
-//
-// ActuationDemo.prototype.setTurnAngle = function (turn)
-// {
-// 	this.turn = turn;
-// };
-//
-// ActuationDemo.prototype.setDist2 = function (dist2)
-// {
-// 	this.secondMove = dist2;
-// };

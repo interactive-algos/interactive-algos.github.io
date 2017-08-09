@@ -37,56 +37,34 @@ function BeamModelDemo(id, map, sensorRadius, sensorNoise, miniId)
 
 	//Event listeners
 	const self = this;
-	this.view.canvas.onmousedown = function (event)
-	{
-		return self.largeViewMouseDown(event)
-	};
-	this.view.canvas.onmousemove = function (event)
-	{
-		return self.largeViewMouseMove(event)
-	};
-	this.view.canvas.onmouseout = function (event)
-	{
-		return self.largeViewMouseOut(event)
-	};
+	this.view.canvas.onmousedown = (event) => {return this.largeViewMouseDown(event)};
 
-	this.miniView.canvas.onmousedown = function (event)
-	{
-		return self.miniViewMouseDown(event)
-	};
+	this.miniView.canvas.onmousedown = (event) => {return this.miniViewMouseDown(event)};
 
-	this.miniView.canvas.onmousemove = function (event)
-	{
-		return self.miniViewMouseMove(event)
-	};
-	this.miniView.canvas.onmouseout = function (event)
-	{
-		return self.miniViewMouseOut(event)
-	};
+	this.miniView.canvas.onmousemove = (event) => {return this.miniViewMouseMove(event)};
 
-	this.manager = new ColorizeManager(this.view, function (p)
+	this.miniView.canvas.onmouseout = (event) => {return this.miniViewMouseOut(event)};
+
+	this.manager = new ColorizeManager(this.view, (p) =>
 	{
-		const ctx = self.view.ctx;
-		const barWidth = 100;
+		const ctx = this.view.ctx;
 		const barHeight = 20;
-		const width = self.view.canvas.width;
-		const height = self.view.canvas.height;
-		self.isCalculating = true;
+		const width = this.view.canvas.width;
+		const height = this.view.canvas.height;
+		this.isCalculating = true;
 
 		ctx.save();
 		ctx.setTransform(1, 0, 0, 1, 0, 0);
-		// ctx.strokeRect(width / 2 - barWidth - 2, height / 2 - barHeight / 2, barWidth, barHeight);
-		// ctx.fillRect(width / 2 - barWidth - 2, height / 2 - barHeight / 2, barWidth * p, barHeight);
 		ctx.strokeStyle = 'rgba(0,0,255,0.5)';
 		ctx.strokeRect(0, height - barHeight, width, barHeight);
 		ctx.fillRect(0, height - barHeight, width * p, barHeight);
 		ctx.restore();
-	}, function (probs, resolution)
+	}, (probs, resolution) =>
 	{
-		self.isCalculating = false;
-		self.draw();
-		self.drawLaserLines();
-		self.view.drawProbabilityGrid(probs, resolution);
+		this.isCalculating = false;
+		this.draw();
+		this.drawLaserLines();
+		this.view.drawProbabilityGrid(probs, resolution);
 	});
 
 	this.miniView.ctx.drawMap(self.map);
@@ -105,41 +83,31 @@ BeamModelDemo.prototype.miniViewMouseMove = function (event)
 {
 	const h = 8;
 	const w = 14;
-	const self = this;
 	const view = this.miniView;
-	var coor = getClickLoc(event);
+	let coor = getClickLoc(event);
 
-	// const x = view.toWorldX(coor.x);
-	// const y = view.toWorldY(coor.y);
-	var x = view.toWorldX(coor.x);
-	var y = view.toWorldY(coor.y);
+	const x = view.toWorldX(coor.x);
+	const y = view.toWorldY(coor.y);
 
 	this.drawSmall();
 	view.ctx.drawRect(x - w, y - h, x + w, y + h);
-
-
 };
 
 BeamModelDemo.prototype.miniViewMouseDown = function (event)
 {
-	const h = 8;
-	const w = 14;
-	const self = this;
 	const view = this.miniView;
-	var coor = getClickLoc(event);
+	let coor = getClickLoc(event);
 
-	// const x = view.toWorldX(coor.x);
-	// const y = view.toWorldY(coor.y);
-	self.curX = view.toWorldX(coor.x);
-	self.curY = view.toWorldY(coor.y);
+	this.curX = view.toWorldX(coor.x);
+	this.curY = view.toWorldY(coor.y);
 
-	self.viewUnlocked = false;
-	self.view.setScale(20);
-	self.view.recenter(self.curX, self.curY);
-	self.drawSmall();
-	self.draw();
-	self.drawLaserLines();
-	self.colorMapIfShould();
+	this.viewUnlocked = false;
+	this.view.setScale(20);
+	this.view.recenter(this.curX, this.curY);
+	this.drawSmall();
+	this.draw();
+	this.drawLaserLines();
+	this.colorMapIfShould();
 };
 
 
@@ -149,12 +117,10 @@ BeamModelDemo.prototype.largeViewMouseDown = function (event)
 		return;
 	//Shorthand for this.view and this.ctx
 	const view = this.view;
-	var coor = getClickLoc(event);
+	let coor = getClickLoc(event);
 
-	// const x = view.toWorldX(coor.x);
-	// const y = view.toWorldY(coor.y);
-	var x = view.toWorldX(coor.x);
-	var y = view.toWorldY(coor.y);
+	const x = view.toWorldX(coor.x);
+	const y = view.toWorldY(coor.y);
 
 	if (event.altKey)
 	{
@@ -177,21 +143,15 @@ BeamModelDemo.prototype.largeViewMouseDown = function (event)
 	this.y = y;
 
 	const self = this;
-	this.view.canvas.onmousemove = function (event)
-	{
-		return self.trackDirection(event);
-	};
-	this.view.canvas.onmouseup = function (event)
-	{
-		return self.mouseUp(event);
-	};
+	this.view.canvas.onmousemove = (event) => {return self.trackDirection(event)};
+	this.view.canvas.onmouseup = (event) => {return self.mouseUp(event)};
+	this.view.canvas.onmouseout = this.view.canvas.onmouseup;
 
 	this.draw();
 };
 
 BeamModelDemo.prototype.largeViewMouseMove = function (event)
 {
-	return;
 	// if (this.isCalculating || !this.viewUnlocked)
 	// 	return;
 	// const view = this.view;
@@ -227,12 +187,9 @@ BeamModelDemo.prototype.mouseUp = function (event)
 {
 	if (this.isCalculating)
 		return;
-	const self = this;
-	this.view.canvas.onmousemove = function (event)
-	{
-		return self.largeViewMouseMove(event);
-	};
+	this.view.canvas.onmousemove = undefined;
 	this.view.canvas.onmouseup = undefined;
+	this.view.canvas.onmouseout = undefined;
 	this.tracker.clear();
 	this.update();
 	this.draw();
@@ -274,7 +231,6 @@ BeamModelDemo.prototype.drawSmall = function ()
 			ctx.fillStyle = 'rgba(180,180,180,0.5)';
 			ctx.fillRect(this.curX - w, this.curY - h, 2 * w, 2 * h);
 		}
-
 		// ctx.drawRect(this.curX-w, this.curY-h, this.curX+w, this.curY+h);
 	}
 };
@@ -285,6 +241,7 @@ BeamModelDemo.prototype.drawLarge = function ()
 	const ctx = this.view.ctx;
 	ctx.drawMap(this.map);
 	ctx.drawRobot(this.x, this.y, this.dir, this.robotSize);
+	//Only draw particles if color map is not enabled
 	if (!this.shouldColor)
 	{
 		const resolution = this.resolution / this.view.scale;
@@ -293,10 +250,6 @@ BeamModelDemo.prototype.drawLarge = function ()
 			ctx.fillStyle = 'rgba(' + round(w * 255) + ', 0, ' + (255 - round(w * 255)) + ', 0.5)';
 			ctx.fillRect(x - resolution / 2, y - resolution / 2, resolution, resolution);
 		});
-	} else if (this.view.canvas.onmouseout)
-	{
-		//If user is moving its mouse, don't color the map, too expensive
-		// this.view.colorMap(this.resolution, this.sensorModel, this.z, this.dir);
 	}
 };
 
@@ -304,7 +257,7 @@ BeamModelDemo.prototype.update = function ()
 {
 	//Only scan if location changed
 	scan(this.x, this.y, this.dir, this.sensorRadius, this.map, this.z);
-	for (var i = 0; i < this.z.length; i++)
+	for (let i = 0; i < this.z.length; i++)
 	{
 		if (this.z[i] < this.sensorRadius)
 		{
@@ -397,9 +350,8 @@ ParticleTracker.prototype.forEach = function (callback)
 		callback(p.x, p.y, p.dir, p.w);
 	} else if (this.particles.length)
 	{
-		this.particles.forEach(function (p)
-		{
-			callback(p.x, p.y, p.dir, (p.w - minW) / (maxW - minW));
-		});
+		this.particles.forEach((p) =>
+			callback(p.x, p.y, p.dir, (p.w - minW) / (maxW - minW))
+		);
 	}
 };
