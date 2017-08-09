@@ -35,28 +35,6 @@ function RobotDemo(lid, //Main Canvas id
 	this.map = map;
 	this.colorRes = colorRes;
 
-	const self = this;
-	this.manager = new ColorizeManager(this, function (p)
-	{
-		//Progress callback, 0% <= p < 100%
-		const ctx = self.lview.ctx;
-		const barWidth = 100;
-		const barHeight = 20;
-		const width = self.canvas.width;
-		const height = self.canvas.height;
-
-		ctx.save();
-		ctx.setTransform(1, 0, 0, 1, 0, 0);
-		ctx.strokeRect(width / 2 - barWidth - 2, height / 2 - barHeight / 2, barWidth, barHeight);
-		ctx.fillRect(width / 2 - barWidth - 2, height / 2 - barHeight / 2, barWidth * p, barHeight);
-		ctx.restore();
-	}, function (probs, resolution)
-	{
-		//Completion callback
-		self.draw();
-		self.lview.drawProbabilityGrid(probs, resolution);
-	});
-
 	//Robot
 	this.robot = robot;
 	this.lview.adjustToPoint(this.robot.x, this.robot.y);
@@ -209,24 +187,6 @@ Object.defineProperties(RobotDemo.prototype, {
 	}
 });
 
-//Setters
-// RobotDemo.prototype.setA1 = function (noise)
-// {
-// 	this.robot.filter.motionModel.a1 = noise;
-// };
-// RobotDemo.prototype.setA2 = function (noise)
-// {
-// 	this.robot.filter.motionModel.a2 = noise;
-// };
-// RobotDemo.prototype.setA3 = function (noise)
-// {
-// 	this.robot.filter.motionModel.a3 = noise;
-// };
-// RobotDemo.prototype.setA4 = function (noise)
-// {
-// 	this.robot.filter.motionModel.a4 = noise;
-// };
-
 RobotDemo.prototype.setColoringResolution = function (res)
 {
 	this.colorRes = res;
@@ -293,11 +253,7 @@ RobotDemo.prototype.startRecordingPath = function ()
 	this.lview.setPreviewScale(this.map);
 	this.lctx.drawMap(this.map);
 
-	const self = this;
-	this.largeCanvas.onmousedown = function (event)
-	{
-		self.mouseDown(event);
-	};
+	this.largeCanvas.onmousedown = (event) => this.mouseDown(event);
 	this.tempPath = [];
 };
 
@@ -307,19 +263,9 @@ RobotDemo.prototype.mouseDown = function (event)
 	this.lview.toWorldCoor(coor);
 
 	this.tempPath.push(coor);
-	const self = this;
-	this.largeCanvas.onmousemove = function (event)
-	{
-		self.mouseMotion(event);
-	};
-	this.largeCanvas.onmouseup = function (event)
-	{
-		self.mouseUp(event);
-	};
-	this.largeCanvas.onmouseout = function (event)
-	{
-		self.mouseUp(event);
-	}
+	this.largeCanvas.onmousemove = (event) => this.mouseMotion(event);
+	this.largeCanvas.onmouseup = (event) => this.mouseUp(event);
+	this.largeCanvas.onmouseout = (event) => this.mouseUp(event);
 };
 
 RobotDemo.prototype.mouseMotion = function (event)
