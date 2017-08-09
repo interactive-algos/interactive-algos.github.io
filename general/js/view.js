@@ -82,10 +82,8 @@ View.prototype.getPreviewScale = function (map)
 	return dspscale;
 };
 
-View.prototype.adjustToPoint = function (x, y, lockRatio)
+View.prototype.adjustToPoint = function (x, y, lockRatio = 0.4)
 {
-	if (typeof lockRatio === 'undefined')
-		lockRatio = 0.4;
 	x = this.toScreenX(x);
 	y = this.toScreenY(y);
 	const canvas = this.canvas;

@@ -73,7 +73,6 @@ BeamModel.prototype.prob_log = function (z, state)
 	{
 		// if(z[i] >= this.sensorRadius || z_true[i] >= this.sensorRadius)
 		//     continue;
-		console.assert(typeof z[i] !== 'undefined');
 		q += Math.log(prob_gaussian(z[i] - z_true[i], this.a1));
 	}
 	q /= (nLasers / 2 + 1);

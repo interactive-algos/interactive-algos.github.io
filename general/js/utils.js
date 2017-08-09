@@ -249,11 +249,9 @@ function clearCanvas(canvas)
 	ctx.restore();
 }
 
-function smoothenPath(path, windowSize)
+function smoothenPath(path, windowSize = 10)
 {
 	var copy = path.slice();
-	if (typeof windowSize === 'undefined')
-		windowSize = 10;
 
 	for (var i = windowSize; i < path.length - windowSize; i++)
 	{

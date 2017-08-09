@@ -53,14 +53,11 @@ SensorDemo.prototype.sample = function (n)
 	}
 };
 
-SensorDemo.prototype.takeSingleReading = function (redraw)
+SensorDemo.prototype.takeSingleReading = function (redraw = true)
 {
 	//We are done, stop the animation
 	if (this.readingsLeft-- <= 0)
 		window.clearInterval(this.intervalId);
-
-	if (typeof redraw === 'undefined')
-		redraw = true;
 
 	var reading = generateGaussianNoise(this.actualDistance, this.sensorNoise);
 

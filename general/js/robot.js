@@ -134,11 +134,8 @@ Robot.prototype.updateParticles = function ()
 	this.lastDir = this.dir;
 };
 
-Robot.prototype.draw = function (ctx, showParticles)
+Robot.prototype.draw = function (ctx, showParticles = true)
 {
-	if(typeof(showParticles) === 'undefined')
-		showParticles = true;
-
 	ctx.strokeStyle = 'black';
 
 	const x = this.x;
