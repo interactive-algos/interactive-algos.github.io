@@ -61,6 +61,8 @@
 		$(document).ready(function ()
 		{
 			$('.tooltipped').tooltip({delay: 50, position: "top"});
+			$(".col ul").addClass("collection");
+			$("ul.collection li").addClass("collection-item")
 		});
     </script>
 </head>
@@ -655,6 +657,36 @@
 
 <div class="container">
     <div class="row"><h3>Monte Carlo Localization</h3></div>
+    <div class="row">
+        <div class="col lg 8">
+            <p>
+                Given that all actuators and sensors have some degrees of noise, how should we use
+                these actuators and sensors? Over time, people have developed algorithms and
+                mathematical models to take these uncertainties into account. <b>Monte Carlo
+                Localization (MCL)</b> is an example of such algorithms.
+            </p>
+            <p>
+                The MCL algorithm aims to locate the robot under the following conditions:
+            </p>
+            <ul>
+                <li>The robot is in a <b>known area</b>, which means the robot has the map of the
+                    environment.
+                </li>
+                <li>The robot has some <b>sensors</b>.</li>
+                <li>The robot can <b>move around</b> freely.</li>
+            </ul>
+            <p>
+                There are many applications of such algorithm. For example, warehouse robots that
+                deliver objects inside a building. The robot would need to keep track of where it is
+                when moving and adjust its motion accordingly if it wanders off path. GPS is not a
+                good choice because most civilian GPS devices are only accurate to about 16 ft under
+                open sky. Their accuracy is even worse inside a building due to signal blockage.
+            </p>
+            <p>
+                
+            </p>
+        </div>
+    </div>
     <div class='row'>
         <div class="col l8 s12">
             <canvas id="mcl_canvas" width="7" height="4"></canvas>
@@ -809,7 +841,8 @@
         </div>
         <div class="footer-copyright center">
             <div class="container">
-                <a class="grey-text text-lighten-3">Probabilistic Robotics Interactive Algorithm Team
+                <a class="grey-text text-lighten-3">Probabilistic Robotics Interactive Algorithm
+                    Team
                     2017 All Rights Reserved</a>
             </div>
         </div>
