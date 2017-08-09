@@ -391,9 +391,9 @@ function onFirstAppear(selector, callback)
 function initSensorDemo(id)
 {
 	var noiseSlider = new Slider("#sensor_demo_sensorNoise", {
-		min: 1,
-		max: 7,
-		step: 0.5,
+		min: 0,
+		max: 4,
+		step: 0.2,
 		value: 2
 	});
 	sensorDemo = new SensorDemo(id, noiseSlider.getValue());
