@@ -44,9 +44,9 @@ OdometryModel.prototype.sample = function (u, state)
 	const dy = u.y - u.lastY;
 
 	const a1 = this.a1;
-	const a2 = this.a2;
+	const a2 = this.a2/25;
 	const a3 = this.a3;
-	const a4 = this.a4;
+	const a4 = this.a4*5;
 
 	//first rotation
 	var rot1 = atan2(dy, dx) - u.lastDir;
