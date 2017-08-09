@@ -261,7 +261,7 @@ BeamModelDemo.prototype.update = function ()
 	{
 		if (this.z[i] < this.sensorRadius)
 		{
-			this.z[i] = generateGaussianNoise(this.z[i], this.sensorModel.a1);
+			this.z[i] = gaussian(this.z[i], this.sensorModel.a1);
 			if(this.z[i] < 0)this.z[i] = 0;
 		}
 	}

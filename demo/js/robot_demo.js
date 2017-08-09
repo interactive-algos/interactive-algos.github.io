@@ -347,7 +347,7 @@ RobotDemo.prototype.mouseUp = function (event)
 	this.largeCanvas.onmousedown = undefined;
 
 	let msg = "Enter a unique name for this path, alphanumeric please:";
-
+	let pathName;
 	while (true)
 	{
 		pathName = prompt(msg, "Harry Potter");

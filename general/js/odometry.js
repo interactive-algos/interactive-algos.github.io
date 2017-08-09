@@ -40,7 +40,7 @@ function OdometryModel(a1, a2, a3, a4)
  */
 OdometryModel.prototype.sample = function (u, state)
 {
-	var dx = u.x - u.lastX;
+	const dx = u.x - u.lastX;
 	const dy = u.y - u.lastY;
 
 	const a1 = this.a1;
@@ -49,11 +49,11 @@ OdometryModel.prototype.sample = function (u, state)
 	const a4 = this.a4;
 
 	//first rotation
-	var rot1 = atan2(dy, dx) - u.lastDir;
+	let rot1 = atan2(dy, dx) - u.lastDir;
 	//translational distance traveled
-	var trans = sqrt(dx * dx + dy * dy);
+	let trans = sqrt(dx * dx + dy * dy);
 	//second rotation
-	var rot2 = u.dir - u.lastDir - rot1;
+	let rot2 = u.dir - u.lastDir - rot1;
 
 	//Bound radians to interval [-pi, pi]
 	rot1 = boundRadian(rot1);
@@ -64,16 +64,16 @@ OdometryModel.prototype.sample = function (u, state)
 	const rot2_squared = rot2 * rot2;
 
 	//actual sampling
-	rot1 = generateGaussianNoise(rot1, sqrt(a1*rot1_squared + a2*trans_squared));
-	trans = generateGaussianNoise(trans, sqrt(a3*trans_squared + a4*rot1_squared + a4*rot2_squared));
-	rot2 = generateGaussianNoise(rot2, sqrt(a1*rot2_squared + a2*trans_squared));
+	rot1 = gaussian(rot1, sqrt(a1*rot1_squared + a2*trans_squared));
+	trans = gaussian(trans, sqrt(a3*trans_squared + a4*rot1_squared + a4*rot2_squared));
+	rot2 = gaussian(rot2, sqrt(a1*rot2_squared + a2*trans_squared));
 
 	// if(trans < 0)trans = 0;
 
-	var x = state.x + trans * cos(state.dir + rot1);
-	var y = state.y + trans * sin(state.dir + rot1);
+	const x = state.x + trans * cos(state.dir + rot1);
+	const y = state.y + trans * sin(state.dir + rot1);
 
-	var dir = state.dir + rot1 + rot2;
+	const dir = state.dir + rot1 + rot2;
 
 	return new RobotState(x, y, dir);
 };
