@@ -131,8 +131,7 @@ function scan(x, y, dir0, r, map, z)
 	var i = (dirOffset - nLasers / 4);
 	i += nLasers + nLasers;
 
-	// for (var i = 0; i < nLasers; i++)
-	for (var index = 0; index <= nLasers / 2; index++, i++)
+	for (var index = 0; index < z.length; index++, i++)
 	{
 		i %= nLasers;
 		var dir = TWO_PI * i / nLasers;

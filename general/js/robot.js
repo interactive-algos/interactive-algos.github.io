@@ -141,8 +141,8 @@ Robot.prototype.draw = function (ctx, showParticles)
 
 	ctx.strokeStyle = 'black';
 
-	var x = this.x;
-	var y = this.y;
+	const x = this.x;
+	const y = this.y;
 
 	ctx.drawRobot(x, y, this.dir, Robot.size);
 

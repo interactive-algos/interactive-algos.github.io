@@ -346,7 +346,7 @@ BeamModelDemo.prototype.setSensorNoise = function (p)
 
 BeamModelDemo.prototype.drawLaserLines = function ()
 {
-	this.view.ctx.drawLaserLines(this.z, this.x, this.y, this.dir, this.sensorRadius);
+	this.view.ctx.drawLaserLines(this.z, this.x, this.y, this.dir, this.sensorRadius, true);
 };
 
 BeamModelDemo.prototype.setColoring = function (shouldColor)
