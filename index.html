@@ -699,17 +699,15 @@
                 particle is also associated with a weight, which represents how likely the particle
                 represents the robot's true location(and direction).
             </p>
-            <p>
-                Here is an overview of what the algorithm does at each time step:
-            </p>
+            <h4>
+                Overview of MCL at each time step:
+            </h4>
             <ol>
                 <li>
                     If the robot moves, <b>update each particle's location and direction according
-                    to
-                    the robot's motion</b>(robots often have internal odometry readings that can
-                    tell
-                    how much the robot has moved approximately). When updating,<u>uncertainties of
-                    odometry readings must be taken into account</u>
+                    to the robot's motion</b>(robots often have internal motion sensors that can
+                    tell how much the robot has moved approximately). When updating, <u>uncertainties
+                    of motion readings must be taken into account</u>
                 </li>
                 <li>
                     If the robot performed a scan of the environment, <b>update each particle's
@@ -723,6 +721,39 @@
                     to be selected. This is called the <b>resampling process</b>.
                 </li>
             </ol>
+            <h4>Common Q&A</h4>
+            <blockquote>Why do we need to take uncertainties of odometry readings into account?
+            </blockquote>
+            <p>
+                Noise exists in robots' motion sensors. If the motion sensor reports a movement
+                of 5 meters, the actual distance moved may or may not be exactly 5. It is probably
+                close to 5, say 5.1, 4.9, 4.8, etc. The accuracy of motion sensors determines how
+                far the readings deviate from reality. In practice, it is turns out that taking
+                these noises into account produces better results.
+            </p>
+
+            <blockquote>How do we take uncertainties of odometry into account?</blockquote>
+            <p>
+                The mathematical model should be aware of such uncertainties. The mathematical model
+                to handle is is often called a <b>motion model</b>. When updating particles
+                according to the robot's motion, the motion model draws a sample from all possible
+                outcomes. For example, if the robot's odometry sensor reports a forward movement of
+                10 meters, the motion model would draw a sample according the patter of noise, for
+                example, 9.8m, 10.3m, 10.1m, etc. But it is extremely unlikely to draw a sample of
+                3m. Because the motion model knows that the robot is not that inaccurate.
+            </p>
+
+            <blockquote>Why do we need to resample? Why don't we just keep the best ones?
+            </blockquote>
+            <p>
+                The weights of particles represent the robot's judgment of how likely that particle
+                is the true location. Just because the robot think a particle is a good guess,
+                doesn't mean that particle is actually good. If you only keep the best one and drop
+                the rest, it is very likely that you are throwing away the good particles. By
+                performing a resampling process, we are kind of maintaining a natural selection
+                process. And the hope is that, some of the good particles will survive and
+                propagate, giving us a good result.
+            </p>
         </div>
     </div>
     <div class='row'>
