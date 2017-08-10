@@ -6,15 +6,9 @@ function BeamModelDemo(id, map, sensorRadius, sensorNoise, miniId)
 
 	//the canvas element
 	this.view = new View(document.getElementById(id), this.scale);
-	// this.view.setPreviewScale(map);
-	this.worldHeight = this.view.toWorldY(0);
-	this.worldWidth = this.view.toWorldX(this.view.canvas.width);
 
 	this.miniView = new View(document.getElementById(miniId), this.scale);
 	this.miniView.setPreviewScale(map);
-	this.largePreviewScale = this.view.getPreviewScale(map);
-	this.miniPreviewScale = this.miniView.getPreviewScale(map);
-
 
 	this.robotSize = 0.2;
 	this.map = map;
@@ -23,7 +17,6 @@ function BeamModelDemo(id, map, sensorRadius, sensorNoise, miniId)
 	this.resolution = 10;
 	this.shouldColor = false;
 	this.isCalculating = false;
-	this.viewUnlocked = true;
 
 	//Initial robot pose
 	this.x = random() * this.view.width;
@@ -70,11 +63,30 @@ function BeamModelDemo(id, map, sensorRadius, sensorNoise, miniId)
 	});
 
 	this.miniView.ctx.drawMap(self.map);
-	this.update();
-	this.draw();
-	this.drawLaserLines();
+	this.updateRender();
 	this.drawSmall();
 }
+
+Object.defineProperties(BeamModelDemo.prototype, {
+	"sensorRadius":{
+		get: function(){return this.sensorModel.sensorRadius},
+		set: function(r){
+			if (r === this.sensorRadius)
+				return;
+			this.sensorModel.sensorRadius = r;
+			this.updateRender();
+		}
+	},
+	"sensorNoise":{
+		get: function () {return this.sensorModel.a1},
+		set: function(p) {
+			if (this.sensorModel.a1 === p)
+				return;
+			this.sensorModel.a1 = p;
+			this.updateRender();
+		}
+	}
+});
 
 BeamModelDemo.prototype.miniViewMouseOut = function (event)
 {
@@ -83,10 +95,8 @@ BeamModelDemo.prototype.miniViewMouseOut = function (event)
 
 BeamModelDemo.prototype.miniViewMouseMove = function (event)
 {
-	// console.log(this.scale)
-	// console.log((this.miniView.height * (this.largePreviewScale / this.scale)) * this.miniPreviewScale)
-	const h = this.view.canvas.height * (this.largePreviewScale / this.scale) / this.largePreviewScale / 2;
-	const w = this.view.canvas.width * (this.largePreviewScale / this.scale) / this.largePreviewScale / 2;
+	const w = this.view.width;
+	const h = this.view.height;
 	const view = this.miniView;
 	let coor = getClickLoc(event);
 
@@ -94,7 +104,7 @@ BeamModelDemo.prototype.miniViewMouseMove = function (event)
 	const y = view.toWorldY(coor.y);
 
 	this.drawSmall();
-	view.ctx.drawRect(x - w, y - h, x + w, y + h);
+	view.ctx.drawRect(x - w/2, y - h/2, x + w/2, y + h/2);
 };
 
 BeamModelDemo.prototype.miniViewMouseDown = function (event)
@@ -105,8 +115,6 @@ BeamModelDemo.prototype.miniViewMouseDown = function (event)
 	this.curX = view.toWorldX(coor.x);
 	this.curY = view.toWorldY(coor.y);
 
-	this.viewUnlocked = false;
-	// this.view.setScale(this.scale);
 	this.view.recenter(this.curX, this.curY);
 	this.drawSmall();
 	this.draw();
@@ -174,9 +182,7 @@ BeamModelDemo.prototype.largeViewMouseUp = function (event)
 	this.view.canvas.onmouseup = undefined;
 	this.view.canvas.onmouseout = undefined;
 	this.tracker.clear();
-	this.update();
-	this.draw();
-	this.drawLaserLines();
+	this.updateRender();
 	this.colorMapIfShould();
 };
 
@@ -191,19 +197,11 @@ BeamModelDemo.prototype.drawSmall = function ()
 	const ctx = this.miniView.ctx;
 
 	ctx.drawMap(this.map);
-	if (this.curX !== undefined && this.curY !== undefined)
-	{
+	const w = this.view.width;
+	const h = this.view.height;
 
-		const h = this.view.canvas.height * (this.largePreviewScale / this.scale) / this.largePreviewScale / 2;
-		const w = this.view.canvas.width * (this.largePreviewScale / this.scale) / this.largePreviewScale / 2;
-
-		if (this.curX !== undefined && this.curY !== undefined)
-		{
-			ctx.fillStyle = 'rgba(180,180,180,0.5)';
-			ctx.fillRect(this.curX - w, this.curY - h, 2 * w, 2 * h);
-		}
-		// ctx.drawRect(this.curX-w, this.curY-h, this.curX+w, this.curY+h);
-	}
+	ctx.fillStyle = 'rgba(180,180,180,0.5)';
+	ctx.fillRect(this.curX - w / 2, this.curY - h / 2, w, h);
 };
 
 BeamModelDemo.prototype.drawLarge = function ()
@@ -227,13 +225,13 @@ BeamModelDemo.prototype.drawLarge = function ()
 BeamModelDemo.prototype.update = function ()
 {
 	//Only scan if location changed
-	scan(this.x, this.y, this.dir, this.sensorRadius, this.map, this.z);
+	scan(this.x, this.y, this.dir, this.sensorModel.sensorRadius, this.map, this.z);
 	for (let i = 0; i < this.z.length; i++)
 	{
-		if (this.z[i] < this.sensorRadius)
+		if (this.z[i] < this.sensorModel.sensorRadius)
 		{
 			this.z[i] = gaussian(this.z[i], this.sensorModel.a1);
-			if(this.z[i] < 0)this.z[i] = 0;
+			if (this.z[i] < 0) this.z[i] = 0;
 		}
 	}
 };
@@ -243,26 +241,11 @@ BeamModelDemo.prototype.setNLasers = function (n)
 	if (this.z.length === n + 1)
 		return;
 	this.z = new Array(n + 1);
-	this.update();
-	this.draw();
-	this.drawLaserLines();
+	this.updateRender();
 };
 
-BeamModelDemo.prototype.setSensorRadius = function (r)
+BeamModelDemo.prototype.updateRender = function()
 {
-	if (r === this.sensorRadius)
-		return;
-	this.sensorRadius = r;
-	this.update();
-	this.draw();
-	this.drawLaserLines();
-};
-
-BeamModelDemo.prototype.setSensorNoise = function (p)
-{
-	if (this.sensorModel.a1 === p)
-		return;
-	this.sensorModel.a1 = p;
 	this.update();
 	this.draw();
 	this.drawLaserLines();
@@ -270,7 +253,7 @@ BeamModelDemo.prototype.setSensorNoise = function (p)
 
 BeamModelDemo.prototype.drawLaserLines = function ()
 {
-	this.view.ctx.drawLaserLines(this.z, this.x, this.y, this.dir, this.sensorRadius, true);
+	this.view.ctx.drawLaserLines(this.z, this.x, this.y, this.dir, this.sensorModel.sensorRadius, true);
 };
 
 BeamModelDemo.prototype.setColoring = function (shouldColor)

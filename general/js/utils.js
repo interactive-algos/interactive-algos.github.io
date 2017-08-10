@@ -10,6 +10,7 @@ const max = Math.max;
 const min = Math.min;
 const round = Math.round;
 const TWO_PI = Math.PI * 2;
+const HALF_PI = Math.PI / 2;
 const ROOT_TWO_PI = sqrt(TWO_PI);
 
 const epsilon = 2.22507e-308;

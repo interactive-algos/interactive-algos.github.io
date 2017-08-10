@@ -106,23 +106,19 @@ BeamModel.prototype.calcProbGrid = function (resolution, robotDir, z, width, hei
  * @function
  * @param {int} x - X Coordinate
  * @param {int} y - Y Coordinate
- * @param {float} dir0 - The facing direction
+ * @param {number} dir0 - The facing direction
  * @param {float} r - The sensor radius
  * @param {Line[]} map - An array of Lines that represents the world
  * @param {float[]} z - The array to store the sensor reading
  */
 function scan(x, y, dir0, r, map, z)
 {
-	let nLasers = (z.length - 1) * 2;
-	const dirOffset = Math.round(dir0 / TWO_PI * nLasers);
-	let i = (dirOffset - nLasers / 4);
-	i += nLasers + nLasers;
+	dir0 -= Math.PI/2;
 
+	let i = 0;
 	for (let index = 0; index < z.length; index++, i++)
 	{
-		i %= nLasers;
-		let dir = TWO_PI * i / nLasers;
-
+		let dir = dir0 + i/(z.length-1) * Math.PI;
 		//End points of the laser line
 		let s1 = new Point(x, y);
 		let t1 = new Point(x + cos(dir) * r, y + sin(dir) * r);
@@ -130,9 +126,9 @@ function scan(x, y, dir0, r, map, z)
 		//If dir is 90 degrees
 		//if i = 1/nLasers or i = (3/4) * nLasers
 		//cos(dir) should be 0 in these cases,
-		if (i * 4 === nLasers || i * 4 === nLasers * 3)
+		if (Math.abs(dir) === HALF_PI || dir === Math.PI+HALF_PI)
 			t1.x = x;
-		else if (i * 2 === nLasers)
+		else if (abs(dir) === Math.PI)
 			t1.y = y;
 
 		z[index] = r;

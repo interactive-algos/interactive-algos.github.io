@@ -292,7 +292,7 @@ function initMeasurementDemo()
 		max: 10,
 		step: 0.5
 	});
-	sensorRadiusSlider.on('slide', (value) => measurementDemo.setSensorRadius(value));
+	sensorRadiusSlider.on('slide', (value) => measurementDemo.sensorRadius = value);
 	sensorRadiusSlider.on('slideStop', () => measurementDemo.colorMapIfShould());
 
 	let sensorNoiseSlider = new Slider('#sensorNoise', {
@@ -300,7 +300,7 @@ function initMeasurementDemo()
 		max: 0.5,
 		step: 0.02
 	});
-	sensorNoiseSlider.on('slide', (value) => measurementDemo.setSensorNoise(value));
+	sensorNoiseSlider.on('slide', (value) => measurementDemo.sensorNoise = (value));
 	sensorNoiseSlider.on('slideStop', () => measurementDemo.colorMapIfShould());
 
 	let colorResSlider = new Slider('#colorRes', {
