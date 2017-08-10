@@ -305,7 +305,7 @@
                 In the demos below, numerous robots are launched at the same time from the same
                 position. The <b>black</b> one represents the location where the robots supposed to
                 be and
-                the <b>blue</b> ones represent where robots actually are.
+                the <b>blue</b> ones represent some of the possible positions where robots might actually be.
             </p>
         </div>
     </div>
@@ -376,11 +376,20 @@
         </div>
     </div>
 
-    <div class='row'><h4>Robot Motion Uncertainties Demo</h4></div>
+    <div class='row'>
+        <h4>Robot Motion Uncertainties Demo</h4>
+        <p>
+            These four kinds of noises do exist in the actual world.
+            And as a result, the robot might be off the path that
+            was given to it.
+        </p>
+    </div>
 
     <div class='row'>
         <div class="col l8 s12 center">
-            <canvas id="motion_canvas" width="7" height="5"></canvas>
+            <canvas id="motion_canvas" width="7" height="4"
+                class="tooltipped" data-tooltip="Click PLAY to simulate some of the possible motions">
+            </canvas>
             <button onclick="motionDemo.stop(event)" class="btn waves-effect waves-light red">
                 <span class="glyphicon glyphicon-repeat"></span>
             </button>
@@ -396,7 +405,7 @@
             </button>
         </div>
         <div class='col l4 s12'>
-            <canvas id="motion_minicanvas" width="7" height="5"></canvas>
+            <canvas id="motion_minicanvas" width="7" height="4"></canvas>
             <fieldset>
                 <table>
                     <tbody>
@@ -686,7 +695,7 @@
                 particle is also associated with a weight, which represents how likely the particle
                 represents the robot's true location(and direction).
             </p>
-            
+
             <ol>
                 <li>When the robot moves, each particle's location and direction is also updated
                     according to the robot's internal motion sensors(which can tell roughly how much the
