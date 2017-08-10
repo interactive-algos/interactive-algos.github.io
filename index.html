@@ -680,9 +680,18 @@
                 its guesses. Guesses that seem to be consistent with the robot's motion and
                 measurement are kept while contradictory guesses are dropped.
             </p>
-            <p>Each guess(also called hypothesis) is represented by a "particle" consists of
-                location(such as x, y coordinates) of the robot and direction it's facing.
+            <p>
+                Each guess(also called hypothesis) is represented by a "particle" consists of
+                location(such as x, y coordinates) of the robot and direction it's facing. Each
+                particle is also associated with a weight, which represents how likely the particle
+                represents the robot's true location(and direction).
             </p>
+            
+            <ol>
+                <li>When the robot moves, each particle's location and direction is also updated
+                    according to the robot's internal motion sensors(which can tell roughly how much the
+                    robot has moved).</li>
+            </ol>
         </div>
     </div>
     <div class='row'>
