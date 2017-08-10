@@ -2,7 +2,7 @@ function BeamModelDemo(id, map, sensorRadius, sensorNoise, miniId)
 {
 	//Visualization stuff
 	const nLasers = 19;
-	this.scale = 20;
+	this.scale = 50;
 
 	//the canvas element
 	this.view = new View(document.getElementById(id), this.scale);
@@ -14,8 +14,6 @@ function BeamModelDemo(id, map, sensorRadius, sensorNoise, miniId)
 	this.miniView.setPreviewScale(map);
 	this.largePreviewScale = this.view.getPreviewScale(map);
 	this.miniPreviewScale = this.miniView.getPreviewScale(map);
-	// console.log(this.largePreviewScale);
-	// console.log(this.miniPreviewScale);
 
 
 	this.robotSize = 0.2;
@@ -148,37 +146,11 @@ BeamModelDemo.prototype.largeViewMouseDown = function (event)
 	this.x = x;
 	this.y = y;
 
-	const self = this;
-	this.view.canvas.onmousemove = function (event)
-	{
-		return self.largeViewMouseMove(event);
-	};
-	this.view.canvas.onmouseup = function (event)
-	{
-		return self.largeViewMouseUp(event);
-	};
+	this.view.canvas.onmousemove = (event) => {return this.largeViewMouseMove(event)};
+	this.view.canvas.onmouseup = (event) => {return this.largeViewMouseUp(event)};
+	this.view.canvas.onmouseout = this.view.canvas.onmouseup;
 
 	this.draw();
-};
-
-BeamModelDemo.prototype.largeViewMouseMove2 = function (event)
-{
-	// if (this.isCalculating || !this.viewUnlocked)
-	// 	return;
-	// const view = this.view;
-	// const self = this;
-	// const coor = getClickLoc(event);
-	// const x = coor.x;
-	// const y = this.view.canvas.height - coor.y;
-	// self.curX = x / this.view.canvas.width * this.worldWidth;
-	// self.curY = y / this.view.canvas.height * this.worldHeight;
-	//
-	// view.setScale(30);
-	// this.view.recenter(self.curX, self.curY);
-	// // view.canvas.getContext('2d').fillRect(0,0,view.canvas.width,view.canvas.height);
-	// this.drawSmall();
-	// this.draw();
-	// this.drawLaserLines();
 };
 
 BeamModelDemo.prototype.largeViewMouseMove = function (event)
@@ -203,19 +175,6 @@ BeamModelDemo.prototype.largeViewMouseUp = function (event)
 	this.view.canvas.onmouseout = undefined;
 	this.tracker.clear();
 	this.update();
-	this.draw();
-	this.drawLaserLines();
-	this.colorMapIfShould();
-};
-
-BeamModelDemo.prototype.largeViewMouseOut = function (event)
-{
-	if (this.isCalculating || !this.viewUnlocked)
-		return;
-
-	const self = this;
-	// this.view.setPreviewScale(this.map);
-	this.view.setOffset(0, this.view.canvas.height);
 	this.draw();
 	this.drawLaserLines();
 	this.colorMapIfShould();
