@@ -12,6 +12,10 @@ function BeamModelDemo(id, map, sensorRadius, sensorNoise, miniId)
 
 	this.miniView = new View(document.getElementById(miniId), scale);
 	this.miniView.setPreviewScale(map);
+	this.largePreviewScale = this.view.getPreviewScale(map);
+	this.miniPreviewScale = this.miniView.getPreviewScale(map);
+	console.log(this.largePreviewScale);
+	console.log(this.miniPreviewScale);
 
 
 	this.robotSize = 0.2;
@@ -179,17 +183,17 @@ BeamModelDemo.prototype.largeViewMouseDown = function (event)
 	const self = this;
 	this.view.canvas.onmousemove = function (event)
 	{
-		return self.trackDirection(event);
+		return self.largeViewMouseMove(event);
 	};
 	this.view.canvas.onmouseup = function (event)
 	{
-		return self.mouseUp(event);
+		return self.largeViewMouseUp(event);
 	};
 
 	this.draw();
 };
 
-BeamModelDemo.prototype.largeViewMouseMove = function (event)
+BeamModelDemo.prototype.largeViewMouseMove2 = function (event)
 {
 	return;
 	// if (this.isCalculating || !this.viewUnlocked)
@@ -210,7 +214,7 @@ BeamModelDemo.prototype.largeViewMouseMove = function (event)
 	// this.drawLaserLines();
 };
 
-BeamModelDemo.prototype.trackDirection = function (event)
+BeamModelDemo.prototype.largeViewMouseMove = function (event)
 {
 	if (this.isCalculating)
 		return;
@@ -223,7 +227,7 @@ BeamModelDemo.prototype.trackDirection = function (event)
 	this.draw();
 };
 
-BeamModelDemo.prototype.mouseUp = function (event)
+BeamModelDemo.prototype.largeViewMouseUp = function (event)
 {
 	if (this.isCalculating)
 		return;
