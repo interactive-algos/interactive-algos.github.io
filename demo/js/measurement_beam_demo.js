@@ -14,8 +14,8 @@ function BeamModelDemo(id, map, sensorRadius, sensorNoise, miniId)
 	this.miniView.setPreviewScale(map);
 	this.largePreviewScale = this.view.getPreviewScale(map);
 	this.miniPreviewScale = this.miniView.getPreviewScale(map);
-	console.log(this.largePreviewScale);
-	console.log(this.miniPreviewScale);
+	// console.log(this.largePreviewScale);
+	// console.log(this.miniPreviewScale);
 
 
 	this.robotSize = 0.2;
