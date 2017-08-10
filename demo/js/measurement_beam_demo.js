@@ -18,17 +18,18 @@ function BeamModelDemo(id, map, sensorRadius, sensorNoise, miniId)
 	this.shouldColor = false;
 	this.isCalculating = false;
 
-	//Initial robot pose
-	this.x = random() * this.view.width;
-	this.y = random() * this.view.height;
-	this.dir = random() * TWO_PI;
-	//cursor position in world
-	this.curX = this.view.width / 2;
-	this.curY = this.view.height / 2;
-
 	//Math model used for likelihood calculation
 	this.sensorModel = new BeamModel(sensorNoise, sensorRadius, map);
-	this.sensorRadius = sensorRadius;
+
+	//Initial robot pose
+	this.x = random() * this.sensorModel.width;
+	this.y = random() * this.sensorModel.height;
+	this.dir = random() * TWO_PI;
+	this.view.recenter(this.x, this.y);
+
+	//cursor position in world
+	this.curX = this.x;
+	this.curY = this.y;
 
 	//Event listeners
 	const self = this;
@@ -202,6 +203,7 @@ BeamModelDemo.prototype.drawSmall = function ()
 
 	ctx.fillStyle = 'rgba(180,180,180,0.5)';
 	ctx.fillRect(this.curX - w / 2, this.curY - h / 2, w, h);
+	ctx.drawRobot(this.x, this.y, this.dir, this.robotSize*10);
 };
 
 BeamModelDemo.prototype.drawLarge = function ()
