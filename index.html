@@ -377,12 +377,22 @@
     </div>
 
     <div class='row'>
-        <h4>Robot Motion Uncertainties Demo</h4>
+        <h4>Robot Motion Model Demo</h4>
         <p>
-            These four kinds of noises often coexist in the real world. The demo below shows how the
-            robot's path might be affected when all 4 noises are present. The black robot represents
-            the robot's true location, and the blue robots represent where the robot could have been
-            after noisy movements.
+            Motion model is a mathematical model that takes these noises into account. It takes in
+            the robot's planned motion, and predict where the robot will actually be after it moves.
+            Imagine, if I cover your eyes, and tell you to move forward by 3 meters. If you know
+            where you started, and you can execute these orders with absolute precision, then you
+            can predict where you are with 100% certainty. But you probably can't execute perfectly
+            because your muscles are only accurate to a certain degree. In this case, you don't know
+            exactly where you are, but you know you are roughly around this region centered at 3
+            meters ahead of your starting location.
+        </p>
+        <p>
+            Motion model does exactly what just described. The demo below simulates a robot with no
+            environment sensor(like you covered your eyes). The black robot represents where the
+            robot actually is. The blues ones represent that the motion model think the robot might
+            be.
         </p>
     </div>
 
@@ -534,7 +544,6 @@
     <div class="row">
         <div class="col l8 s12">
             <h4>Simulating Robot Sensor Model</h4>
-            <p>This demo is about robot's internal sensor model</p>
             <p>
                 Robot's sensors have noises, meaning that measurements are not
                 exactly accurate. The robot's internal model must be aware of
@@ -719,6 +728,10 @@
                     Create a new set of particle with equal size, select particles from the old set
                     according to weights of particles. Particles with higher weights are more likely
                     to be selected. This is called the <b>resampling process</b>.
+                </li>
+                <li>
+                    If all particles are clustered around a small region, that should be a good bet
+                    of where the robot actually is.
                 </li>
             </ol>
             <h4>Common Q&A</h4>
