@@ -305,7 +305,8 @@
                 In the demos below, numerous robots are launched at the same time from the same
                 position. The <b>black</b> one represents the location where the robots supposed to
                 be and
-                the <b>blue</b> ones represent some of the possible positions where robots might actually be.
+                the <b>blue</b> ones represent some of the possible positions where robots might
+                actually be.
             </p>
         </div>
     </div>
@@ -388,7 +389,8 @@
     <div class='row'>
         <div class="col l8 s12 center">
             <canvas id="motion_canvas" width="7" height="4"
-                class="tooltipped" data-tooltip="Click PLAY to simulate some of the possible motions">
+                    class="tooltipped"
+                    data-tooltip="Click PLAY to simulate some of the possible motions">
             </canvas>
             <button onclick="motionDemo.stop(event)" class="btn waves-effect waves-light red">
                 <span class="glyphicon glyphicon-repeat"></span>
@@ -697,11 +699,29 @@
                 particle is also associated with a weight, which represents how likely the particle
                 represents the robot's true location(and direction).
             </p>
-
+            <p>
+                Here is an overview of what the algorithm does at each time step:
+            </p>
             <ol>
-                <li>When the robot moves, each particle's location and direction is also updated
-                    according to the robot's internal motion sensors(which can tell roughly how much the
-                    robot has moved).</li>
+                <li>
+                    If the robot moves, <b>update each particle's location and direction according
+                    to
+                    the robot's motion</b>(robots often have internal odometry readings that can
+                    tell
+                    how much the robot has moved approximately). When updating,<u>uncertainties of
+                    odometry readings must be taken into account</u>
+                </li>
+                <li>
+                    If the robot performed a scan of the environment, <b>update each particle's
+                    weight</b>.
+                    The new weight should be <u>how likely the robot is at this location given the
+                    scanned data</u>.
+                </li>
+                <li>
+                    Create a new set of particle with equal size, select particles from the old set
+                    according to weights of particles. Particles with higher weights are more likely
+                    to be selected. This is called the <b>resampling process</b>.
+                </li>
             </ol>
         </div>
     </div>
