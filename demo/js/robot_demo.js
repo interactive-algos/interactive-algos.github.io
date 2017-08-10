@@ -146,7 +146,7 @@ RobotDemo.prototype.draw = function ()
 	}
 	if (typeof this.sview !== 'undefined')
 	{
-		this.drawView(this.sview, false);
+		this.drawView(this.sview, true);
 	}
 	if (this.shouldColorMap) this.colorMap();
 };
