@@ -87,8 +87,8 @@ BeamModelDemo.prototype.miniViewMouseMove = function (event)
 {
 	// console.log(this.scale)
 	// console.log((this.miniView.height * (this.largePreviewScale / this.scale)) * this.miniPreviewScale)
-	const h = this.view.height * (this.largePreviewScale / this.scale) * this.miniPreviewScale;
-	const w = this.view.width * (this.largePreviewScale / this.scale) * this.miniPreviewScale;
+	const h = this.view.canvas.height * (this.largePreviewScale / this.scale) / this.largePreviewScale / 2;
+	const w = this.view.canvas.width * (this.largePreviewScale / this.scale) / this.largePreviewScale / 2;
 	const view = this.miniView;
 	let coor = getClickLoc(event);
 
@@ -108,7 +108,7 @@ BeamModelDemo.prototype.miniViewMouseDown = function (event)
 	this.curY = view.toWorldY(coor.y);
 
 	this.viewUnlocked = false;
-	this.view.setScale(20);
+	// this.view.setScale(this.scale);
 	this.view.recenter(this.curX, this.curY);
 	this.drawSmall();
 	this.draw();
@@ -234,8 +234,9 @@ BeamModelDemo.prototype.drawSmall = function ()
 	ctx.drawMap(this.map);
 	if (this.curX !== undefined && this.curY !== undefined)
 	{
-		const h = this.view.height * (this.largePreviewScale / this.scale) * this.miniPreviewScale;
-		const w = this.view.width * (this.largePreviewScale / this.scale) * this.miniPreviewScale;
+
+		const h = this.view.canvas.height * (this.largePreviewScale / this.scale) / this.largePreviewScale / 2;
+		const w = this.view.canvas.width * (this.largePreviewScale / this.scale) / this.largePreviewScale / 2;
 
 		if (this.curX !== undefined && this.curY !== undefined)
 		{
