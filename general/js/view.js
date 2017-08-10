@@ -263,7 +263,7 @@ CanvasRenderingContext2D.prototype.drawRobot = function (wx, wy, dir, wsize, lin
 	this.beginPath();
 	//draw a line to show Robot's orientation
 	this.moveTo(wx, wy);
-	this.lineTo(wx + cos(dir) * wsize * 2, wy + sin(dir) * wsize * lineLength);
+	this.lineTo(wx + cos(dir) * wsize * lineLength, wy + sin(dir) * wsize * lineLength);
 	this.stroke();
 };
 
