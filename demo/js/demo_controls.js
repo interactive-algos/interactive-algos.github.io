@@ -4,7 +4,7 @@
 
 window.onerror = function (msg, url, lineNo, columnNo, error)
 {
-	var message = [
+	let message = [
 		'Message: ' + msg,
 		'URL: ' + url,
 		'Line: ' + lineNo,
@@ -16,22 +16,22 @@ window.onerror = function (msg, url, lineNo, columnNo, error)
 	return false;
 };
 
-var simpleActuation;
-var a1Demo;
-var a2Demo;
-var a3Demo;
-var a4Demo;
+let simpleActuation;
+let a1Demo;
+let a2Demo;
+let a3Demo;
+let a4Demo;
 
-var measurementDemo;
-var sensorDemo;
+let measurementDemo;
+let sensorDemo;
 
-var motionDemo;
-var a1MDemo;
-var a2MDemo;
-var a3MDemo;
-var a4MDemo;
+let motionDemo;
+let a1MDemo;
+let a2MDemo;
+let a3MDemo;
+let a4MDemo;
 
-var mclDemo;
+let mclDemo;
 
 const actuationNoiseSliderFormat = {
 	min: 0,
@@ -56,7 +56,7 @@ function initMotionDemo()
 		undefined,
 		new RobotState(x, y, dir),
 		0);
-	var slider = new Slider("#motion_stride");
+	let slider = new Slider("#motion_stride");
 
 
 	//Individual Simulations
@@ -125,37 +125,21 @@ function initMotionDemo()
 		a4MDemo.setStride(sliderValue/10000.0);
 	});
 
-	var a1Slider = new Slider('#motion_a1', actuationNoiseSliderFormat);
-	var a2Slider = new Slider('#motion_a2', actuationNoiseSliderFormat);
-	var a3Slider = new Slider('#motion_a3', actuationNoiseSliderFormat);
-	var a4Slider = new Slider('#motion_a4', actuationNoiseSliderFormat);
+	let a1Slider = new Slider('#motion_a1', actuationNoiseSliderFormat);
+	let a2Slider = new Slider('#motion_a2', actuationNoiseSliderFormat);
+	let a3Slider = new Slider('#motion_a3', actuationNoiseSliderFormat);
+	let a4Slider = new Slider('#motion_a4', actuationNoiseSliderFormat);
 
-	a1Slider.on('slide', function (value)
-	{
-		motionDemo.setA1(value);
-		// a1MDemo.setA1(value);
-	});
-	a2Slider.on('slide', function (value)
-	{
-		motionDemo.setA2(value);
-		// a2MDemo.setA2(value);
-	});
-	a3Slider.on('slide', function (value)
-	{
-		motionDemo.setA3(value);
-		// a3MDemo.setA3(value);
-	});
-	a4Slider.on('slide', function (value)
-	{
-		motionDemo.setA4(value);
-		// a4MDemo.setA4(value);
-	});
+	a1Slider.on('slide', (value) => motionDemo.a1 = value);
+	a2Slider.on('slide', (value) => motionDemo.a2 = value);
+	a3Slider.on('slide', (value) => motionDemo.a3 = value);
+	a4Slider.on('slide', (value) => motionDemo.a4 = value);
 
-	var robot = new Robot(filter, path, 0, 0, slider.getValue());
-	var robotA1 = new Robot(filterA1, s_path, 0, 0, slider.getValue()/10000.0);
-	var robotA2 = new Robot(filterA2, st_path, 0, 0, slider.getValue());
-	var robotA3 = new Robot(filterA3, st_path, 0, 0, slider.getValue());
-	var robotA4 = new Robot(filterA4, s_path, 0, 0, slider.getValue()/10000.0);
+	let robot = new Robot(filter, path, 0, 0, slider.getValue());
+	let robotA1 = new Robot(filterA1, s_path, 0, 0, slider.getValue()/10000.0);
+	let robotA2 = new Robot(filterA2, st_path, 0, 0, slider.getValue());
+	let robotA3 = new Robot(filterA3, st_path, 0, 0, slider.getValue());
+	let robotA4 = new Robot(filterA4, s_path, 0, 0, slider.getValue()/10000.0);
 	motionDemo = new RobotDemo('motion_canvas', 'motion_minicanvas', getMap(), robot, 10);
 	a1MDemo = new RobotDemo('motion_a1_demo', '', getSimMap(), robotA1, 10);
 	a2MDemo = new RobotDemo('motion_a2_demo', '', getSimMap(), robotA2, 10);
@@ -165,70 +149,46 @@ function initMotionDemo()
 
 function initMCLDemo()
 {
-	var slider = new Slider("#mcl_stride", {
+	let slider = new Slider("#mcl_stride", {
 		min: 0.01,
 		max: 0.2,
 		step: 0.01,
 		value: 0.04
 	});
-	slider.on("slide", function (sliderValue)
-	{
-		mclDemo.setStride(sliderValue);
-	});
+	slider.on("slide", (sliderValue) => mclDemo.setStride(sliderValue));
 
-	var a1Slider = new Slider('#mcl_a1', actuationNoiseSliderFormat);
-	var a2Slider = new Slider('#mcl_a2', actuationNoiseSliderFormat);
-	var a3Slider = new Slider('#mcl_a3', actuationNoiseSliderFormat);
-	var a4Slider = new Slider('#mcl_a4', actuationNoiseSliderFormat);
+	let a1Slider = new Slider('#mcl_a1', actuationNoiseSliderFormat);
+	let a2Slider = new Slider('#mcl_a2', actuationNoiseSliderFormat);
+	let a3Slider = new Slider('#mcl_a3', actuationNoiseSliderFormat);
+	let a4Slider = new Slider('#mcl_a4', actuationNoiseSliderFormat);
 
-	a1Slider.on('slide', function (value)
-	{
-		mclDemo.setA1(value)
-	});
-	a2Slider.on('slide', function (value)
-	{
-		mclDemo.setA2(value)
-	});
-	a3Slider.on('slide', function (value)
-	{
-		mclDemo.setA3(value)
-	});
-	a4Slider.on('slide', function (value)
-	{
-		mclDemo.setA4(value)
-	});
+	a1Slider.on('slide', (value) => mclDemo.a1 = value);
+	a2Slider.on('slide', (value) => mclDemo.a2 = value);
+	a3Slider.on('slide', (value) => mclDemo.a3 = value);
+	a4Slider.on('slide', (value) => mclDemo.a4 = value);
 
-	var sensorRadiusSlider = new Slider('#mcl_sensorRadius', {
+	let sensorRadiusSlider = new Slider('#mcl_sensorRadius', {
 		min: 1,
 		max: 10,
 		step: 0.5
 	});
-	sensorRadiusSlider.on('slide', function (value)
-	{
-		mclDemo.setSensorRadius(value);
-	});
+	sensorRadiusSlider.on('slide', (value) => mclDemo.setSensorRadius(value));
 
-	var sensorNoiseSlider = new Slider('#mcl_sensorNoise', {
+	let sensorNoiseSlider = new Slider('#mcl_sensorNoise', {
 		min: 0,
-		max: 0.5,
-		step: 0.02
+		max: 0.3,
+		step: 0.01
 	});
-	sensorNoiseSlider.on('slide', function (value)
-	{
-		mclDemo.setSensorNoise(value);
-	});
+	sensorNoiseSlider.on('slide', (value) => mclDemo.setSensorNoise(value));
 
-	var colorResSlider = new Slider('#mcl_colorRes', {
+	let colorResSlider = new Slider('#mcl_colorRes', {
 		min: 1,
 		max: 20,
 		step: 1
 	});
-	colorResSlider.on('slide', function (value)
-	{
-		measurementDemo.setColoringResolution(value);
-	});
+	colorResSlider.on('slide', (value) => measurementDemo.setColoringResolution(value));
 
-	// var pRatioSlider = new Slider('#mcl_pRatio', {
+	// let pRatioSlider = new Slider('#mcl_pRatio', {
 	// 	min: 0,
 	// 	max: 1,
 	// 	step: 0.01,
@@ -288,7 +248,7 @@ function initActuationDemo()
 		a1, a2, a3, a4);
 	simpleActuation.simulateActuation();
 
-	var noiseSlider = document.getElementById('actuation_noise');
+	let noiseSlider = document.getElementById('actuation_noise');
 	const noise = Number(noiseSlider.value);
 	a1Demo = new ActuationDemo('actuation_a1', firstMove, turn, secondMove,
 		noise, 0, 0, 0);
@@ -301,15 +261,15 @@ function initActuationDemo()
 	noiseSlider.addEventListener('input', function(event)
 	{
 		const sliderValue = Number(event.target.value);
-		a1Demo.setA1(sliderValue);
-		a2Demo.setA2(sliderValue);
-		a3Demo.setA3(sliderValue);
-		a4Demo.setA4(sliderValue);
+		a1Demo.a1 = sliderValue;
+		a2Demo.a2 = sliderValue;
+		a3Demo.a3 = sliderValue;
+		a4Demo.a4 = sliderValue;
 
-		a1MDemo.setA1(sliderValue);
-		a2MDemo.setA2(sliderValue);
-		a3MDemo.setA3(sliderValue);
-		a4MDemo.setA4(sliderValue);
+		a1MDemo.a1 = sliderValue;
+		a2MDemo.a2 = sliderValue;
+		a3MDemo.a3 = sliderValue;
+		a4MDemo.a4 = sliderValue;
 	});
 	noiseSlider.addEventListener('change', simulateAllActuations);
 	simulateAllActuations();
@@ -317,63 +277,39 @@ function initActuationDemo()
 
 function initMeasurementDemo()
 {
-	var map = getMap();
+	let map = getMap();
 	// compactMap(map);
-	var nLasersSlider = new Slider('#nLasers', {
+	let nLasersSlider = new Slider('#nLasers', {
 		min: 6,
 		max: 36,
 		step: 1
 	});
-	nLasersSlider.on('slide', function (value)
-	{
-		measurementDemo.setNLasers(value)
-	});
-	nLasersSlider.on('slideStop', function ()
-	{
-		measurementDemo.colorMapIfShould();
-	});
+	nLasersSlider.on('slide', (value) => measurementDemo.setNLasers(value));
+	nLasersSlider.on('slideStop', () => measurementDemo.colorMapIfShould());
 
-	var sensorRadiusSlider = new Slider('#sensorRadius', {
+	let sensorRadiusSlider = new Slider('#sensorRadius', {
 		min: 1,
 		max: 10,
 		step: 0.5
 	});
-	sensorRadiusSlider.on('slide', function (value)
-	{
-		measurementDemo.setSensorRadius(value);
-	});
-	sensorRadiusSlider.on('slideStop', function ()
-	{
-		measurementDemo.colorMapIfShould();
-	});
+	sensorRadiusSlider.on('slide', (value) => measurementDemo.setSensorRadius(value));
+	sensorRadiusSlider.on('slideStop', () => measurementDemo.colorMapIfShould());
 
-	var sensorNoiseSlider = new Slider('#sensorNoise', {
+	let sensorNoiseSlider = new Slider('#sensorNoise', {
 		min: 0,
 		max: 0.5,
 		step: 0.02
 	});
-	sensorNoiseSlider.on('slide', function (value)
-	{
-		measurementDemo.setSensorNoise(value);
-	});
-	sensorNoiseSlider.on('slideStop', function ()
-	{
-		measurementDemo.colorMapIfShould();
-	});
+	sensorNoiseSlider.on('slide', (value) => measurementDemo.setSensorNoise(value));
+	sensorNoiseSlider.on('slideStop', () => measurementDemo.colorMapIfShould());
 
-	var colorResSlider = new Slider('#colorRes', {
+	let colorResSlider = new Slider('#colorRes', {
 		min: 1,
 		max: 20,
 		step: 1
 	});
-	colorResSlider.on('slide', function (value)
-	{
-		measurementDemo.setColoringResolution(value);
-	});
-	colorResSlider.on('slideStop', function ()
-	{
-		measurementDemo.colorMapIfShould();
-	});
+	colorResSlider.on('slide', (value) => measurementDemo.setColoringResolution(value));
+	colorResSlider.on('slideStop', () => measurementDemo.colorMapIfShould());
 
 	measurementDemo = new BeamModelDemo('sensor_model_demo', map,
 		sensorRadiusSlider.getValue(), sensorNoiseSlider.getValue(), 'sensor_model_mini');
@@ -390,26 +326,20 @@ function onFirstAppear(selector, callback)
 
 function initSensorDemo(id)
 {
-	var noiseSlider = new Slider("#sensor_demo_sensorNoise", {
+	let noiseSlider = new Slider("#sensor_demo_sensorNoise", {
 		min: 0,
 		max: 4,
 		step: 0.2,
 		value: 2
 	});
 	sensorDemo = new SensorDemo(id, noiseSlider.getValue());
-	noiseSlider.on("slideStop", function (sliderValue)
-	{
-		sensorDemo.setSensorNoise(sliderValue)
-	});
-	var repSlider = new Slider('#nSamples', {
+	noiseSlider.on("slideStop", (sliderValue) => sensorDemo.setSensorNoise(sliderValue));
+	let repSlider = new Slider('#nSamples', {
 		min: 0,
 		max: 5,
 		step: 0.2,
 		value: 2,
-		formatter: function (value)
-		{
-			return round(Math.pow(10, value));
-		}
+		formatter: (value) => {return round(Math.pow(10, value));}
 	});
 }
 
@@ -435,16 +365,7 @@ function init()
 	// {
 		initMotionDemo();
 	// });
-	// onFirstAppear('#mcl_canvas', function (e, $t)
-	// {
-		initMCLDemo();
-	// });
-	// onFirstAppear('#sensor_model_demo', function (e, $t)
-	// {
-		initMeasurementDemo();
-	// });
-	onFirstAppear('#sensor_demo', function (e, $t)
-	{
-		initSensorDemo(e.target.id);
-	});
+	onFirstAppear('#mcl_canvas', initMCLDemo);
+	onFirstAppear('#sensor_model_demo', initMeasurementDemo);
+	onFirstAppear('#sensor_demo', (e) => initSensorDemo(e.target.id));
 }

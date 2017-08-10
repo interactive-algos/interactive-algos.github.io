@@ -4,8 +4,8 @@
  * @constructor
  * @param {int} x - the initial x coordinate of the particle robot
  * @param {int} y - the initial y coordinate of the particle robot
- * @param {float} dir - the initial direction of the particle robot
- * @param {float} weight - the initial weight (probability) of the particle
+ * @param {number} dir - the initial direction of the particle robot
+ * @param {number} weight - the initial weight (probability) of the particle
  */
 function Particle(x, y, dir, weight)
 {
@@ -32,11 +32,8 @@ Particle.size = 0.1;
  */
 Particle.prototype.draw = function (ctx)
 {
-	var x = this.x;//round(this.x);
-	var y = this.y;//round(this.y);
-
 	ctx.strokeStyle = 'rgba(0, 0, 255, ' + this.opacity + ')';
-	ctx.drawRobot(x, y, this.dir, Particle.size);
+	ctx.drawRobot(this.x, this.y, this.dir, Particle.size, 3);
 };
 
 /**

@@ -12,46 +12,28 @@ const round = Math.round;
 const TWO_PI = Math.PI * 2;
 const ROOT_TWO_PI = sqrt(TWO_PI);
 
-window.onerror = function (msg, url, line)
-{
-	alert(msg + '==>' + url + ':' + line);
-};
-
-function randint(min, max)
-{
-	min = Math.ceil(min);
-	max = floor(max);
-	return floor(Math.random() * (max - min)) + min;
-}
-
 const epsilon = 2.22507e-308;
-generateGaussianNoise.z1 = 0;
-generateGaussianNoise.generate = false;
+gaussian.z1 = 0;
+gaussian.generate = false;
 
-function generateGaussianNoise(mu, sigma)
+function gaussian(mu = 0, sigma = 1)
 {
-	generateGaussianNoise.generate = !generateGaussianNoise.generate;
+	gaussian.generate = !gaussian.generate;
 
-	if (!generateGaussianNoise.generate)
-		return generateGaussianNoise.z1 * sigma + mu;
+	if (!gaussian.generate)
+		return gaussian.z1 * sigma + mu;
 
-	var u1, u2;
+	let u1, u2;
 	do
 	{
 		u1 = random();
 		u2 = random();
 	} while ( u1 <= epsilon );
 
-	var z0;
+	let z0;
 	z0 = sqrt(-2.0 * Math.log(u1)) * cos(TWO_PI * u2);
-	generateGaussianNoise.z1 = sqrt(-2.0 * Math.log(u1)) * sin(TWO_PI * u2);
+	gaussian.z1 = sqrt(-2.0 * Math.log(u1)) * sin(TWO_PI * u2);
 	return z0 * sigma + mu;
-}
-
-//return a gaussian distributed random number
-function gaussian()
-{
-	return ((Math.random() + Math.random() + Math.random() + Math.random() + Math.random() + Math.random()) - 3) / 3;
 }
 
 //Bound radian a to interval [-pi, pi]
@@ -95,11 +77,11 @@ function orientation(p, q, r)
 // and 'p2q2' intersect.
 function doIntersect(l1, l2)
 {
-	var p1 = l1.s;
-	var q1 = l1.t;
+	let p1 = l1.s;
+	let q1 = l1.t;
 
-	var p2 = l2.s;
-	var q2 = l2.t;
+	let p2 = l2.s;
+	let q2 = l2.t;
 
 	//Broad phase check
 	if (p1.x > l2.maxX && q1.x > l2.maxX)
@@ -142,11 +124,11 @@ function doIntersect(l1, l2)
 //Return the intersection of two LINE! (NOT LINE SEGMENTS!)
 function intersectionPoint(p1, q1, p2, q2)
 {
-	var m1 = (q1.y - p1.y) / (q1.x - p1.x);
-	var b1 = p1.y - p1.x * m1;
+	let m1 = (q1.y - p1.y) / (q1.x - p1.x);
+	let b1 = p1.y - p1.x * m1;
 
-	var m2 = (q2.y - p2.y) / (q2.x - p2.x);
-	var b2 = p2.y - p2.x * m2;
+	let m2 = (q2.y - p2.y) / (q2.x - p2.x);
+	let b2 = p2.y - p2.x * m2;
 
 	if (p1.x === q1.x)
 		return new Point(p1.x, m2 * p1.x + b2);
@@ -154,8 +136,8 @@ function intersectionPoint(p1, q1, p2, q2)
 	if (p2.x === q2.x)
 		return new Point(p2.x, m1 * p2.x + b1);
 
-	var x = (b2 - b1) / (m1 - m2);
-	var y = m1 * x + b1;
+	let x = (b2 - b1) / (m1 - m2);
+	let y = m1 * x + b1;
 	return new Point(x, y);
 }
 
@@ -175,7 +157,7 @@ Point.prototype.length = function ()
 
 Point.prototype.normalize = function ()
 {
-	var l = this.length();
+	let l = this.length();
 	return new Point(this.x / l, this.y / l);
 };
 
@@ -186,15 +168,15 @@ Point.prototype.toString = function ()
 
 Point.prototype.distanceTo = function (v)
 {
-	var x = this.x - v.x;
-	var y = this.y - v.y;
+	let x = this.x - v.x;
+	let y = this.y - v.y;
 	return sqrt(x * x + y * y);
 };
 
 function distance(x1, y1, x2, y2)
 {
-	var x = x2 - x1;
-	var y = y2 - y1;
+	let x = x2 - x1;
+	let y = y2 - y1;
 	return sqrt(x * x + y * y);
 }
 
@@ -220,18 +202,16 @@ function Line(sx, sy, tx, ty)
 //2006
 function prob_gaussian(a, b)
 {
-	var variance = b * b;
+	const variance = b * b;
 	return Math.exp(-0.5 * (a * a) / (variance)) / (ROOT_TWO_PI * abs(b));
 }
 
 //return log of prob_gaussian(a, b)
 function prob_gaussian_log(a, b)
 {
-	var variance = b * b;
+	const variance = b * b;
 	return (-0.5 * (a * a) / (variance)) - Math.log(ROOT_TWO_PI * abs(b));
 }
-
-const prob_normal = prob_gaussian;
 
 function RobotState(x, y, dir)
 {
@@ -242,31 +222,29 @@ function RobotState(x, y, dir)
 
 function clearCanvas(canvas)
 {
-	var ctx = canvas.getContext('2d');
+	const ctx = canvas.getContext('2d');
 	ctx.save();
 	ctx.setTransform(1, 0, 0, 1, 0, 0);
 	ctx.clearRect(0, 0, canvas.width, canvas.height);
 	ctx.restore();
 }
 
-function smoothenPath(path, windowSize)
+function smoothenPath(path, windowSize = 10)
 {
-	var copy = path.slice();
-	if (typeof windowSize === 'undefined')
-		windowSize = 10;
+	let copy = path.slice();
 
-	for (var i = windowSize; i < path.length - windowSize; i++)
+	for (let i = windowSize; i < path.length - windowSize; i++)
 	{
-		var dx = 0;
-		var dy = 0;
+		let dx = 0;
+		let dy = 0;
 
-		for (var j = i - windowSize; j < i; j++)
+		for (let j = i - windowSize; j < i; j++)
 		{
 			dx += copy[j + 1].x - copy[j].x;
 			dy += copy[j + 1].y - copy[j].y;
 		}
 
-		for (var j = i + 1; j < i + windowSize; j++)
+		for (let j = i + 1; j < i + windowSize; j++)
 		{
 			dx += copy[j].x - copy[j - 1].x;
 			dy += copy[j].y - copy[j - 1].y;
@@ -296,9 +274,9 @@ function getValue(id)
 
 function getClickLoc(event)
 {
-	var element = event.target;
+	let element = event.target;
 
-	var offsetX = 0, offsetY = 0;
+	let offsetX = 0, offsetY = 0;
 
 	if (element.offsetParent)
 	{

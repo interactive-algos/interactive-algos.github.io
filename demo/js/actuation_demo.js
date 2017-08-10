@@ -50,8 +50,8 @@ ActuationDemo.prototype.draw = function ()
 	const dir = this.dir + this.turn;
 
 	//location after the second move
-	var x2 = x1 + cos(dir) * this.secondMove;
-	var y2 = y1 + sin(dir) * this.secondMove;
+	let x2 = x1 + cos(dir) * this.secondMove;
+	let y2 = y1 + sin(dir) * this.secondMove;
 	this.ctx.strokeLine(x1, y1, x2, y2);
 
 	if (typeof this.path !== 'undefined')
@@ -98,29 +98,26 @@ ActuationDemo.prototype.simulateActuation = function ()
 ActuationDemo.prototype.startAnimation = function ()
 {
 	this.lastFrame = Date.now();
-	const self = this;
 	this.targetIndex = 0;
 	this.curX = this.x;
 	this.curY = this.y;
-	this.frameId = requestAnimationFrame(function (timestamp)
-	{
-		self.frame(timestamp);
-	});
+	this.frameId = requestAnimationFrame((timestamp) => this.frame(timestamp));
 };
 
 ActuationDemo.prototype.frame = function (timestamp)
 {
 	this.fps = 60 / (timestamp - this.lastFrame);
 	this.lastFrame = timestamp;
-	var stride = 0.04;
-	var x = this.curX;
-	var y = this.curY;
+	let stride = 0.04;
+	let x = this.curX;
+	let y = this.curY;
 	const EPS = 1E-6;
+	let targetPoint = null;
 	while (stride > 0)
 	{
-		var targetPoint = this.path[this.targetIndex];
+		targetPoint = this.path[this.targetIndex];
 
-		var dist = distance(x, y, targetPoint.x, targetPoint.y);
+		let dist = distance(x, y, targetPoint.x, targetPoint.y);
 		while (dist <= EPS)
 		{
 			this.targetIndex++;
@@ -133,8 +130,8 @@ ActuationDemo.prototype.frame = function (timestamp)
 			dist = distance(x, y, targetPoint.x, targetPoint.y);
 		}
 
-		var cosx = (targetPoint.x - x) / dist;
-		var sinx = (targetPoint.y - y) / dist;
+		let cosx = (targetPoint.x - x) / dist;
+		let sinx = (targetPoint.y - y) / dist;
 		dist = min(dist, stride);
 
 		x += cosx * dist;
@@ -148,44 +145,24 @@ ActuationDemo.prototype.frame = function (timestamp)
 	this.curDir = atan2(targetPoint.y - y, targetPoint.x - x);
 	this.draw();
 
-	const self = this;
-	this.frameId = requestAnimationFrame(function (timestamp)
-	{
-		self.frame(timestamp);
-	});
+	this.frameId = requestAnimationFrame((timestamp) => this.frame(timestamp));
 };
 
-ActuationDemo.prototype.setDist1 = function (dist1)
-{
-	this.firstMove = dist1;
-};
-
-ActuationDemo.prototype.setTurnAngle = function (turn)
-{
-	this.turn = turn;
-};
-
-ActuationDemo.prototype.setDist2 = function (dist2)
-{
-	this.secondMove = dist2;
-};
-
-ActuationDemo.prototype.setA1 = function (noise)
-{
-	this.motionModel.a1 = noise;
-};
-
-ActuationDemo.prototype.setA2 = function (noise)
-{
-	this.motionModel.a2 = noise;
-};
-
-ActuationDemo.prototype.setA3 = function (noise)
-{
-	this.motionModel.a3 = noise;
-};
-
-ActuationDemo.prototype.setA4 = function (noise)
-{
-	this.motionModel.a4 = noise;
-};
+Object.defineProperties(ActuationDemo.prototype, {
+	'a1': {
+		get: function(){return this.motionModel.a1;},
+		set: function(noise) {this.motionModel.a1 = noise;}
+	},
+	'a2': {
+		get: function(){return this.motionModel.a2;},
+		set: function(noise) {this.motionModel.a2 = noise;}
+	},
+	'a3': {
+		get: function() {return this.motionModel.a3;},
+		set: function(noise) {this.motionModel.a3 = noise;}
+	},
+	'a4': {
+		get: function() {return this.motionModel.a4;},
+		set: function(noise) {this.motionModel.a4 = noise;}
+	}
+});

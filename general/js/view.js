@@ -61,18 +61,17 @@ View.prototype.setScale = function (scale)
 
 View.prototype.setPreviewScale = function (map)
 {
-	dspscale = this.getPreviewScale(map)
-	this.setScale(dspscale);
+	this.setScale(this.getPreviewScale(map));
 	this.setOffset(0, this.canvas.height);
 	this.isPreview = true;
 };
 
 View.prototype.getPreviewScale = function (map)
 {
-	var size = getMapSize(map);
-	var s1 = this.canvas.clientWidth / size.x;
-	var s2 = this.canvas.clientHeight / size.y;
-	var dspscale = 1;
+	let size = getMapSize(map);
+	let s1 = this.canvas.clientWidth / size.x;
+	let s2 = this.canvas.clientHeight / size.y;
+	let dspscale = 1;
 	if (s1 > s2)
 	{
 		dspscale = s2;
@@ -81,18 +80,16 @@ View.prototype.getPreviewScale = function (map)
 		dspscale = s1;
 	}
 	return dspscale;
-}
+};
 
-View.prototype.adjustToPoint = function (x, y, lockRatio)
+View.prototype.adjustToPoint = function (x, y, lockRatio = 0.4)
 {
-	if (typeof lockRatio === 'undefined')
-		lockRatio = 0.4;
 	x = this.toScreenX(x);
 	y = this.toScreenY(y);
 	const canvas = this.canvas;
 
-	var dx = 0;
-	var dy = 0;
+	let dx = 0;
+	let dy = 0;
 	if (x < canvas.width * lockRatio)
 	{
 		dx = canvas.width * lockRatio - x;
@@ -113,15 +110,15 @@ View.prototype.adjustToPoint = function (x, y, lockRatio)
 View.prototype.recenter = function (x, y)
 {
 	this.setOffset(0, 0);
-	var screenX = this.toScreenX(x);
-	var screenY = this.toScreenY(y);
+	let screenX = this.toScreenX(x);
+	let screenY = this.toScreenY(y);
 	this.setOffset(-screenX + this.canvas.width / 2, -screenY + this.canvas.height / 2);
 };
 
 function getMapSize(map)
 {
-	var w = 0;
-	var h = 0;
+	let w = 0;
+	let h = 0;
 	for (i = 0; i < map.length; i++)
 	{
 		if (map[i].s.x > w)
@@ -146,7 +143,7 @@ function getMapSize(map)
 
 View.prototype.colorMap = function (resolution, sensorModel, z, robotDir)
 {
-	var probabilityGrid = sensorModel.calcProbGrid(resolution, robotDir, z,
+	let probabilityGrid = sensorModel.calcProbGrid(resolution, robotDir, z,
 		this.canvas.width, this.canvas.height, this);
 	this.drawProbabilityGrid(probabilityGrid, resolution);
 };
@@ -157,11 +154,11 @@ View.prototype.drawProbabilityGrid = function (probabilityGrid, resolution)
 	ctx.save();
 	ctx.setTransform(1, 0, 0, 1, 0, 0);
 
-	for (var i = 0; i < probabilityGrid.length; i++)
+	for (let i = 0; i < probabilityGrid.length; i++)
 	{
-		for (var j = 0; j < probabilityGrid[i].length; j++)
+		for (let j = 0; j < probabilityGrid[i].length; j++)
 		{
-			var p = probabilityGrid[i][j];
+			let p = probabilityGrid[i][j];
 			ctx.fillStyle = 'rgba(' + round(p * 255) + ', 0, ' + (255 - round(p * 255)) + ', 0.5)';
 			ctx.fillRect(j * resolution, i * resolution, resolution, resolution);
 		}
@@ -176,9 +173,9 @@ View.prototype.drawGrid = function ()
 	const w = ceil(this.toWorldX(this.canvas.width));
 	const h = ceil(this.toWorldY(0));
 	ctx.fillStyle = 'rgba(128, 128, 128, 0.5)';
-	for(var j = floor(this.toWorldX(0)); j < w; j ++)
+	for (let j = floor(this.toWorldX(0)); j < w; j++)
 	{
-		for(var i = floor(this.toWorldY(this.canvas.height)); i < h; i ++)
+		for (let i = floor(this.toWorldY(this.canvas.height)); i < h; i++)
 		{
 			ctx.fillCircle(j, i, 0.05);
 		}
@@ -204,15 +201,11 @@ ColorizeManager.prototype.start = function (resolution, sensorModel, z, dir)
 	this.z = z;
 	this.dir = dir;
 	this.probs = new Array(Math.ceil(this.view.canvas.height / resolution));
-	for (var i = 0; i < this.probs.length; i++)
+	for (let i = 0; i < this.probs.length; i++)
 	{
 		this.probs[i] = new Array(Math.ceil(this.view.canvas.width / resolution));
 	}
-	const self = this;
-	requestAnimationFrame(function (timestamp)
-	{
-		self.tick(timestamp)
-	});
+	requestAnimationFrame((timestamp) => this.tick(timestamp));
 };
 
 ColorizeManager.prototype.tick = function (timestamp)
@@ -221,28 +214,24 @@ ColorizeManager.prototype.tick = function (timestamp)
 	const probs = this.probs;
 	const resolution = this.resolution;
 	const z = this.z;
-	var shouldSave = false;
+	let shouldSave = false;
 
-	for (var i = this.i; i < probs.length; i++)
+	for (let i = this.i; i < probs.length; i++)
 	{
-		for (var j = this.j; j < probs[i].length; j++)
+		for (let j = this.j; j < probs[i].length; j++)
 		{
 			if (shouldSave)
 			{
 				this.i = i;
 				this.j = j;
 
-				var total = probs.length * probs[0].length;
+				let total = probs.length * probs[0].length;
 				this.progressCallback((i * j) / total);
 
-				const self = this;
-				requestAnimationFrame(function (timestamp)
-				{
-					self.tick(timestamp)
-				});
+				requestAnimationFrame((timestamp) => this.tick(timestamp));
 				return;
 			}
-			var p = this.sensorModel.probability(z, new RobotState(view.toWorldX(j * resolution + resolution / 2),
+			let p = this.sensorModel.probability(z, new RobotState(view.toWorldX(j * resolution + resolution / 2),
 				view.toWorldY(i * resolution + resolution / 2), this.dir));
 
 			this.max = Math.max(p, this.max);
@@ -266,7 +255,7 @@ ColorizeManager.prototype.tick = function (timestamp)
 	this.finishCallback(probs, resolution);
 };
 
-CanvasRenderingContext2D.prototype.drawRobot = function (wx, wy, dir, wsize)
+CanvasRenderingContext2D.prototype.drawRobot = function (wx, wy, dir, wsize, lineLength = 1)
 {
 	//The robot's main circle
 	this.strokeCircle(wx, wy, wsize);
@@ -274,16 +263,17 @@ CanvasRenderingContext2D.prototype.drawRobot = function (wx, wy, dir, wsize)
 	this.beginPath();
 	//draw a line to show Robot's orientation
 	this.moveTo(wx, wy);
-	this.lineTo(wx + cos(dir) * wsize * 2, wy + sin(dir) * wsize * 2);
+	this.lineTo(wx + cos(dir) * wsize * 2, wy + sin(dir) * wsize * lineLength);
 	this.stroke();
 };
 
-CanvasRenderingContext2D.prototype.drawRect = function (x1, y1, x2, y2) {
+CanvasRenderingContext2D.prototype.drawRect = function (x1, y1, x2, y2)
+{
 	this.strokeLine(x1, y1, x2, y1);
 	this.strokeLine(x1, y1, x1, y2);
 	this.strokeLine(x2, y2, x2, y1);
 	this.strokeLine(x2, y2, x1, y2);
-}
+};
 
 CanvasRenderingContext2D.prototype.circle = function (wx, wy, wsize)
 {
@@ -319,9 +309,9 @@ CanvasRenderingContext2D.prototype.strokeSemiCircle = function (wx, wy, dir, wsi
 CanvasRenderingContext2D.prototype.drawMap = function (wm)
 {
 	this.strokeStyle = 'black';
-	for (var i = wm.length - 1; i >= 0; i--)
+	for (let i = wm.length - 1; i >= 0; i--)
 	{
-		var l = wm[i];
+		let l = wm[i];
 		this.strokeLine(l.s.x, l.s.y, l.t.x, l.t.y);
 	}
 };
@@ -350,57 +340,63 @@ CanvasRenderingContext2D.prototype.strokePath = function (wpath)
 {
 	this.beginPath();
 	this.moveTo(wpath[0].x, wpath[0].y);
-	for (var i = 1; i < wpath.length; i++)
+	for (let i = 1; i < wpath.length; i++)
 	{
 		this.lineTo(wpath[i].x, wpath[i].y);
 	}
 	this.stroke();
 };
 
-CanvasRenderingContext2D.prototype.drawLaserLines = function (z, wx, wy, dir, sensorRadius)
+CanvasRenderingContext2D.prototype.forEachLaser = function (z, dir, sensorRadius, callback)
 {
 	const n = z.length;
 
-	//number of lasers for 360 degrees
-	const nLasers = (n - 1) * 2;
-
 	//Angle between each laser, in radians
-	const rad = Math.PI * 2 / nLasers;
+	const rad = Math.PI / (n - 1);
 
-	var dirOffset = round(dir / Math.PI / 2 * nLasers);
+	//First laser is 90 degrees before
+	dir -= Math.PI / 2;
 
-	//index of corresponding entry in z
-	var i = (dirOffset + nLasers / 4 + nLasers / 2);
-	i = (i + nLasers + nLasers);
-
-	for (var index = 0; index < n; index++, i++)
+	for (let i = 0; i < n; i++, dir += rad)
 	{
-		//dirOffset is the direction the user's mouse
-		//is point at, -n/4 to offset it by 90 degrees,
-		//so that laser scan is centered at where the user
-		//points to
-
-		//get i stay in bound
-		i %= nLasers;
-
-		var dir = i * rad;
-		var laserLen = sensorRadius;
+		let laserLen = sensorRadius;
 
 		//Grey color for a miss
-		if (z[index] === sensorRadius)
+		if (z[i] === sensorRadius)
 		{
-			this.strokeStyle = 'grey';
+			this.fillStyle = this.strokeStyle = 'grey';
+			callback(dir, laserLen, false);
 		} else
 		{
 			//distance reported by the laser sensor
-			var dist = z[index];
+			let dist = z[i];
 			laserLen = min(laserLen, dist);
 
 			//red for a hit
-			this.strokeStyle = 'red';
+			this.fillStyle = this.strokeStyle = 'red';
+			callback(dir, laserLen, true);
 		}
-		this.strokeLine(wx, wy, wx + cos(dir) * laserLen, wy + sin(dir) * laserLen)
 	}
+};
+
+CanvasRenderingContext2D.prototype.drawLaserLines = function (z, wx, wy, dir, sensorRadius, showMiss = false)
+{
+	const self = this;
+	this.forEachLaser(z, dir, sensorRadius, (laserDir, laserLen, isHit) =>
+	{
+		if(!isHit && !showMiss)return;
+		self.strokeLine(wx, wy, wx + cos(laserDir) * laserLen, wy + sin(laserDir) * laserLen);
+	});
+};
+
+CanvasRenderingContext2D.prototype.drawLaserDots = function (z, wx, wy, dir, sensorRadius, showMiss = false)
+{
+	const self = this;
+	this.forEachLaser(z, dir, sensorRadius, (laserDir, laserLen, isHit) =>
+	{
+		if(!isHit && !showMiss)return;
+		self.fillCircle(wx + cos(laserDir)*laserLen, wy + sin(laserDir)*laserLen, 0.05);
+	});
 };
 
 //coordinate converter

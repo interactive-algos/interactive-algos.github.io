@@ -35,28 +35,6 @@ function RobotDemo(lid, //Main Canvas id
 	this.map = map;
 	this.colorRes = colorRes;
 
-	const self = this;
-	this.manager = new ColorizeManager(this, function (p)
-	{
-		//Progress callback, 0% <= p < 100%
-		const ctx = self.lview.ctx;
-		const barWidth = 100;
-		const barHeight = 20;
-		const width = self.canvas.width;
-		const height = self.canvas.height;
-
-		ctx.save();
-		ctx.setTransform(1, 0, 0, 1, 0, 0);
-		ctx.strokeRect(width / 2 - barWidth - 2, height / 2 - barHeight / 2, barWidth, barHeight);
-		ctx.fillRect(width / 2 - barWidth - 2, height / 2 - barHeight / 2, barWidth * p, barHeight);
-		ctx.restore();
-	}, function (probs, resolution)
-	{
-		//Completion callback
-		self.draw();
-		self.lview.drawProbabilityGrid(probs, resolution);
-	});
-
 	//Robot
 	this.robot = robot;
 	this.lview.adjustToPoint(this.robot.x, this.robot.y);
@@ -78,11 +56,11 @@ RobotDemo.prototype.start = function (event)
 
 		//set the button to play
 		//icon is a child element of the button
-		var buttons = event.target.getElementsByClassName("glyphicon");
+		let buttons = event.target.getElementsByClassName("glyphicon");
 
 		//No child element means the user clicked on icon directly
 		if(buttons.length === 0) buttons = [event.target];
-		for(var i = 0; i < buttons.length; i ++)
+		for(let i = 0; i < buttons.length; i ++)
 		{
 			buttons[i].classList.replace("glyphicon-pause", "glyphicon-play");
 		}
@@ -95,14 +73,12 @@ RobotDemo.prototype.start = function (event)
 	this.lview.setScale(50);
 
 	//set the button to pause
-	var buttons = event.target.getElementsByClassName("glyphicon");
+	let buttons = event.target.getElementsByClassName("glyphicon");
 	if(buttons.length === 0) buttons = [event.target];
-	for(var i = 0; i < buttons.length; i ++)
+	for(let i = 0; i < buttons.length; i ++)
 	{
 		buttons[i].classList.replace("glyphicon-play", "glyphicon-pause");
 	}
-
-	const self = this;
 
 	// this.largeCanvas.onmousedown = function (event)
 	// {
@@ -110,15 +86,12 @@ RobotDemo.prototype.start = function (event)
 	// };
 
 	this.lastFrame = Date.now();
-	requestAnimationFrame(function (timestamp)
-	{
-		self.frame(timestamp);
-	});
+	this.frameId = requestAnimationFrame((timestamp) => this.frame(timestamp));
 };
 
 RobotDemo.prototype.frame = function (timestamp)
 {
-	var fps = Math.round(1000.0 / (timestamp - this.lastFrame));
+	let fps = Math.round(1000.0 / (timestamp - this.lastFrame));
 	this.lastFrame = timestamp;
 
 	this.robot.update();
@@ -130,24 +103,21 @@ RobotDemo.prototype.frame = function (timestamp)
 	this.lctx.fillTextWithColorFont(fps + "\tFPS", 'black', '20px Menlo', 10, 20);
 	if (this.animating)
 	{
-		const self = this;
-		requestAnimationFrame(function (timestamp)
-		{
-			self.frame(timestamp);
-		});
+		this.frameId = requestAnimationFrame((timestamp) => this.frame(timestamp));
 	}
 };
 
 RobotDemo.prototype.stop = function (event)
 {
+	cancelAnimationFrame(this.frameId);
 	this.animating = false;
 	this.largeCanvas.onmousedown = undefined;
 	this.robot.reset();
 	this.lview.adjustToPoint(this.robot.x, this.robot.y);
 	this.draw();
 
-	var buttons = event.target.parentElement.parentElement.getElementsByClassName("glyphicon-pause");
-	for(var i = 0; i < buttons.length; i ++)
+	let buttons = event.target.parentElement.parentElement.getElementsByClassName("glyphicon-pause");
+	for(let i = 0; i < buttons.length; i ++)
 	{
 		buttons[i].classList.replace("glyphicon-pause", "glyphicon-play");
 	}
@@ -156,21 +126,24 @@ RobotDemo.prototype.stop = function (event)
 RobotDemo.prototype.stepForward = function (event)
 {
 	this.animating = false;
-	const self = this;
-	var buttons = event.target.parentElement.parentElement.getElementsByClassName("glyphicon-pause");
-	for(var i = 0; i < buttons.length; i ++)
+	let buttons = event.target.parentElement.parentElement.getElementsByClassName("glyphicon-pause");
+	for(let i = 0; i < buttons.length; i ++)
 	{
 		buttons[i].classList.replace("glyphicon-pause", "glyphicon-play");
 	}
-	requestAnimationFrame(function (timestamp)
-	{
-		self.frame(timestamp);
-	});
+	this.frameId = requestAnimationFrame((timestamp) => this.frame(timestamp));
 };
 
 RobotDemo.prototype.draw = function ()
 {
 	this.drawView(this.lview, true);
+	if(typeof this.robot.filter.sensorModel !== "undefined")
+	{
+		this.lview.ctx.drawLaserLines(robot.getSensorReading(),
+			robot.x, robot.y, robot.dir, robot.sensorRadius);
+		this.lview.ctx.drawLaserDots(robot.getSensorReading(),
+			robot.x, robot.y, robot.dir, robot.sensorRadius);
+	}
 	if (typeof this.sview !== 'undefined')
 	{
 		this.drawView(this.sview, false);
@@ -195,23 +168,24 @@ RobotDemo.prototype.drawView = function (view, showParticles)
 	this.robot.draw(ctx, showParticles);
 };
 
-//Setters
-RobotDemo.prototype.setA1 = function (noise)
-{
-	this.robot.filter.motionModel.a1 = noise;
-};
-RobotDemo.prototype.setA2 = function (noise)
-{
-	this.robot.filter.motionModel.a2 = noise;
-};
-RobotDemo.prototype.setA3 = function (noise)
-{
-	this.robot.filter.motionModel.a3 = noise;
-};
-RobotDemo.prototype.setA4 = function (noise)
-{
-	this.robot.filter.motionModel.a4 = noise;
-};
+Object.defineProperties(RobotDemo.prototype, {
+	'a1': {
+		get: function() {return this.robot.filter.motionModel.a1;},
+		set: function(noise) {this.robot.filter.motionModel.a1 = noise;}
+	},
+	'a2': {
+		get: function() {return this.robot.filter.motionModel.a2;},
+		set: function(noise) {this.robot.filter.motionModel.a2 = noise;}
+	},
+	'a3': {
+		get: function() {return this.robot.filter.motionModel.a3;},
+		set: function(noise) {this.robot.filter.motionModel.a3 = noise;}
+	},
+	'a4': {
+		get: function() {return this.robot.filter.motionModel.a4;},
+		set: function(noise) {this.robot.filter.motionModel.a4 = noise;}
+	}
+});
 
 RobotDemo.prototype.setColoringResolution = function (res)
 {
@@ -249,10 +223,10 @@ RobotDemo.prototype.setSensorNoise = function (r)
 
 RobotDemo.prototype.updateRobot = function ()
 {
-	var path = this.paths[this.currPathName];
-	var x = path[0].x;		//x coordinate
-	var y = path[0].y;		//y coordinate
-	var dir = atan2(path[1].y - path[0].y, path[1].x - path[0].x);	//orientation in radians
+	let path = this.paths[this.currPathName];
+	let x = path[0].x;		//x coordinate
+	let y = path[0].y;		//y coordinate
+	let dir = atan2(path[1].y - path[0].y, path[1].x - path[0].x);	//orientation in radians
 
 	//Robot
 	this.robot = new Robot(
@@ -273,49 +247,35 @@ RobotDemo.prototype.updateRobot = function ()
 //Add Path
 RobotDemo.prototype.startRecordingPath = function ()
 {
-	animating = false;
+	this.animating = false;
 
 	clearCanvas(this.largeCanvas);
 	this.lview.setPreviewScale(this.map);
 	this.lctx.drawMap(this.map);
 
-	const self = this;
-	this.largeCanvas.onmousedown = function (event)
-	{
-		self.mouseDown(event);
-	};
+	this.largeCanvas.onmousedown = (event) => this.mouseDown(event);
 	this.tempPath = [];
 };
 
 RobotDemo.prototype.mouseDown = function (event)
 {
-	var coor = getClickLoc(event);
+	let coor = getClickLoc(event);
 	this.lview.toWorldCoor(coor);
 
 	this.tempPath.push(coor);
-	const self = this;
-	this.largeCanvas.onmousemove = function (event)
-	{
-		self.mouseMotion(event);
-	};
-	this.largeCanvas.onmouseup = function (event)
-	{
-		self.mouseUp(event);
-	};
-	this.largeCanvas.onmouseout = function (event)
-	{
-		self.mouseUp(event);
-	}
+	this.largeCanvas.onmousemove = (event) => this.mouseMotion(event);
+	this.largeCanvas.onmouseup = (event) => this.mouseUp(event);
+	this.largeCanvas.onmouseout = (event) => this.mouseUp(event);
 };
 
 RobotDemo.prototype.mouseMotion = function (event)
 {
-	var coor = getClickLoc(event);
+	let coor = getClickLoc(event);
 	this.lview.toWorldCoor(coor);
-	var lastPoint = this.tempPath[this.tempPath.length - 1];
+	let lastPoint = this.tempPath[this.tempPath.length - 1];
 
-	var curStep = new Line(lastPoint.x, lastPoint.y, coor.x, coor.y);
-	for (var i = 0; i < this.map.length; i++)
+	let curStep = new Line(lastPoint.x, lastPoint.y, coor.x, coor.y);
+	for (let i = 0; i < this.map.length; i++)
 	{
 		if (doIntersect(this.map[i], curStep))
 			return;
@@ -333,8 +293,8 @@ RobotDemo.prototype.mouseUp = function (event)
 	this.largeCanvas.onmouseout = undefined;
 	this.largeCanvas.onmousedown = undefined;
 
-	var msg = "Enter a unique name for this path, alphanumeric please:";
-
+	let msg = "Enter a unique name for this path, alphanumeric please:";
+	let pathName;
 	while (true)
 	{
 		pathName = prompt(msg, "Harry Potter");
@@ -361,7 +321,7 @@ RobotDemo.prototype.mouseUp = function (event)
 	smoothenPath(this.tempPath);
 	this.paths[pathName] = this.tempPath;
 	printPath(this.tempPath);
-	var option = document.createElement("option");
+	let option = document.createElement("option");
 	option.text = pathName;
 	customPathGroup.append(pathName, option);
 	this.pathSelect.selectedIndex = this.pathSelect.length - 1;
@@ -373,9 +333,9 @@ RobotDemo.prototype.mouseUp = function (event)
 
 function printPath(path)
 {
-	var str = '{\n';
+	let str = '{\n';
 	str += "[x: " + path[0].x + ", y:" + path[0].y + "}";
-	for (var i = 1; i < path.length; i++)
+	for (let i = 1; i < path.length; i++)
 	{
 		str += ",\n{x: " + path[i].x + ", y:" + path[i].y + "}";
 	}
@@ -386,13 +346,13 @@ function printPath(path)
 
 RobotDemo.prototype.queryProbability = function (event)
 {
-	var coor = getClickLoc(event);
-	var x = coor.x;
-	var y = coor.y;
+	let coor = getClickLoc(event);
+	let x = coor.x;
+	let y = coor.y;
 
 	if (event.altKey)
 	{
-		var probability = this.robot.filter.sensorModel.probability
+		let probability = this.robot.filter.sensorModel.probability
 		(
 			this.robot.getSensorReading(),
 			new RobotState

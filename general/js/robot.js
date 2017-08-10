@@ -117,7 +117,7 @@ Robot.prototype.updateParticles = function ()
 		{
 			if (this.z[i] < this.sensorRadius)
 			{
-				z[i] = generateGaussianNoise(z[i], this.filter.sensorModel.a1);
+				z[i] = gaussian(z[i], this.filter.sensorModel.a1);
 				if (z[i] < 0) z[i] = 0;
 				else if (z[i] > this.sensorRadius) z[i] = this.sensorRadius;
 			}
@@ -134,15 +134,12 @@ Robot.prototype.updateParticles = function ()
 	this.lastDir = this.dir;
 };
 
-Robot.prototype.draw = function (ctx, showParticles)
+Robot.prototype.draw = function (ctx, showParticles = true)
 {
-	if(typeof(showParticles) === 'undefined')
-		showParticles = true;
-
 	ctx.strokeStyle = 'black';
 
-	var x = this.x;
-	var y = this.y;
+	const x = this.x;
+	const y = this.y;
 
 	ctx.drawRobot(x, y, this.dir, Robot.size);
 

@@ -61,6 +61,8 @@
 		$(document).ready(function ()
 		{
 			$('.tooltipped').tooltip({delay: 50, position: "top"});
+			$(".col ul").addClass("collection");
+			$("ul.collection li").addClass("collection-item")
 		});
     </script>
 </head>
@@ -69,18 +71,6 @@
     <div class="nav-wrapper container">
         <a id="title-container" href="#" data-activates="nav-mobile"
            class="brand-logo left">Home</a>
-        <ul class="right hide-on-med-and-down">
-            <li><a href="monte_carlo/index.html">Monte Carlo Demo</a></li>
-            <li><a href="measurement/index.html">Measurement Demo</a></li>
-            <li><a href="motion/index.html">Motion Demo</a></li>
-        </ul>
-
-        <ul id="nav-mobile" class="side-nav">
-            <li><a href="monte_carlo/index.html">Monte Carlo Demo</a></li>
-            <li><a href="measurement/index.html">Measurement Demo</a></li>
-            <li><a href="motion/index.html">Motion Demo</a></li>
-        </ul>
-
     </div>
 </nav>
 
@@ -268,7 +258,7 @@
         <div class="col l9 s12">
             <div class="range-field">
                 <br>
-                <input id='actuation_noise' type="range" min="0" max="0.5" step="0.01"
+                <input id='actuation_noise' type="range" min="0" max="0.3" step="0.01"
                        title="Noise">
             </div>
         </div>
@@ -279,32 +269,28 @@
             <h6 class="tooltipped" data-tooltip="Rotational error from Rotation">E1</h6>
             <canvas id="actuation_a1"></canvas>
             <button class="btn waves-effect waves-light" onclick="a1Demo.simulateActuation();">
-                <span class="glyphicon glyphicon-play"
-                      aria-hidden="true"></span>
+                <span class="glyphicon glyphicon-play"></span>
             </button>
         </div>
         <div class="col l3 s6 center">
             <h6 class="tooltipped" data-tooltip="Rotational error from Translation">E2</h6>
             <canvas id="actuation_a2"></canvas>
             <button class="btn waves-effect waves-light" onclick="a2Demo.simulateActuation();">
-                <span class="glyphicon glyphicon-play"
-                      aria-hidden="true"></span>
+                <span class="glyphicon glyphicon-play"></span>
             </button>
         </div>
         <div class="col l3 s6 center">
             <h6 class="tooltipped" data-tooltip="Translational error from Translation">E3</h6>
             <canvas id="actuation_a3"></canvas>
             <button class="btn waves-effect waves-light" onclick="a3Demo.simulateActuation();">
-                <span class="glyphicon glyphicon-play"
-                      aria-hidden="true"></span>
+                <span class="glyphicon glyphicon-play"></span>
             </button>
         </div>
         <div class="col l3 s6 center">
             <h6 class="tooltipped" data-tooltip="Translational error from Rotation">E4</h6>
             <canvas id="actuation_a4"></canvas>
             <button class="btn waves-effect waves-light" onclick="a4Demo.simulateActuation();">
-                <span class="glyphicon glyphicon-play"
-                      aria-hidden="true"></span>
+                <span class="glyphicon glyphicon-play"></span>
             </button>
         </div>
     </div>
@@ -333,13 +319,11 @@
             <div class="center">
                 <button class="btn waves-effect waves-light"
                         onclick="a1MDemo.start(event);">
-                    <span class="glyphicon glyphicon-play"
-                          aria-hidden="true"></span>
+                    <span class="glyphicon glyphicon-play"></span>
                 </button>
                 <button class="btn waves-effect waves-light"
                         onclick="a1MDemo.stop(event);">
-                    <span class="glyphicon glyphicon-repeat"
-                          aria-hidden="true"></span>
+                    <span class="glyphicon glyphicon-repeat"></span>
                 </button>
             </div>
         </div>
@@ -350,13 +334,11 @@
             <div class="center">
                 <button class="btn waves-effect waves-light"
                         onclick="a2MDemo.start(event);">
-                    <span class="glyphicon glyphicon-play"
-                          aria-hidden="true"></span>
+                    <span class="glyphicon glyphicon-play"></span>
                 </button>
                 <button class="btn waves-effect waves-light"
                         onclick="a2MDemo.stop(event);">
-                    <span class="glyphicon glyphicon-repeat"
-                          aria-hidden="true"></span>
+                    <span class="glyphicon glyphicon-repeat"></span>
                 </button>
             </div>
         </div>
@@ -368,13 +350,11 @@
             <div class="center">
                 <button class="btn waves-effect waves-light"
                         onclick="a3MDemo.start(event);">
-                    <span class="glyphicon glyphicon-play"
-                          aria-hidden="true"></span>
+                    <span class="glyphicon glyphicon-play"></span>
                 </button>
                 <button class="btn waves-effect waves-light"
                         onclick="a3MDemo.stop(event);">
-                    <span class="glyphicon glyphicon-repeat"
-                          aria-hidden="true"></span>
+                    <span class="glyphicon glyphicon-repeat"></span>
                 </button>
             </div>
         </div>
@@ -386,13 +366,11 @@
             <div class="center">
                 <button class="btn waves-effect waves-light"
                         onclick="a4MDemo.start(event);">
-                    <span class="glyphicon glyphicon-play"
-                          aria-hidden="true"></span>
+                    <span class="glyphicon glyphicon-play"></span>
                 </button>
                 <button class="btn waves-effect waves-light"
                         onclick="a4MDemo.stop(event);">
-                    <span class="glyphicon glyphicon-repeat"
-                          aria-hidden="true"></span>
+                    <span class="glyphicon glyphicon-repeat"></span>
                 </button>
             </div>
         </div>
@@ -404,21 +382,17 @@
         <div class="col l8 s12 center">
             <canvas id="motion_canvas" width="7" height="5"></canvas>
             <button onclick="motionDemo.stop(event)" class="btn waves-effect waves-light red">
-			<span class="glyphicon glyphicon-repeat"
-                  aria-hidden="true"></span>
+                <span class="glyphicon glyphicon-repeat"></span>
             </button>
             <button class="btn waves-effect waves-light blue disabled">
-			<span class="glyphicon glyphicon-step-backward"
-                  aria-hidden="true"></span>
+                <span class="glyphicon glyphicon-step-backward"></span>
             </button>
             <button onclick="motionDemo.start(event)" class="btn waves-effect waves-light">
-			<span class="glyphicon glyphicon-play"
-                  aria-hidden="true"></span>
+                <span class="glyphicon glyphicon-play"></span>
             </button>
             <button onclick="motionDemo.stepForward(event)"
                     class="btn waves-effect waves-light blue">
-			<span class="glyphicon glyphicon-step-forward"
-                  aria-hidden="true"></span>
+                <span class="glyphicon glyphicon-step-forward"></span>
             </button>
         </div>
         <div class='col l4 s12'>
@@ -671,26 +645,62 @@
 
 <div class="container">
     <div class="row"><h3>Monte Carlo Localization</h3></div>
+    <div class="row">
+        <div class="col lg 8">
+            <p>
+                Given that all actuators and sensors have some degrees of noise, how should we use
+                these actuators and sensors? Over time, people have developed algorithms and
+                mathematical models to take these uncertainties into account. <b>Monte Carlo
+                Localization (MCL)</b> is an example of such algorithms.
+            </p>
+            <p>
+                The MCL algorithm aims to locate the robot under the following conditions:
+            </p>
+            <ul>
+                <li>The robot is in a <b>known area</b>, which means the robot has the map of the
+                    environment.
+                </li>
+                <li>The robot has some <b>sensors</b>.</li>
+                <li>The robot can <b>move around</b> freely.</li>
+            </ul>
+            <p>
+                There are many applications of such algorithm. For example, warehouse robots that
+                deliver objects inside a building. The robot would need to keep track of where it is
+                when moving and adjust its motion accordingly if it wanders off path. GPS is not a
+                good choice because most civilian GPS devices are only accurate to about 16 ft under
+                open sky. Their accuracy is even worse inside a building due to signal blockage.
+            </p>
+            <blockquote style="font-size: 0.9em;">
+                Trivia: Amazon uses such robots. Check out <a
+                    href="https://www.youtube.com/watch?v=cLVCGEmkJs0">this</a>.
+            </blockquote>
+            <p>
+                The MCL algorithms works by maintaining many guesses of the robot's location. As the
+                robot moves and senses, MCL incorporates additional information gathered and updates
+                its guesses. Guesses that seem to be consistent with the robot's motion and
+                measurement are kept while contradictory guesses are dropped.
+            </p>
+            <p>Each guess(also called hypothesis) is represented by a "particle" consists of
+                location(such as x, y coordinates) of the robot and direction it's facing.
+            </p>
+        </div>
+    </div>
     <div class='row'>
         <div class="col l8 s12">
             <canvas id="mcl_canvas" width="7" height="4"></canvas>
             <p class="center">
                 <button onclick="mclDemo.stop(event);" class="btn waves-effect waves-light red">
-			  <span class="glyphicon glyphicon-repeat"
-                    aria-hidden="true"></span>
+                    <span class="glyphicon glyphicon-repeat"></span>
                 </button>
                 <button class="btn waves-effect waves-light blue disabled">
-			  <span class="glyphicon glyphicon-step-backward"
-                    aria-hidden="true"></span>
+                    <span class="glyphicon glyphicon-step-backward"></span>
                 </button>
                 <button onclick="mclDemo.start(event);" class="btn waves-effect waves-light">
-			  <span class="glyphicon glyphicon-play"
-                    aria-hidden="true"></span>
+                    <span class="glyphicon glyphicon-play"></span>
                 </button>
                 <button onclick="mclDemo.stepForward(event);"
                         class="btn waves-effect waves-light blue">
-			  <span class="glyphicon glyphicon-step-forward"
-                    aria-hidden="true"></span>
+                    <span class="glyphicon glyphicon-step-forward"></span>
                 </button>
             </p>
             <span id="probability"></span>
@@ -709,7 +719,7 @@
                                    onblur='mclDemo.setParticleCount(Number(event.target.value));'
                                    onkeypress='return isNumber(event);'
                                    class="form-control" value="500"
-                                   size="3" style="padding: 0px">
+                                   size="3" style="padding: 0">
                         </td>
                     </tr>
                     <!--<tr>-->
@@ -800,7 +810,6 @@
                                 the Map</label>
                         </td>
                         <td>
-
                             <div class="switch">
                                 <label>
                                     Off
@@ -815,8 +824,6 @@
                     </tr>
                     </tbody>
                 </table>
-
-
             </fieldset>
         </div>
     </div>
@@ -832,7 +839,8 @@
         </div>
         <div class="footer-copyright center">
             <div class="container">
-                <a class="grey-text text-lighten-3">Probablistic Robotics Interactive Algorithm Team
+                <a class="grey-text text-lighten-3">Probabilistic Robotics Interactive Algorithm
+                    Team
                     2017 All Rights Reserved</a>
             </div>
         </div>

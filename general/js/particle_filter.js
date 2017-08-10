@@ -20,17 +20,16 @@ function ParticleFilter(particleCount, motionModel, sensorModel, robotState, res
 
 	if (typeof sensorModel !== 'undefined')
 	{
-		// If current robot state is already defined
-		// generate initial particles around the robot
-		// being used for motion demo
-		for (var i = particleCount - 1; i >= 0; i--)
+		// If there is sensor mode, add noise
+		for (let i = particleCount - 1; i >= 0; i--)
 		{
-			this.particles[i] = new Particle(robotState.x + gaussian() * 2, robotState.y + gaussian() * 2, robotState.dir + Math.PI * gaussian(), 0);
+			this.particles[i] = new Particle(gaussian(robotState.x, 1),
+				gaussian(robotState.y, 1),
+				gaussian(robotState.dir, Math.PI/4), 0);
 		}
 	} else
 	{
-		// generate random particles within the map
-		for (var i = particleCount - 1; i >= 0; i--)
+		for (let i = particleCount - 1; i >= 0; i--)
 		{
 			this.particles[i] = new Particle(robotState.x, robotState.y, robotState.dir, 0);
 		}
@@ -44,10 +43,7 @@ function ParticleFilter(particleCount, motionModel, sensorModel, robotState, res
  */
 ParticleFilter.prototype.draw = function (ctx)
 {
-	this.particles.forEach(function (p)
-	{
-		p.draw(ctx);
-	});
+	this.particles.forEach((p) => p.draw(ctx));
 };
 
 /**
@@ -68,8 +64,8 @@ ParticleFilter.prototype.newParticle = function ()
 ParticleFilter.prototype.regenrateAll = function ()
 {
 	// generate random particles within the map
-	var weight = 1.0 / this.count;
-	for (var i = this.count - 1; i >= 0; i--)
+	let weight = 1.0 / this.count;
+	for (let i = this.count - 1; i >= 0; i--)
 	{
 		this.particles[i] = this.newParticle();
 	}
@@ -82,7 +78,7 @@ ParticleFilter.prototype.regenrateAll = function ()
 ParticleFilter.prototype.refillAll = function ()
 {
 	// generate random particles within the map
-	var weight = 1.0 / this.count;
+	let weight = 1.0 / this.count;
 	while (this.particles.length < this.count)
 	{
 		this.particles.push(this.newParticle());
@@ -112,12 +108,12 @@ ParticleFilter.prototype.update = function (u, z)
 ParticleFilter.prototype.motionUpdate = function (u)
 {
 	// Update the state of all particles base on the estimated motion
-	for (var i = this.particles.length - 1; i >= 0; i--)
+	for (let i = this.particles.length - 1; i >= 0; i--)
 	{
-		var p = this.particles[i];
-		// var state = new RobotState(p.x, p.y, p.dir);
+		let p = this.particles[i];
+		// let state = new RobotState(p.x, p.y, p.dir);
 		// Draw sample from p(x_t, u, x_t-1)
-		var newState = this.motionModel.sample(u, p);
+		let newState = this.motionModel.sample(u, p);
 		p.setState(newState);
 	}
 };
@@ -130,9 +126,9 @@ ParticleFilter.prototype.motionUpdate = function (u)
 ParticleFilter.prototype.sensorUpdate = function (z)
 {
 	// Calculate the logs of weights
-	for (var i = this.particles.length - 1; i >= 0; i--)
+	for (let i = this.particles.length - 1; i >= 0; i--)
 	{
-		var p = this.particles[i];
+		let p = this.particles[i];
 		p.w = this.sensorModel.probability(z, p);
 	}
 
@@ -150,18 +146,18 @@ ParticleFilter.prototype.sensorUpdate = function (z)
  */
 ParticleFilter.prototype.resample = function ()
 {
-	var z_t = new Array(this.particles.length);
+	let z_t = new Array(this.particles.length);
 
 	//Resample percent% of all particles, the rest will be randomly generated
 	const m = z_t.length * this.resampleRatio;
 
 	const step = 1.0 / m;
 
-	var cur = random() * step;
+	let cur = random() * step;
 
 	//Running sum
-	var cumulativeProbability = this.particles[0].w;
-	for (var i = 0, j = 0; i < m; i++)
+	let cumulativeProbability = this.particles[0].w;
+	for (let i = 0, j = 0; i < m; i++)
 	{
 		while (j < this.particles.length - 1 && cumulativeProbability < cur)
 		{
@@ -172,7 +168,7 @@ ParticleFilter.prototype.resample = function ()
 		cur += step;
 	}
 
-	for (var i = m; i < z_t.length; i++)
+	for (let i = m; i < z_t.length; i++)
 	{
 		z_t[i] = new Particle(random() * this.sensorModel.width, random() * this.sensorModel.height, random() * TWO_PI, 1);
 	}
@@ -185,12 +181,9 @@ ParticleFilter.prototype.resample = function ()
  */
 ParticleFilter.prototype.normalizeWeights = function ()
 {
-	var sum = 0;
+	let sum = 0;
 	// Convert logs back to weights
-	this.particles.forEach(function (p)
-	{
-		sum += p.w;
-	});
+	this.particles.forEach((p) => sum += p.w);
 
 	if (sum === 0)
 	{
@@ -200,9 +193,6 @@ ParticleFilter.prototype.normalizeWeights = function ()
 	} else
 	{
 		// Otherwise normalize the weights
-		this.particles.forEach(function (p)
-		{
-			p.w /= sum
-		});
+		this.particles.forEach((p) => p.w /= sum);
 	}
 };
