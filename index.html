@@ -545,6 +545,16 @@
         <div class="col l8 s12">
             <h4>Simulating Robot Sensor Model</h4>
             <p>
+                The robot's sensor model is responsible for incorporating the robot's sensor
+                readings. The readings might be an image taken from a camera, data returned by a
+                laser scanner, data gathered by ultrasonic sensors, etc. Whatever the data is,
+                sensor models are supposed to analysis them and give a judgment of where the robot
+                is. In other words, sensor models are robot's perception of the environment around
+                it. Just like humans look around and figure out where they are, robots do the same:
+                with sensor models. There is one important precondition, the sensor model must have
+                a map of the environment.
+            </p>
+            <p>
                 Robot's sensors have noises, meaning that measurements are not
                 exactly accurate. The robot's internal model must be aware of
                 this when estimating its location. <b>Click</b> to place the
