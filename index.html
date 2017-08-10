@@ -537,7 +537,9 @@
                 Robot's sensors have noises, meaning that measurements are not
                 exactly accurate. The robot's internal model must be aware of
                 this when estimating its location. <b>Click</b> to place the
-                robot, <b>hold and move</b> to change direction of robot.
+                robot, <b>hold and move</b> to change direction of robot. You
+                can also use the <b>Mini Map</b> on the right to move the area
+                of the map that you want to have a look at.
             </p>
         </div>
     </div>
@@ -695,15 +697,11 @@
                 particle is also associated with a weight, which represents how likely the particle
                 represents the robot's true location(and direction).
             </p>
-            <p>Here is an overview of the algorithm: </p>
-            <ol>
-                <li>If the robot moves, each particle's location and direction will be updated
-                    according to the robot's internal motion sensors(which can tell roughly how much the
-                    robot has moved).
-                </li>
-                <li>
 
-                </li>
+            <ol>
+                <li>When the robot moves, each particle's location and direction is also updated
+                    according to the robot's internal motion sensors(which can tell roughly how much the
+                    robot has moved).</li>
             </ol>
         </div>
     </div>
