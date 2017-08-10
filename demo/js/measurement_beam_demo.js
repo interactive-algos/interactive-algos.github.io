@@ -2,20 +2,20 @@ function BeamModelDemo(id, map, sensorRadius, sensorNoise, miniId)
 {
 	//Visualization stuff
 	const nLasers = 19;
-	const scale = 20;
+	this.scale = 20;
 
 	//the canvas element
-	this.view = new View(document.getElementById(id), scale);
+	this.view = new View(document.getElementById(id), this.scale);
 	// this.view.setPreviewScale(map);
 	this.worldHeight = this.view.toWorldY(0);
 	this.worldWidth = this.view.toWorldX(this.view.canvas.width);
 
-	this.miniView = new View(document.getElementById(miniId), scale);
+	this.miniView = new View(document.getElementById(miniId), this.scale);
 	this.miniView.setPreviewScale(map);
 	this.largePreviewScale = this.view.getPreviewScale(map);
 	this.miniPreviewScale = this.miniView.getPreviewScale(map);
-	// console.log(this.largePreviewScale);
-	// console.log(this.miniPreviewScale);
+	console.log(this.largePreviewScale);
+	console.log(this.miniPreviewScale);
 
 
 	this.robotSize = 0.2;
@@ -85,8 +85,10 @@ BeamModelDemo.prototype.miniViewMouseOut = function (event)
 
 BeamModelDemo.prototype.miniViewMouseMove = function (event)
 {
-	const h = 8;
-	const w = 14;
+	// console.log(this.scale)
+	// console.log((this.miniView.height * (this.largePreviewScale / this.scale)) * this.miniPreviewScale)
+	const h = this.view.height * (this.largePreviewScale / this.scale) * this.miniPreviewScale;
+	const w = this.view.width * (this.largePreviewScale / this.scale) * this.miniPreviewScale;
 	const view = this.miniView;
 	let coor = getClickLoc(event);
 
@@ -232,8 +234,8 @@ BeamModelDemo.prototype.drawSmall = function ()
 	ctx.drawMap(this.map);
 	if (this.curX !== undefined && this.curY !== undefined)
 	{
-		const h = 8;
-		const w = 14;
+		const h = this.view.height * (this.largePreviewScale / this.scale) * this.miniPreviewScale;
+		const w = this.view.width * (this.largePreviewScale / this.scale) * this.miniPreviewScale;
 
 		if (this.curX !== undefined && this.curY !== undefined)
 		{
