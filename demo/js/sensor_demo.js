@@ -35,11 +35,16 @@ SensorDemo.prototype.sample = function (n)
 		return;
 	}
 
-	this.readingsLeft = n;
 	if (n < 500)
 	{
-		this.intervalId = window.setInterval(() => this.takeSingleReading(),
-			1000 / n);
+		this.readingsLeft = n;
+		var func = () => {
+			if(this.readingsLeft-- <= 0)
+				return;
+			this.takeSingleReading(); 
+			this.frameId = requestAnimationFrame(func);
+		}
+		this.frameId = requestAnimationFrame(func);
 	} else
 	{
 		for (let i = 0; i < n; i++)
@@ -52,10 +57,6 @@ SensorDemo.prototype.sample = function (n)
 
 SensorDemo.prototype.takeSingleReading = function (redraw = true)
 {
-	//We are done, stop the animation
-	if (this.readingsLeft-- <= 0)
-		window.clearInterval(this.intervalId);
-
 	let reading = gaussian(this.actualDistance, this.sensorNoise);
 
 	//Skip readings that are out of screen
