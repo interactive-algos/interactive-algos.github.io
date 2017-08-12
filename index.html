@@ -207,7 +207,7 @@
                 <div class="card-content">
                     <span class="card-title">E2</span>
                     <p>
-                        Sometimes, when you command the robot to move forward, it fails to move
+                        Sometimes, when we command the robot to move forward, it fails to move
                         straight and proceeds off an angle.
                     </p>
                 </div>
@@ -302,8 +302,7 @@
         <div class="col lg 8">
             <p>
                 In the demos below, numerous robots are launched at the same time from the same
-                position. The <b>black</b> one represents the location where the robots supposed to
-                be and
+                position. The <b>black</b> one represents expected position of the robot;
                 the <b>blue</b> ones represent some of the possible positions where robots might
                 actually be.
             </p>
@@ -381,16 +380,24 @@
         <p>
             Motion model is a mathematical model that takes these noises into account. It takes in
             the robot's planned motion, and predict where the robot will actually be after it moves.
-            Imagine, if I cover your eyes, and tell you to move forward by 3 meters. If you know
+			
+			Imagine this scenario: An agent was put into an open field with his eyes covered. If
+			we command him to move forward by three meters, and he executes these commands with absolute
+			precision, with the information of the initial position and direction, he can predict
+			where he will be with 100% certainty. But an agent, or even a robot, is most likely not
+			being able to execute the commands perfectly due to physical limitation. In this case,
+			the agent can't tell the exact position he will be. All he can tell is that he is roughly
+			three meters ahead of his initial position.
+            <!--Imagine, if I cover your eyes, and tell you to move forward by 3 meters. If you know
             where you started, and you can execute these orders with absolute precision, then you
             can predict where you are with 100% certainty. But you probably can't execute perfectly
             because your muscles are only accurate to a certain degree. In this case, you don't know
             exactly where you are, but you know you are roughly around this region centered at 3
-            meters ahead of your starting location.
+            meters ahead of your starting location.-->
         </p>
         <p>
-            Motion model does exactly what just described. The demo below simulates a robot with no
-            environment sensor(like you covered your eyes). The black robot represents where the
+            The motion model does exactly what just described. The demo below simulates a robot with no
+            sensors to sense the environment (like the covered eyes). The black robot represents where the
             robot actually is. The blues ones represent that the motion model think the robot might
             be.
         </p>
