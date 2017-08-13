@@ -185,6 +185,7 @@ BeamModelDemo.prototype.largeViewMouseUp = function (event)
 	this.tracker.clear();
 	this.updateRender();
 	this.colorMapIfShould();
+	this.drawSmall();
 };
 
 BeamModelDemo.prototype.draw = function ()

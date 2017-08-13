@@ -496,9 +496,9 @@
                 Sensors are limited in what they can perceive. Cameras cannot
                 see through walls, and the resolution of a camera is limited.
                 Sensors are also subject to noise. And finally, sensors can
-                break. Detecting a faulty sensor can be extremely difficult.
-                Robots take these into accounts and use a sensor model to deal
-                with these uncertainties.
+                be malfunctioned. Detecting a faulty sensor can be extremely difficult.
+                To solve these problems, robots take these into accounts and use a
+				sensor model to deal with these uncertainties.
             </p>
         </div>
         <div class="col l6 s12">
@@ -569,6 +569,14 @@
                 can also use the <b>Mini Map</b> on the right to move the area
                 of the map that you want to have a look at.
             </p>
+			<p>
+				Just like it was mentioned before, the sensor model can only 
+				estimate the position of the robot due to inaccuracy. The sensor
+				model will calculate the <b>probability</b> of the robot at a
+				given position base on its sensor readings. Click <b>color the 
+				map</b> to calculate the probability of the robot in the map
+				with density in pixels.
+			</p>
         </div>
     </div>
 
@@ -642,10 +650,10 @@
         <div class="col s12 l6">
             <h4>Inherently Unpredictable Environment</h4>
             <p>
-                Let's take self driving car as an example. When driving, it
-                is impossible to predict the weather conditions, motion
+                Let's take self driving car as an example. When it is moving,
+				it is impossible for it to predict the weather conditions, motion
                 dynamics of pedestrians and other cars, traffic lights, or
-                car accidents.
+                car accidents that is not given in the map.
             </p>
         </div>
         <div class="col s12 l6">
