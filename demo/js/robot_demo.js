@@ -29,7 +29,7 @@ function RobotDemo(lid, //Main Canvas id
 	if (document.getElementById(sid) !== null)
 	{
 		this.sview = new View(document.getElementById(sid), 1);
-		this.sview.setPreviewScale(map);
+		this.sview.previewMap(map);
 	}
 
 	this.map = map;
@@ -187,6 +187,10 @@ Object.defineProperties(RobotDemo.prototype, {
 	'a4': {
 		get: function() {return this.robot.filter.motionModel.a4;},
 		set: function(noise) {this.robot.filter.motionModel.a4 = noise;}
+	},
+	'stride': {
+		get: function(){return this.robot.stride},
+		set: function(stride){return this.robot.stride = stride;}
 	}
 });
 
@@ -207,11 +211,6 @@ RobotDemo.prototype.setParticleCount = function (n)
 		this.robot.filter.sensorModel,
 		this.robot.getState(),
 		this.robot.filter.resampleRatio);
-};
-
-RobotDemo.prototype.setStride = function (stride)
-{
-	this.robot.stride = stride;
 };
 
 RobotDemo.prototype.setSensorRadius = function (r)
@@ -247,31 +246,68 @@ RobotDemo.prototype.updateRobot = function ()
 	);
 };
 
+//DEBUG CODE
+RobotDemo.prototype.queryProbability = function (event)
+{
+	let coor = getClickLoc(event);
+	let x = coor.x;
+	let y = coor.y;
+
+	if (event.altKey)
+	{
+		let probability = this.robot.filter.sensorModel.probability
+		(
+			this.robot.getSensorReading(),
+			new RobotState
+			(
+				this.lview.toWorldX(x),
+				this.lview.toWorldY(y),
+				this.robot.dir
+			)
+		);
+
+		document.getElementById('probability').innerHTML = "Probability: " + probability;
+	}
+};
+
+function printPath(path)
+{
+	let str = '{\n';
+	str += "[x: " + path[0].x + ", y:" + path[0].y + "}";
+	for (let i = 1; i < path.length; i++)
+	{
+		str += ",\n{x: " + path[i].x + ", y:" + path[i].y + "}";
+	}
+
+	str += '\n]';
+	console.log(str);
+}
+
 //Add Path
 RobotDemo.prototype.startRecordingPath = function ()
 {
 	this.animating = false;
 
 	clearCanvas(this.largeCanvas);
-	this.lview.setPreviewScale(this.map);
+	this.lview.previewMap(this.map);
 	this.lctx.drawMap(this.map);
 
-	this.largeCanvas.onmousedown = (event) => this.mouseDown(event);
+	this.largeCanvas.onmousedown = (event) => this.pathMouseDown(event);
 	this.tempPath = [];
 };
 
-RobotDemo.prototype.mouseDown = function (event)
+RobotDemo.prototype.pathMouseDown = function (event)
 {
 	let coor = getClickLoc(event);
 	this.lview.toWorldCoor(coor);
 
 	this.tempPath.push(coor);
-	this.largeCanvas.onmousemove = (event) => this.mouseMotion(event);
-	this.largeCanvas.onmouseup = (event) => this.mouseUp(event);
-	this.largeCanvas.onmouseout = (event) => this.mouseUp(event);
+	this.largeCanvas.onmousemove = (event) => this.pathMouseMove(event);
+	this.largeCanvas.onmouseup = (event) => this.pathMouseUp(event);
+	this.largeCanvas.onmouseout = (event) => this.pathMouseUp(event);
 };
 
-RobotDemo.prototype.mouseMotion = function (event)
+RobotDemo.prototype.pathMouseMove = function (event)
 {
 	let coor = getClickLoc(event);
 	this.lview.toWorldCoor(coor);
@@ -289,7 +325,7 @@ RobotDemo.prototype.mouseMotion = function (event)
 	this.tempPath.push(coor);
 };
 
-RobotDemo.prototype.mouseUp = function (event)
+RobotDemo.prototype.pathMouseUp = function (event)
 {
 	this.largeCanvas.onmousemove = undefined;
 	this.largeCanvas.onmouseup = undefined;
@@ -332,40 +368,4 @@ RobotDemo.prototype.mouseUp = function (event)
 
 	this.currPathName = pathName;
 	this.updateRobot();
-};
-
-function printPath(path)
-{
-	let str = '{\n';
-	str += "[x: " + path[0].x + ", y:" + path[0].y + "}";
-	for (let i = 1; i < path.length; i++)
-	{
-		str += ",\n{x: " + path[i].x + ", y:" + path[i].y + "}";
-	}
-
-	str += '\n]';
-	console.log(str);
-}
-
-RobotDemo.prototype.queryProbability = function (event)
-{
-	let coor = getClickLoc(event);
-	let x = coor.x;
-	let y = coor.y;
-
-	if (event.altKey)
-	{
-		let probability = this.robot.filter.sensorModel.probability
-		(
-			this.robot.getSensorReading(),
-			new RobotState
-			(
-				this.lview.toWorldX(x),
-				this.lview.toWorldY(y),
-				this.robot.dir
-			)
-		);
-
-		document.getElementById('probability').innerHTML = "Probability: " + probability;
-	}
 };

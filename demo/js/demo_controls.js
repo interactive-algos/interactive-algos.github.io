@@ -95,11 +95,11 @@ function initMotionDemo()
 
 	slider.on("slide", function (sliderValue)
 	{
-		motionDemo.setStride(sliderValue);
-		a1MDemo.setStride(sliderValue/10000.0);
-		a2MDemo.setStride(sliderValue);
-		a3MDemo.setStride(sliderValue);
-		a4MDemo.setStride(sliderValue/10000.0);
+		motionDemo.stride = sliderValue;
+		a1MDemo.stride = sliderValue/10000.0;
+		a2MDemo.stride = sliderValue;
+		a3MDemo.stride = sliderValue;
+		a4MDemo.stride = sliderValue/10000.0;
 	});
 
 	let a1Slider = new Slider('#motion_a1', actuationNoiseSliderFormat);
@@ -132,7 +132,7 @@ function initMCLDemo()
 		step: 0.01,
 		value: 0.04
 	});
-	slider.on("slide", (sliderValue) => mclDemo.setStride(sliderValue));
+	slider.on("slide", (sliderValue) => mclDemo.stride = sliderValue);
 
 	let a1Slider = new Slider('#mcl_a1', actuationNoiseSliderFormat);
 	let a2Slider = new Slider('#mcl_a2', actuationNoiseSliderFormat);

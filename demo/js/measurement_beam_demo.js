@@ -8,7 +8,7 @@ function BeamModelDemo(id, map, sensorRadius, sensorNoise, miniId)
 	this.view = new View(document.getElementById(id), this.scale);
 
 	this.miniView = new View(document.getElementById(miniId), this.scale);
-	this.miniView.setPreviewScale(map);
+	this.miniView.previewMap(map);
 
 	this.robotSize = 0.2;
 	this.map = map;

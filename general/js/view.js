@@ -59,7 +59,7 @@ View.prototype.setScale = function (scale)
 	this.isPreview = false;
 };
 
-View.prototype.setPreviewScale = function (map)
+View.prototype.previewMap = function (map)
 {
 	this.setScale(this.getPreviewScale(map));
 	this.setOffset(0, this.canvas.height);
