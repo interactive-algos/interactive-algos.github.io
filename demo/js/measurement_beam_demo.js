@@ -217,7 +217,7 @@ BeamModelDemo.prototype.drawLarge = function ()
 	if (!this.shouldColor)
 	{
 		const resolution = this.resolution / this.view.scale;
-		this.tracker.forEach(function (x, y, dir, w)
+		this.tracker.forEach((x, y, dir, w) =>
 		{
 			ctx.fillStyle = 'rgba(' + round(w * 255) + ', 0, ' + (255 - round(w * 255)) + ', 0.5)';
 			ctx.fillRect(x - resolution / 2, y - resolution / 2, resolution, resolution);
@@ -307,6 +307,7 @@ ParticleTracker.prototype.forEach = function (callback)
 		callback(p.x, p.y, p.dir, p.w);
 	} else if (this.particles.length)
 	{
+		//pass in the particle's location and normalized weight
 		this.particles.forEach((p) =>
 			callback(p.x, p.y, p.dir, (p.w - minW) / (maxW - minW))
 		);

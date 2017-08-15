@@ -16,7 +16,7 @@ function RobotDemo(lid, //Main Canvas id
 				   sid, //Mini Canvas id
 				   map,
 				   robot,
-				   colorRes)
+				   colorRes = 10)
 {
 	//the Large canvas elements
 	this.largeCanvas = document.getElementById(lid);
@@ -109,13 +109,15 @@ RobotDemo.prototype.frame = function (timestamp)
 
 RobotDemo.prototype.stop = function (event)
 {
+	//Hitting the stop button resets the demo.
 	cancelAnimationFrame(this.frameId);
 	this.animating = false;
-	this.largeCanvas.onmousedown = undefined;
+	// this.largeCanvas.onmousedown = undefined;
 	this.robot.reset();
 	this.lview.adjustToPoint(this.robot.x, this.robot.y);
 	this.draw();
 
+	//Change pause buttons to play button
 	let buttons = event.target.parentElement.parentElement.getElementsByClassName("glyphicon-pause");
 	for(let i = 0; i < buttons.length; i ++)
 	{
@@ -126,6 +128,7 @@ RobotDemo.prototype.stop = function (event)
 RobotDemo.prototype.stepForward = function (event)
 {
 	this.animating = false;
+	//Change pause buttons to play button
 	let buttons = event.target.parentElement.parentElement.getElementsByClassName("glyphicon-pause");
 	for(let i = 0; i < buttons.length; i ++)
 	{

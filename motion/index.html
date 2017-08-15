@@ -69,7 +69,7 @@
 			smoothenPath(path);
 			robot = new Robot(filter, path, 19, 0, getValue('goByOneStep'));
 
-			motionDemo = new RobotDemo('canvas', 'minicanvas', getMap(), robot, 10);
+			motionDemo = new RobotDemo('canvas', 'minicanvas', getMap(), robot);
 		}
 
 		function selectPath(event)

@@ -54,8 +54,7 @@ function initMotionDemo()
 			getValue('motion_a3') / 100.0,
 			getValue('motion_a4') / 100.0),
 		undefined,
-		new RobotState(x, y, dir),
-		0);
+		new RobotState(x, y, dir));
 	let slider = new Slider("#motion_stride");
 
 
@@ -70,50 +69,28 @@ function initMotionDemo()
 	const st_dir = atan2(st_path[1].y - st_path[0].y, st_path[1].x - st_path[0].x);
 	const exaggerateFilterNoise = Number(document.getElementById("actuation_noise").value);
 	const smallParticleCount = 100;
+
+	//These filters have no sensor mode,
 	const filterA1 = new ParticleFilter(
 		smallParticleCount,
-		new OdometryModel(
-			exaggerateFilterNoise,
-			0,
-			0,
-			0
-		),
-		undefined,
-		new RobotState(s_x, s_y, s_dir),
-		0);
+		new OdometryModel(exaggerateFilterNoise, 0, 0, 0),
+		undefined,	//no sensor model
+		new RobotState(s_x, s_y, s_dir));
 	const filterA2 = new ParticleFilter(
 		smallParticleCount,
-		new OdometryModel(
-			0,
-			exaggerateFilterNoise,
-			0,
-			0
-		),
+		new OdometryModel(0, exaggerateFilterNoise, 0, 0),
 		undefined,
-		new RobotState(st_x, st_y, st_dir),
-		0);
+		new RobotState(st_x, st_y, st_dir));
 	const filterA3 = new ParticleFilter(
 		smallParticleCount,
-		new OdometryModel(
-			0,
-			0,
-			exaggerateFilterNoise,
-			0
-		),
+		new OdometryModel(0, 0, exaggerateFilterNoise, 0),
 		undefined,
-		new RobotState(st_x, st_y, st_dir),
-		0);
+		new RobotState(st_x, st_y, st_dir));
 	const filterA4 = new ParticleFilter(
 		smallParticleCount,
-		new OdometryModel(
-			0,
-			0,
-			0,
-			exaggerateFilterNoise
-		),
+		new OdometryModel(0, 0, 0, exaggerateFilterNoise),
 		undefined,
-		new RobotState(s_x, s_y, s_dir),
-		0);
+		new RobotState(s_x, s_y, s_dir));
 
 
 	slider.on("slide", function (sliderValue)
@@ -140,11 +117,11 @@ function initMotionDemo()
 	let robotA2 = new Robot(filterA2, st_path, 0, 0, slider.getValue());
 	let robotA3 = new Robot(filterA3, st_path, 0, 0, slider.getValue());
 	let robotA4 = new Robot(filterA4, s_path, 0, 0, slider.getValue()/10000.0);
-	motionDemo = new RobotDemo('motion_canvas', 'motion_minicanvas', getMap(), robot, 10);
-	a1MDemo = new RobotDemo('motion_a1_demo', '', getSimMap(), robotA1, 10);
-	a2MDemo = new RobotDemo('motion_a2_demo', '', getSimMap(), robotA2, 10);
-	a3MDemo = new RobotDemo('motion_a3_demo', '', getSimMap(), robotA3, 10);
-	a4MDemo = new RobotDemo('motion_a4_demo', '', getSimMap(), robotA4, 10);
+	motionDemo = new RobotDemo('motion_canvas', 'motion_minicanvas', getMap(), robot);
+	a1MDemo = new RobotDemo('motion_a1_demo', '', getSimMap(), robotA1);
+	a2MDemo = new RobotDemo('motion_a2_demo', '', getSimMap(), robotA2);
+	a3MDemo = new RobotDemo('motion_a3_demo', '', getSimMap(), robotA3);
+	a4MDemo = new RobotDemo('motion_a4_demo', '', getSimMap(), robotA4);
 }
 
 function initMCLDemo()
@@ -218,10 +195,9 @@ function initMCLDemo()
 			sensorNoiseSlider.getValue(),
 			sensorRadiusSlider.getValue(),
 			getMap()),
-		new RobotState(x, y, dir),
-		1.0);
+		new RobotState(x, y, dir));
 	robot = new Robot(filter, path, 19, getValue('mcl_sensorRadius'), getValue('mcl_stride'));
-	mclDemo = new RobotDemo('mcl_canvas', 'mcl_minicanvas', getMap(), robot, 10);
+	mclDemo = new RobotDemo('mcl_canvas', 'mcl_minicanvas', getMap(), robot);
 }
 
 function simulateAllActuations()

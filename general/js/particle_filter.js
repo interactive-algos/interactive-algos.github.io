@@ -8,7 +8,7 @@
  * @param {RobotState} robotState - The state of the robot while creating the particle filter
  * @param {number} resampleRatio - The percentage of the particles that will be resampled
  */
-function ParticleFilter(particleCount, motionModel, sensorModel, robotState, resampleRatio)
+function ParticleFilter(particleCount, motionModel, sensorModel, robotState, resampleRatio = 1)
 {
 	this.count = particleCount;
 	// Init the array that stores particles
@@ -29,6 +29,7 @@ function ParticleFilter(particleCount, motionModel, sensorModel, robotState, res
 		}
 	} else
 	{
+		//if initial location is unknown, generate random particles
 		for (let i = particleCount - 1; i >= 0; i--)
 		{
 			this.particles[i] = new Particle(robotState.x, robotState.y, robotState.dir, 0);
@@ -39,7 +40,7 @@ function ParticleFilter(particleCount, motionModel, sensorModel, robotState, res
 /**
  * Draws the particles on the context
  * @function
- * @param {Context} ctx - The context that the particles will be drawn on
+ * @param {CanvasRenderingContext2D} ctx - The context that the particles will be drawn on
  */
 ParticleFilter.prototype.draw = function (ctx)
 {

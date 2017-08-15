@@ -65,7 +65,7 @@
 			smoothenPath(path);
 			robot = new Robot(filter, path, 19, getValue('sensorRadius'), getValue('goByOneStep'));
 
-			mclDemo = new RobotDemo('canvas', 'minicanvas', getMap(), robot, 10);
+			mclDemo = new RobotDemo('canvas', 'minicanvas', getMap(), robot);
 		}
 
 		function selectPath(event)
