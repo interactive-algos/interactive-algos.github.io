@@ -34,12 +34,17 @@ function BeamModelDemo(id, map, sensorRadius, sensorNoise, miniId)
 	//Event listeners
 	const self = this;
 	this.view.canvas.onmousedown = (event) => {return this.largeViewMouseDown(event)};
+	this.view.canvas.addEventListener("touchstart", this.view.canvas.onmousedown);
 
 	this.miniView.canvas.onmousedown = (event) => {return this.miniViewMouseDown(event)};
+	this.miniView.canvas.addEventListener("touchstart", this.miniView.canvas.onmousedown);
 
 	this.miniView.canvas.onmousemove = (event) => {return this.miniViewMouseMove(event)};
+	this.miniView.canvas.addEventListener("touchmove", this.miniView.canvas.onmousemove);
 
 	this.miniView.canvas.onmouseout = (event) => {return this.miniViewMouseOut(event)};
+	this.miniView.canvas.addEventListener("touchend", this.miniView.canvas.onmouseout);
+	this.miniView.canvas.addEventListener("touchcancel", this.miniView.canvas.onmouseout);
 
 	this.manager = new ColorizeManager(this.view, (p) =>
 	{
