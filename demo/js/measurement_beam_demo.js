@@ -34,17 +34,17 @@ function BeamModelDemo(id, map, sensorRadius, sensorNoise, miniId)
 	//Event listeners
 	const self = this;
 	this.view.canvas.onmousedown = (event) => {return this.largeViewMouseDown(event)};
-	this.view.canvas.addEventListener("touchstart", this.view.canvas.onmousedown);
+	this.view.canvas.addEventListener("touchstart", this.view.canvas.onmousedown, true);
 
 	this.miniView.canvas.onmousedown = (event) => {return this.miniViewMouseDown(event)};
-	this.miniView.canvas.addEventListener("touchstart", this.miniView.canvas.onmousedown);
+	this.miniView.canvas.addEventListener("touchstart", this.miniView.canvas.onmousedown, true);
 
 	this.miniView.canvas.onmousemove = (event) => {return this.miniViewMouseMove(event)};
-	this.miniView.canvas.addEventListener("touchmove", this.miniView.canvas.onmousemove);
+	this.miniView.canvas.addEventListener("touchmove", this.miniView.canvas.onmousedown, true);
 
 	this.miniView.canvas.onmouseout = (event) => {return this.miniViewMouseOut(event)};
-	this.miniView.canvas.addEventListener("touchend", this.miniView.canvas.onmouseout);
-	this.miniView.canvas.addEventListener("touchcancel", this.miniView.canvas.onmouseout);
+	this.miniView.canvas.addEventListener("touchend", this.miniView.canvas.onmousedown, true);
+	this.miniView.canvas.addEventListener("touchcancel", this.miniView.canvas.onmousedown, true);
 
 	this.manager = new ColorizeManager(this.view, (p) =>
 	{
@@ -97,6 +97,7 @@ Object.defineProperties(BeamModelDemo.prototype, {
 BeamModelDemo.prototype.miniViewMouseOut = function (event)
 {
 	this.drawSmall();
+	event.preventDefault();
 };
 
 BeamModelDemo.prototype.miniViewMouseMove = function (event)
@@ -111,6 +112,7 @@ BeamModelDemo.prototype.miniViewMouseMove = function (event)
 
 	this.drawSmall();
 	view.ctx.drawRect(x - w/2, y - h/2, x + w/2, y + h/2);
+	event.preventDefault();
 };
 
 BeamModelDemo.prototype.miniViewMouseDown = function (event)
@@ -126,6 +128,7 @@ BeamModelDemo.prototype.miniViewMouseDown = function (event)
 	this.draw();
 	this.drawLaserLines();
 	this.colorMapIfShould();
+	event.preventDefault();
 };
 
 
@@ -161,10 +164,14 @@ BeamModelDemo.prototype.largeViewMouseDown = function (event)
 	this.y = y;
 
 	this.view.canvas.onmousemove = (event) => {return this.largeViewMouseMove(event)};
+	this.view.canvas.addEventListener("touchmove", this.view.canvas.onmousemove, true);
 	this.view.canvas.onmouseup = (event) => {return this.largeViewMouseUp(event)};
+	this.view.canvas.addEventListener("touchend", this.view.canvas.onmouseup, true);
 	this.view.canvas.onmouseout = this.view.canvas.onmouseup;
+	this.view.canvas.addEventListener("touchcancel", this.view.canvas.onmouseup, true);
 
 	this.draw();
+	event.preventDefault();
 };
 
 BeamModelDemo.prototype.largeViewMouseMove = function (event)
@@ -178,6 +185,7 @@ BeamModelDemo.prototype.largeViewMouseMove = function (event)
 
 	this.dir = atan2(y - this.y, x - this.x);
 	this.draw();
+	event.preventDefault();
 };
 
 BeamModelDemo.prototype.largeViewMouseUp = function (event)
@@ -191,6 +199,7 @@ BeamModelDemo.prototype.largeViewMouseUp = function (event)
 	this.updateRender();
 	this.colorMapIfShould();
 	this.drawSmall();
+	event.preventDefault();
 };
 
 BeamModelDemo.prototype.draw = function ()
