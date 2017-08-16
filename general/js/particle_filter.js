@@ -52,7 +52,7 @@ ParticleFilter.prototype.draw = function (ctx)
  * @function
  * @return {Particle} newParticle - A random generated particle
  */
-ParticleFilter.prototype.newParticle = function ()
+ParticleFilter.prototype.randomParticle = function ()
 {
 	return new Particle(this.sensorModel.width * random(),
 		this.sensorModel.height * random(), TWO_PI * random(), 1.0);
@@ -68,7 +68,7 @@ ParticleFilter.prototype.regenrateAll = function ()
 	let weight = 1.0 / this.count;
 	for (let i = this.count - 1; i >= 0; i--)
 	{
-		this.particles[i] = this.newParticle();
+		this.particles[i] = this.randomParticle();
 	}
 };
 
