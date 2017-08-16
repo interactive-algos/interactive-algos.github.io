@@ -64,20 +64,19 @@ Robot.prototype.update = function ()
  * Function that used to update the motion of the robot
  * Based on the path
  * @function
- * @param {float} noise - The stride noise for motion model
  */
 Robot.prototype.updateMotion = function ()
 {
 	console.assert(typeof this.path !== 'undefined');
 
-	var stride = this.stride;
-	var x = this.x;
-	var y = this.y;
-	var targetPoint = this.path[this.targetIndex];
+	let stride = this.stride;
+	let x = this.x;
+	let y = this.y;
+	let targetPoint = this.path[this.targetIndex];
 
 	while (stride > 0)
 	{
-		var dist = distance(x, y, targetPoint.x, targetPoint.y);
+		let dist = distance(x, y, targetPoint.x, targetPoint.y);
 		while (dist <= EPS)
 		{
 			this.targetIndex++;
@@ -85,8 +84,8 @@ Robot.prototype.updateMotion = function ()
 			targetPoint = this.path[this.targetIndex];
 			dist = distance(x, y, targetPoint.x, targetPoint.y);
 		}
-		var cosx = (targetPoint.x - x) / dist;
-		var sinx = (targetPoint.y - y) / dist;
+		let cosx = (targetPoint.x - x) / dist;
+		let sinx = (targetPoint.y - y) / dist;
 
 		dist = min(dist, stride);
 		x += cosx * dist;
@@ -107,13 +106,13 @@ Robot.prototype.updateParticles = function ()
 	if (typeof this.filter === 'undefined')
 		return;
 
-	var u = new Odometry(new RobotState(this.lastX, this.lastY, this.lastDir), this);
+	let u = new Odometry(new RobotState(this.lastX, this.lastY, this.lastDir), this);
 
 	if (typeof this.filter.sensorModel !== 'undefined')
 	{
-		var z = this.z;
+		let z = this.z;
 		scan(this.x, this.y, this.dir, this.sensorRadius, this.filter.sensorModel.map, z);
-		for (var i = 0; i < z.length; i++)
+		for (let i = 0; i < z.length; i++)
 		{
 			if (this.z[i] < this.sensorRadius)
 			{

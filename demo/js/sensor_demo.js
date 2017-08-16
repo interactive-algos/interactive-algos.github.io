@@ -82,7 +82,7 @@ SensorDemo.prototype.takeSingleReading = function (redraw = true)
 SensorDemo.prototype.getAverageReadings = function()
 {
 	//Scale average relative to 10
-	return (this.readingSum / this.nReadings)-this.actualDistance+10;
+	return Math.round(((this.readingSum / this.nReadings)-this.actualDistance+10)*1000)/1000;
 };
 
 SensorDemo.prototype.draw = function ()

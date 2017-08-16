@@ -431,31 +431,3 @@ View.prototype.toWorldCoor = function (coor)
 	coor.x = this.toWorldX(coor.x);
 	coor.y = this.toWorldY(coor.y);
 };
-
-View.prototype.toScreenCoor = function (coor)
-{
-	coor.x = this.toScreenX(coor.x);
-	coor.y = this.toScreenY(coor.y);
-};
-
-//Functional API, return a new point.
-View.prototype.getWorldCoor = function (coor)
-{
-	return new Point(this.toWorldX(coor.x), this.toWorldY(coor.y));
-};
-
-// function getScreenCoor(coor)
-// {
-// 	return new Point(toScreenX(coor.x), toScreenY(coor.y));
-// }
-//
-// //Functional API, return a new line.
-// function getWorldLine(l)
-// {
-// 	return new Line(toWorldX(l.s.x), toWorldY(l.s.y), toWorldX(l.t.x), toWorldY(l.t.y));
-// }
-//
-// function getScreenLine(l)
-// {
-// 	return new Line(toScreenX(l.s.x), toScreenY(l.s.y), toScreenX(l.t.x), toScreenY(l.t.y));
-// }
