@@ -73,20 +73,6 @@ ParticleFilter.prototype.regenrateAll = function ()
 };
 
 /**
- * Refill all particles of the Particle filter
- * @function
- */
-ParticleFilter.prototype.refillAll = function ()
-{
-	// generate random particles within the map
-	let weight = 1.0 / this.count;
-	while (this.particles.length < this.count)
-	{
-		this.particles.push(this.newParticle());
-	}
-};
-
-/**
  * Update the state of particles based on the odometry reading
  * @function
  * @param {Odometry} u - The odometry reading from the motion sensor

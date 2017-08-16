@@ -38,12 +38,12 @@ SensorDemo.prototype.sample = function (n)
 	if (n < 500)
 	{
 		this.readingsLeft = n;
-		var func = () => {
+		let func = () => {
 			if(this.readingsLeft-- <= 0)
 				return;
 			this.takeSingleReading(); 
 			this.frameId = requestAnimationFrame(func);
-		}
+		};
 		this.frameId = requestAnimationFrame(func);
 	} else
 	{
@@ -79,6 +79,12 @@ SensorDemo.prototype.takeSingleReading = function (redraw = true)
 	}
 };
 
+SensorDemo.prototype.getAverageReadings = function()
+{
+	//Scale average relative to 10
+	return (this.readingSum / this.nReadings)-this.actualDistance+10;
+};
+
 SensorDemo.prototype.draw = function ()
 {
 	const ctx = this.ctx;
@@ -101,11 +107,11 @@ SensorDemo.prototype.draw = function ()
 	ctx.strokeStyle = 'red';
 	ctx.strokeLine(this.actualDistance, 0, this.actualDistance, this.view.height);
 
-	ctx.fillTextWithColorFont('Actual Distance: ' + this.actualDistance,
+	ctx.fillTextWithColorFont('Actual Distance: ' + 10,
 		'black', '20px Menlo Regular',
 		10, 20);
 	ctx.fillTextWithColorFont('Average Sensor Readings: ' +
-		this.readingSum / this.nReadings, 'black', '20px Menlo Regular', 10, 40);
+		this.getAverageReadings(), 'black', '20px Menlo Regular', 10, 40);
 };
 
 SensorDemo.prototype.setSensorNoise = function (noise)
