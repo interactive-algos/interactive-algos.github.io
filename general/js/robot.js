@@ -10,6 +10,8 @@ const EPS = 1E-5;
  * @param {ParticleFilter} filter - The sampling filter that the robot uses to calculate bel
  * @param {Point[]} path - The predefined map that the robot will follow
  * @param {int} nLasers - The number of rays that the robot have.
+ * @param {number} sensorRadius radius of the robot's laser range finder
+ * @param {number} stride robot's speed, in m/s
  */
 function Robot(filter, path, nLasers, sensorRadius, stride)
 {
