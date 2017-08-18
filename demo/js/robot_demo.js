@@ -18,6 +18,7 @@ function RobotDemo(lid, //Main Canvas id
 				   robot,
 				   colorRes = 10)
 {
+	this.showFPS = false;
 	//the Large canvas elements
 	this.largeCanvas = document.getElementById(lid);
 	this.lctx = this.largeCanvas.getContext('2d');
@@ -100,7 +101,8 @@ RobotDemo.prototype.frame = function (timestamp)
 
 	this.draw();
 
-	this.lctx.fillTextWithColorFont(fps + "\tFPS", 'black', '20px Menlo', 10, 20);
+	if(this.showFPS)
+		this.lctx.fillTextWithColorFont(fps + "\tFPS", 'black', '20px Menlo', 10, 20);
 	if (this.animating)
 	{
 		this.frameId = requestAnimationFrame((timestamp) => this.frame(timestamp));

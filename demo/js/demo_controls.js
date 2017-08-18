@@ -328,7 +328,15 @@ function initSensorDemo(id)
   }); // end of document ready
 })(jQuery); // end of jQuery name space
 
-
+function showFPS(bool)
+{
+	a1MDemo.showFPS = bool;
+	a2MDemo.showFPS = bool;
+	a3MDemo.showFPS = bool;
+	a4MDemo.showFPS = bool;
+	motionDemo.showFPS = bool;
+	mclDemo.showFPS = bool;
+}
 
 function init()
 {
