@@ -110,19 +110,28 @@ driv<!DOCTYPE html>
 
     <div class="row">
         <div class="col l12">
-            <h2>Potentials of Robotics</h2>
+            <h2>Mobile Robot Localization</h2>
             <p>
-                Examples of successful robotic systems include mobile platforms
-                for planetary exploration, industrial robotics arms in assembly
-                lines, self-driving cars, and manipulators that assist surgeons.
+                Intelligent autonomous mobile robots need to know where they are, in order to function correctly. For
+                example, a self-driving car needs to know which street, and which intersection it it at, in order to
+                plan when and which turn it should take next. While some robots have access to GPS readings, such GPS
+                readings are still not sufficiently accurate to make accurate decisions - the error of a commercial GPS
+                is greater than the width of a driving lane, and the decisions taken by a self-driving car need to
+                account specifically for not only which lane it is in, but exactly where in the lane it is.
             </p>
             <p>
-                While much of robotics is still in its infancy, the idea of
-                “intelligent” manipulating devices has an enormous potential
-                to change society. Wouldn’t it be great if all our cars were
-                able to safely steer themselves and avoid all car accidents?
-                Wouldn’t it be great if robots can clean up nuclear disaster and
-                take care of all domestic repair and maintenance tasks?
+                Similarly, indoor mobile robots similarly need to accurately know where they are, despite having no
+                access to GPS. Thus, to reason more accurately about their locations in the world, mobile robots rely on
+                additional on-board sensors such as laser rangefinders and depth cameras.
+            </p>
+            <p>
+                The problem of estimating where a robot is, given its on-board sensor readings over time, is called
+                <b>mobile robot localization</b>.
+            </p>
+            <p>
+                In this page, we explain the sources of uncertainty for the problem of mobile robot localization, and
+                one popular algorithm for mobile robot localization, called <b>Monte-Carlo Localization</b>, works on
+                robots.
             </p>
         </div>
     </div>
@@ -136,9 +145,9 @@ driv<!DOCTYPE html>
                 <div class="col l8">
                     <h2 style="color:black">Uncertainties in Robotics</h2>
                     <p style="color:black">
-                        To do these tasks, robots have to be able to accommodate the
-                        enormous uncertainty that exists in the physical world. There is
-                        a number of factors that contribute to a robot’s uncertainty.
+                        Robots, as physical entities acting in the real world, inherently suffer from errors in sensing,
+                        and locomotion. Such errors result in uncertainty of the robot’s estimates of its location. Let
+                        us investigate the nature of the uncertainties arising from a robot’s motion, and its sensing.
                     </p>
                 </div>
             </div>
@@ -149,18 +158,20 @@ driv<!DOCTYPE html>
 
 <div class="container">
 
-    <div class="row"><h3>Uncertainties in Robot Motions</h3></div>
+    <div class="row"><h3>Uncertainties in Robotics</h3></div>
     <br>
 
     <div class="row">
         <div class="col l4 s12">
-            <h4>Actuation Noise</h4>
+            <h4>Uncertainty Arising From Motion</h4>
             <!--When we command robots to move forward and turn, it would be nice if robots can-->
             <!--carry out our commands with perfect precision. But in reality, they can't.-->
             <p>
-                Robots' movements involves motors that are, at least to some extent, unpredictable.
-                Uncertainty arises from effects like control noise, wear-and-tear, and mechanical
-                failure. Hence, we say that robots' movements have <b>noise</b>.
+                Uncertainty in a robot’s motion arises from a large number of factors, including differences in wheel
+                diameter, tire inflation, friction with respect to the ground, and uneven terrain. Thus, even when asked
+                to execute the same command repeatedly, a robot will inevitably have errors in its actual execution.
+                This demo simulates the errors in execution of motion commands on a real world robot. The blue line
+                represents the planned motion, while the red line represents the robot's actual motion.
             </p>
         </div>
 
@@ -184,16 +195,19 @@ driv<!DOCTYPE html>
 </div>
 <div class="container">
     <div class="row"><h4>Different Types of Actuation Noise</h4></div>
-
+    <div class="row">
+        <div class="col l8 s12">
+            <h6>The errors in execution of motion commands can be broken down into four components:</h6>
+        </div>
+    </div>
     <div class="row">
         <div class="col s12 m3">
             <div class="card">
                 <div class="card-content">
                     <span class="card-title">E1</span>
                     <p>
-                        When we command the robot to Make a turn, the robot will tell its
-                        actuators to "rotate by this much". As mentioned above, actuators are
-                        inherently unpredictable.
+                        When the robot is commanded to rotate by a certain angle, the true rotation of the robot might
+                        differ from the commanded angle.
                     </p>
                 </div>
                 <div class="card-action">
@@ -206,8 +220,8 @@ driv<!DOCTYPE html>
                 <div class="card-content">
                     <span class="card-title">E2</span>
                     <p>
-                        Sometimes, when we command the robot to move forward, it fails to move
-                        straight and proceeds off an angle.
+                        When the robot is commanded to move straight by a certain distance, the robot may not drive
+                        straight, and instead turn by some amount while traversing the commanded distance.
                     </p>
                 </div>
                 <div class="card-action">
@@ -220,9 +234,8 @@ driv<!DOCTYPE html>
                 <div class="card-content">
                     <span class="card-title">E3</span>
                     <p>
-                        Of course, even if the robot was able to move in a straight line, it may not
-                        be able to move the exact distance you commanded. But it is likely to
-                        be close though.
+                        When the robot is commanded to move straight by a certain distance, the robot may not move by
+                        that same distance.
                     </p>
                 </div>
                 <div class="card-action">
@@ -235,9 +248,9 @@ driv<!DOCTYPE html>
                 <div class="card-content">
                     <span class="card-title">E4</span>
                     <p>
-                        For some robots, such as an automobile,rotation is done by turning its wheel
-                        and move "forward" after. For these robots, rotation will often cause them
-                        to move off side slightly.
+                        When the robot is commanded to rotate by a certain angle, the robot might, in addition to
+                        turning, skid sideways or forward. This type of error is significant on robots with tank treads
+                        and multiple wheels with skid-steering.
                     </p>
                 </div>
                 <div class="card-action">
@@ -246,7 +259,15 @@ driv<!DOCTYPE html>
             </div>
         </div>
     </div>
-
+    <div class="row">
+        <div class="col l8 s12">
+            <p>
+                You can see the impact of each of these types of error on a robot’s motion. In the demos below, you can
+                observe the impact of each type of error on the overall executed path of the robot. Try adjusting the
+                slider to control the magnitude of the noise, and observe its impact on the path followed by the robot.
+            </p>
+        </div>
+    </div>
     <div class="row">
         <div class="col l3 s12 center">
             <button class="btn-large waves-effect waves-light" onclick="simulateAllActuations();">
@@ -294,16 +315,17 @@ driv<!DOCTYPE html>
     </div>
 
     <div class="row">
-        <h4>More Demo</h4>
+        <h4>More About Error</h4>
     </div>
 
     <div class="row">
-        <div class="col lg 8">
+        <div class="col l8">
             <p>
-                In the demos below, numerous robots are launched at the same time from the same
-                position. The <b>black</b> one represents expected position of the robot;
-                the <b>blue</b> ones represent some of the possible positions where robots might
-                actually be.
+                While the demos above simulated a single outcome of a robot at a time for each type of error, we can
+                also concurrently simulate many possible outcomes for the errors. The demos below simulate each of the
+                four types of errors in a robot’s motion over many possible outcomes simultaneously, to demonstrate the
+                range, and distribution, of the robot’s possible locations over time as affected by the different types
+                of motion errors.
             </p>
         </div>
     </div>
@@ -373,27 +395,25 @@ driv<!DOCTYPE html>
             </div>
         </div>
     </div>
+    <div class="row">
+        <div class="col l8 s12">
+            Note how the errors accumulate over time: The possible outcomes of the robot spread apart, but in a
+            different manner for each type of motion error.
+        </div>
+    </div>
 
     <div class='row'>
-        <h4>Robot Motion Model Demo</h4>
-        <p>
-            Motion model is a mathematical model that takes these noises into account. It takes in
-            the robot's planned motion, and predict where the robot will actually be after it moves.
-
-            Imagine this scenario: Someone was put into an open field with his eyes covered. If
-            we tell him to move forward by three meters, and he executes these commands with absolute
-            precision, with the information of the initial position and direction, he can predict
-            where he will be with 100% certainty. But an agent, or even a robot, is most likely not
-            being able to execute the commands perfectly due to physical limitation. In this case,
-            the agent can't tell the exact position he will be. All he can tell is that he is roughly
-            three meters ahead of his initial position.
-        </p>
-        <p>
-            Motion models do exactly what just described. The demo below simulates a robot with no
-            sensors to sense the environment (like the covered eyes). The black robot represents where the
-            robot actually is. The blues ones represent that the motion model think the robot might
-            be.
-        </p>
+        <div class="col l8 s12">
+            <h4>Simulating A Robot’s Motion On A Map</h4>
+            <p>
+                Putting together all the four types of errors in a robot’s motion, we can simulate how a robot’s path
+                may diverge from its planned path, over time. In this demo, a robot is asked to follow a fixed
+                trajectory(shown as the green path) in an indoor office building. The blue outlines are simulated
+                outcomes of the robot’s location over time. Note how the many simulated outcomes of the robot’s location
+                diverge over time. You may adjust the magnitude of each type of motion error, and see how it affects the
+                outcomes.
+            </p>
+        </div>
     </div>
 
     <div class='row'>
@@ -436,9 +456,7 @@ driv<!DOCTYPE html>
                     </tr>
                     <tr>
                         <td>
-                            <label for="motion_a1">Rotational error from
-                                rotation
-                            </label>
+                            <label for="motion_a1">Rotational error from rotation</label>
                         </td>
                         <td>
                             <input id='motion_a1' value="1" type="text">
@@ -446,9 +464,7 @@ driv<!DOCTYPE html>
                     </tr>
                     <tr>
                         <td>
-                            <label for="motion_a2">Rotational error from
-                                translation
-                            </label>
+                            <label for="motion_a2">Rotational error from translation</label>
                         </td>
                         <td>
                             <input id='motion_a2' value="1" type="text">
@@ -456,9 +472,7 @@ driv<!DOCTYPE html>
                     </tr>
                     <tr>
                         <td>
-                            <label for="motion_a3">Translational error from
-                                translation
-                            </label>
+                            <label for="motion_a3">Translational error from translation</label>
                         </td>
                         <td>
                             <input id='motion_a3' value="1" type="text">
@@ -466,9 +480,7 @@ driv<!DOCTYPE html>
                     </tr>
                     <tr>
                         <td>
-                            <label for="motion_a4">Translational error from
-                                rotation
-                            </label>
+                            <label for="motion_a4">Translational error from rotation</label>
                         </td>
                         <td>
                             <input id='motion_a4' value="1" type="text">
@@ -480,26 +492,48 @@ driv<!DOCTYPE html>
         </div>
     </div>
 
-    <div class="row"><h3>Uncertainties in Robot Sensor readings</h3></div>
+    <div class="row">
+        <div class="col l8 s12">
+            <p>
+                Clearly, in order to effectively work in the real world, the robot cannot expect its true location to
+                match its planned path. However, we can see that we can simulate many possible outcomes for the robot’s
+                location over time: this will be crucial to our goal of performing mobile robot localization. While we
+                may not know exactly where the robot is after executing a motion command, we can simulate the
+                distribution of possible outcomes. This distribution of possible outcomes can then be further refined by
+                additionally taking into account observations from additional sensors.
+            </p>
+        </div>
+    </div>
+
+    <div class="row"><h3>Uncertainty in Sensor Readings</h3></div>
 
     <div class="row">
         <div class="col l6 s12">
             <h4>Sensor Limitations</h4>
             <p>
-                Sensors are limited in what they can perceive. Cameras cannot
-                see through walls, and the resolution of a camera is limited.
-                Sensors are also subject to noise. And finally, sensors can
-                be malfunctioned. Detecting a faulty sensor can be extremely difficult.
-                To solve these problems, robots take these into accounts and use a
-                sensor model to deal with these uncertainties.
+                To assist in the task of localization, a robot relies on observations made with its on board sensors,
+                and a known map of the environment. Laser rangefinders are one type of commonly used sensors on mobile
+                robots. They allow the robot to sense how far obstacles are from the robot by measuring the time taken
+                for a laser beam to traverse from the sensor, to the obstacle, and back. The laser beam in a laser
+                rangefinder is swept in a circular arc, thus allowing the robot to make distance measurements for a wide
+                angle around the robot. Laser rangefinders have a maximum range beyond which they cannot sense objects,
+                and they also have a fixed number of angles they can sense along, and the overall angle over which they
+                can make observations.
             </p>
         </div>
         <div class="col l6 s12">
-            <h4>Robot Sensor Noise</h4>
             <p>
-                There is always a noise when sensing. Whether the sensor is a
-                laser range finder, a sonic sensor or a camera does not matter.
-                Click on the button to take sensor readings.
+                Each ray of the laser rangefinder thus provides a measurement of the distance to the closest obstacle in
+                that direction. This measurement inherently has errors, due to the variations in the optical properties
+                of the obstacle, errors in time measurements from the electronics in the sensor, and dust particles in
+                the air. The demo below simulates multiple readings for a single ray of a laser rangefinder, when the
+                actual distance to the obstacle is 10 meters. The demo graphs the distribution of the number of times
+                the sensor makes a particular observation. Note that the actual observations vary, and their
+                distribution is spread out, but the peak is centered around the true reading. The average over all the
+                observations, despite the noisy nature of the observations, tends towards the expected value. Try
+                changing the magnitude of the sensor noise, and the number of observations: note how the average sensor
+                reading more closely matches the true distance when the sensor noise is low, and when the number of
+                observations is high.
             </p>
         </div>
     </div>
@@ -538,6 +572,16 @@ driv<!DOCTYPE html>
                     </tbody>
                 </table>
             </fieldset>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col l8 s12">
+            <p>
+                Despite the errors in individual readings of the sensor, the average error over a large number of
+                readings tends to zero as the number of readings increases, and the distributions of the readings follow
+                a known pattern, modelled by a <a href="https://en.wikipedia.org/wiki/Normal_distribution">Normal Distribution,</a>.
+            </p>
         </div>
     </div>
 

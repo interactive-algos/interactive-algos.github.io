@@ -26,13 +26,6 @@ function RobotDemo(lid, //Main Canvas id
 	// this.lview.setPreviewScale(map);
 	this.lview.setScale(40);
 
-	//The Small canvas elements
-	if (document.getElementById(sid) !== null)
-	{
-		this.sview = new View(document.getElementById(sid), 1);
-		this.sview.previewMap(map);
-	}
-
 	this.map = map;
 	this.colorRes = colorRes;
 
@@ -71,7 +64,6 @@ RobotDemo.prototype.start = function (event)
 
 	this.animating = true;
 	this.lview.adjustToPoint(this.robot.x, this.robot.y);
-	this.lview.setScale(40);
 
 	//set the button to pause
 	let buttons = event.target.getElementsByClassName("glyphicon");
