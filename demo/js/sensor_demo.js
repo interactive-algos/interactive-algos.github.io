@@ -29,6 +29,7 @@ function SensorDemo(id, sensorNoise)
 
 SensorDemo.prototype.sample = function (n)
 {
+	this.clearBuckets();
 	//If there is animation going on, just return
 	if (this.readingsLeft > 0)
 	{
