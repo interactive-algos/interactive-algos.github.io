@@ -122,7 +122,7 @@
             <p>
                 Similarly, indoor mobile robots similarly need to accurately know where they are, despite having no
                 access to GPS. Thus, to reason more accurately about their locations in the world, mobile robots rely on
-                additional on-board sensors such as laser rangefinders and depth cameras.
+                additional on-board sensors such as laser range-finders and depth cameras.
             </p>
             <p>
                 The problem of estimating where a robot is, given its on-board sensor readings over time, is called
@@ -512,21 +512,21 @@
             <h4>Sensor Limitations</h4>
             <p>
                 To assist in the task of localization, a robot relies on observations made with its on board sensors,
-                and a known map of the environment. Laser rangefinders are one type of commonly used sensors on mobile
+                and a known map of the environment. Laser range-finders are one type of commonly used sensors on mobile
                 robots. They allow the robot to sense how far obstacles are from the robot by measuring the time taken
                 for a laser beam to traverse from the sensor, to the obstacle, and back. The laser beam in a laser
-                rangefinder is swept in a circular arc, thus allowing the robot to make distance measurements for a wide
-                angle around the robot. Laser rangefinders have a maximum range beyond which they cannot sense objects,
+                range-finder is swept in a circular arc, thus allowing the robot to make distance measurements for a wide
+                angle around the robot. Laser range-finders have a maximum range beyond which they cannot sense objects,
                 and they also have a fixed number of angles they can sense along, and the overall angle over which they
                 can make observations.
             </p>
         </div>
         <div class="col l6 s12">
             <p>
-                Each ray of the laser rangefinder thus provides a measurement of the distance to the closest obstacle in
+                Each ray of the laser range-finder thus provides a measurement of the distance to the closest obstacle in
                 that direction. This measurement inherently has errors, due to the variations in the optical properties
                 of the obstacle, errors in time measurements from the electronics in the sensor, and dust particles in
-                the air. The demo below simulates multiple readings for a single ray of a laser rangefinder, when the
+                the air. The demo below simulates multiple readings for a single ray of a laser range-finder, when the
                 actual distance to the obstacle is 10 meters. The demo graphs the distribution of the number of times
                 the sensor makes a particular observation. Note that the actual observations vary, and their
                 distribution is spread out, but the peak is centered around the true reading. The average over all the
@@ -593,7 +593,7 @@
                 The robot's sensor model is responsible for incorporating the robot's sensor
                 readings. The readings might be an image taken from a camera, data returned by a
                 laser scanner, data gathered by ultrasonic sensors, etc. Whatever the data is,
-                sensor models are supposed to analysis them and give a judgment of where the robot
+                sensor models are supposed to analysis them and give a judgement of where the robot
                 is. In other words, sensor models are robot's perception of the environment around
                 it. Just like humans look around and figure out where they are, robots do the same:
                 with sensor models. There is one important precondition, the sensor model must have
@@ -822,7 +822,7 @@
             <blockquote>Why do we need to resample? Why don't we just keep the best ones?
             </blockquote>
             <p>
-                The weights of particles represent the robot's judgment of how likely that particle
+                The weights of particles represent the robot's judgement of how likely that particle
                 is the true location. Just because the robot think a particle is a good guess,
                 doesn't mean that particle is actually good. If you only keep the best one and drop
                 the rest, it is very likely that you are throwing away the good particles. By
