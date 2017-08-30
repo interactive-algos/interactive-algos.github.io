@@ -25,7 +25,12 @@ function RobotDemo(lid, //Main Canvas id
 	this.lview = new View(this.largeCanvas, 1);
 	// this.lview.setPreviewScale(map);
 	this.lview.setScale(40);
-
+	//The Small canvas elements
+	if (document.getElementById(sid) !== null)
+	{
+		this.sview = new View(document.getElementById(sid), 1);
+		this.sview.previewMap(map);
+	}
 	this.map = map;
 	this.colorRes = colorRes;
 
