@@ -767,20 +767,20 @@
             </h4>
             <ol>
                 <li>
-                    If the robot moves, <b>update each particle's location and direction according
-                    to the robot's motion</b>(robots often have internal motion sensors that can
+                    If the robot moves, the algorithm <b>update each particle's location and direction
+                    according to the robot's motion</b>(robots often have internal motion sensors that can
                     tell how much the robot has moved approximately). When updating, <u>uncertainties
                     of motion readings must be taken into account</u>
                 </li>
                 <li>
                     If the robot performed a scan of the environment, <b>update each particle's
-                    weight</b>.
-                    The new weight should be <u>how likely the robot is at this location given the
-                    scanned data</u>.
+                    weight</b> according to the sensor readings.
+                    The new weight should be associated with <u>how likely the robot is at this
+                    location given the scanned data</u>.
                 </li>
                 <li>
-                    Create a new set of particle with equal size, select particles from the old set
-                    according to weights of particles. Particles with higher weights are more likely
+                    Create a new set of particles with equal size by selecting particles from the old set
+                    according to the weights of the particles. Particles with higher weights are more likely
                     to be selected. This is called the <b>resampling process</b>.
                 </li>
                 <li>
