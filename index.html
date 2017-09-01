@@ -737,31 +737,24 @@
                 Localization (MCL)</b> is an example of such algorithms.
             </p>
             <p>
-                The MCL algorithm aims to locate the robot under the following conditions:
+                The MCL algorithm can be applied to robots with the following conditions
             </p>
             <ul>
                 <li>The robot is in a <b>known area</b>, which means the robot has the map of the
                     environment.
                 </li>
-                <li>The robot has some <b>sensors</b>.</li>
+                <li>The robot has some kinds of <b>sensors</b>.</li>
                 <li>The robot can <b>move around</b> freely.</li>
             </ul>
-            <p>
-                There are many applications of such algorithm. For example, warehouse robots that
-                deliver objects inside a building. The robot would need to keep track of where it is
-                when moving and adjust its motion accordingly if it wanders off path. GPS is not a
-                good choice because most civilian GPS devices are only accurate to about 16 ft under
-                open sky. Their accuracy is even worse inside a building due to signal blockage.
-            </p>
             <blockquote style="font-size: 0.9em;">
                 Trivia: Amazon uses such robots. Check <a
                     href="https://www.youtube.com/watch?v=cLVCGEmkJs0">this</a> out.
             </blockquote>
             <p>
-                The MCL algorithms works by maintaining many guesses of the robot's location. As the
+                The MCL algorithms works by maintaining many possible locations of the robot. As the
                 robot moves and senses, MCL incorporates additional information gathered and updates
-                its guesses. Guesses that seem to be consistent with the robot's motion and
-                measurement are kept while contradictory guesses are dropped.
+                each of its possible locations. The possible locations that seem to be consistent
+                with the robot's motion and measurement data will be kept, vice versa.
             </p>
             <p>
                 Each guess(also called hypothesis) is represented by a "particle" consists of
@@ -795,6 +788,14 @@
                     of where the robot actually is.
                 </li>
             </ol>
+            <br/>
+            <p>
+                There are many applications of such algorithm. For example, warehouse robots that
+                deliver objects inside a building. The robot would need to keep track of where it is
+                when moving and adjust its motion accordingly if it wanders off path. GPS is not a
+                good choice because most civilian GPS devices are only accurate to about 16 ft under
+                open sky. Their accuracy is even worse inside a building due to signal blockage.
+            </p>
             <h4>Common Q&A</h4>
             <blockquote>Why do we need to take uncertainties of odometry readings into account?
             </blockquote>
